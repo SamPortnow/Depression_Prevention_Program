@@ -23,7 +23,9 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.Display;
 import android.view.DragEvent;
 import android.view.Gravity;
@@ -33,6 +35,7 @@ import android.view.View.DragShadowBuilder;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -88,6 +91,8 @@ public class ScaleActivity extends Activity
 	CalendarDbAdapter mCalHelper;
 	ListAdapter mAdapter;
 	ArrayAdapter<String> arrayAdapter;
+	DragSortListView listView;
+	int width;
 	
 
 	public static boolean populatePositiveWords(Context context)
@@ -142,8 +147,8 @@ public class ScaleActivity extends Activity
 	    setContentView(R.layout.activity_scale);
 	    mScale = (ScaleView) findViewById(R.id.scale_view);
 	    mScale.negative.setText(negative_thoughts.get(0));
-	    arrayAdapter =  new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, negative_thoughts);
-	    DragSortListView listView = (DragSortListView) findViewById(R.id.listview);
+	    arrayAdapter =  new ArrayAdapter<String>(this, R.layout.negatives, android.R.id.text1, negative_thoughts);
+	    listView = (DragSortListView) findViewById(R.id.listview);
 	    listView.setDropListener(new DropListener()
 	    {
 
@@ -163,6 +168,7 @@ public class ScaleActivity extends Activity
 	    	
 	    });
 	    listView.setAdapter(arrayAdapter);
+
 	    mBag = new ImageView (mContext);
 	    mBag.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bag));
 	    mGreenBag = new ImageView(mContext);
@@ -174,6 +180,10 @@ public class ScaleActivity extends Activity
 	    question.setBackgroundResource(R.drawable.question);
 	    InputFilter[] FilterArray = new InputFilter[1];
 	    FilterArray[0] = new InputFilter.LengthFilter(60);
+//		RelativeLayout.LayoutParams sQuestionParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT); 
+//		sQuestionParams.leftMargin = layout.getWidth()/5 + layout.getWidth()/2;
+//		sQuestionParams.topMargin = mScale.getHeight()/2;
+//		layout.addView(question, sQuestionParams);
 	    positive_thought.setFilters(FilterArray);
 	    question.setOnClickListener(new OnClickListener()
 	    {
@@ -284,26 +294,37 @@ public class ScaleActivity extends Activity
 	public void onWindowFocusChanged(boolean focus)
 	{
 		super.onWindowFocusChanged(focus);
-		RelativeLayout.LayoutParams sQuestionParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT); 
 		Display display = getWindowManager().getDefaultDisplay();
 		Point size = new Point();
 		display.getSize(size);
-		int width = size.x;
-		sQuestionParams.leftMargin = width/5 + mScale.getWidth()/2;
-		sQuestionParams.topMargin = mScale.getHeight()/2;
-		layout.addView(question, sQuestionParams);
+		width = size.x;
+	}
+	
+	protected void getRid(Context context)
+	{
+	new Handler().post(new Runnable() {
+	    public void run() 
+	    {
+		layout.removeView(skip);
+		//layout.removeView(question);
+		layout.removeView(listView);
+		Log.e("widith is", "" + width);
+		Log.e("layout widith is", "" + layout.getWidth());
+		Log.e("mScale width is", "" + mScale.width);
+		mScale.width = layout.getWidth();
+		mScale.update();
+	    }
+	});
+
 	}
 
-	
 	protected void clear(Context context)
 	{
+		
 		layout.removeView(fire);
-		layout.removeView(positive_thought);
-		layout.removeView(skip);
-		layout.removeView(question);
 		layout.removeView(mScale);
 		layout.removeView(mNegs);
-		layout.removeView(mScroll);
+		layout.removeView(positive_thought);
 		for (int i = 0; i < 4; i++)
 		{
 		params[i] = new RelativeLayout.LayoutParams(mScale.width/3, mScale.height/4); //changed this from layout.getheight()/4

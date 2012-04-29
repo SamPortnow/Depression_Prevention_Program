@@ -2,6 +2,9 @@ package com.example.bato;
 
 import java.util.ArrayList;
 
+import com.mobeta.android.dslv.DragSortListView;
+import com.mobeta.android.dslv.DragSortListView.DropListener;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -25,6 +28,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,9 +40,6 @@ public class DestroyerShooterView extends Activity
 	Context mContext;
 	Bitmap cloud;
 	private DestroyerShooter mDestroyerShooter;
-    private static final int SWIPE_MIN_DISTANCE = 120;
-    private static final int SWIPE_MAX_OFF_PATH = 250;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
     private GestureDetector gestureDetector;
     View.OnTouchListener gestureListener;
     int width;
@@ -60,6 +61,7 @@ public class DestroyerShooterView extends Activity
     AlphaAnimation fade;
     TextView score;
     Score mScore;
+    ArrayAdapter<String> arrayAdapter;
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
@@ -81,22 +83,42 @@ public class DestroyerShooterView extends Activity
 	    score = (TextView) findViewById(R.id.score);
 	    score.setText("SCORE");
 	    mDestroyerShooter = (DestroyerShooter) findViewById(R.id.anim_view);
+	    arrayAdapter = new ArrayAdapter<String>(this, R.layout.positives, android.R.id.text1, mPositive);
+	    DragSortListView listView = (DragSortListView) findViewById(R.id.listview);
+	    listView.setDropListener(new DropListener()
+	    {
+
+			@Override
+			public void drop(int from, int to) 
+			{
+				String item=arrayAdapter.getItem(from);
+				arrayAdapter.remove(item);
+				arrayAdapter.insert(item, to);
+				if (to == (mPositive.size() - 1))
+				{
+					mSwitch(item);
+				}
+			}
+
+
+	    	
+	    });
+	    listView.setAdapter(arrayAdapter);
 	    mScore = (Score) findViewById(R.id.score_view);
 	    layout = (RelativeLayout) findViewById(R.id.game_view);
 	    cannon = (ImageView) findViewById(R.id.cannon);
 	    rCannon = (ImageView) findViewById(R.id.rcannon);
 	    rCannon.setVisibility(View.INVISIBLE);
-	    in = new AlphaAnimation(0.0f, 1.0f);
-	    in.setDuration(300);
-	    out = new AlphaAnimation(1.0f, 0.0f);
-	    out.setDuration(300);
-        gestureDetector = new GestureDetector(this, new MyGestureDetector());
-        gestureListener = new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                return gestureDetector.onTouchEvent(event);
-            }
-        };
-
+        LeftToRight = new TranslateAnimation(0, mDestroyerShooter.width/2, 0, 0);
+        LeftToRight.setDuration(1000);
+        LeftToRight.setFillEnabled(true);
+        LeftToRight.setFillAfter(true);
+        set = new AnimationSet(true);
+        fade = new AlphaAnimation(1.0f, 0.0f);
+        fade.setDuration(300);
+        set.addAnimation(LeftToRight);
+        set.addAnimation(fade);
+        set.setFillAfter(false);
 		SharedPreferences preferences = this.getSharedPreferences(this.getPackageName(), Context.MODE_PRIVATE);
 		if (preferences.getString("shooter instructions", null) == null)
 		{
@@ -114,12 +136,8 @@ public class DestroyerShooterView extends Activity
 	@Override
 	 public void onWindowFocusChanged(boolean hasFocus) {
 	    super.onWindowFocusChanged(hasFocus);
-	    positive[0] = new TextView(mContext);
-	    Log.e("what the crap!", "DAWG");
-	    Log.e("mdestroyer", "" + mDestroyerShooter.width);
+	    positive[0] = (TextView) findViewById(R.id.positive);
 	    params = new RelativeLayout.LayoutParams(mDestroyerShooter.width/3, mDestroyerShooter.height/4);
-	    params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-	    params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
 	    positive[0].layout(0, 0, mDestroyerShooter.width/3, mDestroyerShooter.height/4);
 		positive[0].setGravity(Gravity.CENTER);
 		positive[0].setTextSize(15);
@@ -129,62 +147,7 @@ public class DestroyerShooterView extends Activity
 		positive[0].setDrawingCacheEnabled(true);
 		positive[0].setBackgroundResource(R.drawable.whitecloud);
 	    positive[0].setText(mPositive.get((int) (Math.random() * mPositive.size())));
-	    positive[0].setClickable(true);
-        positive[0].setOnTouchListener(gestureListener);
-        layout.addView(positive[0], params);
-        LeftToRight = new TranslateAnimation(0, mDestroyerShooter.width/3, 0, 0);
-        LeftToRight.setDuration(1000);
-        LeftToRight.setFillEnabled(true);
-        LeftToRight.setFillAfter(true);
-        set = new AnimationSet(true);
-	    fade = new AlphaAnimation(1.0f, 0.0f);
-	    fade.setDuration(300);
-        set.addAnimation(LeftToRight);
-        set.addAnimation(fade);
-        set.setFillEnabled(true);
-        set.setFillAfter(true);
-	    out.setAnimationListener(new AnimationListener() {
-
-	        @Override
-	        public void onAnimationEnd(Animation animation) {
-	            positive[0].startAnimation(in);
-
-	        }
-
-			@Override
-			public void onAnimationRepeat(Animation arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onAnimationStart(Animation arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-	    });
-	    
-	    
-	    positive[0].setOnTouchListener(new OnTouchListener()
-	    {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) 
-			{
-				int action = event.getActionMasked();
-				if (action == MotionEvent.ACTION_DOWN)
-				{
-				positive[0].startAnimation(out);
-				if (mDestroyerShooter.match == false)
-				{
-	            positive[0].setText(mPositive.get((int) (Math.random() * mPositive.size())));
-				}
-				}
-				return true;
-			}
-	    	
-	    });
-	    
+	     
 	    mDestroyerShooter.setOnTouchListener(new OnTouchListener()
 	    {
 
@@ -206,7 +169,6 @@ public class DestroyerShooterView extends Activity
 				   positive[1].setBackgroundResource(R.drawable.whitecloud);
 				   positive[1].setText(positive[0].getText().toString());
 				   positive[0].startAnimation(set);
-				   
 				   rCannon.setVisibility(View.VISIBLE);
 				   cannon.setVisibility(View.INVISIBLE);
 
@@ -219,7 +181,7 @@ public class DestroyerShooterView extends Activity
 	    					mDestroyerShooter.match = true;
 	    					if (mDestroyerShooter.match == true)
 	    					{
-		    				    break;
+	    						break;
 	    					}
 
 			    	   }
@@ -247,9 +209,6 @@ public class DestroyerShooterView extends Activity
 	{
 		rCannon.setVisibility(View.GONE);
 		cannon.setVisibility(View.VISIBLE);
-		layout.removeView(positive[0]);
-	    positive[0].setText(mPositive.get((int) (Math.random() * mPositive.size())));
-		layout.addView(positive[0], params);
 	}
 	
 	protected void update(Context context)
@@ -263,40 +222,19 @@ public class DestroyerShooterView extends Activity
 	}
 
 
-	   class MyGestureDetector extends SimpleOnGestureListener {
-		   
-	        @Override
-	        public boolean onDown(MotionEvent e) 
-	        {
-	            return true;
-	        }
-	        
-	        @Override
-	        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-	            try {
-	                if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-	                    return false;
-	                // right to left swipe
-	                if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) 
-	                {
-	                    Toast.makeText(mContext, "Left Swipe", Toast.LENGTH_SHORT).show();
-	                }  
-	                else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) 
-	                {
-	        	    	width = mDestroyerShooter.width;
-	        	    	height = mDestroyerShooter.height;
-	                	mDestroyerShooter.move = true;
-	                }
-	            } catch (Exception e) {
-	                // nothing
-	            }
-	            return false;
-	          
-	        }
 
-
-	    }
 	   
+	   public void mSwitch(String item)
+	   {
+		   positive[0].setText(item);
+	   }
+	   
+	   public void mSwitchSuccess()
+	   {
+		   String item=arrayAdapter.getItem(mPositive.size() - 1);
+		   arrayAdapter.remove(item);
+		   arrayAdapter.remove(item);
+	   }
 	   
 		@Override
 		public void onDestroy()

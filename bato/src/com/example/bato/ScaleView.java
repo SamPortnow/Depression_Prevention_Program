@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -14,6 +13,7 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -73,6 +73,7 @@ public class ScaleView extends View
 	boolean secondPlace;
 	boolean thirdPlace;
 	boolean fourthPlace;
+	boolean remove = true;
 	AssetManager mAssets;
     
     
@@ -102,6 +103,26 @@ public class ScaleView extends View
 		}
 
 	};
+	
+	protected void update()
+	{
+    	mMoveByXPos[0] = -(width/2)/ FRAME_RATE;
+    	mMoveByYPos[0] = -((height/4 + 71 * (height/150)))/FRAME_RATE;
+    	mMoveByXPos[1] =  ((width - (width/3)) - (width/2 + (width/8)))/ FRAME_RATE;
+    	mMoveByYPos[1] = -((height/6 + 71 * (height/150)))/FRAME_RATE;
+    	mMoveByXPos[2] = - (width/2)/ FRAME_RATE;
+    	mMoveByYPos[2] =  ((height - (height/4)) - ((height/12) + 71 * (height/150)))/FRAME_RATE;
+    	mMoveByXPos[3] =  ((width - (width/3)) - (width/2 + (width/8)))/ FRAME_RATE;
+    	mMoveByYPos[3] =  ((height - (height/4)) - ((height/18) + 71 * (height/150)))/FRAME_RATE;
+    	mCurrentXPos[0] = (width/2);
+    	mCurrentYPos[0] = height/4 + 71 * (height/150);
+    	mCurrentXPos[1] = (width/2) + (width/8);
+    	mCurrentYPos[1] = height/6 + 71 * (height/150);
+    	mCurrentXPos[2] = width/2;
+    	mCurrentYPos[2] = height/12 + 71 * (height/150);
+    	mCurrentXPos[3] = (width/2) + (width/8);
+    	mCurrentYPos[3] = height/18 + 71 * (height/150);
+	}
 	
 	@Override
 	protected void dispatchDraw (Canvas canvas)
@@ -133,14 +154,6 @@ public class ScaleView extends View
        	 	positive_paint.setShadowLayer(5, 2, 2, Color.YELLOW);
         	positive_paint.setTypeface(Typeface.DEFAULT_BOLD);
 	    	positive_paint.setTextSize(25);
-	    	mCurrentXPos[0] = (width/2);
-	    	mCurrentYPos[0] = height/4 + 71 * (height/150);
-	    	mCurrentXPos[1] = (width/2) + (width/8);
-	    	mCurrentYPos[1] = height/6 + 71 * (height/150);
-	    	mCurrentXPos[2] = width/2;
-	    	mCurrentYPos[2] = height/12 + 71 * (height/150);
-	    	mCurrentXPos[3] = (width/2) + (width/8);
-	    	mCurrentYPos[3] = height/18 + 71 * (height/150);
 	    	mMoveXPos[0] = ((width/2) - width)/FRAME_RATE;
 	    	mMoveYPos[0] = ((height/4) - (height + (height/4)))/FRAME_RATE;
 	    	mMoveXPos[1] = (((width/2) + (width/8)) - width)/ FRAME_RATE;
@@ -149,14 +162,6 @@ public class ScaleView extends View
 	    	mMoveYPos[2] = ((height/12) - (height))/FRAME_RATE;
 	    	mMoveXPos[3] = (((width/2) + (width/8)) - width)/ FRAME_RATE;
 	    	mMoveYPos[3] = ((height/18) - (height))/FRAME_RATE;
-	    	mMoveByXPos[0] = -(width/2)/ FRAME_RATE;
-	    	mMoveByYPos[0] = -((height/4 + 71 * (height/150)))/FRAME_RATE;
-	    	mMoveByXPos[1] =  ((width - (width/3)) - (width/2 + (width/8)))/ FRAME_RATE;
-	    	mMoveByYPos[1] = -((height/6 + 71 * (height/150)))/FRAME_RATE;
-	    	mMoveByXPos[2] = - (width/2)/ FRAME_RATE;
-	    	mMoveByYPos[2] =  ((height - (height/4)) - ((height/12) + 71 * (height/150)))/FRAME_RATE;
-	    	mMoveByXPos[3] =  ((width - (width/3)) - (width/2 + (width/8)))/ FRAME_RATE;
-	    	mMoveByYPos[3] =  ((height - (height/4)) - ((height/18) + 71 * (height/150)))/FRAME_RATE;
 	    	currentX = width;
 	    	currentY = height + height/4;
 			first = false;
@@ -176,7 +181,7 @@ public class ScaleView extends View
 		if (mMoveScale == true)
 		{
 			i++;
-			j+= (height/150);
+			j+= (height/250);
 			try 
 			{
 				mScale = ScaleIt(canvas, i);
@@ -330,6 +335,12 @@ public class ScaleView extends View
 			
 			else if (game_over == true)
 			{
+				if (remove == true)
+				{
+					mScaleView.getRid(mContext);
+					remove = false;
+				}
+				
 				if (firstPlace == true && secondPlace == true && thirdPlace == true && fourthPlace == true)
 				{
 					mScaleView.clear(mContext);

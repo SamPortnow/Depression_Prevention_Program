@@ -12,6 +12,8 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.text.Layout;
+import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -67,7 +69,6 @@ public class DestroyerShooter extends View
     boolean redraw = true; 
     boolean destroyed;
     boolean match;
-    int speed = 5; 
     float going_x;
     float going_y;
     int place;
@@ -79,7 +80,8 @@ public class DestroyerShooter extends View
     int stored_y;
     int mTrack = 1;
     boolean hit;
-
+    int speed;
+    int index;
     
 
 
@@ -176,10 +178,11 @@ public class DestroyerShooter extends View
         	bonus_paint.setTypeface(Typeface.DEFAULT_BOLD);
         	bonus_paint.setTextSize(30);
         	bonus_paint.setColor(Color.WHITE);
+        	speed = this.getWidth()/25;
     		canvas.save();
     		first = false;
     	}
-		
+		Log.e("negative thought size is", "" + negative_thoughts.size());
 		if (redraw == true)
 		{
         	move_x = width/3;
@@ -229,7 +232,6 @@ public class DestroyerShooter extends View
 	
 	if (positives.size() > 0)
 	{	
-		Log.e("positives size", "" + positives.size());
 	for (int i = 1; i < positives.size() + 1; i++)
 	{             				
 		canvas.drawBitmap(positives.get(i-1).getDrawingCache(), stored_x, stored_y, null);
@@ -247,6 +249,11 @@ public class DestroyerShooter extends View
 	h.postDelayed(r, FRAME_RATE);
 	    
 	}
+		
+		else
+		{
+			game_over(canvas);
+		}
 
     }
 	
@@ -255,7 +262,8 @@ public class DestroyerShooter extends View
 		if (new_negative == true)
 		{
 		 negative = new TextView(mContext);
-		 word = negative_thoughts.get((int) (Math.random() * negative_thoughts.size()));
+		 index = (int) (Math.random() * negative_thoughts.size());
+		 word = negative_thoughts.get(place);
 		 negative.setText(word);
 		 negative.layout(0, 0, width/3, height/4);
 		 negative.setGravity(Gravity.CENTER);
@@ -301,25 +309,27 @@ public class DestroyerShooter extends View
     	 			
     	 			if (i >= 25 && i  < 50)
     	 			{
-    	 			canvas.drawBitmap(mExplosions[0], dark_coord_x, dark_coord_y, paint);	
+    	 			canvas.drawBitmap(mExplosions[1], dark_coord_x, dark_coord_y, paint);	
     	 			}
     	 			
     	 			
     	 			if (i >= 50 && i  < 75)
     	 			{
-    	 			canvas.drawBitmap(mExplosions[0], dark_coord_x, dark_coord_y, paint);	
+    	 			canvas.drawBitmap(mExplosions[2], dark_coord_x, dark_coord_y, paint);	
     	 			}
     	 			
     	 			
     	 			if (i >= 75 && i  < 100)
     	 			{
-    	 			canvas.drawBitmap(mExplosions[0], dark_coord_x, dark_coord_y, paint);	
+    	 			canvas.drawBitmap(mExplosions[3], dark_coord_x, dark_coord_y, paint);	
     	 			}
     	 			
     	 			
     	 		}
     	 		mDestroyer.update(mContext); //update the score! 
-    	 		negative_thoughts.remove((int) (Math.random() * negative_thoughts.size()));
+    	 		negative_thoughts.remove(index);
+    	 		new_negative = true;
+    	 		
     	 		positives.add(positive);
     	 		if (positives.size() % 3 == 0)
     	 		{
@@ -355,6 +365,21 @@ public class DestroyerShooter extends View
     	}
 	}
 	
+	private void game_over(Canvas canvas)
+	{
+        	canvas.drawBitmap(sun, 0, 0 , null);
+        	game_over.setColor(Color.WHITE);
+	    	game_over.setTextSize(50);
+	    	canvas.translate(0, height/2);
+        	StaticLayout game_over_layout = new StaticLayout("Good Job!", game_over, width, Layout.Alignment.ALIGN_NORMAL,1f,0f,true);
+        	game_over_layout.draw(canvas);
+        	if (thunderPlayer.isPlaying())
+        	{
+        		thunderPlayer.stop();
+        	
+      }
+	
+	}
 
 
 }

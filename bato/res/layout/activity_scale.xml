@@ -13,13 +13,17 @@
         android:background="@drawable/question"
         />
     <view 
+    xmlns:dslv="http://schemas.android.com/apk/res/com.example.bato"
     class="com.mobeta.android.dslv.DragSortListView"
+    dslv:drag_scroll_start="0.33"
     android:id="@+id/listview"
     android:drawSelectorOnTop="false"
 	android:layout_height="wrap_content"
 	android:layout_width="75dp"
 	android:textColor="#ffffff"
-	android:background="@drawable/back">
+	android:layout_above="@+id/thoughts"
+	android:background="@drawable/back"
+	>
    	</view>    
 	 <com.example.bato.ScaleView
         android:id="@+id/scale_view"
