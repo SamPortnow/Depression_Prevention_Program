@@ -1,0 +1,100 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:shrinkColumns="1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    tools:context=".Step2" >
+    <TextView
+        android:id="@+id/step2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/step2" />
+<TableRow>
+	<TextView 
+		android:id="@+id/relationship"
+        android:layout_height="wrap_content"
+        android:text="@string/relationship"
+        android:padding="5dip"	/>
+	
+	<TextView
+		android:id="@+id/relationship_desc"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/relationship_desc"
+        android:padding="5dip"/>	 
+        
+</TableRow>
+<TableRow>
+    	
+   <TextView
+        android:id="@+id/education"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/education"
+        android:padding="5dip"	/>
+
+   	<TextView
+		android:id="@+id/education_desc"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/education_desc"
+        android:padding="5dip"/>	 
+</TableRow>
+<TableRow>        
+        <TextView
+        android:id="@+id/recreation"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recreation"
+        android:padding="5dip"	/>
+   	<TextView
+		android:id="@+id/recreation_desc"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recreation_desc"
+        android:padding="5dip"/>
+   	</TableRow>
+<TableRow>	    
+	        <TextView
+        android:id="@+id/mind"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mind"
+        android:padding="5dip"	/>
+
+	     	<TextView
+		android:id="@+id/mind_desc"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mind_desc"
+        android:padding="5dip"/>	   
+</TableRow>
+<TableRow>        
+        
+   	        <TextView
+        android:id="@+id/daily"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/daily"
+        android:padding="5dip"	/> 	        
+   	<TextView
+		android:id="@+id/daily_desc"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/daily_desc"
+        android:padding="5dip"/>	
+  </TableRow> 
+    <Button 
+	    android:id="@+id/step1"
+	    android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/continuing"
+        android:onClick="to_step3"
+	    />	 
+  </TableLayout>    
+ </ScrollView>
+   
