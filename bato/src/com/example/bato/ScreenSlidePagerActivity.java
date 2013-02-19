@@ -31,19 +31,15 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
  
         @Override
         public int getCount() {
-            return 4;
+            return 2;
         }
  
         @Override
        public Fragment getItem(int position) {
             switch (position) {
             case 0:
-                return new ContactList();
-            case 1:
                 return new Calendar_start();
-            case 2:
-                return new ActivityList();
-            case 3:
+            case 1:
             	return new DestroyerView();
  
             default:

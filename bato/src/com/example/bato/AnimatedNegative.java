@@ -25,6 +25,8 @@ public class AnimatedNegative extends View
     private Context mContext;
     Resources mRes;
     private Bitmap[] mExplosions = new Bitmap[4];
+    private Bitmap cloud;
+    private Bitmap gray_cloud;
 	int x = 0;
 	int y = 0;
 	int posx = -1;
@@ -62,6 +64,11 @@ public class AnimatedNegative extends View
     	    mExplosions[1] = BitmapFactory.decodeResource(getResources(), R.drawable.asteroid_explode2);
     	    mExplosions[2] = BitmapFactory.decodeResource(getResources(), R.drawable.asteroid_explode3);
     	    mExplosions[3] = BitmapFactory.decodeResource(getResources(), R.drawable.asteroid_explode4);
+    	    cloud = BitmapFactory.decodeResource(getResources(), R.drawable.cloud);
+    	    cloud = cloud.createScaledBitmap(cloud, 150, 150, true);
+    	    gray_cloud = BitmapFactory.decodeResource(getResources(), R.drawable.graycloud);
+    	    gray_cloud = gray_cloud.createScaledBitmap(gray_cloud, 150, 150, true);
+
     	    Cursor thoughts = mCalendarDbHelper.fetchThoughts();
 
     	    	while (thoughts.moveToNext())
@@ -105,8 +112,10 @@ public class AnimatedNegative extends View
             	paint.setTextSize(25); 
             	if (replaced != true)
             	{
+            		canvas.drawColor(Color.parseColor("#1E90FF"));
+            		canvas.drawBitmap(gray_cloud, x, y, null);
             		StaticLayout layout = new StaticLayout(word, paint, 150, Layout.Alignment.ALIGN_NORMAL,1f,0f,true);
-            		canvas.translate(x, y);
+            		canvas.translate(x, y + 5);
             		layout.draw(canvas);
             	}
             	else
@@ -122,7 +131,7 @@ public class AnimatedNegative extends View
         	    
         	    if (add == true)
         	    {
-        	    	positive_paint.setColor(Color.WHITE);
+        	    	positive_paint.setColor(Color.parseColor("#FF4444"));
         	    	positive_paint.setTextSize(25); 
         	    	StaticLayout positive_layout = new StaticLayout(positive_word, positive_paint, 150, Layout.Alignment.ALIGN_NORMAL,1f,0f,true);
 
@@ -185,7 +194,8 @@ public class AnimatedNegative extends View
         private void destroy_and_replace(Canvas canvas, int posx, int posy, Layout positive_layout)
         {
     		canvas.restore();
-	    	canvas.translate(posx,posy);
+    		canvas.drawBitmap(cloud, posx, posy, null);
+	    	canvas.translate(posx,posy + 10);
 	    	positive_layout.draw(canvas);
 	    	canvas.restore();
 	    	h.postDelayed(r, FRAME_RATE);	

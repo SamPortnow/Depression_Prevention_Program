@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
     public void to_step1(View view)
     {
     	finish();
-    	Intent intent= new Intent(this,Step1.class);
+    	Intent intent= new Intent(this,ScreenSlidePagerActivity.class);
     	startActivity(intent);
     }
     

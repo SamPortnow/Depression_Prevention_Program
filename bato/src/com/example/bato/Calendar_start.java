@@ -306,10 +306,21 @@ public void onCreate(Bundle savedInstanceState) {
 				{
 				RelativeLayout entries = new RelativeLayout(mContext);
 				EditText stored_activity = new EditText(mContext);
+				EditText stored_thought = new EditText(mContext);
+				SeekBar  stored_mood = new SeekBar(mContext);
 				stored_activity.setTextColor(Color.parseColor("#1E90FF"));
-				stored_activity.setId(position);
+				stored_activity.setId(100);
 				stored_activity.setText(activity.getString(activity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_ACTIVITY)));
 				stored_activity.setMaxWidth(350);
+				stored_thought.setTextColor(Color.parseColor("#1E90FF"));
+				stored_thought.setId(200);
+				stored_thought.setText(activity.getString(activity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)));
+				//if there is a stored mood display the smiles
+				if (activity.getString(activity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_FEELING)).isEmpty() != true)
+				{
+					//  set the seekbar and images 
+				}
+				stored_thought.setMaxWidth(350);
 				entries.addView(stored_activity);
 				eventsLL.addView(entries);
 				
