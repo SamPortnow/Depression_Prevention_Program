@@ -21,6 +21,6 @@ chirping for when the negative thought clouds are destroyed?
 2) Decide what consitutes the end of the game. When all of the negative thoughts from the db are destroyed?
 When there are only positive thoughts on the screen -- and no more room for negative thoughts? In order to do
 this there would have to be a default string array of negative thoughts, and which negative thoughts would 
-pop up would random. I am leaning towards this option. 
+pop up would be random. I am leaning towards this option. 
 
 3) Keep track of points (and develop a scoring system). 
