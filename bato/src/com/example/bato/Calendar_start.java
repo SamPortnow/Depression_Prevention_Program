@@ -143,6 +143,8 @@ public void onCreate(Bundle savedInstanceState) {
                 			final EditText thought = new EditText(mContext);
                 			final ImageView happy = new ImageView(mContext);
                 			final ImageView sad = new ImageView(mContext);
+                			happy.setId(250);
+                			mood.setId(350);
                 			mood.setMinimumWidth(350);
                 			happy.setImageResource(R.drawable.smiley);
                 			sad.setImageResource(R.drawable.sad);
@@ -164,11 +166,25 @@ public void onCreate(Bundle savedInstanceState) {
                         	activity_write.setMaxWidth(200);
                 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 			params.addRule(RelativeLayout.RIGHT_OF, activity_write.getId());
+                			
+                			// sad face 
+                			RelativeLayout.LayoutParams params_sad = new RelativeLayout.LayoutParams(50, 35);
+                			params_sad.addRule(RelativeLayout.BELOW, activity_write.getId());
+                			// seek bar
                 			RelativeLayout.LayoutParams params_seekbar = new RelativeLayout.LayoutParams(350, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                			params_seekbar.setMargins(55, 0, 0, 0);
                 			params_seekbar.addRule(RelativeLayout.BELOW, activity_write.getId());
+                			params_seekbar.addRule(RelativeLayout.RIGHT_OF, sad.getId());
+                			// happy face 
+                			RelativeLayout.LayoutParams params_happy = new RelativeLayout.LayoutParams(50, 35);
+                			params_happy.addRule(RelativeLayout.BELOW, activity_write.getId());
+                			params_happy.addRule(RelativeLayout.RIGHT_OF, mood.getId());
+               
                         	holder.addView(activity_write, params_edit);
                         	holder.addView(thought, params);
+                        	holder.addView(happy, params_happy);
                         	holder.addView(mood, params_seekbar);
+                        	holder.addView(sad, params_sad);
                 			//make holder a relative layout. right??? 
                 			//TODO make holder a relative layout
                 			//params.addRule(RelativeLayout.RIGHT_OF, activity_write.getId());
