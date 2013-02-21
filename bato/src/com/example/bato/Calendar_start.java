@@ -52,7 +52,8 @@ public void onCreate(Bundle savedInstanceState) {
     mContext = this.getActivity();
     Calendar cal=Calendar.getInstance();
     Day=cal.get(Calendar.DAY_OF_YEAR);
-  
+
+	
     setListAdapter(new ListAdapter(){
 
         @Override
@@ -143,11 +144,12 @@ public void onCreate(Bundle savedInstanceState) {
                 			final EditText thought = new EditText(mContext);
                 			final ImageView happy = new ImageView(mContext);
                 			final ImageView sad = new ImageView(mContext);
-                			happy.setId(250);
-                			mood.setId(350);
-                			mood.setMinimumWidth(350);
                 			happy.setImageResource(R.drawable.smiley);
                 			sad.setImageResource(R.drawable.sad);
+                			happy.setId(250);
+                			mood.setId(350);
+                			thought.setId(400);
+                			mood.setMinimumWidth(350);
                         	activity_write.setHint("enter an activity");
                         	activity_write.setHintTextColor(Color.parseColor("#FF4444"));
                         	activity_write.setTextColor(Color.parseColor("#1E90FF"));
@@ -170,14 +172,18 @@ public void onCreate(Bundle savedInstanceState) {
                 			// sad face 
                 			RelativeLayout.LayoutParams params_sad = new RelativeLayout.LayoutParams(50, 35);
                 			params_sad.addRule(RelativeLayout.BELOW, activity_write.getId());
+        	    			params_sad.addRule(RelativeLayout.BELOW, thought.getId());
+
                 			// seek bar
                 			RelativeLayout.LayoutParams params_seekbar = new RelativeLayout.LayoutParams(350, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 			params_seekbar.setMargins(55, 0, 0, 0);
                 			params_seekbar.addRule(RelativeLayout.BELOW, activity_write.getId());
+        	    			params_seekbar.addRule(RelativeLayout.BELOW, thought.getId());
                 			params_seekbar.addRule(RelativeLayout.RIGHT_OF, sad.getId());
                 			// happy face 
                 			RelativeLayout.LayoutParams params_happy = new RelativeLayout.LayoutParams(50, 35);
                 			params_happy.addRule(RelativeLayout.BELOW, activity_write.getId());
+        	    			params_happy.addRule(RelativeLayout.BELOW, thought.getId());
                 			params_happy.addRule(RelativeLayout.RIGHT_OF, mood.getId());
                
                         	holder.addView(activity_write, params_edit);
@@ -308,20 +314,61 @@ public void onCreate(Bundle savedInstanceState) {
 				EditText stored_activity = new EditText(mContext);
 				EditText stored_thought = new EditText(mContext);
 				SeekBar  stored_mood = new SeekBar(mContext);
-				stored_activity.setTextColor(Color.parseColor("#1E90FF"));
+				stored_mood.setBackgroundColor(Color.parseColor("#FFFFFF"));
+				final ImageView stored_happy = new ImageView(mContext);
+				final ImageView stored_sad = new ImageView(mContext);
+				stored_happy.setImageResource(R.drawable.smiley);
+				stored_sad.setImageResource(R.drawable.sad);
 				stored_activity.setId(100);
+				stored_thought.setId(200);
+				stored_mood.setId(300);
+				
+            	RelativeLayout.LayoutParams params_activity = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    			RelativeLayout.LayoutParams params_thought = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    			params_thought.addRule(RelativeLayout.RIGHT_OF, stored_activity.getId());
+    			
+    			
+				stored_activity.setTextColor(Color.parseColor("#1E90FF"));
 				stored_activity.setText(activity.getString(activity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_ACTIVITY)));
-				stored_activity.setMaxWidth(350);
+				stored_activity.setMaxWidth(200);
+				
 				stored_thought.setTextColor(Color.parseColor("#1E90FF"));
 				stored_thought.setId(200);
 				stored_thought.setText(activity.getString(activity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)));
+				
+				stored_thought.setMaxWidth(200);
+				entries.addView(stored_activity, params_activity);
+               	entries.addView(stored_thought, params_thought);
+
+				
 				//if there is a stored mood display the smiles
 				if (activity.getString(activity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_FEELING)).isEmpty() != true)
 				{
-					//  set the seekbar and images 
+	    			// sad face 
+	    			RelativeLayout.LayoutParams params_sad = new RelativeLayout.LayoutParams(50, 35);
+	    			params_sad.addRule(RelativeLayout.BELOW, stored_activity.getId());
+	    			params_sad.addRule(RelativeLayout.BELOW, stored_thought.getId());
+
+	    			// seek bar
+	    			RelativeLayout.LayoutParams params_seekbar = new RelativeLayout.LayoutParams(350, RelativeLayout.LayoutParams.WRAP_CONTENT);
+	    			params_seekbar.setMargins(55, 0, 0, 0);
+	    			params_seekbar.addRule(RelativeLayout.BELOW, stored_activity.getId());
+	    			params_seekbar.addRule(RelativeLayout.BELOW, stored_thought.getId());
+	    			params_seekbar.addRule(RelativeLayout.RIGHT_OF, stored_sad.getId());
+	    			
+	    			// happy face 
+	    			RelativeLayout.LayoutParams params_happy = new RelativeLayout.LayoutParams(50, 35);
+	    			params_happy.addRule(RelativeLayout.BELOW, stored_activity.getId());
+	    			params_happy.addRule(RelativeLayout.BELOW, stored_thought.getId());
+	    			params_happy.addRule(RelativeLayout.RIGHT_OF, stored_mood.getId());
+					
+					stored_mood.setProgress(activity.getInt(activity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_FEELING)));
+					
+	            	entries.addView(stored_happy, params_happy);
+	            	entries.addView(stored_mood, params_seekbar);
+	            	entries.addView(stored_sad, params_sad);
+ 
 				}
-				stored_thought.setMaxWidth(350);
-				entries.addView(stored_activity);
 				eventsLL.addView(entries);
 				
 			}
