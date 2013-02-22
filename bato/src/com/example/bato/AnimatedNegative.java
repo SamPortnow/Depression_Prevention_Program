@@ -46,7 +46,8 @@ public class AnimatedNegative extends View
     ArrayList<String> negative_thoughts = new ArrayList<String>();
     ArrayList<String> positive_thoughts = new ArrayList<String>();
     boolean replaced = false;
-
+    int stored_x = 0;
+    int stored_y = 0;
 
 
 
@@ -76,9 +77,6 @@ public class AnimatedNegative extends View
     	    		if (thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)).length() > 0 && thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)).charAt(0) == '-')
     	    		{
     	    			negative_thoughts.add(thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)));
-    	    			Log.e("negative thought is", "" + negative_thoughts.get(count).toString());
-    	    			Log.e("At least", "it is working");
-    	    			count++;
     	    		}
     	    	// you win when there is no more space left!!!!
     	   int array_size = negative_thoughts.size();
@@ -102,56 +100,45 @@ public class AnimatedNegative extends View
             
             protected void onDraw (Canvas canvas)
             {
-				if (negative_thoughts.isEmpty() != true)
+				if (positive_thoughts.size() < 12)
 				{
-            	String word = negative_thoughts.get(0);
+				
+
+				canvas.drawBitmap(cloud, 0, 0, null);
+					
+				String word = negative_thoughts.get(0);
             	paint.setColor(Color.parseColor("#1E90FF")); 
             	paint.setStyle(Style.FILL); 
             	canvas.drawPaint(paint); 
             	paint.setColor(Color.BLACK); 
             	paint.setTextSize(25); 
-            	if (replaced != true)
-            	{
+    	    	positive_paint.setColor(Color.parseColor("#FF4444"));
+    	    	positive_paint.setTextSize(25); 
             		canvas.drawColor(Color.parseColor("#1E90FF"));
             		canvas.drawBitmap(gray_cloud, x, y, null);
             		StaticLayout layout = new StaticLayout(word, paint, 150, Layout.Alignment.ALIGN_NORMAL,1f,0f,true);
             		canvas.translate(x, y + 5);
             		layout.draw(canvas);
-            	}
-            	else
-            	{
-            		
-            		// didn't set this up yet but here is where new words and such would come from. as it stands now,
-            		// the negative words keep getting replaced
-            		word = positive_thoughts.get(0);
-            		StaticLayout positive_replace_layout = new StaticLayout(word, paint, 150, Layout.Alignment.ALIGN_NORMAL,1f,0f,true);
-            		canvas.translate(x, y);
-            		positive_replace_layout.draw(canvas);
-            	}
+            	
         	    
         	    if (add == true)
         	    {
-        	    	positive_paint.setColor(Color.parseColor("#FF4444"));
-        	    	positive_paint.setTextSize(25); 
         	    	StaticLayout positive_layout = new StaticLayout(positive_word, positive_paint, 150, Layout.Alignment.ALIGN_NORMAL,1f,0f,true);
-
         	    		if (posx <0 && posy < 0)
         	    			{
         	    				posx = this.getWidth();
         	    				posy = this.getBottom() - positive_layout.getHeight();
         	    			}
         	    		
-        	    		else if (posx != x && posy != x)
+        	    		else if (posx != x && posy != y)
         	    			{
         	    				posx -= (posx/xVelocity);
         	    				posy -= (posy/yVelocity);
-        	    		
-        	    				if (posx/xVelocity == x && posy/yVelocity == x )
+
+        	    				if (posx/xVelocity <= x && posy/yVelocity <= y )
         	    					{
-        	    						posx = 0;
-        	    						posy = 0;
-        	    						x = -100;
-        	    						y = -100;
+        	    						posx = x;
+        	    						posy = y;
         	    						explode(canvas, posx, posy, paint);
         	    						x = posx;
         	    						y = posy;
@@ -164,16 +151,28 @@ public class AnimatedNegative extends View
         	    		
         	    		if (posx == x && posy == y )
         	    		{
-    	    				Log.e("I am here","OK");
-        	    			posx = -1;
-    	    				posy = -1;
+
     	    				positive_thoughts.add(positive_word);
-    	    				negative_thoughts.remove(0);
+    	    								// rule is increment 150 for every 3 x increments, then increase y by 150
+    	    								// and set x to 0
+    	    				count++;
+    	    				if (count % 3 == 0)
+    	    				{
+    	    					y = y + 150;
+    	    					x = 0;
+    	    				}
+    	    				else
+    	    				{
+    	    					x = x + 150;
+    	    				}
     	    				add = false;
+    	        			posx = -1;
+    	    				posy = -1;
         	    		}
-        	    		
+
         	    	}
-        	   
+
+
 				}
 				else
 				{
