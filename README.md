@@ -51,3 +51,5 @@ this there would have to be a default string array of negative thoughts, and whi
 pop up would be random. I am leaning towards this option. 
 
 3) Keep track of points (and develop a scoring system). 
+
+4) Keep the positive thoughts on the screen!!!
