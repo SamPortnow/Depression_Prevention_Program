@@ -214,8 +214,10 @@ public class AnimatedNegative extends View
         	    		x -= (this.getWidth()/10)/(FRAME_RATE * 5);
         	    			
         	    		}
+        	    		Log.e("why are you", "moving?");
             	    }
-        			place_all_clouds(canvas, x, y);
+        			
+            	    place_all_clouds(canvas, x, y);
 
         	    	
         	    	
@@ -282,7 +284,6 @@ public class AnimatedNegative extends View
         	    		}
 
         	    }
-        	    	h.postDelayed(r, FRAME_RATE);
 
 				}
 				else
@@ -341,6 +342,8 @@ public class AnimatedNegative extends View
  	    		thunderPlayer.start();
        		 }
        		 new_negative = false;
+ 	    	h.postDelayed(r, FRAME_RATE);
+
          }
        
          private void place_clouds(Canvas canvas, int stored_x, int stored_y, int i)
@@ -377,6 +380,7 @@ public class AnimatedNegative extends View
         	canvas.drawBitmap(cloud, posx, posy, null);
 	    	canvas.translate(posx,posy);
 	    	positive_layout.draw(canvas);
+	    	h.postDelayed(r, FRAME_RATE);
 	    	canvas.restore();
 
         }
