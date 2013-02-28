@@ -86,16 +86,6 @@ public class DestroyerView extends Fragment
 	    Button fire = (Button) view.findViewById(R.id.destroy);
 	    final EditText positive_thought = (EditText) view.findViewById(R.id.destroyer);
 	    PositiveAnimatedNegative = (AnimatedNegative) view.findViewById(R.id.anim_view);
-	    positive_thought.setOnTouchListener(new OnTouchListener()
-	    {
-
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) 
-			{
-				return PositiveAnimatedNegative.typing = true;
-			}
-	    	
-	    });
 	    fire.setOnClickListener(new OnClickListener()
 	    {
 	    	@Override
