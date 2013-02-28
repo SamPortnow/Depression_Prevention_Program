@@ -40,7 +40,7 @@ public class AnimatedNegative extends View
 	private int yVelocity = 5;
 	private Handler h;
 	private Handler g;
-	private final int FRAME_RATE = 10;
+	private final int FRAME_RATE = 2;
     private CalendarDbAdapter mCalendarDbHelper;
     String positive_word;
     TextPaint paint = new TextPaint();
@@ -68,6 +68,7 @@ public class AnimatedNegative extends View
     boolean starting = true;
     boolean moved_back;
     private MediaPlayer thunderPlayer;
+    boolean typing;
 
     //word bank of positive words to check against 
 
@@ -79,7 +80,6 @@ public class AnimatedNegative extends View
     		super(context, attrs);
             mContext = this.getContext();
             h = new Handler();
-            g = new Handler();
             mCalendarDbHelper=new CalendarDbAdapter(mContext);
     	    mCalendarDbHelper.open();
     	    //declare the explosions images as well as the cloud images 
@@ -158,7 +158,8 @@ public class AnimatedNegative extends View
             
             protected void onDraw (Canvas canvas)
             {
-        	    stored_x = 0;
+
+            	stored_x = 0;
         	    stored_y = 0;
             	mExplosions[0] = Bitmap.createScaledBitmap(mExplosions[0], this.getWidth()/2, this.getHeight()/2, true);
         	    mExplosions[1] = Bitmap.createScaledBitmap(mExplosions[1], this.getWidth()/2, this.getHeight()/2, true);
@@ -190,7 +191,8 @@ public class AnimatedNegative extends View
             	//and you have won the game!
             	if (positive_thoughts.size() < 12)
 				{
-
+            	    if (typing == false)
+            	    {
         	    		if (move == 0 || move == 2)
         	    		{
             			move +=1; 
@@ -200,7 +202,7 @@ public class AnimatedNegative extends View
         	    		{
         	    		move +=1;
   
-        	    		x += (this.getWidth()/10)/FRAME_RATE;
+        	    		x += (this.getWidth()/10)/(FRAME_RATE * 5);
         	    			
         	    		}
         	    	
@@ -209,10 +211,10 @@ public class AnimatedNegative extends View
         	    		{
         	    			move = 0;
   
-        	    		x -= (this.getWidth()/10)/FRAME_RATE;
+        	    		x -= (this.getWidth()/10)/(FRAME_RATE * 5);
         	    			
         	    		}
-        	    	
+            	    }
         			place_all_clouds(canvas, x, y);
 
         	    	
@@ -238,8 +240,8 @@ public class AnimatedNegative extends View
         	    		
         	    		else if (posx != x && posy != y)
         	    			{
-        	    				posx -= (this.getWidth() - x)/FRAME_RATE;
-        	    				posy -= (this.getHeight() - y)/FRAME_RATE;
+        	    				posx -= (this.getWidth() - x)/(FRAME_RATE * 5);
+        	    				posy -= (this.getHeight() - y)/(FRAME_RATE * 5);
         	    				if (posx <= x || posy <= y )
         	    					{
         	    						posx = x;
@@ -278,10 +280,9 @@ public class AnimatedNegative extends View
     	        			posx = -1;
     	    				posy = -1;
         	    		}
-        	    		h.postDelayed(r, 100);
 
         	    }
-        	    	h.postDelayed(r, 100);
+        	    	h.postDelayed(r, FRAME_RATE);
 
 				}
 				else
@@ -289,7 +290,9 @@ public class AnimatedNegative extends View
 					game_over(canvas);
 					
 				}
-			}
+        	    
+            }	
+        	
          
          private void place_all_clouds(Canvas canvas, int x, int y)
          {

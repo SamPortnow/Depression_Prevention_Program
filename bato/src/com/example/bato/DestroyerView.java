@@ -15,8 +15,10 @@ import android.graphics.Paint;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -84,7 +86,16 @@ public class DestroyerView extends Fragment
 	    Button fire = (Button) view.findViewById(R.id.destroy);
 	    final EditText positive_thought = (EditText) view.findViewById(R.id.destroyer);
 	    PositiveAnimatedNegative = (AnimatedNegative) view.findViewById(R.id.anim_view);
-	    
+	    positive_thought.setOnTouchListener(new OnTouchListener()
+	    {
+
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) 
+			{
+				return PositiveAnimatedNegative.typing = true;
+			}
+	    	
+	    });
 	    fire.setOnClickListener(new OnClickListener()
 	    {
 	    	@Override
@@ -142,6 +153,7 @@ public class DestroyerView extends Fragment
 				{
 					birdPlayer.start();
 				}
+    			PositiveAnimatedNegative.typing = false;
         		positive_thought.setText(null);
         	}
 	    });
