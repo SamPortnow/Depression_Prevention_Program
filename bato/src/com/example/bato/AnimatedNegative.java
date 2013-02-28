@@ -10,7 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint.Style;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -67,6 +67,8 @@ public class AnimatedNegative extends View
     boolean moved_forward;
     boolean starting = true;
     boolean moved_back;
+    private MediaPlayer thunderPlayer;
+
     //word bank of positive words to check against 
 
     
@@ -89,7 +91,9 @@ public class AnimatedNegative extends View
     	    gray_cloud = BitmapFactory.decodeResource(getResources(), R.drawable.graycloud);
     	    dark_clouds = BitmapFactory.decodeResource(getResources(), R.drawable.dark_clouds);
     	    sun = BitmapFactory.decodeResource(getResources(), R.drawable.sun);
+    		thunderPlayer = MediaPlayer.create(mContext, R.raw.thunder);
     	    Cursor thoughts = mCalendarDbHelper.fetchThoughts();
+    	    
     	    //create a string array of negative thoughts from the db
     	    	while (thoughts.moveToNext())
     	    	{
@@ -236,11 +240,7 @@ public class AnimatedNegative extends View
         	    			{
         	    				posx -= (this.getWidth() - x)/FRAME_RATE;
         	    				posy -= (this.getHeight() - y)/FRAME_RATE;
-        	    				Log.e("pos x is", "" + posx);
-        	    				Log.e("pos y is", "" + posy);
-        	    				Log.e("x is", ""+x);
-        	    				Log.e("y is", ""+y);
-        	    				if (posx <= x && posy <= y )
+        	    				if (posx <= x || posy <= y )
         	    					{
         	    						posx = x;
         	    						posy = y;
@@ -333,6 +333,10 @@ public class AnimatedNegative extends View
         	 negative.setDrawingCacheEnabled(true);
         	 negative.setBackgroundResource(R.drawable.graycloud);
        		 canvas.drawBitmap(negative.getDrawingCache(), x, y, null);
+       		 if(!thunderPlayer.isPlaying())
+       		 {
+ 	    		thunderPlayer.start();
+       		 }
        		 new_negative = false;
          }
        

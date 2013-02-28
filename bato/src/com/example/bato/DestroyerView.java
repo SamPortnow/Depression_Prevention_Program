@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,8 @@ public class DestroyerView extends Fragment
 	String inputLine;
 	Toast fix_it;
 	private Pattern four_letter_words = Pattern.compile("not|cant|cnt|can't"); 
-	
+	private MediaPlayer birdPlayer;
+
 	private static Set<String> mPositiveWords = null;
 	
 	public static boolean populatePositiveWords(Context context)
@@ -77,6 +79,7 @@ public class DestroyerView extends Fragment
 	{
 	    super.onCreate(savedInstanceState);
 	    mContext = this.getActivity();
+	    birdPlayer = MediaPlayer.create(mContext, R.raw.bird);
 	    View view = inflater.inflate(R.layout.activity_destroyer, container, false);
 	    Button fire = (Button) view.findViewById(R.id.destroy);
 	    final EditText positive_thought = (EditText) view.findViewById(R.id.destroyer);
@@ -135,7 +138,10 @@ public class DestroyerView extends Fragment
 	    		PositiveAnimatedNegative.invalidate();
         		PositiveAnimatedNegative.add = true;
         		PositiveAnimatedNegative.positive_word = positive_thought.getText().toString();
-        		
+    			if(!birdPlayer.isPlaying())
+				{
+					birdPlayer.start();
+				}
         		positive_thought.setText(null);
         	}
 	    });
