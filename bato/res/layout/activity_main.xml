@@ -1,25 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/welcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:padding="5dip"	
-        android:text="@string/welcome" />
-   <Button
-               android:id="@+id/step1"
-               android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-       	android:layout_centerHorizontal="true"
-       	android:layout_below="@id/welcome"
-        android:text="@string/next"
-        android:padding="5dip"	
-        android:onClick="to_step1"
-         /> 
-</RelativeLayout>
+</FrameLayout>

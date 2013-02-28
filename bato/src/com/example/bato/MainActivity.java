@@ -1,32 +1,56 @@
 package com.example.bato;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
+import android.view.MenuItem;
 
-public class MainActivity extends Activity {
-
+public class MainActivity extends Activity implements WelcomeFragment.OnBeginSetupListener
+{
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_main);
+        
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();			        
+        fragmentTransaction.add(R.id.fragment_container, new WelcomeFragment());        
+        fragmentTransaction.commit();
+        
+        getActionBar().hide();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.activity_main, menu);
+        
         return true;
     }
     
-    public void to_step1(View view)
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
     {
-    	finish();
-    	Intent intent= new Intent(this,ScreenSlidePagerActivity.class);
-    	startActivity(intent);
+    	if (item.getItemId() == R.id.menu_destroyer_game)
+    	{
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.addToBackStack(null);            
+            fragmentTransaction.replace(R.id.fragment_container, new DestroyerView());
+            fragmentTransaction.commit();
+    	}
+    	
+    	return true;
     }
-    
-    
+
+	@Override
+	public void onBeginSetupClick()
+	{
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();			       
+        fragmentTransaction.replace(R.id.fragment_container, new Calendar_start());
+        fragmentTransaction.commit();
+        
+        getActionBar().show();
+	}     
 }

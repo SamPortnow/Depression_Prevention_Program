@@ -7,7 +7,8 @@
         As the first order of business, there will be a brief 
         setup process in which you configure the app for the 
         rest of the week! </string>
-    <string name="menu_settings">Settings</string>
+    <string name="menu_settings">View Daily Mood</string>
+    <string name="menu_destroyer_game">Destroyer Game</string>
     <string name="next">Begin the setup!</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_step1">Step 1</string>

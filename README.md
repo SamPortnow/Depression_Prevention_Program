@@ -1,4 +1,4 @@
-Depression_Prevention_Program
+Depression_Prevention_Program &#169;
 =============================
 
 Android app modeled from the Depression Prevention Course
@@ -52,4 +52,5 @@ pop up would be random. I am leaning towards this option.
 
 3) Keep track of points (and develop a scoring system). 
 
-4) Keep the positive thoughts on the screen!!!
+
+#The file that contains the game framework is AnimatedNegative.java

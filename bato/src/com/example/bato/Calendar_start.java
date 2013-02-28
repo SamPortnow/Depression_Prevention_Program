@@ -2,14 +2,18 @@ package com.example.bato;
 import java.util.Calendar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ListFragment;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.PaintDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
-import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +25,6 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 
@@ -44,6 +47,11 @@ private LinearLayout eventsLL;
 private ActivityDbAdapter mDbHelper;
 private CalendarDbAdapter mCalendarDbHelper;
 Activity mContext;
+PaintDrawable activity_field = new PaintDrawable();
+PaintDrawable thought_field = new  PaintDrawable();
+Paint activity_paint = new Paint(Color.GREEN);
+Paint thought_paint = new Paint(Color.BLUE); 
+
 
 
 @Override
@@ -134,9 +142,7 @@ public void onCreate(Bundle savedInstanceState) {
                 public void onClick(View arg0) 
                 {
                 			
-                			// here I am creating TWO edit texts and a seek bar. and on text changed I am going to need 
-                			// to update the db.
-                			// so I need different db methods right? Yes! 
+                			AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
                 			final Long Within = within++;
                 			final RelativeLayout holder = new RelativeLayout(mContext);
                 			final EditText activity_write = new EditText(mContext);
@@ -149,40 +155,32 @@ public void onCreate(Bundle savedInstanceState) {
                 			happy.setId(250);
                 			mood.setId(350);
                 			thought.setId(400);
-                			mood.setMinimumWidth(350);
-                        	activity_write.setHint("enter an activity");
-                        	activity_write.setHintTextColor(Color.parseColor("#FF4444"));
+                        	activity_write.setHint("what are you doing?");
                         	activity_write.setTextColor(Color.parseColor("#1E90FF"));
                         	// this is how you set a max length for the edit text programmatically 
                         	InputFilter[] setLength = new InputFilter[1];
                         	setLength[0] = new InputFilter.LengthFilter(100);
                         	activity_write.setFilters(setLength);
                         	mood.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                        	thought.setMaxWidth(200);
-                        	thought.setHint("enter a thought");
-                        	thought.setHintTextColor(Color.parseColor("#FF4444"));
+                        	thought.setHint("what are you thinking?");
                         	thought.setTextColor(Color.parseColor("#1E90FF"));
                         	thought.setFilters(setLength);
-                        	RelativeLayout.LayoutParams params_edit = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                        	RelativeLayout.LayoutParams params_edit = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                         	activity_write.setId(200);
-                        	activity_write.setMaxWidth(200);
-                			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                			params.addRule(RelativeLayout.RIGHT_OF, activity_write.getId());
+                			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                			params.addRule(RelativeLayout.BELOW, activity_write.getId());
                 			
                 			// sad face 
                 			RelativeLayout.LayoutParams params_sad = new RelativeLayout.LayoutParams(50, 35);
-                			params_sad.addRule(RelativeLayout.BELOW, activity_write.getId());
         	    			params_sad.addRule(RelativeLayout.BELOW, thought.getId());
 
                 			// seek bar
                 			RelativeLayout.LayoutParams params_seekbar = new RelativeLayout.LayoutParams(350, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 			params_seekbar.setMargins(55, 0, 0, 0);
-                			params_seekbar.addRule(RelativeLayout.BELOW, activity_write.getId());
         	    			params_seekbar.addRule(RelativeLayout.BELOW, thought.getId());
                 			params_seekbar.addRule(RelativeLayout.RIGHT_OF, sad.getId());
                 			// happy face 
                 			RelativeLayout.LayoutParams params_happy = new RelativeLayout.LayoutParams(50, 35);
-                			params_happy.addRule(RelativeLayout.BELOW, activity_write.getId());
         	    			params_happy.addRule(RelativeLayout.BELOW, thought.getId());
                 			params_happy.addRule(RelativeLayout.RIGHT_OF, mood.getId());
                
@@ -194,79 +192,21 @@ public void onCreate(Bundle savedInstanceState) {
                 			//make holder a relative layout. right??? 
                 			//TODO make holder a relative layout
                 			//params.addRule(RelativeLayout.RIGHT_OF, activity_write.getId());
-                        	eventsLL.addView(holder);
-                        	activity_write.addTextChangedListener(new TextWatcher() {
+                        	alert.setView(holder);
+                            alert.setPositiveButton("Add", new DialogInterface.OnClickListener() { 
+                                public void onClick(DialogInterface dialog, int whichButton) { 
+                                	save_state(activity_write, mood, thought, position, Within);
+                                	populateFields(listItem, position, eventsLL);
+                                } 
+                            }); 
 
-							@Override
-							public void afterTextChanged(Editable arg0) 
-							{
-							save_state(activity_write, mood, thought, position, Within);	
-							}
+                            alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() { 
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                } 
+                            }); 
+                        	alert.show();
 
-							@Override
-							public void beforeTextChanged(CharSequence arg0,
-									int arg1, int arg2, int arg3) {
-								// TODO Auto-generated method stub
-								
-							}
 
-							@Override
-							public void onTextChanged(CharSequence arg0,
-									int arg1, int arg2, int arg3) {
-								// TODO Auto-generated method stub
-								
-							}
-                        	});
-                        mood.setOnSeekBarChangeListener( new OnSeekBarChangeListener()
-                        {
-
-							@Override
-							public void onProgressChanged(SeekBar arg0,
-									int mood_value, boolean arg2) {
-
-								
-							}
-
-							@Override
-							public void onStartTrackingTouch(SeekBar arg0) {
-								// TODO Auto-generated method stub
-								
-							}
-
-							@Override
-							public void onStopTrackingTouch(SeekBar arg0) 
-							
-							{
-								save_state(activity_write, mood, thought, position, Within);	
-	
-							}
-                        	
-                        });
-                		
-                        thought.addTextChangedListener(new TextWatcher() {
-                
-                        
-                        	@Override
-							public void afterTextChanged(Editable arg0) {
-
-    							save_state(activity_write, mood, thought, position, Within);	
-
-							}
-
-							@Override
-							public void beforeTextChanged(CharSequence arg0,
-									int arg1, int arg2, int arg3) {
-								// TODO Auto-generated method stub
-								
-							}
-
-							@Override
-							public void onTextChanged(CharSequence arg0,
-									int arg1, int arg2, int arg3) {
-								// TODO Auto-generated method stub
-								
-							}
-                        	});
                         }; 
                 		
 
@@ -311,8 +251,12 @@ public void onCreate(Bundle savedInstanceState) {
 				while (activity.moveToNext())
 				{
 				RelativeLayout entries = new RelativeLayout(mContext);
-				EditText stored_activity = new EditText(mContext);
-				EditText stored_thought = new EditText(mContext);
+				TextView stored_activity = new TextView(mContext);
+				TextView stored_thought = new TextView(mContext);
+				stored_activity.setBackgroundColor(Color.GREEN);
+				stored_thought.setBackgroundColor(Color.BLUE);
+				stored_activity.setTextColor(Color.CYAN);
+				stored_thought.setTextColor(Color.GRAY);
 				SeekBar  stored_mood = new SeekBar(mContext);
 				stored_mood.setBackgroundColor(Color.parseColor("#FFFFFF"));
 				final ImageView stored_happy = new ImageView(mContext);
@@ -344,22 +288,21 @@ public void onCreate(Bundle savedInstanceState) {
 				//if there is a stored mood display the smiles
 				if (activity.getString(activity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_FEELING)).isEmpty() != true)
 				{
-	    			// sad face 
+	    			// sad face
+					if (stored_activity.getHeight() >= stored_thought.getHeight())
+					{
 	    			RelativeLayout.LayoutParams params_sad = new RelativeLayout.LayoutParams(50, 35);
 	    			params_sad.addRule(RelativeLayout.BELOW, stored_activity.getId());
-	    			params_sad.addRule(RelativeLayout.BELOW, stored_thought.getId());
 
 	    			// seek bar
 	    			RelativeLayout.LayoutParams params_seekbar = new RelativeLayout.LayoutParams(350, RelativeLayout.LayoutParams.WRAP_CONTENT);
 	    			params_seekbar.setMargins(55, 0, 0, 0);
 	    			params_seekbar.addRule(RelativeLayout.BELOW, stored_activity.getId());
-	    			params_seekbar.addRule(RelativeLayout.BELOW, stored_thought.getId());
 	    			params_seekbar.addRule(RelativeLayout.RIGHT_OF, stored_sad.getId());
 	    			
 	    			// happy face 
 	    			RelativeLayout.LayoutParams params_happy = new RelativeLayout.LayoutParams(50, 35);
 	    			params_happy.addRule(RelativeLayout.BELOW, stored_activity.getId());
-	    			params_happy.addRule(RelativeLayout.BELOW, stored_thought.getId());
 	    			params_happy.addRule(RelativeLayout.RIGHT_OF, stored_mood.getId());
 					
 					stored_mood.setProgress(activity.getInt(activity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_FEELING)));
@@ -367,6 +310,29 @@ public void onCreate(Bundle savedInstanceState) {
 	            	entries.addView(stored_happy, params_happy);
 	            	entries.addView(stored_mood, params_seekbar);
 	            	entries.addView(stored_sad, params_sad);
+					}
+					else
+					{
+		    			RelativeLayout.LayoutParams params_sad = new RelativeLayout.LayoutParams(50, 35);
+		    			params_sad.addRule(RelativeLayout.BELOW, stored_thought.getId());
+
+		    			// seek bar
+		    			RelativeLayout.LayoutParams params_seekbar = new RelativeLayout.LayoutParams(350, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		    			params_seekbar.setMargins(55, 0, 0, 0);
+		    			params_seekbar.addRule(RelativeLayout.BELOW, stored_thought.getId());
+		    			params_seekbar.addRule(RelativeLayout.RIGHT_OF, stored_sad.getId());
+		    			
+		    			// happy face 
+		    			RelativeLayout.LayoutParams params_happy = new RelativeLayout.LayoutParams(50, 35);
+		    			params_happy.addRule(RelativeLayout.BELOW, stored_thought.getId());
+		    			params_happy.addRule(RelativeLayout.RIGHT_OF, stored_mood.getId());
+						
+						stored_mood.setProgress(activity.getInt(activity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_FEELING)));
+						
+		            	entries.addView(stored_happy, params_happy);
+		            	entries.addView(stored_mood, params_seekbar);
+		            	entries.addView(stored_sad, params_sad);	
+					}
  
 				}
 				eventsLL.addView(entries);
