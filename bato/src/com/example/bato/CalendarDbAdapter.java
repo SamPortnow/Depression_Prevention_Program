@@ -19,8 +19,7 @@ public class CalendarDbAdapter {
     private static final String DATABASE_NAME = "calendar_data"; //my database name
     private static final String DATABASE_TABLE = "calendar"; //this particular table is the activities table. I might make a separate table for a ranking system. We will see. 
     private static final int DATABASE_VERSION = 2;
-    public static final String COLUMN_NAME_WITHIN="Within";
-    public static final String COLUMN_NAME_HOUR="Hour";
+    public static final String COLUMN_NAME_MINUTES="minutes";
     public static final String COLUMN_NAME_DAY="Day";
     public static final String COLUMN_NAME_ACTIVITY="Activity";
     public static final String COLUMN_NAME_FEELING = "Feeling";
@@ -103,33 +102,31 @@ public class CalendarDbAdapter {
     
     //now do a create, update, and fetch functions!!!
     
-    public long createCalendar(long Day, long Hour, long Within, String Activity, int Feeling, String Thought) {
+    public long createCalendar(long Day, long minutes, String Activity, int Feeling, String Thought) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(COLUMN_NAME_DAY, Day);
-        initialValues.put(COLUMN_NAME_HOUR, Hour);
-        initialValues.put(COLUMN_NAME_WITHIN, Within);
+        initialValues.put(COLUMN_NAME_MINUTES, minutes);
         initialValues.put(COLUMN_NAME_ACTIVITY,Activity);
         initialValues.put(COLUMN_NAME_FEELING, Feeling);
         initialValues.put(COLUMN_NAME_THOUGHT, Thought);
         return mCalendarDb.insert(DATABASE_TABLE, null, initialValues);
     }
     
-    public boolean updateCalendar(long Day, long Hour, long Within, String Activity, int Feeling, String Thought)
+    public boolean updateCalendar(long Day, long minutes, String Activity, int Feeling, String Thought)
     	{
     	String day=String.valueOf(Day);
-    	String shour=String.valueOf(Hour);
-    	String swithin = String.valueOf(Within);
+    	String sminutes=String.valueOf(minutes);
     	ContentValues args = new ContentValues();
         args.put(COLUMN_NAME_DAY, Day);
-        args.put(COLUMN_NAME_HOUR, Hour);
-        args.put(COLUMN_NAME_WITHIN, Within);
+        args.put(COLUMN_NAME_MINUTES, minutes);
         args.put(COLUMN_NAME_ACTIVITY, Activity);
         args.put(COLUMN_NAME_FEELING, Feeling);
         args.put(COLUMN_NAME_THOUGHT, Thought);
-        return mCalendarDb.update(DATABASE_TABLE, args, COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_HOUR+" = ? AND "+COLUMN_NAME_WITHIN+" =?", new String[] {day,shour,swithin}) > 0;
+        return mCalendarDb.update(DATABASE_TABLE, args, COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_MINUTES+" = ?", new String[] {day,sminutes}) > 0;
         
     }
-    
+ 
+    /*
     public Cursor fetchWholeCalendar(long Day, long hour)
     {
     	String day=String.valueOf(Day);
@@ -137,14 +134,13 @@ public class CalendarDbAdapter {
         return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_HOUR+" = ?", new String[] {day,shour}, null, null, null);
         
     }
+	*/
 
-
-    public Cursor fetchCalendar(long Day, long hour, long Within)
+    public Cursor fetchCalendar(long Day, long minutes)
     {
     	String day=String.valueOf(Day);
-    	String shour=String.valueOf(hour);
-    	String swithin = String.valueOf(Within);
-        return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_HOUR+" = ? AND "+COLUMN_NAME_WITHIN+" =?" , new String[] {day,shour,swithin}, null, null, null);
+    	String sminutes=String.valueOf(minutes);
+        return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_MINUTES+" = ?" , new String[] {day,sminutes}, null, null, null);
         
     }
     

@@ -40,7 +40,7 @@ public class AnimatedNegative extends View
 	private int yVelocity = 5;
 	private Handler h;
 	private Handler g;
-	private final int FRAME_RATE = 2;
+	private final int FRAME_RATE = 1000;
     private CalendarDbAdapter mCalendarDbHelper;
     String positive_word;
     TextPaint paint = new TextPaint();
@@ -202,7 +202,7 @@ public class AnimatedNegative extends View
         	    		{
         	    		move +=1;
   
-        	    		x += (this.getWidth()/10)/(FRAME_RATE * 5);
+        	    		x += (this.getWidth()/10)/(FRAME_RATE/50);
         	    			
         	    		}
         	    	
@@ -211,7 +211,7 @@ public class AnimatedNegative extends View
         	    		{
         	    			move = 0;
   
-        	    		x -= (this.getWidth()/10)/(FRAME_RATE * 5);
+        	    		x -= (this.getWidth()/10)/(FRAME_RATE/50);
         	    			
         	    		}
         	    		Log.e("why are you", "moving?");
@@ -242,8 +242,8 @@ public class AnimatedNegative extends View
         	    		
         	    		else if (posx != x && posy != y)
         	    			{
-        	    				posx -= (this.getWidth() - x)/(FRAME_RATE * 5);
-        	    				posy -= (this.getHeight() - y)/(FRAME_RATE * 5);
+        	    				posx -= (this.getWidth() - x)/(FRAME_RATE/100);
+        	    				posy -= (this.getHeight() - y)/(FRAME_RATE/100);
         	    				if (posx <= x || posy <= y )
         	    					{
         	    						posx = x;

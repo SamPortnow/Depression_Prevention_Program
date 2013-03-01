@@ -1,6 +1,7 @@
 package com.example.bato;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
@@ -48,7 +49,7 @@ public class MainActivity extends Activity implements WelcomeFragment.OnBeginSet
 	public void onBeginSetupClick()
 	{
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();			       
-        fragmentTransaction.replace(R.id.fragment_container, new Calendar_start());
+        fragmentTransaction.replace(R.id.fragment_container, new ActivityHome());
         fragmentTransaction.commit();
         
         getActionBar().show();
