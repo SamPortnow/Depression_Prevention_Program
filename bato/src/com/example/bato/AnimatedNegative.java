@@ -1,6 +1,7 @@
 package com.example.bato;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.text.Layout;
@@ -32,24 +34,25 @@ public class AnimatedNegative extends View
     private Bitmap positive_text;
     private Bitmap dark_clouds;
     private Bitmap sun;
+    private Bitmap thunder;
 	int x = 0;
 	int y = 0;
 	int posx = -1;
 	int posy = -1;
-	private int xVelocity = 10;
-	private int yVelocity = 5;
 	private Handler h;
-	private Handler g;
 	private final int FRAME_RATE = 1000;
     private CalendarDbAdapter mCalendarDbHelper;
     String positive_word;
     TextPaint paint = new TextPaint();
     TextPaint positive_paint = new TextPaint();
     TextPaint game_over = new TextPaint();
+    TextPaint score = new TextPaint();
     boolean add = false;
     boolean destroyed = false;
     int count = 0;
     int move = 0;
+    int cloud_marker;
+    int thunder_struck;
     ArrayList<String> negative_thoughts = new ArrayList<String>();
     ArrayList<String> positive_thoughts = new ArrayList<String>();
 
@@ -69,6 +72,11 @@ public class AnimatedNegative extends View
     boolean moved_back;
     private MediaPlayer thunderPlayer;
     boolean typing;
+    int thunder_time = 0;
+    long start_mills;
+    long current_mills;
+    long rt;
+    boolean start = true; 
 
     //word bank of positive words to check against 
 
@@ -91,9 +99,10 @@ public class AnimatedNegative extends View
     	    gray_cloud = BitmapFactory.decodeResource(getResources(), R.drawable.graycloud);
     	    dark_clouds = BitmapFactory.decodeResource(getResources(), R.drawable.dark_clouds);
     	    sun = BitmapFactory.decodeResource(getResources(), R.drawable.sun);
+    	    thunder = BitmapFactory.decodeResource(getResources(), R.drawable.thunder);
     		thunderPlayer = MediaPlayer.create(mContext, R.raw.thunder);
     	    Cursor thoughts = mCalendarDbHelper.fetchThoughts();
-    	    
+
     	    //create a string array of negative thoughts from the db
     	    	while (thoughts.moveToNext())
     	    	{
@@ -156,26 +165,20 @@ public class AnimatedNegative extends View
 	 };
 
             
-            protected void onDraw (Canvas canvas)
+			protected void onDraw (Canvas canvas)
             {
-
-            	stored_x = 0;
-        	    stored_y = 0;
-            	mExplosions[0] = Bitmap.createScaledBitmap(mExplosions[0], this.getWidth()/2, this.getHeight()/2, true);
-        	    mExplosions[1] = Bitmap.createScaledBitmap(mExplosions[1], this.getWidth()/2, this.getHeight()/2, true);
-        	    mExplosions[2] = Bitmap.createScaledBitmap(mExplosions[2], this.getWidth()/2, this.getHeight()/2, true);
-        	    mExplosions[3] = Bitmap.createScaledBitmap(mExplosions[3], this.getWidth()/2, this.getHeight()/2, true);
-        	    cloud = Bitmap.createScaledBitmap(cloud, this.getWidth()/3, this.getHeight()/4, true);
-        	    gray_cloud = Bitmap.createScaledBitmap(gray_cloud, this.getWidth()/3, this.getHeight()/4, true);
-        	    dark_clouds = Bitmap.createScaledBitmap(dark_clouds, this.getWidth(), this.getHeight(), true);
-        	    sun = Bitmap.createScaledBitmap(sun, this.getWidth(), this.getHeight(), true);
-
-
-            	canvas.drawBitmap(dark_clouds, 0, 0, null);
-            	canvas.drawBitmap(sun, 0, y - this.getHeight() , null);
+            
             	//save the canvas on the first draw
             	if (first == true)
             	{ 
+                	mExplosions[0] = Bitmap.createScaledBitmap(mExplosions[0], this.getWidth()/2, this.getHeight()/2, true);
+            	    mExplosions[1] = Bitmap.createScaledBitmap(mExplosions[1], this.getWidth()/2, this.getHeight()/2, true);
+            	    mExplosions[2] = Bitmap.createScaledBitmap(mExplosions[2], this.getWidth()/2, this.getHeight()/2, true);
+            	    mExplosions[3] = Bitmap.createScaledBitmap(mExplosions[3], this.getWidth()/2, this.getHeight()/2, true);
+            	    cloud = Bitmap.createScaledBitmap(cloud, this.getWidth()/3, this.getHeight()/4, true);
+            	    gray_cloud = Bitmap.createScaledBitmap(gray_cloud, this.getWidth()/3, this.getHeight()/4, true);
+            	    dark_clouds = Bitmap.createScaledBitmap(dark_clouds, this.getWidth(), this.getHeight() * 2, true);
+            	    sun = Bitmap.createScaledBitmap(sun, this.getWidth(), this.getHeight() + this.getHeight()/3, true);
                 	//setting my background color...
                 	paint.setColor(Color.BLACK); 
                 	paint.setTextSize(25); 
@@ -183,25 +186,40 @@ public class AnimatedNegative extends View
         	    	positive_paint.setColor(Color.parseColor("#FF4444"));
                	 	positive_paint.setShadowLayer(5, 2, 2, Color.YELLOW);
         	    	positive_paint.setTextSize(25);
+                	score.setAntiAlias(true);
+                	score.setTypeface(Typeface.DEFAULT_BOLD);
+                	score.setTypeface(Typeface.SANS_SERIF);
+                	score.setTextSize(24);
+                	score.setColor(Color.YELLOW);
             		canvas.save();
             		first = false;
             	}
+            	canvas.drawBitmap(dark_clouds, 0, 0, null);
+            	if (cloud_marker < 3)
+            	{
+            	canvas.drawBitmap(sun, 0, y - this.getHeight() - this.getHeight()/3, null);
+            	}
+            	else
+            	{
+                	canvas.drawBitmap(sun, 0, y - this.getHeight(), null);
+
+            	}
+
             	
+
             	//when the size of the array of positive thoughts is 12, there is no more room,
             	//and you have won the game!
-            	if (positive_thoughts.size() < 12)
+            	if (positive_thoughts.size() < 9)
 				{
-            	    if (typing == false)
-            	    {
-        	    		if (move == 0 || move == 2)
+
+            		if (move == 0 || move == 2)
         	    		{
-            			move +=1; 
+        	    		move +=1; 
         	    		}
         	    	
         	    		if (move == 1)
         	    		{
         	    		move +=1;
-  
         	    		x += (this.getWidth()/10)/(FRAME_RATE/50);
         	    			
         	    		}
@@ -210,14 +228,32 @@ public class AnimatedNegative extends View
         	    		if (move == 3)
         	    		{
         	    			move = 0;
-  
-        	    		x -= (this.getWidth()/10)/(FRAME_RATE/50);
+            	    		x -= (this.getWidth()/10)/(FRAME_RATE/50);
         	    			
         	    		}
-        	    		Log.e("why are you", "moving?");
-            	    }
+        	    		
+            	    	if (thunder_time == 0 || thunder_time == 10)
+            	    	{
+            	    		thunder_struck = x;
+
+            	    	}
+            	    	
+            	    	else if (thunder_time > 0 && thunder_time < 10 )
+            	    	{
+            	    		thunder_struck = this.getWidth();
+
+            	    	}
+                	    
+            	    	else if (thunder_time > 10)
+            	    	{
+            	    		thunder_time = 0;
+            	    	}
+            	    	
+        	    		thunder_time += 1;
+
+            	    
         			
-            	    place_all_clouds(canvas, x, y);
+            	    place_all_clouds(canvas, x, y, thunder_struck);
 
         	    	
         	    	
@@ -237,14 +273,14 @@ public class AnimatedNegative extends View
         	    		if (posx <0 && posy < 0)
         	    			{
         	    				posx = this.getWidth();
-        	    				posy = this.getBottom() - 175;
+        	    				posy = (this.getBottom() - 175);
         	    			}
         	    		
         	    		else if (posx != x && posy != y)
         	    			{
         	    				posx -= (this.getWidth() - x)/(FRAME_RATE/100);
         	    				posy -= (this.getHeight() - y)/(FRAME_RATE/100);
-        	    				if (posx <= x || posy <= y )
+        	    				if (posx <= x || posy <= y)
         	    					{
         	    						posx = x;
         	    						posy = y;
@@ -269,6 +305,7 @@ public class AnimatedNegative extends View
     	    								// rule is increment 150 for every 3 x increments, then increase y by 150
     	    								// and set x to 0
     	    				count++;
+    	    				cloud_marker++;
     	    				if (count % 3 == 0) //move the position of the dark cloud
     	    				{
     	    					y = y + this.getHeight()/4;
@@ -295,9 +332,9 @@ public class AnimatedNegative extends View
             }	
         	
          
-         private void place_all_clouds(Canvas canvas, int x, int y)
+         private void place_all_clouds(Canvas canvas, int x, int y, int thunder_struck)
          {
-      		place_dark_clouds(canvas, x, y);
+      		place_dark_clouds(canvas, x, y, thunder_struck);
         	 if (positive_draw == true)
         	 {	       		
         		 //place your positive clouds. done within a foor loop
@@ -320,7 +357,7 @@ public class AnimatedNegative extends View
         	 	}
          }
             
-         private void place_dark_clouds(Canvas canvas, int x, int y)
+         private void place_dark_clouds(Canvas canvas, int x, int y, int thunder_struck)
          {
      	     //style the dark clouds
         	 if (new_negative == true)
@@ -337,6 +374,13 @@ public class AnimatedNegative extends View
         	 negative.setDrawingCacheEnabled(true);
         	 negative.setBackgroundResource(R.drawable.graycloud);
        		 canvas.drawBitmap(negative.getDrawingCache(), x, y, null);
+       		 canvas.drawBitmap(thunder, thunder_struck + (negative.getWidth()/4), y + negative.getHeight(), null);
+       		 if (start == true)
+       		 {
+       			Calendar starting = Calendar.getInstance();
+       			 start_mills = starting.getTimeInMillis();
+       			 start = false;
+       		 }
        		 if(!thunderPlayer.isPlaying())
        		 {
  	    		thunderPlayer.start();
@@ -370,6 +414,9 @@ public class AnimatedNegative extends View
 				{
         	 		canvas.drawBitmap(mExplosions[i], posx, posy, paint);
 				}
+        	 	
+        	 	start = true;
+        	 	
          }
        
         

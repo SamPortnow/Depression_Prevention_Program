@@ -3,6 +3,7 @@ package com.example.bato;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -14,15 +15,15 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class DestroyerView extends Fragment
@@ -37,7 +38,9 @@ public class DestroyerView extends Fragment
 	Toast fix_it;
 	private Pattern four_letter_words = Pattern.compile("not|cant|cnt|can't"); 
 	private MediaPlayer birdPlayer;
-
+	private int trial;
+	private long rt;
+	private long current_mills;
 	private static Set<String> mPositiveWords = null;
 	
 	public static boolean populatePositiveWords(Context context)
@@ -85,6 +88,7 @@ public class DestroyerView extends Fragment
 	    View view = inflater.inflate(R.layout.activity_destroyer, container, false);
 	    Button fire = (Button) view.findViewById(R.id.destroy);
 	    final EditText positive_thought = (EditText) view.findViewById(R.id.destroyer);
+	    TextView score = (TextView) view.findViewById(R.id.score);
 	    PositiveAnimatedNegative = (AnimatedNegative) view.findViewById(R.id.anim_view);
 	    fire.setOnClickListener(new OnClickListener()
 	    {
@@ -92,7 +96,12 @@ public class DestroyerView extends Fragment
 	    	public void onClick(View view) 
 	    	{
 	    		PositiveAnimatedNegative.add = false;
-	    		
+        		
+	    		Calendar right_now = Calendar.getInstance();
+      			current_mills = right_now.getTimeInMillis();
+      			rt = current_mills - PositiveAnimatedNegative.start_mills;
+      			Log.e("reaction time is ", "" + rt);
+        	 	
 	    		//if the button is clicked invalidate the ondraw method and pass in the text of the positive word 
 				inputLine = positive_thought.getText().toString();
 				inputTokens = inputLine.split(" ");

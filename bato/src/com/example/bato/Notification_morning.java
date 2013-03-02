@@ -1,5 +1,6 @@
 package com.example.bato;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,6 +10,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+@SuppressLint("NewApi")
 public class Notification_morning extends Service { //code to set a notification for the morning, based on the time set 
 	 	
 	@Override

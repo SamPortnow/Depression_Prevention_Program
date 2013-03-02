@@ -32,7 +32,7 @@ public class CalendarDbAdapter {
     
     private static final String DATABASE_CREATE =  //create the database! you already know!! // modified android code of text . I want to allow for null text! 
         "create table calendar  (_id integer primary key autoincrement, " +
-        "Day integer, Hour integer, Within integer, Activity text, Feeling integer, Thought text)";
+        "Day integer, minutes integer, Activity text, Feeling integer, Thought text)";
     
     private final Context mCalendarCtx; //declare a context. activity extends from context. it's a basic part of android app. need to research this more. 
 

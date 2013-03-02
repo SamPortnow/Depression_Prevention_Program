@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+   
+   <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+   android:layout_height="wrap_content"   
+   android:orientation="horizontal" >
+   
+       <View
+              android:id="@+id/add_event_row"
+               android:layout_width="wrap_content"
+    		   android:layout_height="85dip"
+    		   android:background="#33B5E5"
+    		   />
+   
+       <Button
+    android:id="@+id/add_event"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+     android:textColor="#ff0000ff"
+    android:background="@drawable/write"/>
+
+ 	</RelativeLayout>
+ 	   <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+   android:layout_height="wrap_content"   
+   android:orientation="horizontal" >
+ 	<TextView
+	android:id="@+id/body_count"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="#ff0000ff"
+    android:fontFamily="sans-serif"
+    android:textStyle="bold"
+    android:layout_centerHorizontal="true"
+    android:text="@string/body_count"/>
+ 	 	</RelativeLayout>
+ 	
+	
+	<TextView
+	android:id="@+id/high_scores"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="#ff0000ff"
+    android:fontFamily="sans-serif"
+    android:textStyle="bold"
+    android:layout_gravity="center_horizontal"
+    android:text="@string/high_scores"/>
+   
+   
+</LinearLayout>

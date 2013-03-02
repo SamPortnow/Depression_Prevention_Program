@@ -97,4 +97,7 @@
 <string name="add">+</string>
 <string name="destroyer">Destroy the negative thought!!</string>
 <string name="destroy">Fire away!</string>
+<string name="high_scores">High Scores</string>
+<string name="body_count">Total number of negative thoughts destroyed</string>
+<string name="score">SCORE</string>
 </resources>
