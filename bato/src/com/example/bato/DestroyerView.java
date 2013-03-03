@@ -16,7 +16,6 @@ import android.database.Cursor;
 import android.graphics.Paint;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -136,7 +135,6 @@ public class DestroyerView extends Fragment
 			@Override
 			public void onFocusChange(View arg0, boolean arg1) {
 				PositiveAnimatedNegative.typing = true;
-				Log.e("I am", "RIGHT HERE");
 				
 			}
 	    	

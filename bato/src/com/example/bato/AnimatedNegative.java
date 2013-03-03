@@ -40,7 +40,7 @@ public class AnimatedNegative extends View
 	int posx = -1;
 	int posy = -1;
 	private Handler h;
-	private final int FRAME_RATE = 500;
+	private final int FRAME_RATE = 30;
     private CalendarDbAdapter mCalendarDbHelper;
     String positive_word;
     TextPaint paint = new TextPaint();
@@ -168,7 +168,6 @@ public class AnimatedNegative extends View
             
 			protected void onDraw (Canvas canvas)
             {
-				Log.e("typing is",""+typing);
 				if (typing == false)
 				{
 				h.postDelayed(r, FRAME_RATE);
@@ -237,39 +236,46 @@ public class AnimatedNegative extends View
             	if (positive_thoughts.size() < 9)
 				{
 
-            		if (move == 0 || move == 2)
+            		if (move == 0)
         	    		{
         	    		move +=1; 
         	    		}
         	    	
-        	    		if (move == 1)
+        	    		if (move > 0 && move < 10)
         	    		{
         	    		move +=1;
-        	    		x += (this.getWidth()/10)/(FRAME_RATE/50);
+        	    		x += (this.getWidth()/10)/(FRAME_RATE);
         	    			
         	    		}
         	    	
         	    	
-        	    		if (move == 3)
+        	    		if (move >= 10 && move < 20)
         	    		{
-        	    			move = 0;
-            	    		x -= (this.getWidth()/10)/(FRAME_RATE/50);
+        	    			move += 1;
+            	    		x -= (this.getWidth()/10)/(FRAME_RATE);
         	    			
         	    		}
         	    		
-            	    	if (thunder_time == 0 || thunder_time == 10)
+        	    		if (move >= 20)
+        	    		{
+        	    			move = 0;
+        	    		}
+        	    		
+        	    		Log.e("move is", ""+move);
+        	    		
+            	    	if (thunder_time == 0 || thunder_time == 60)
             	    	{
             	    		thunder_struck = x;
 
             	    	}
             	    	
-            	    	else if (thunder_time > 0 && thunder_time < 10 )
+            	    	else if (thunder_time > 0 && thunder_time < 60 )
             	    	{
             	    		thunder_struck = this.getWidth();
 
             	    	}
                 	    
-            	    	else if (thunder_time > 10)
+            	    	else if (thunder_time > 60)
             	    	{
             	    		thunder_time = 0;
             	    	}
@@ -299,8 +305,8 @@ public class AnimatedNegative extends View
         	    				bonus_y = (this.getHeight());
         	    			}
         	    			
-        	    				bonus_x += (this.getWidth())/(FRAME_RATE/100);
-        	    				bonus_y -= (this.getHeight())/(FRAME_RATE/100);
+        	    				bonus_x += (this.getWidth())/(FRAME_RATE/2);
+        	    				bonus_y -= (this.getHeight())/(FRAME_RATE/2);
         	    				canvas.drawText("BONUS POINTS!", bonus_x, bonus_y, bonus_paint);
         	    				
         	    				if (bonus_x >=this.getWidth() || bonus_y <= this.getHeight()/25)
@@ -325,8 +331,8 @@ public class AnimatedNegative extends View
         	    		
         	    		else if (posx != x && posy != y)
         	    			{
-        	    				posx -= (this.getWidth() - x)/(FRAME_RATE/100);
-        	    				posy -= (this.getHeight() - y)/(FRAME_RATE/100);
+        	    				posx -= (this.getWidth() - x)/(FRAME_RATE/2);
+        	    				posy -= (this.getHeight() - y)/(FRAME_RATE/2);
         	    				if (posx <= x || posy <= y)
         	    					{
         	    						posx = x;
