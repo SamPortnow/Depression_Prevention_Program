@@ -131,6 +131,13 @@ import android.util.Log;
 	    }
 	    
 	    
+	    public Cursor fetchGames()
+	    {
+	        return mGameDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_SUCCESS}, null, null, null, null, null);
+	        
+	    }
+	    
+	    
 
 
 	   

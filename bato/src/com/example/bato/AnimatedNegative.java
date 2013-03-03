@@ -32,7 +32,6 @@ public class AnimatedNegative extends View
     private Bitmap[] mExplosions = new Bitmap[4];
     private Bitmap cloud;
     private Bitmap gray_cloud;
-    private Bitmap positive_text;
     private Bitmap dark_clouds;
     private Bitmap sun;
     private Bitmap thunder;
@@ -41,7 +40,7 @@ public class AnimatedNegative extends View
 	int posx = -1;
 	int posy = -1;
 	private Handler h;
-	private final int FRAME_RATE = 1000;
+	private final int FRAME_RATE = 500;
     private CalendarDbAdapter mCalendarDbHelper;
     String positive_word;
     TextPaint paint = new TextPaint();
@@ -164,16 +163,7 @@ public class AnimatedNegative extends View
 
 		};
 		
-	 private Runnable s = new Runnable()
-	 {
 
-		@Override
-		public void run() {
-			
-			invalidate();
-		}
-		 
-	 };
 
             
 			protected void onDraw (Canvas canvas)
@@ -301,27 +291,25 @@ public class AnimatedNegative extends View
         	    		
         	    		if (bonus == true)
         	    		{
-        	    			if (bonus_x < 0 || bonus_x >=this.getWidth())
+        	    			if (bonus_x < 0)
         	    			{
         	    				bonus_x = 0;
         	    				bonus_y = (this.getHeight());
         	    			}
         	    			
-        	    			else if (bonus_x  < this.getWidth())
-        	    			{
         	    				bonus_x += (this.getWidth())/(FRAME_RATE/100);
         	    				bonus_y -= (this.getHeight())/(FRAME_RATE/100);
         	    				canvas.drawText("BONUS POINTS!", bonus_x, bonus_y, bonus_paint);
-        	    			}
+        	    				
+        	    				if (bonus_x >=this.getWidth() || bonus_y <= this.getHeight()/25)
+        	    				{
+            	    				bonus_x = -1;
+            	    				bonus_y = -1;
+        	    				}
         	    			
-        	    			else 
-        	    			{
-        	    				bonus = false;
-        	    			}
-    	    				Log.e("bonus x is", ""+ bonus_x);
-    	    				Log.e("bonus y is", ""+ bonus_y);
-
         	    		}
+    	    			
+
         	    		//set positive_draw to true so that the positive clouds can be drawn 
         	    		positive_draw = true;
         	    		//create a static layout for my positive word and cloud
@@ -373,6 +361,7 @@ public class AnimatedNegative extends View
     	    					x = x + this.getWidth()/3;
     	    				}
     	    				add = false;
+    	    				bonus = false;
     	        			posx = -1;
     	    				posy = -1;
         	    		}

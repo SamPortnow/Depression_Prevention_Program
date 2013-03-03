@@ -192,7 +192,7 @@ public class DestroyerView extends Fragment
 	    		
 				if (rt < mean_rt)
 				{
-					score_tracker += (mean_rt - rt)/100;
+					score_tracker += 25 + (mean_rt - rt)/100;
 					PositiveAnimatedNegative.bonus = true;
 					
 				}
