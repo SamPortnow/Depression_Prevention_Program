@@ -33,6 +33,15 @@
     <string name="life_areas_relationship">First, fill out 3 values and 5 activities for the life area RELATIONSHIP. Rate each activity for both enjoyment and importance</string>
     <string name="value_relationship">Enter a value. e.g., being a good husband or wife  </string>
     <string name="activity_relationship">"Enter an activity"</string>
+    
+    <string name="add_event_fragment_title">Add a new event&#x2026;</string>
+    <string name="add_event_toast_created_event">New event created.</string>
+    <string name="add_event_user_activity_hint">What are you doing?</string>
+    <string name="add_event_user_thought_hint">What are you thinking?</string>
+    
+    <string name="image_smiley_content_description">Happy</string>
+    <string name="image_sad_content_description">Sad</string>
+
     <string-array name="likert_enjoyment">
         <item>Dislike strongly</item>
         <item>Dislike somewhat</item>
@@ -84,20 +93,21 @@
         For the reason, it\'s helpful to think of people you know that can help you out. Given that, please list 5 people
         you know that could help with some of the activities you listed, if it any point during the week you feel like
         you\'re having trouble with your activities</string>
-<string name="morning"> Morning</string>
-<string name="evening">Evening</string>
-<string name="contact1"> Enter the first person</string>
-<string name="contact2"> Enter the second person</string>
-<string name="contact3"> Enter the third person</string>
-<string name="contact4"> Enter the fourth person</string>
-<string name="contact5"> Enter the firth person </string>
-<string name="complete"> Click here to finish the set-up! </string>
-<string name="pic_desc"> Images of people </string>
-<string name="relationship_activities">See the activities for this value</string>
-<string name="add">+</string>
-<string name="destroyer">Destroy the negative thought!!</string>
-<string name="destroy">Fire away!</string>
-<string name="high_scores">High Scores</string>
-<string name="body_count">Total number of negative thoughts destroyed</string>
-<string name="score">SCORE</string>
+    <string name="morning"> Morning</string>
+    <string name="evening">Evening</string>
+    <string name="contact1"> Enter the first person</string>
+    <string name="contact2"> Enter the second person</string>
+    <string name="contact3"> Enter the third person</string>
+    <string name="contact4"> Enter the fourth person</string>
+    <string name="contact5"> Enter the firth person </string>
+    <string name="complete"> Click here to finish the set-up! </string>
+    <string name="pic_desc"> Images of people </string>
+    <string name="relationship_activities">See the activities for this value</string>
+    <string name="add">+</string>
+    <string name="destroyer">Destroy the negative thought!!</string>
+    <string name="destroy">Fire away!</string>
+    <string name="high_scores">High Scores</string>
+    <string name="body_count">Total number of negative thoughts destroyed</string>
+    <string name="score">SCORE</string>
+
 </resources>

@@ -1,7 +1,6 @@
 package com.example.bato;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,7 +16,7 @@ public class MainActivity extends Activity implements WelcomeFragment.OnBeginSet
         setContentView(R.layout.activity_main);
         
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();			        
-        fragmentTransaction.add(R.id.fragment_container, new WelcomeFragment());        
+        fragmentTransaction.replace(R.id.fragment_container, new WelcomeFragment());        
         fragmentTransaction.commit();
         
         getActionBar().hide();
