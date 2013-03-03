@@ -20,11 +20,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class DestroyerView extends Fragment
@@ -45,7 +45,6 @@ public class DestroyerView extends Fragment
 	private long current_mills;
 	private static Set<String> mPositiveWords = null;
 	private GameDbAdapter mDbHelper;
-	private String success;
 	int count;
 	int score_tracker;
 	int mean_rt;
@@ -103,11 +102,9 @@ public class DestroyerView extends Fragment
 	    {
 	    	while (mean_rt_cursor.moveToNext())
 	    	{
-	    		Log.e("yes",""+mean_rt_cursor.getString(mean_rt_cursor.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_SUCCESS)));
 	    		if (mean_rt_cursor.getString(mean_rt_cursor.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_SUCCESS)).contains("Yes"))
 	    		{
 
-	    			Log.e("I am here","yes");
 	    			mean_rt += mean_rt_cursor.getInt(mean_rt_cursor.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_RT));
 	    			trial++;
 	    		}
@@ -126,7 +123,6 @@ public class DestroyerView extends Fragment
 	    {
 	    	mean_rt = mean_rt/trial_check;
 	    }
-	    Log.e("mean rt is",""+ mean_rt);
 	    
 	    birdPlayer = MediaPlayer.create(mContext, R.raw.bird);
 	    
@@ -134,6 +130,18 @@ public class DestroyerView extends Fragment
 	    Button fire = (Button) view.findViewById(R.id.destroy);
 	    final EditText positive_thought = (EditText) view.findViewById(R.id.destroyer);
 	    PositiveAnimatedNegative = (AnimatedNegative) view.findViewById(R.id.anim_view);
+	    positive_thought.setOnFocusChangeListener(new OnFocusChangeListener()
+	    {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				PositiveAnimatedNegative.typing = true;
+				Log.e("I am", "RIGHT HERE");
+				
+			}
+	    	
+	    });
+	    
 	    fire.setOnClickListener(new OnClickListener()
 	    {
 	    	@Override

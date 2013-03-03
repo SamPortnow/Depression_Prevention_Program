@@ -168,7 +168,12 @@ public class AnimatedNegative extends View
             
 			protected void onDraw (Canvas canvas)
             {
-            
+				Log.e("typing is",""+typing);
+				if (typing == false)
+				{
+				h.postDelayed(r, FRAME_RATE);
+				}
+
             	//save the canvas on the first draw
             	if (first == true)
             	{ 
@@ -203,11 +208,8 @@ public class AnimatedNegative extends View
             		first = false;
             	}
             	canvas.drawBitmap(dark_clouds, 0, 0, null);
-            	if (cloud_marker < 3)
-            	{
-            	canvas.drawBitmap(sun, 0, y - this.getHeight() - this.getHeight()/3, null);
-            	}
-            	else
+            	if (cloud_marker > 2)
+
             	{
                 	canvas.drawBitmap(sun, 0, y - this.getHeight(), null);
 
@@ -416,6 +418,8 @@ public class AnimatedNegative extends View
         	 negative.setGravity(Gravity.CENTER);
         	 negative.setTextSize(15);
         	 negative.setTextColor(Color.BLACK);
+         	 negative.setTypeface(Typeface.DEFAULT_BOLD);
+         	 negative.setTypeface(Typeface.SANS_SERIF);
         	 negative.setShadowLayer(5, 2, 2, Color.WHITE);
         	 negative.setDrawingCacheEnabled(true);
         	 negative.setBackgroundResource(R.drawable.graycloud);
@@ -432,7 +436,6 @@ public class AnimatedNegative extends View
  	    		thunderPlayer.start();
        		 }
        		 new_negative = false;
- 	    	h.postDelayed(r, FRAME_RATE);
 
          }
        
@@ -473,7 +476,6 @@ public class AnimatedNegative extends View
         	canvas.drawBitmap(cloud, posx, posy, null);
 	    	canvas.translate(posx,posy);
 	    	positive_layout.draw(canvas);
-	    	h.postDelayed(r, FRAME_RATE);
 	    	canvas.restore();
 
         }
