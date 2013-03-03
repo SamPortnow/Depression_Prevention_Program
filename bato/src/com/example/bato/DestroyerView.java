@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Paint;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -39,9 +40,18 @@ public class DestroyerView extends Fragment
 	private Pattern four_letter_words = Pattern.compile("not|cant|cnt|can't"); 
 	private MediaPlayer birdPlayer;
 	private int trial;
+	private int game;
 	private long rt;
 	private long current_mills;
 	private static Set<String> mPositiveWords = null;
+	private GameDbAdapter mDbHelper;
+	private String success;
+	int count;
+	int score_tracker;
+	int mean_rt;
+	private int trial_check;
+	String yes = "Yes";
+
 	
 	public static boolean populatePositiveWords(Context context)
 	{
@@ -84,24 +94,56 @@ public class DestroyerView extends Fragment
 	{
 	    super.onCreate(savedInstanceState);
 	    mContext = this.getActivity();
+	    mDbHelper=new GameDbAdapter(mContext);
+	    mDbHelper.open();
+	    Cursor activity = mDbHelper.fetchGame(game);
+	    Cursor mean_rt_cursor = mDbHelper.fetchRT();
+
+	    if (mean_rt_cursor.moveToFirst())
+	    {
+	    	while (mean_rt_cursor.moveToNext())
+	    	{
+	    		Log.e("yes",""+mean_rt_cursor.getString(mean_rt_cursor.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_SUCCESS)));
+	    		if (mean_rt_cursor.getString(mean_rt_cursor.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_SUCCESS)).contains("Yes"))
+	    		{
+
+	    			Log.e("I am here","yes");
+	    			mean_rt += mean_rt_cursor.getInt(mean_rt_cursor.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_RT));
+	    			trial++;
+	    		}
+	    	}
+	    }
+	    
+	    if (activity.moveToLast())
+	    {
+	    	game = activity.getInt(
+			activity.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_GAME_NUMBER));
+	    	game++;
+	    	
+	    }
+	    
+	    if (trial_check > 0)
+	    {
+	    	mean_rt = mean_rt/trial_check;
+	    }
+	    Log.e("mean rt is",""+ mean_rt);
+	    
 	    birdPlayer = MediaPlayer.create(mContext, R.raw.bird);
+	    
 	    View view = inflater.inflate(R.layout.activity_destroyer, container, false);
 	    Button fire = (Button) view.findViewById(R.id.destroy);
 	    final EditText positive_thought = (EditText) view.findViewById(R.id.destroyer);
-	    TextView score = (TextView) view.findViewById(R.id.score);
 	    PositiveAnimatedNegative = (AnimatedNegative) view.findViewById(R.id.anim_view);
 	    fire.setOnClickListener(new OnClickListener()
 	    {
 	    	@Override
 	    	public void onClick(View view) 
 	    	{
+	    		trial++;
 	    		PositiveAnimatedNegative.add = false;
-        		
 	    		Calendar right_now = Calendar.getInstance();
       			current_mills = right_now.getTimeInMillis();
       			rt = current_mills - PositiveAnimatedNegative.start_mills;
-      			Log.e("reaction time is ", "" + rt);
-        	 	
 	    		//if the button is clicked invalidate the ondraw method and pass in the text of the positive word 
 				inputLine = positive_thought.getText().toString();
 				inputTokens = inputLine.split(" ");
@@ -109,18 +151,21 @@ public class DestroyerView extends Fragment
 				if (inputLine.isEmpty())
 				{
 					Toast.makeText(getActivity(), "You have to write something!", Toast.LENGTH_SHORT).show();
+					mDbHelper.createGame(current_mills, rt, 0, game, "No", trial, positive_thought.getText().toString(), PositiveAnimatedNegative.negative.getText().toString(), "No");
 					return;					
 				}
 				
 				if (inputTokens.length < 3)
 				{
 					Toast.makeText(mContext, "At least three words are required.", Toast.LENGTH_SHORT).show();
+					mDbHelper.createGame(current_mills, rt, 0, game, "No", trial, positive_thought.getText().toString(), PositiveAnimatedNegative.negative.getText().toString(), "No");
 					return;
 				}				
 				
 				if (four_letter_words.matcher(inputLine).find() == true)
 				{
 					Toast.makeText(mContext, "Make an affirmative statement!", Toast.LENGTH_SHORT).show();
+					mDbHelper.createGame(current_mills, rt, 0, game, "No", trial, positive_thought.getText().toString(), PositiveAnimatedNegative.negative.getText().toString(), "No");
 					return;
 				}
 				
@@ -140,9 +185,36 @@ public class DestroyerView extends Fragment
 				if (matchesToken == false)
 				{
 					Toast.makeText(mContext, "Use positive words!", Toast.LENGTH_SHORT).show();
+					mDbHelper.createGame(current_mills, rt, 0, game, "No", trial, positive_thought.getText().toString(), PositiveAnimatedNegative.negative.getText().toString(), "No");
 					return;
-				}				
-				InputMethodManager imm = (InputMethodManager)mContext.getSystemService(
+				}
+	    		count++;
+	    		
+				if (rt < mean_rt)
+				{
+					score_tracker += (mean_rt - rt)/100;
+					PositiveAnimatedNegative.bonus = true;
+					
+				}
+				
+				else
+				{
+					score_tracker += 25;
+				}
+				if (count < 11)
+					
+				{
+					mDbHelper.createGame(current_mills, rt, score_tracker, game, yes, trial, positive_thought.getText().toString(), PositiveAnimatedNegative.negative.getText().toString(), "No");
+				}
+				else
+				{
+					mDbHelper.createGame(current_mills, rt, score_tracker, game, yes, trial, positive_thought.getText().toString(), PositiveAnimatedNegative.negative.getText().toString(), yes);
+	
+				}
+				
+	
+
+					InputMethodManager imm = (InputMethodManager)mContext.getSystemService(
 					      Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(positive_thought.getWindowToken(), 0);			
 	    		PositiveAnimatedNegative.invalidate();
@@ -153,6 +225,7 @@ public class DestroyerView extends Fragment
 					birdPlayer.start();
 				}
     			PositiveAnimatedNegative.typing = false;
+    			PositiveAnimatedNegative.scorer = score_tracker;
         		positive_thought.setText(null);
         	}
 	    });

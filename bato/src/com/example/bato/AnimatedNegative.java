@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -55,8 +56,6 @@ public class AnimatedNegative extends View
     int thunder_struck;
     ArrayList<String> negative_thoughts = new ArrayList<String>();
     ArrayList<String> positive_thoughts = new ArrayList<String>();
-
-    		
     boolean replaced = false;
     int stored_x = 0;
     int stored_y = 0;
@@ -77,6 +76,17 @@ public class AnimatedNegative extends View
     long current_mills;
     long rt;
     boolean start = true; 
+    long scorer;
+    long tracker;
+    String write_tracker;
+    TextView scorekeep;
+    int width;
+    int height;
+    Paint score_background = new Paint();
+    int bonus_x = -1;
+    int bonus_y = -1;
+    boolean bonus;
+    TextPaint bonus_paint = new TextPaint();
 
     //word bank of positive words to check against 
 
@@ -90,6 +100,7 @@ public class AnimatedNegative extends View
             h = new Handler();
             mCalendarDbHelper=new CalendarDbAdapter(mContext);
     	    mCalendarDbHelper.open();
+
     	    //declare the explosions images as well as the cloud images 
     	    mExplosions[0] = BitmapFactory.decodeResource(getResources(), R.drawable.asteroid_explode1);
     	    mExplosions[1] = BitmapFactory.decodeResource(getResources(), R.drawable.asteroid_explode2);
@@ -190,7 +201,14 @@ public class AnimatedNegative extends View
                 	score.setTypeface(Typeface.DEFAULT_BOLD);
                 	score.setTypeface(Typeface.SANS_SERIF);
                 	score.setTextSize(24);
-                	score.setColor(Color.YELLOW);
+                	score.setColor(Color.BLUE);
+                	score_background.setStyle(TextPaint.Style.FILL);
+                	score_background.setColor(Color.WHITE);
+                	bonus_paint.setAntiAlias(true);
+                	bonus_paint.setTypeface(Typeface.DEFAULT_BOLD);
+                	bonus_paint.setTypeface(Typeface.SANS_SERIF);
+                	bonus_paint.setTextSize(24);
+                	bonus_paint.setColor(Color.WHITE);
             		canvas.save();
             		first = false;
             	}
@@ -205,8 +223,23 @@ public class AnimatedNegative extends View
 
             	}
 
-            	
+            	if (tracker < scorer)
+            	{
+            		tracker += 3;
+            		write_tracker = Long.toString(tracker);
+            		canvas.drawRect(0, 0, this.getWidth(), this.getHeight()/25, score_background);
+            		canvas.drawText("SCORE " + write_tracker, this.getWidth()/3, this.getHeight()/25,  score);
+          	     }
+            	else
+            	{
+            		tracker = scorer;
+            		write_tracker = Long.toString(tracker);
+            		canvas.drawRect(0, 0, this.getWidth(), this.getHeight()/25, score_background);
+            		canvas.drawText("SCORE " + write_tracker, this.getWidth()/3, this.getHeight()/25,  score);
 
+
+
+            	}
             	//when the size of the array of positive thoughts is 12, there is no more room,
             	//and you have won the game!
             	if (positive_thoughts.size() < 9)
@@ -253,7 +286,7 @@ public class AnimatedNegative extends View
 
             	    
         			
-            	    place_all_clouds(canvas, x, y, thunder_struck);
+            	    place_all_clouds(canvas, x, y + this.getHeight()/25, thunder_struck);
 
         	    	
         	    	
@@ -265,6 +298,30 @@ public class AnimatedNegative extends View
         	    if (add == true) // if the button is clicked in DestroyerView.java, then this becomes true, and the 
         	    	//movement occurs
         	    {
+        	    		
+        	    		if (bonus == true)
+        	    		{
+        	    			if (bonus_x < 0 || bonus_x >=this.getWidth())
+        	    			{
+        	    				bonus_x = 0;
+        	    				bonus_y = (this.getHeight());
+        	    			}
+        	    			
+        	    			else if (bonus_x  < this.getWidth())
+        	    			{
+        	    				bonus_x += (this.getWidth())/(FRAME_RATE/100);
+        	    				bonus_y -= (this.getHeight())/(FRAME_RATE/100);
+        	    				canvas.drawText("BONUS POINTS!", bonus_x, bonus_y, bonus_paint);
+        	    			}
+        	    			
+        	    			else 
+        	    			{
+        	    				bonus = false;
+        	    			}
+    	    				Log.e("bonus x is", ""+ bonus_x);
+    	    				Log.e("bonus y is", ""+ bonus_y);
+
+        	    		}
         	    		//set positive_draw to true so that the positive clouds can be drawn 
         	    		positive_draw = true;
         	    		//create a static layout for my positive word and cloud
@@ -285,7 +342,7 @@ public class AnimatedNegative extends View
         	    						posx = x;
         	    						posy = y;
         	    						//if we reach the coordinates of the dark cloud, it explodes
-											explode(canvas, posx, posy, paint);
+											explode(canvas, posx, posy + this.getHeight()/25, paint);
 
 										
         	    						x = posx;
@@ -295,7 +352,7 @@ public class AnimatedNegative extends View
 
         	    			}
         	    		//this is the function that sets the positive cloud in motion
-        	    		destroy_and_replace(canvas, posx, posy, positive_layout);
+        	    		destroy_and_replace(canvas, posx, posy + this.getHeight()/25, positive_layout);
         	    		if (posx == x && posy == y )
         	    		{
     	    				//at the end, add to the array
@@ -342,7 +399,7 @@ public class AnimatedNegative extends View
          			{
  
 
-             				place_clouds(canvas, stored_x, stored_y, i);
+             				place_clouds(canvas, stored_x, stored_y + this.getHeight()/25, i);
         					stored_x += this.getWidth()/3;
                		 		if (i % 3 == 0)
             				{

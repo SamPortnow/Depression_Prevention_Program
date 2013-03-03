@@ -20,7 +20,7 @@ import android.util.Log;
 	    public static final String COLUMN_NAME_TRIAL = "Trial";
 	    public static final String COLUMN_NAME_POSITIVE_THOUGHT = "positive_thought";
 	    public static final String COLUMN_NAME_NEGATIVE_THOUGHT = "negative_thought";
-	    public static final String COLUMN_NAME_GAME_NUMBER = "Game_Number";
+	    public static final String COLUMN_NAME_GAME_NUMBER = "GameNumber";
 	    public static final String COLUMN_NAME_GAME_COMPLETE = "Game_Complete";
 	    public static final String COLUMN_NAME_SUCCESS = "Success";
 	    public static final String KEY_ROWID = "_id"; //all my vars are now declared 
@@ -30,8 +30,9 @@ import android.util.Log;
 	    private SQLiteDatabase mGameDb;
 	    
 	    private static final String DATABASE_CREATE =  //create the database! you already know!! // modified android code of text . I want to allow for null text! 
-	        "create table calendar  (_id integer primary key autoincrement, " +
-	        "Time long, RT long, Score int, Game_Number int, Game_Complete text, Trial int, positive_thought text, negative_thought text, Success text)";
+		        "create table game (_id integer primary key autoincrement, " +
+		        "Time long, RT long, Score int, GameNumber int, Game_Complete text, Trial int, negative_thought text, positive_thought text, Success text)";
+	 
 	    
 	    private final Context mGameCtx; //declare a context. activity extends from context. it's a basic part of android app. need to research this more. 
 
@@ -101,7 +102,7 @@ import android.util.Log;
 	    
 	    //now do a create, update, and fetch functions!!!
 	    
-	    public long createCalendar(long time, long RT, long Score, long game_number, String game_complete, int Trial, String positive_thought, String negative_thought, String success  ) {
+	    public long createGame(long time, long RT, long Score, int game_number, String success, int Trial, String positive_thought, String negative_thought, String game_complete  ) {
 	        ContentValues initialValues = new ContentValues();
 	        initialValues.put(COLUMN_NAME_TIME, time);
 	        initialValues.put(COLUMN_NAME_RT, RT);
@@ -115,13 +116,17 @@ import android.util.Log;
 	        return mGameDb.insert(DATABASE_TABLE, null, initialValues);
 	    }
 	    
+	    
 
-	 
-
-	    public Cursor fetchGame(long game_number)
+	    public Cursor fetchGame(int game_number)
 	    {
-	    	String sgame_number = String.valueOf(game_number);
-	        return mGameDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_RT, COLUMN_NAME_TRIAL}, COLUMN_NAME_GAME_NUMBER+" = ?" , new String[] {sgame_number}, null, null, null);
+	        return mGameDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_RT, COLUMN_NAME_TRIAL, COLUMN_NAME_GAME_NUMBER}, null, null, null, null, null);	        
+	    }
+	    
+	    public Cursor fetchRT()
+	    {
+	    	String sgame_number = String.valueOf(0);
+	        return mGameDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_RT, COLUMN_NAME_TRIAL, COLUMN_NAME_SUCCESS}, COLUMN_NAME_GAME_NUMBER+" = ?", new String[] {sgame_number}, null, null, null);
 	        
 	    }
 	    
