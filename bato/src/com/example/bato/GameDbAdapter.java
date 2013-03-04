@@ -125,8 +125,7 @@ import android.util.Log;
 	    
 	    public Cursor fetchRT()
 	    {
-	    	String sgame_number = String.valueOf(0);
-	        return mGameDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_RT, COLUMN_NAME_TRIAL, COLUMN_NAME_SUCCESS}, COLUMN_NAME_GAME_NUMBER+" = ?", new String[] {sgame_number}, null, null, null);
+	        return mGameDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_RT, COLUMN_NAME_TRIAL, COLUMN_NAME_SUCCESS}, COLUMN_NAME_SUCCESS+" = ?", new String[] {"Yes"}, null, null, null, "9");
 	        
 	    }
 	    

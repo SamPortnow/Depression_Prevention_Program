@@ -103,12 +103,9 @@ public class DestroyerView extends Fragment
 	    {
 	    	while (mean_rt_cursor.moveToNext())
 	    	{
-	    		if (mean_rt_cursor.getString(mean_rt_cursor.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_SUCCESS)).contains("Yes"))
-	    		{
-
-	    			mean_rt += mean_rt_cursor.getInt(mean_rt_cursor.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_RT));
-	    			trial++;
-	    		}
+	    		mean_rt += mean_rt_cursor.getInt(mean_rt_cursor.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_RT));
+	    		trial_check++;
+	    
 	    	}
 	    	mean_rt_cursor.close();
 	    }
@@ -121,12 +118,13 @@ public class DestroyerView extends Fragment
 	    	activity.close();
 	    }
 	    
-	    if (trial_check > 0)
+	    if (trial_check == 8)
 	    {
 	    	mean_rt = mean_rt/trial_check;
 	    }
 	    
 	    birdPlayer = MediaPlayer.create(mContext, R.raw.bird);
+
 	    
 	    View view = inflater.inflate(R.layout.activity_destroyer, container, false);
 	    Button fire = (Button) view.findViewById(R.id.destroy);
@@ -203,7 +201,7 @@ public class DestroyerView extends Fragment
 				}
 	    		count++;
 	    		
-				if (rt < mean_rt)
+				if (rt < mean_rt && trial_check == 8)
 				{
 					score_tracker += 25 + (mean_rt - rt)/100;
 					PositiveAnimatedNegative.bonus = true;

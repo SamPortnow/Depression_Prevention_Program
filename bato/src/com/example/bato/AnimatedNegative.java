@@ -124,11 +124,9 @@ public class AnimatedNegative extends View
     	   
     	    	}
     	     thoughts.close();
-    	     negative_thoughts.add("I'm confused");
     	     negative_thoughts.add("I am wasting my life.");
     	     negative_thoughts.add("I'll end up living all alone.");
     	     negative_thoughts.add("People don't consider friendship important anymore.");
-    	     negative_thoughts.add("That was a dumb thing for me to do (or say)");
     	     negative_thoughts.add("Life has no meaning.");
     	     negative_thoughts.add("I'm ugly.");
     	     negative_thoughts.add("Nobody loves me.");
@@ -192,6 +190,7 @@ public class AnimatedNegative extends View
                 	//setting the paint for the positive word, within the positive cloud
         	    	positive_paint.setColor(Color.parseColor("#FF4444"));
                	 	positive_paint.setShadowLayer(5, 2, 2, Color.YELLOW);
+                	positive_paint.setTypeface(Typeface.DEFAULT_BOLD);
         	    	positive_paint.setTextSize(25);
                 	score.setAntiAlias(true);
                 	score.setTypeface(Typeface.DEFAULT_BOLD);
@@ -259,31 +258,19 @@ public class AnimatedNegative extends View
         	    		}
         	    		
         	    		
-            	    	if (thunder_time == 0 || thunder_time == 60)
-            	    	{
-            	    		thunder_struck = x;
-
-            	    	}
-            	    	
-            	    	else if (thunder_time > 0 && thunder_time < 60 )
-            	    	{
-            	    		thunder_struck = this.getWidth();
-
-            	    	}
-                	    
-            	    	else if (thunder_time > 60)
+            	    	if (thunder_time > 30)
             	    	{
             	    		thunder_time = 0;
             	    	}
             	    	
-        	    		thunder_time += 1;
 
             	    
         			
-            	    place_all_clouds(canvas, x, y + this.getHeight()/25, thunder_struck);
+            	    place_all_clouds(canvas, x, y + this.getHeight()/25, thunder_time);
 
         	    	
-        	    	
+    	    		thunder_time += 1;
+
 
             	//function to place all clouds (negative and positive)
 
@@ -292,7 +279,6 @@ public class AnimatedNegative extends View
         	    if (add == true) // if the button is clicked in DestroyerView.java, then this becomes true, and the 
         	    	//movement occurs
         	    {
-        	    		
         	    		if (bonus == true)
         	    		{
         	    			if (bonus_x < 0)
@@ -382,9 +368,9 @@ public class AnimatedNegative extends View
             }	
         	
          
-         private void place_all_clouds(Canvas canvas, int x, int y, int thunder_struck)
+         private void place_all_clouds(Canvas canvas, int x, int y, int thunder_time)
          {
-      		place_dark_clouds(canvas, x, y, thunder_struck);
+      		place_dark_clouds(canvas, x, y, thunder_time);
         	 if (positive_draw == true)
         	 {	       		
         		 //place your positive clouds. done within a foor loop
@@ -406,7 +392,7 @@ public class AnimatedNegative extends View
         	 	}
          }
             
-         private void place_dark_clouds(Canvas canvas, int x, int y, int thunder_struck)
+         private void place_dark_clouds(Canvas canvas, int x, int y, int thunder_time)
          {
      	     //style the dark clouds
         	 if (new_negative == true)
@@ -419,13 +405,15 @@ public class AnimatedNegative extends View
             	 negative.setTextSize(15);
             	 negative.setTextColor(Color.BLACK);
              	 negative.setTypeface(Typeface.DEFAULT_BOLD);
-             	 negative.setTypeface(Typeface.SANS_SERIF);
             	 negative.setShadowLayer(5, 2, 2, Color.WHITE);
             	 negative.setDrawingCacheEnabled(true);
             	 negative.setBackgroundResource(R.drawable.graycloud);
         	 }
        		 canvas.drawBitmap(negative.getDrawingCache(), x, y, null);
-       		 canvas.drawBitmap(thunder, thunder_struck + (negative.getWidth()/4), y + negative.getHeight(), null);
+       		 if (thunder_time == 0)
+       		 {
+       		 canvas.drawBitmap(thunder, x + (negative.getWidth()/4), y + negative.getHeight(), null);
+       		 }
        		 if (start == true)
        		 {
        			Calendar starting = Calendar.getInstance();
