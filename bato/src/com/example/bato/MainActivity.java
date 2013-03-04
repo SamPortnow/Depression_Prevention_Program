@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends Activity implements WelcomeFragment.OnBeginSetupListener
+public class MainActivity extends Activity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -16,10 +16,12 @@ public class MainActivity extends Activity implements WelcomeFragment.OnBeginSet
         setContentView(R.layout.activity_main);
         
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();			        
-        fragmentTransaction.replace(R.id.fragment_container, new WelcomeFragment());        
+        fragmentTransaction.replace(R.id.fragment_container, new ActivityHome(), "activity_home_fragment");        
         fragmentTransaction.commit();
         
-        getActionBar().hide();
+        WelcomeFragment welcomeFragment = new WelcomeFragment();
+        welcomeFragment.setCancelable(false);
+        welcomeFragment.show(getFragmentManager(), "welcome_fragment");        
     }
 
     @Override
@@ -42,15 +44,5 @@ public class MainActivity extends Activity implements WelcomeFragment.OnBeginSet
     	}
     	
     	return true;
-    }
-
-	@Override
-	public void onBeginSetupClick()
-	{
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();			       
-        fragmentTransaction.replace(R.id.fragment_container, new ActivityHome());
-        fragmentTransaction.commit();
-        
-        getActionBar().show();
-	}     
+    }   
 }

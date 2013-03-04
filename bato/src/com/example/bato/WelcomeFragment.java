@@ -1,39 +1,22 @@
 package com.example.bato;
 
-import android.app.Fragment;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.Button;
 
-public class WelcomeFragment extends Fragment implements OnClickListener
+public class WelcomeFragment extends DialogFragment
 {
-	public interface OnBeginSetupListener
-	{
-		public void onBeginSetupClick();		
-	}
-	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	public Dialog onCreateDialog(Bundle savedInstanceState)
 	{
-		View view = inflater.inflate(R.layout.fragment_welcome, container, false);
+		AlertDialog.Builder builder = new Builder(getActivity());
 		
-		Button beginSetup = (Button) view.findViewById(R.id.step1);
-		beginSetup.setOnClickListener(this);
+		builder.setTitle("Welcome!");
+		builder.setMessage(R.string.welcome_fragment_message);		
+		builder.setPositiveButton(android.R.string.ok, null);
 		
-		return view;
-	}
-
-	@Override
-	public void onClick(View view)
-	{
-		OnBeginSetupListener listener = (OnBeginSetupListener) getActivity();
-		
-		if (listener == null)
-			return;
-		
-		listener.onBeginSetupClick();
+		return builder.create();
 	}
 }
