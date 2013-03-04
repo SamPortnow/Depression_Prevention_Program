@@ -12,7 +12,7 @@
         <View
             android:id="@+id/add_event_row"
             android:layout_width="wrap_content"
-            android:layout_height="85dip"
+            android:layout_height="75dip"
             android:background="#33B5E5" />
 
         <Button

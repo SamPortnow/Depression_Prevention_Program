@@ -18,9 +18,10 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -134,16 +135,17 @@ public class DestroyerView extends Fragment
 	    FilterArray[0] = new InputFilter.LengthFilter(60);
 	    positive_thought.setFilters(FilterArray);
 	    PositiveAnimatedNegative = (AnimatedNegative) view.findViewById(R.id.anim_view);
-	    positive_thought.setOnFocusChangeListener(new OnFocusChangeListener()
+	    positive_thought.setOnTouchListener(new OnTouchListener()
 	    {
 
 			@Override
-			public void onFocusChange(View arg0, boolean arg1) {
+			public boolean onTouch(View arg0, MotionEvent arg1) {
 				PositiveAnimatedNegative.typing = true;
-				
+				return false;
 			}
 	    	
 	    });
+	    
 	    
 	    fire.setOnClickListener(new OnClickListener()
 	    {

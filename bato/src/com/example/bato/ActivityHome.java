@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,7 +32,6 @@ public class ActivityHome extends Fragment
     		{
     			if (activity.getString(activity.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_SUCCESS)).contains("Yes"))
     			{
-    				Log.e("what is it","" + successes);
     				successes++;
     			}
     		}
