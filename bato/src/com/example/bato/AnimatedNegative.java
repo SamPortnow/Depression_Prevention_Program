@@ -195,14 +195,13 @@ public class AnimatedNegative extends View
         	    	positive_paint.setTextSize(25);
                 	score.setAntiAlias(true);
                 	score.setTypeface(Typeface.DEFAULT_BOLD);
-                	score.setTypeface(Typeface.SANS_SERIF);
+
                 	score.setTextSize(24);
                 	score.setColor(Color.BLUE);
                 	score_background.setStyle(TextPaint.Style.FILL);
                 	score_background.setColor(Color.WHITE);
                 	bonus_paint.setAntiAlias(true);
                 	bonus_paint.setTypeface(Typeface.DEFAULT_BOLD);
-                	bonus_paint.setTypeface(Typeface.SANS_SERIF);
                 	bonus_paint.setTextSize(24);
                 	bonus_paint.setColor(Color.WHITE);
             		canvas.save();

@@ -12,19 +12,7 @@
                 android:layout_height="fill_parent"
                 android:layout_width="fill_parent"
                 android:layout_above="@+id/destroyer"  
-                android:layout_below="@+id/score"
                 ></com.example.bato.AnimatedNegative>
-        <TextView
-        android:id="@+id/score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#ff0000ff"
-    	android:fontFamily="sans-serif"
-    	android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:text="@string/score" 
-        />
-     
 
       <EditText 
         android:id="@+id/destroyer"
