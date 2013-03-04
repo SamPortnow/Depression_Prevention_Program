@@ -16,6 +16,7 @@ import android.database.Cursor;
 import android.graphics.Paint;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -108,6 +109,7 @@ public class DestroyerView extends Fragment
 	    			trial++;
 	    		}
 	    	}
+	    	mean_rt_cursor.close();
 	    }
 	    
 	    if (activity.moveToLast())
@@ -115,7 +117,7 @@ public class DestroyerView extends Fragment
 	    	game = activity.getInt(
 			activity.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_GAME_NUMBER));
 	    	game++;
-	    	
+	    	activity.close();
 	    }
 	    
 	    if (trial_check > 0)
@@ -128,6 +130,9 @@ public class DestroyerView extends Fragment
 	    View view = inflater.inflate(R.layout.activity_destroyer, container, false);
 	    Button fire = (Button) view.findViewById(R.id.destroy);
 	    final EditText positive_thought = (EditText) view.findViewById(R.id.destroyer);
+	    InputFilter[] FilterArray = new InputFilter[1];
+	    FilterArray[0] = new InputFilter.LengthFilter(60);
+	    positive_thought.setFilters(FilterArray);
 	    PositiveAnimatedNegative = (AnimatedNegative) view.findViewById(R.id.anim_view);
 	    positive_thought.setOnFocusChangeListener(new OnFocusChangeListener()
 	    {

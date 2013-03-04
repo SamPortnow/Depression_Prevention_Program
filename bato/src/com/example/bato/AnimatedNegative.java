@@ -19,7 +19,6 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -86,6 +85,7 @@ public class AnimatedNegative extends View
     int bonus_y = -1;
     boolean bonus;
     TextPaint bonus_paint = new TextPaint();
+    boolean new_positive;
 
     //word bank of positive words to check against 
 
@@ -112,6 +112,7 @@ public class AnimatedNegative extends View
     	    thunder = BitmapFactory.decodeResource(getResources(), R.drawable.thunder);
     		thunderPlayer = MediaPlayer.create(mContext, R.raw.thunder);
     	    Cursor thoughts = mCalendarDbHelper.fetchThoughts();
+    	    
 
     	    //create a string array of negative thoughts from the db
     	    	while (thoughts.moveToNext())
@@ -122,6 +123,7 @@ public class AnimatedNegative extends View
     	    		}
     	   
     	    	}
+    	     thoughts.close();
     	     negative_thoughts.add("I'm confused");
     	     negative_thoughts.add("I am wasting my life.");
     	     negative_thoughts.add("I'll end up living all alone.");
@@ -236,12 +238,8 @@ public class AnimatedNegative extends View
             	if (positive_thoughts.size() < 9)
 				{
 
-            		if (move == 0)
-        	    		{
-        	    		move +=1; 
-        	    		}
         	    	
-        	    		if (move > 0 && move < 10)
+        	    		if (move >= 0 && move < 10)
         	    		{
         	    		move +=1;
         	    		x += (this.getWidth()/10)/(FRAME_RATE);
@@ -256,12 +254,11 @@ public class AnimatedNegative extends View
         	    			
         	    		}
         	    		
-        	    		if (move >= 20)
+        	    		if (move == 20)
         	    		{
         	    			move = 0;
         	    		}
         	    		
-        	    		Log.e("move is", ""+move);
         	    		
             	    	if (thunder_time == 0 || thunder_time == 60)
             	    	{
@@ -395,8 +392,7 @@ public class AnimatedNegative extends View
         		 for (int i = 1; i < positive_thoughts.size() + 1; i++)
          			{
  
-
-             				place_clouds(canvas, stored_x, stored_y + this.getHeight()/25, i);
+             				place_clouds(canvas, stored_x, stored_y + this.getHeight()/25, i, positive_thoughts.size());
         					stored_x += this.getWidth()/3;
                		 		if (i % 3 == 0)
             				{
@@ -417,18 +413,18 @@ public class AnimatedNegative extends View
         	 if (new_negative == true)
         	 {
         		 word = negative_thoughts.get((int) (Math.random() * array_size));
+            	 negative = new TextView(mContext);
+            	 negative.setText(word);
+            	 negative.layout(0, 0, this.getWidth()/3, this.getHeight()/4);
+            	 negative.setGravity(Gravity.CENTER);
+            	 negative.setTextSize(15);
+            	 negative.setTextColor(Color.BLACK);
+             	 negative.setTypeface(Typeface.DEFAULT_BOLD);
+             	 negative.setTypeface(Typeface.SANS_SERIF);
+            	 negative.setShadowLayer(5, 2, 2, Color.WHITE);
+            	 negative.setDrawingCacheEnabled(true);
+            	 negative.setBackgroundResource(R.drawable.graycloud);
         	 }
-        	 negative = new TextView(mContext);
-        	 negative.setText(word);
-        	 negative.layout(0, 0, this.getWidth()/3, this.getHeight()/4);
-        	 negative.setGravity(Gravity.CENTER);
-        	 negative.setTextSize(15);
-        	 negative.setTextColor(Color.BLACK);
-         	 negative.setTypeface(Typeface.DEFAULT_BOLD);
-         	 negative.setTypeface(Typeface.SANS_SERIF);
-        	 negative.setShadowLayer(5, 2, 2, Color.WHITE);
-        	 negative.setDrawingCacheEnabled(true);
-        	 negative.setBackgroundResource(R.drawable.graycloud);
        		 canvas.drawBitmap(negative.getDrawingCache(), x, y, null);
        		 canvas.drawBitmap(thunder, thunder_struck + (negative.getWidth()/4), y + negative.getHeight(), null);
        		 if (start == true)
@@ -445,9 +441,11 @@ public class AnimatedNegative extends View
 
          }
        
-         private void place_clouds(Canvas canvas, int stored_x, int stored_y, int i)
+         private void place_clouds(Canvas canvas, int stored_x, int stored_y, int i, int size)
          {
      	     //style the positive clouds 
+        	 if (i <= size)
+        	 {
         	 positive = new TextView(mContext);
         	 positive.setText(positive_thoughts.get(i-1));
         	 positive.layout(0, 0, this.getWidth()/3, this.getHeight()/4);
@@ -457,7 +455,9 @@ public class AnimatedNegative extends View
         	 positive.setShadowLayer(5, 2, 2, Color.YELLOW);
         	 positive.setDrawingCacheEnabled(true);
         	 positive.setBackgroundResource(R.drawable.cloud);
+        	 }
 			 canvas.drawBitmap(positive.getDrawingCache(), stored_x, stored_y, null);
+			 
 
          }
          
