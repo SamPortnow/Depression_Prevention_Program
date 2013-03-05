@@ -86,6 +86,7 @@ public class AnimatedNegative extends View
     boolean bonus;
     TextPaint bonus_paint = new TextPaint();
     boolean new_positive;
+    int explode;
 
     //word bank of positive words to check against 
 
@@ -320,8 +321,13 @@ public class AnimatedNegative extends View
         	    						posx = x;
         	    						posy = y;
         	    						//if we reach the coordinates of the dark cloud, it explodes
-											explode(canvas, posx, posy + this.getHeight()/25, paint);
-
+        	    						while (explode < 3)
+        	    						{
+											explode(canvas, posx, posy + this.getHeight()/25, paint, explode);
+											explode++;
+        	    						}
+        	    						
+        	    						explode = 0;
 										
         	    						x = posx;
         	    						y = posy;
@@ -449,14 +455,11 @@ public class AnimatedNegative extends View
          }
          
          
-         private void explode(Canvas canvas, int posx, int posy, TextPaint paint) 
+         private void explode(Canvas canvas, int posx, int posy, TextPaint paint, int explode) 
          {
 				//destroy the dark cloud
-        	 	for (int i = 0; i < 4; i ++)
-				{
-        	 		canvas.drawBitmap(mExplosions[i], posx, posy, paint);
-				}
-        	 	
+
+        	 	canvas.drawBitmap(mExplosions[explode], posx, posy, paint);	
         	 	start = true;
         	 	
          }

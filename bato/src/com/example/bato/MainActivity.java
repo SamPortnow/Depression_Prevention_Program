@@ -14,14 +14,15 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_main);
-        
+        if(savedInstanceState == null) 
+        {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();			        
         fragmentTransaction.replace(R.id.fragment_container, new ActivityHome(), "activity_home_fragment");        
         fragmentTransaction.commit();
-        
         WelcomeFragment welcomeFragment = new WelcomeFragment();
         welcomeFragment.setCancelable(false);
-        welcomeFragment.show(getFragmentManager(), "welcome_fragment");        
+        welcomeFragment.show(getFragmentManager(), "welcome_fragment");
+        }
     }
 
     @Override
