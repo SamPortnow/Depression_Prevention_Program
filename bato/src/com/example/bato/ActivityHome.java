@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 public class ActivityHome extends Fragment
@@ -16,13 +17,17 @@ public class ActivityHome extends Fragment
 	GameDbAdapter mDbHelper;
 	TextView destroyers;
 	int successes; 
+	CalendarDbAdapter mCalHelper;
+	int score;
+	TextView scientist;
+	GameDbAdapter mScoresHelper;
 	
 	@Override 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.activity_home, container, false);
 		mContext = this.getActivity();
-	    mDbHelper=new GameDbAdapter(mContext);
+	    mDbHelper= new GameDbAdapter(mContext);
 	    mDbHelper.open();
 	    destroyers = (TextView) view.findViewById(R.id.body_count);
 	    Cursor activity = mDbHelper.fetchGames();
@@ -34,11 +39,57 @@ public class ActivityHome extends Fragment
     			{
     				successes++;
     			}
+    			
+    			
     		}
     		destroyers.append(" "+successes);
 	    }
-	    
+	    activity.close();
 	    successes = 0;
+	    
+	    mCalHelper=new CalendarDbAdapter(mContext);
+	    mCalHelper.open();
+	    Cursor points = mCalHelper.fetchThoughts();
+	    if (points.moveToFirst())
+	    {
+	    	while (points.moveToNext())
+	    	{
+	    		score++;
+	    	}
+	    }
+	    if (score > 0)
+	    {
+	    	score = score * 25;
+	    }
+	    
+	    scientist = (TextView) view.findViewById(R.id.scientist);
+	    scientist.append(" " + score);
+
+	    
+	    points.close();
+	    score = 0;
+	    
+	    mScoresHelper = new GameDbAdapter(mContext);
+	    mScoresHelper.open();
+	    Cursor scores = mScoresHelper.fetchHighScores();
+	    
+		if (scores.moveToFirst())
+		{
+		    
+			String[] from = new String[]{GameDbAdapter.COLUMN_NAME_SCORE};
+
+
+		    int[] to = new int[]{R.id.high};
+
+		    SimpleCursorAdapter high_scores = 
+		        new SimpleCursorAdapter(mContext, R.layout.activity_home, scores, from, to); //my cursor adapter 
+		   
+		   high_scores.bindView(view, mContext, scores);
+		
+		}
+		
+		scores.close();
+		
 		view.findViewById(R.id.add_event).setOnClickListener(new OnClickListener()
 		{
 			@Override
@@ -52,4 +103,11 @@ public class ActivityHome extends Fragment
 		
 		return view;
 	};
+	
+	@Override
+	public void onDestroyView()
+	{
+		super.onDestroyView();
+		mDbHelper.close();
+	}
 }

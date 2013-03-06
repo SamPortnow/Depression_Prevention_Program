@@ -25,6 +25,7 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 	private EditText activityEditText = null;
 	private EditText thoughtEditText = null;
 	private Context mContext;
+	CalendarDbAdapter calendarDbHelper;
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -65,7 +66,6 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 	{
 		AlertDialog alertDialog = (AlertDialog) dialog;
 		alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
-		
 		activityEditText = ((EditText) alertDialog.findViewById(R.id.add_event_user_activity));
 		thoughtEditText = ((EditText) alertDialog.findViewById(R.id.add_event_user_thought));
 	    InputFilter[] FilterArray = new InputFilter[1];
@@ -113,7 +113,7 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 	public void createEvent()
 	{	
 		Calendar calendar = Calendar.getInstance();
-		
+		int eventYear = calendar.get(Calendar.YEAR);
 		int eventDayofYear = calendar.get(Calendar.DAY_OF_YEAR);
 		int eventMinuteOfDay = (calendar.get(Calendar.HOUR_OF_DAY) * 60) + calendar.get(Calendar.MINUTE);
 		
@@ -124,21 +124,30 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 		CalendarDbAdapter calendarDbHelper = new CalendarDbAdapter(getActivity());
 		calendarDbHelper.open();
 		
-		Cursor cursor = calendarDbHelper.fetchCalendar(eventDayofYear, eventMinuteOfDay);
+		Cursor cursor = calendarDbHelper.fetchCalendar(eventYear, eventDayofYear, eventMinuteOfDay);
 		
 		if (cursor.moveToFirst() == false)
 		{
-			Log.d("add_event_fragment", "Creating a new event: " + eventDayofYear + ", " + eventMinuteOfDay);
+			Log.e("add_event_fragment", "Creating a new event: " + eventDayofYear + ", " + eventMinuteOfDay);
 			
-			calendarDbHelper.createCalendar(eventDayofYear, eventMinuteOfDay, activityText, moodValue, thoughtText);
+			calendarDbHelper.createCalendar(eventYear, eventDayofYear, eventMinuteOfDay, activityText, moodValue, thoughtText);
 		}
 		else
 		{
-			Log.d("add_event_fragment", "Updating an existing event: " + eventDayofYear + ", " + eventMinuteOfDay);
+			Log.e("add_event_fragment", "Updating an existing event: " + eventDayofYear + ", " + eventMinuteOfDay);
 			
-			calendarDbHelper.updateCalendar(eventDayofYear, eventMinuteOfDay, activityText, moodValue, thoughtText);
+			calendarDbHelper.updateCalendar(eventYear, eventDayofYear, eventMinuteOfDay, activityText, moodValue, thoughtText);
 		}
 		
 		Toast.makeText(getActivity(), R.string.add_event_toast_created_event, Toast.LENGTH_SHORT).show();
+		
+		calendarDbHelper.close();
 	}
+	
+	@Override
+	public void onDestroyView()
+	{
+		super.onDestroyView();
+	}
+	
 }

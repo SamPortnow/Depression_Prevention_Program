@@ -76,6 +76,7 @@ public class DestroyerView extends Fragment
 		}
 		
 		return true;
+		//TODO list of negative words 
 	}
 	
 	@Override
@@ -248,7 +249,7 @@ public class DestroyerView extends Fragment
 	public void onDestroyView()
 	{
 		super.onDestroyView();
-		
+		mDbHelper.close();
 		getActivity().getActionBar().show();		
 	}
 }

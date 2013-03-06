@@ -20,6 +20,7 @@ public class CalendarDbAdapter {
     private static final String DATABASE_TABLE = "calendar"; //this particular table is the activities table. I might make a separate table for a ranking system. We will see. 
     private static final int DATABASE_VERSION = 2;
     public static final String COLUMN_NAME_MINUTES="minutes";
+    public static final String COLUMN_NAME_YEAR="Year";
     public static final String COLUMN_NAME_DAY="Day";
     public static final String COLUMN_NAME_ACTIVITY="Activity";
     public static final String COLUMN_NAME_FEELING = "Feeling";
@@ -32,7 +33,7 @@ public class CalendarDbAdapter {
     
     private static final String DATABASE_CREATE =  //create the database! you already know!! // modified android code of text . I want to allow for null text! 
         "create table calendar  (_id integer primary key autoincrement, " +
-        "Day integer, minutes integer, Activity text, Feeling integer, Thought text)";
+        "Year integer, Day integer, minutes integer, Activity text, Feeling integer, Thought text)";
     
     private final Context mCalendarCtx; //declare a context. activity extends from context. it's a basic part of android app. need to research this more. 
 
@@ -102,8 +103,9 @@ public class CalendarDbAdapter {
     
     //now do a create, update, and fetch functions!!!
     
-    public long createCalendar(long Day, long minutes, String Activity, int Feeling, String Thought) {
+    public long createCalendar(long Year, long Day, long minutes, String Activity, int Feeling, String Thought) {
         ContentValues initialValues = new ContentValues();
+        initialValues.put(COLUMN_NAME_YEAR, Year);
         initialValues.put(COLUMN_NAME_DAY, Day);
         initialValues.put(COLUMN_NAME_MINUTES, minutes);
         initialValues.put(COLUMN_NAME_ACTIVITY,Activity);
@@ -112,17 +114,19 @@ public class CalendarDbAdapter {
         return mCalendarDb.insert(DATABASE_TABLE, null, initialValues);
     }
     
-    public boolean updateCalendar(long Day, long minutes, String Activity, int Feeling, String Thought)
+    public boolean updateCalendar(long Year, long Day, long minutes, String Activity, int Feeling, String Thought)
     	{
     	String day=String.valueOf(Day);
     	String sminutes=String.valueOf(minutes);
+    	String sYear=String.valueOf(Year);
     	ContentValues args = new ContentValues();
+    	args.put(COLUMN_NAME_YEAR, Year);
         args.put(COLUMN_NAME_DAY, Day);
         args.put(COLUMN_NAME_MINUTES, minutes);
         args.put(COLUMN_NAME_ACTIVITY, Activity);
         args.put(COLUMN_NAME_FEELING, Feeling);
         args.put(COLUMN_NAME_THOUGHT, Thought);
-        return mCalendarDb.update(DATABASE_TABLE, args, COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_MINUTES+" = ?", new String[] {day,sminutes}) > 0;
+        return mCalendarDb.update(DATABASE_TABLE, args, COLUMN_NAME_YEAR+" =? AND " + COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_MINUTES+" = ?", new String[] {sYear, day,sminutes}) > 0;
         
     }
  
@@ -136,11 +140,20 @@ public class CalendarDbAdapter {
     }
 	*/
 
-    public Cursor fetchCalendar(long Day, long minutes)
+    public Cursor fetchCalendar(long Year, long Day, long minutes)
     {
+    	String sYear = String.valueOf(Year);
     	String day=String.valueOf(Day);
     	String sminutes=String.valueOf(minutes);
-        return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_MINUTES+" = ?" , new String[] {day,sminutes}, null, null, null);
+        return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, COLUMN_NAME_YEAR+" =? AND " + COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_MINUTES+" = ?" , new String[] {sYear, day,sminutes}, null, null, null);
+        
+    }
+    
+    public Cursor fetchDay(long Year, long Day)
+    {
+    	String sDay=String.valueOf(Day);
+    	String sYear = String.valueOf(Year);
+        return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT, COLUMN_NAME_MINUTES}, COLUMN_NAME_YEAR+" =? AND " + COLUMN_NAME_DAY+" = ?" , new String[] {sYear, sDay}, null, null, null);
         
     }
     
@@ -150,6 +163,6 @@ public class CalendarDbAdapter {
         return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_THOUGHT}, null , null, null, null, null); 
     }
 
-   
+
 
 }

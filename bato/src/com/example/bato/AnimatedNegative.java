@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.Handler;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -29,6 +30,7 @@ public class AnimatedNegative extends View
     private Context mContext;
     Resources mRes;
     private Bitmap[] mExplosions = new Bitmap[4];
+    private TextView[] positives = new TextView[8];
     private Bitmap cloud;
     private Bitmap gray_cloud;
     private Bitmap dark_clouds;
@@ -125,27 +127,31 @@ public class AnimatedNegative extends View
     	   
     	    	}
     	     thoughts.close();
-    	     negative_thoughts.add("I am wasting my life.");
-    	     negative_thoughts.add("I'll end up living all alone.");
-    	     negative_thoughts.add("People don't consider friendship important anymore.");
-    	     negative_thoughts.add("Life has no meaning.");
-    	     negative_thoughts.add("I'm ugly.");
-    	     negative_thoughts.add("Nobody loves me.");
-    	     negative_thoughts.add("I'll never find what I really want.");
-    	     negative_thoughts.add("I am worthless.");
-    	     negative_thoughts.add("It's all my fault.");
-    	     negative_thoughts.add("Why do so many bad things happen to me?");
-    	     negative_thoughts.add("I can't think of anything that would be fun.");
-    	     negative_thoughts.add("I don't have what it takes to be successful.");
-    	     negative_thoughts.add("Things are so messed up that doing anything about them is useless.");
-    	     negative_thoughts.add("I don't have enough willpower.");
-    	     negative_thoughts.add("I wish I had never been born.");
-    	     negative_thoughts.add("Things are just going to get worse and worse.");
-    	     negative_thoughts.add("I wonder if they are talking about me.");
-    	     negative_thoughts.add("No matter how hard I try, people aren't satisfied.");
-    	     negative_thoughts.add("I'll never make any good friends.");
-    	     negative_thoughts.add("I can’t do anything right.");
-    	     negative_thoughts.add("Things will never work out for me.");
+    	     
+    	     if (negative_thoughts.size() < 12)
+    	     {
+    	    	 negative_thoughts.add("I am wasting my life.");
+    	    	 negative_thoughts.add("I'll end up living all alone.");
+    	    	 negative_thoughts.add("People don't consider friendship important anymore.");
+    	    	 negative_thoughts.add("Life has no meaning.");
+    	    	 negative_thoughts.add("I'm ugly.");
+    	    	 negative_thoughts.add("Nobody loves me.");
+    	    	 negative_thoughts.add("I'll never find what I really want.");
+    	    	 negative_thoughts.add("I am worthless.");
+    	    	 negative_thoughts.add("It's all my fault.");
+    	    	 negative_thoughts.add("Why do so many bad things happen to me?");
+    	    	 negative_thoughts.add("I can't think of anything that would be fun.");
+    	    	 negative_thoughts.add("I don't have what it takes to be successful.");
+    	    	 negative_thoughts.add("Things are so messed up that doing anything about them is useless.");
+    	    	 negative_thoughts.add("I don't have enough willpower.");
+    	    	 negative_thoughts.add("I wish I had never been born.");
+    	    	 negative_thoughts.add("Things are just going to get worse and worse.");
+    	    	 negative_thoughts.add("I wonder if they are talking about me.");
+    	    	 negative_thoughts.add("No matter how hard I try, people aren't satisfied.");
+    	    	 negative_thoughts.add("I'll never make any good friends.");
+    	    	 negative_thoughts.add("I can’t do anything right.");
+    	    	 negative_thoughts.add("Things will never work out for me.");
+    	     }
    	    	 array_size = negative_thoughts.size();
    	    	 //default positive thougts after a certain amount of time... 
     	    	
@@ -164,8 +170,10 @@ public class AnimatedNegative extends View
 
 		};
 		
-
-
+			protected void Measure(Canvas canvas)
+			{
+				
+			}
             
 			protected void onDraw (Canvas canvas)
             {
@@ -177,14 +185,16 @@ public class AnimatedNegative extends View
             	//save the canvas on the first draw
             	if (first == true)
             	{ 
-                	mExplosions[0] = Bitmap.createScaledBitmap(mExplosions[0], this.getWidth()/2, this.getHeight()/2, true);
-            	    mExplosions[1] = Bitmap.createScaledBitmap(mExplosions[1], this.getWidth()/2, this.getHeight()/2, true);
-            	    mExplosions[2] = Bitmap.createScaledBitmap(mExplosions[2], this.getWidth()/2, this.getHeight()/2, true);
-            	    mExplosions[3] = Bitmap.createScaledBitmap(mExplosions[3], this.getWidth()/2, this.getHeight()/2, true);
-            	    cloud = Bitmap.createScaledBitmap(cloud, this.getWidth()/3, this.getHeight()/4, true);
-            	    gray_cloud = Bitmap.createScaledBitmap(gray_cloud, this.getWidth()/3, this.getHeight()/4, true);
-            	    dark_clouds = Bitmap.createScaledBitmap(dark_clouds, this.getWidth(), this.getHeight() * 2, true);
-            	    sun = Bitmap.createScaledBitmap(sun, this.getWidth(), this.getHeight() + this.getHeight()/3, true);
+                	width = this.getWidth();
+                	height = this.getHeight();
+            		mExplosions[0] = Bitmap.createScaledBitmap(mExplosions[0], width/2, height/2, true);
+            	    mExplosions[1] = Bitmap.createScaledBitmap(mExplosions[1], width/2, height/2, true);
+            	    mExplosions[2] = Bitmap.createScaledBitmap(mExplosions[2], width/2, height/2, true);
+            	    mExplosions[3] = Bitmap.createScaledBitmap(mExplosions[3], width/2, height/2, true);
+            	    cloud = Bitmap.createScaledBitmap(cloud, width/3, height/4, true);
+            	    gray_cloud = Bitmap.createScaledBitmap(gray_cloud, width/3, height/4, true);
+            	    dark_clouds = Bitmap.createScaledBitmap(dark_clouds, width, height + (height/4), true);
+            	    sun = Bitmap.createScaledBitmap(sun, width, height + (height/4), true);
                 	//setting my background color...
                 	paint.setColor(Color.BLACK); 
                 	paint.setTextSize(25); 
@@ -211,7 +221,7 @@ public class AnimatedNegative extends View
             	if (cloud_marker > 2)
 
             	{
-                	canvas.drawBitmap(sun, 0, y - this.getHeight(), null);
+                	canvas.drawBitmap(sun, 0, y - height, null);
 
             	}
 
@@ -219,15 +229,15 @@ public class AnimatedNegative extends View
             	{
             		tracker += 3;
             		write_tracker = Long.toString(tracker);
-            		canvas.drawRect(0, 0, this.getWidth(), this.getHeight()/25, score_background);
-            		canvas.drawText("SCORE " + write_tracker, this.getWidth()/3, this.getHeight()/25,  score);
+            		canvas.drawRect(0, 0, width, height/25, score_background);
+            		canvas.drawText("SCORE " + write_tracker, width/3, height/25,  score);
           	     }
             	else
             	{
             		tracker = scorer;
             		write_tracker = Long.toString(tracker);
-            		canvas.drawRect(0, 0, this.getWidth(), this.getHeight()/25, score_background);
-            		canvas.drawText("SCORE " + write_tracker, this.getWidth()/3, this.getHeight()/25,  score);
+            		canvas.drawRect(0, 0, width, height/25, score_background);
+            		canvas.drawText("SCORE " + write_tracker, width/3, height/25,  score);
 
 
 
@@ -241,7 +251,7 @@ public class AnimatedNegative extends View
         	    		if (move >= 0 && move < 10)
         	    		{
         	    		move +=1;
-        	    		x += (this.getWidth()/10)/(FRAME_RATE);
+        	    		x += (width/10)/(FRAME_RATE);
         	    			
         	    		}
         	    	
@@ -249,7 +259,7 @@ public class AnimatedNegative extends View
         	    		if (move >= 10 && move < 20)
         	    		{
         	    			move += 1;
-            	    		x -= (this.getWidth()/10)/(FRAME_RATE);
+            	    		x -= (width/10)/(FRAME_RATE);
         	    			
         	    		}
         	    		
@@ -267,7 +277,7 @@ public class AnimatedNegative extends View
 
             	    
         			
-            	    place_all_clouds(canvas, x, y + this.getHeight()/25, thunder_time);
+            	    place_all_clouds(canvas, x, y + height/25, thunder_time);
 
         	    	
     	    		thunder_time += 1;
@@ -285,14 +295,14 @@ public class AnimatedNegative extends View
         	    			if (bonus_x < 0)
         	    			{
         	    				bonus_x = 0;
-        	    				bonus_y = (this.getHeight());
+        	    				bonus_y = (height);
         	    			}
         	    			
-        	    				bonus_x += (this.getWidth())/(FRAME_RATE/2);
-        	    				bonus_y -= (this.getHeight())/(FRAME_RATE/2);
+        	    				bonus_x += (width)/(FRAME_RATE/2);
+        	    				bonus_y -= (height)/(FRAME_RATE/2);
         	    				canvas.drawText("BONUS POINTS!", bonus_x, bonus_y, bonus_paint);
         	    				
-        	    				if (bonus_x >=this.getWidth() || bonus_y <= this.getHeight()/25)
+        	    				if (bonus_x >=width || bonus_y <= height/25)
         	    				{
             	    				bonus_x = -1;
             	    				bonus_y = -1;
@@ -304,18 +314,18 @@ public class AnimatedNegative extends View
         	    		//set positive_draw to true so that the positive clouds can be drawn 
         	    		positive_draw = true;
         	    		//create a static layout for my positive word and cloud
-        	    		StaticLayout positive_layout = new StaticLayout(positive_word, positive_paint, this.getWidth()/3, Layout.Alignment.ALIGN_CENTER,1f,0f,true);
+        	    		StaticLayout positive_layout = new StaticLayout(positive_word, positive_paint, width/3, Layout.Alignment.ALIGN_CENTER,1f,0f,true);
         	    		//change the coordinates of the positive cloud
         	    		if (posx <0 && posy < 0)
         	    			{
-        	    				posx = this.getWidth();
-        	    				posy = (this.getBottom() - 175);
+        	    				posx = width;
+        	    				posy = (this.getBottom() - this.getBottom()/10);
         	    			}
         	    		
         	    		else if (posx != x && posy != y)
         	    			{
-        	    				posx -= (this.getWidth() - x)/(FRAME_RATE/2);
-        	    				posy -= (this.getHeight() - y)/(FRAME_RATE/2);
+        	    				posx -= (width - x)/(FRAME_RATE/2);
+        	    				posy -= (height - y)/(FRAME_RATE/2);
         	    				if (posx <= x || posy <= y)
         	    					{
         	    						posx = x;
@@ -323,7 +333,7 @@ public class AnimatedNegative extends View
         	    						//if we reach the coordinates of the dark cloud, it explodes
         	    						while (explode < 3)
         	    						{
-											explode(canvas, posx, posy + this.getHeight()/25, paint, explode);
+											explode(canvas, posx, posy + height/25, paint, explode);
 											explode++;
         	    						}
         	    						
@@ -336,7 +346,7 @@ public class AnimatedNegative extends View
 
         	    			}
         	    		//this is the function that sets the positive cloud in motion
-        	    		destroy_and_replace(canvas, posx, posy + this.getHeight()/25, positive_layout);
+        	    		destroy_and_replace(canvas, posx, posy + height/25, positive_layout);
         	    		if (posx == x && posy == y )
         	    		{
     	    				//at the end, add to the array
@@ -349,12 +359,12 @@ public class AnimatedNegative extends View
     	    				cloud_marker++;
     	    				if (count % 3 == 0) //move the position of the dark cloud
     	    				{
-    	    					y = y + this.getHeight()/4;
+    	    					y = y + height/4;
     	    					x = 0;
     	    				}
     	    				else
     	    				{
-    	    					x = x + this.getWidth()/3;
+    	    					x = x + width/3;
     	    				}
     	    				add = false;
     	    				bonus = false;
@@ -383,11 +393,11 @@ public class AnimatedNegative extends View
         		 for (int i = 1; i < positive_thoughts.size() + 1; i++)
          			{
  
-             				place_clouds(canvas, stored_x, stored_y + this.getHeight()/25, i, positive_thoughts.size());
-        					stored_x += this.getWidth()/3;
+             				place_clouds(canvas, stored_x, stored_y + height/25, i, positive_thoughts.size());
+        					stored_x += width/3;
                		 		if (i % 3 == 0)
             				{
-               		 			stored_y += this.getHeight()/4;
+               		 			stored_y += height/4;
             					stored_x = 0;
             				}
 
@@ -406,7 +416,7 @@ public class AnimatedNegative extends View
         		 word = negative_thoughts.get((int) (Math.random() * array_size));
             	 negative = new TextView(mContext);
             	 negative.setText(word);
-            	 negative.layout(0, 0, this.getWidth()/3, this.getHeight()/4);
+            	 negative.layout(0, 0, width/3, height/4);
             	 negative.setGravity(Gravity.CENTER);
             	 negative.setTextSize(15);
             	 negative.setTextColor(Color.BLACK);
@@ -418,7 +428,7 @@ public class AnimatedNegative extends View
        		 canvas.drawBitmap(negative.getDrawingCache(), x, y, null);
        		 if (thunder_time == 0)
        		 {
-       		 canvas.drawBitmap(thunder, x + (negative.getWidth()/4), y + negative.getHeight(), null);
+       		 canvas.drawBitmap(thunder, x + ((width/3)/4), y + height/4, null);
        		 }
        		 if (start == true)
        		 {
@@ -441,15 +451,17 @@ public class AnimatedNegative extends View
         	 {
         	 positive = new TextView(mContext);
         	 positive.setText(positive_thoughts.get(i-1));
-        	 positive.layout(0, 0, this.getWidth()/3, this.getHeight()/4);
+        	 positive.layout(0, 0, width/3, height/4);
         	 positive.setGravity(Gravity.CENTER);
         	 positive.setTextSize(15);
         	 positive.setTextColor(Color.RED);
+        	 positive.setTypeface(Typeface.DEFAULT_BOLD);
         	 positive.setShadowLayer(5, 2, 2, Color.YELLOW);
         	 positive.setDrawingCacheEnabled(true);
         	 positive.setBackgroundResource(R.drawable.cloud);
+        	 positives[i] = positive;
         	 }
-			 canvas.drawBitmap(positive.getDrawingCache(), stored_x, stored_y, null);
+			 canvas.drawBitmap(positives[i].getDrawingCache(), stored_x, stored_y, null);
 			 
 
          }
@@ -482,8 +494,8 @@ public class AnimatedNegative extends View
         	canvas.drawBitmap(sun, 0, 0 , null);
         	game_over.setColor(Color.WHITE);
 	    	game_over.setTextSize(50);
-	    	canvas.translate(0, this.getHeight()/2);
-        	StaticLayout game_over_layout = new StaticLayout("Good Job!", game_over, this.getWidth(), Layout.Alignment.ALIGN_NORMAL,1f,0f,true);
+	    	canvas.translate(0, height/2);
+        	StaticLayout game_over_layout = new StaticLayout("Good Job!", game_over, width, Layout.Alignment.ALIGN_NORMAL,1f,0f,true);
         	game_over_layout.draw(canvas);
         	return new DestroyerView();
 

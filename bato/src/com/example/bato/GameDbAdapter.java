@@ -137,6 +137,11 @@ import android.util.Log;
 	    }
 	    
 	    
+	    public Cursor fetchHighScores()
+	    {
+	        return mGameDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, "MAX("+COLUMN_NAME_TRIAL+")", COLUMN_NAME_SCORE}, null , null, null, null, null);    
+	    }
+	    
 
 
 	   

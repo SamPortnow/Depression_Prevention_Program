@@ -2,6 +2,7 @@ package com.example.bato;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +42,14 @@ public class MainActivity extends Activity
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             fragmentTransaction.addToBackStack(null);            
             fragmentTransaction.replace(R.id.fragment_container, new DestroyerView());
+            fragmentTransaction.commit();
+    	}
+    	
+    	if (item.getItemId() == R.id.menu_daily_mood)
+    	{
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.addToBackStack(null);            
+            fragmentTransaction.replace(R.id.fragment_container, new Graph());
             fragmentTransaction.commit();
     	}
     	
