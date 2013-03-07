@@ -31,7 +31,11 @@
         android:padding="5dip"	
         android:layout_below = "@id/anim_view"
         android:layout_toRightOf = "@+id/destroyer"
-        android:hint="@string/destroy"
+        android:background="@drawable/red"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="@string/destroy"
         />      
   
       

@@ -3,7 +3,13 @@
     <item
         android:id="@+id/menu_destroyer_game"
         android:title="@string/menu_destroyer_game"
-        android:showAsAction="ifRoom" />
+        android:showAsAction="always"
+        />
+    
+    	<item
+	    android:id="@+id/menu_daily_mood"
+	    android:title="@string/menu_daily_mood"
+	    android:showAsAction="always"/>
     
     <item
         android:id="@+id/menu_settings"

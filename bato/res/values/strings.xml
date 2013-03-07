@@ -3,8 +3,8 @@
 
     <string name="app_name">BATO</string>
     <string name="welcome_fragment_message">Thank you for participating in the BATO study!\n\nThere will be a brief setup process in which you configure the app for the rest of the week!</string>
-    <string name="menu_settings">View Daily Mood</string>
-    <string name="menu_destroyer_game">Destroyer Game</string>
+    <string name="menu_settings">Mood</string>
+    <string name="menu_destroyer_game">Destroyer</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_step1">Step 1</string>
     <string name="step1">First step</string>
@@ -99,10 +99,14 @@
     <string name="pic_desc"> Images of people </string>
     <string name="relationship_activities">See the activities for this value</string>
     <string name="add">+</string>
-    <string name="destroyer">Destroy the negative thought!!</string>
-    <string name="destroy">Fire away!</string>
+    <string name="destroyer">write a positive thought to destroy the negative thought</string>
+    <string name="destroy">FIRE!</string>
     <string name="high_scores">High Scores</string>
     <string name="body_count">Total number of negative thoughts destroyed</string>
     <string name="score">SCORE</string>
+    <string name="menu_daily_mood">Mood</string>
+    <string name="next">Next</string>
+    <string name="previous">Prev</string>
+    <string name="scientist">Personal Scientist points</string>
 
 </resources>
