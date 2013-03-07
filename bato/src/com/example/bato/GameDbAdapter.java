@@ -139,7 +139,7 @@ import android.util.Log;
 	    
 	    public Cursor fetchHighScores()
 	    {
-	        return mGameDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, "MAX("+COLUMN_NAME_TRIAL+")", COLUMN_NAME_SCORE}, null , null, null, null, null);    
+	        return mGameDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_SCORE}, COLUMN_NAME_GAME_COMPLETE+" = ?", new String[] {"Yes"}, null, null, COLUMN_NAME_SCORE +" DESC");    
 	    }
 	    
 

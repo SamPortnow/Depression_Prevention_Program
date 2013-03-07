@@ -117,17 +117,15 @@ public class Graph extends Fragment
 	    String sDate = new SimpleDateFormat("MM/dd/yyyy").format(date);  
 	    minutes.clear();
 	    mood.clear();
-	    if (calendar.moveToFirst())
-	    {
 	    	while (calendar.moveToNext())
 	    	{
 	    		Hour = Float.valueOf((calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_MINUTES))))/60;
 	    		minutes.add(Hour);
 	    		mood.add(calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_FEELING)));
 	    	}
-	    }
+	     
 	    
-	    else
+	    if (! calendar.moveToFirst())
 	    {
 	    	Toast.makeText(mContext, "No events this day!", Toast.LENGTH_SHORT).show();
 	    }

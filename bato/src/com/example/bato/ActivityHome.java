@@ -4,11 +4,12 @@ import android.app.Fragment;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.SimpleCursorAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ActivityHome extends Fragment
@@ -26,6 +27,7 @@ public class ActivityHome extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.activity_home, container, false);
+		LinearLayout scoring = (LinearLayout) view.findViewById(R.id.scoring);
 		mContext = this.getActivity();
 	    mDbHelper= new GameDbAdapter(mContext);
 	    mDbHelper.open();
@@ -72,22 +74,15 @@ public class ActivityHome extends Fragment
 	    mScoresHelper = new GameDbAdapter(mContext);
 	    mScoresHelper.open();
 	    Cursor scores = mScoresHelper.fetchHighScores();
-	    
-		if (scores.moveToFirst())
-		{
-		    
-			String[] from = new String[]{GameDbAdapter.COLUMN_NAME_SCORE};
-
-
-		    int[] to = new int[]{R.id.high};
-
-		    SimpleCursorAdapter high_scores = 
-		        new SimpleCursorAdapter(mContext, R.layout.activity_home, scores, from, to); //my cursor adapter 
-		   
-		   high_scores.bindView(view, mContext, scores);
-		
-		}
-		
+	    while (scores.moveToNext())
+	    {
+	    	TextView high = new TextView(mContext);
+	    	high.setText(scores.getString(scores.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_SCORE)));
+	    	high.setGravity(Gravity.CENTER);
+	    	scoring.addView(high);
+	    	
+	    	
+	    }
 		scores.close();
 		
 		view.findViewById(R.id.add_event).setOnClickListener(new OnClickListener()

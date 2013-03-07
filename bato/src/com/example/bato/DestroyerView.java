@@ -19,6 +19,9 @@ import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -218,13 +221,14 @@ public class DestroyerView extends Fragment
 				{
 					score_tracker += 25;
 				}
-				if (count < 11)
+				if (count < 9)
 					
 				{
 					mDbHelper.createGame(current_mills, rt, score_tracker, game, yes, trial, positive_thought.getText().toString(), PositiveAnimatedNegative.negative.getText().toString(), "No");
 				}
 				else
 				{
+					Log.e("game complete!", "yes");
 					mDbHelper.createGame(current_mills, rt, score_tracker, game, yes, trial, positive_thought.getText().toString(), PositiveAnimatedNegative.negative.getText().toString(), yes);
 	
 				}
@@ -243,6 +247,8 @@ public class DestroyerView extends Fragment
 				}
     			PositiveAnimatedNegative.typing = false;
     			PositiveAnimatedNegative.scorer = score_tracker;
+	    		StaticLayout positive_layout = new StaticLayout(positive_thought.getText().toString(), PositiveAnimatedNegative.positive_paint, PositiveAnimatedNegative.width/3, Layout.Alignment.ALIGN_CENTER,1f,0f,true);
+	    		PositiveAnimatedNegative.positive_layout = positive_layout;
     			positive = new TextView(mContext);
     			positive.layout(0, 0, PositiveAnimatedNegative.width/3, PositiveAnimatedNegative.height/4);
     			positive.setGravity(Gravity.CENTER);

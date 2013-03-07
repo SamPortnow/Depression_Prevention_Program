@@ -19,7 +19,6 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -90,6 +89,7 @@ public class AnimatedNegative extends View
     boolean new_positive;
     int explode;
     boolean pull = true;
+    StaticLayout positive_layout;
 
     //word bank of positive words to check against 
 
@@ -311,7 +311,6 @@ public class AnimatedNegative extends View
         	    		//set positive_draw to true so that the positive clouds can be drawn 
         	    		positive_draw = true;
         	    		//create a static layout for my positive word and cloud
-        	    		StaticLayout positive_layout = new StaticLayout(positive_word, positive_paint, width/3, Layout.Alignment.ALIGN_CENTER,1f,0f,true);
         	    		//change the coordinates of the positive cloud
         	    		if (posx <0 && posy < 0)
         	    			{
@@ -423,6 +422,7 @@ public class AnimatedNegative extends View
             	 negative.setDrawingCacheEnabled(true);
             	 negative.setBackgroundResource(R.drawable.graycloud);
         	 }
+        	 
        		 canvas.drawBitmap(negative.getDrawingCache(), x, y, null);
        		 if (thunder_time == 0)
        		 {
