@@ -13,10 +13,13 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,6 +29,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class DestroyerView extends Fragment
@@ -51,6 +55,7 @@ public class DestroyerView extends Fragment
 	int mean_rt;
 	private int trial_check;
 	String yes = "Yes";
+	TextView positive;
 
 	
 	public static boolean populatePositiveWords(Context context)
@@ -238,6 +243,17 @@ public class DestroyerView extends Fragment
 				}
     			PositiveAnimatedNegative.typing = false;
     			PositiveAnimatedNegative.scorer = score_tracker;
+    			positive = new TextView(mContext);
+    			positive.layout(0, 0, PositiveAnimatedNegative.width/3, PositiveAnimatedNegative.height/4);
+    			positive.setGravity(Gravity.CENTER);
+    			positive.setTextSize(15);
+    			positive.setTextColor(Color.RED);
+    			positive.setTypeface(Typeface.DEFAULT_BOLD);
+    			positive.setShadowLayer(5, 2, 2, Color.YELLOW);
+    			positive.setDrawingCacheEnabled(true);
+    			positive.setBackgroundResource(R.drawable.cloud);
+    			positive.setText(positive_thought.getText().toString());
+    			PositiveAnimatedNegative.positives.add(positive);
         		positive_thought.setText(null);
         	}
 	    });
