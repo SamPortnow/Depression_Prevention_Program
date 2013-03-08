@@ -13,7 +13,6 @@
                 android:layout_width="fill_parent"
                 android:layout_above="@+id/destroyer"  
                 ></com.example.bato.AnimatedNegative>
-
       <EditText 
         android:id="@+id/destroyer"
         android:layout_width="wrap_content"
@@ -26,12 +25,12 @@
         />    
        <Button
         android:id="@+id/destroy"
+        android:background="@drawable/button"  
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dip"	
         android:layout_below = "@id/anim_view"
-        android:layout_toRightOf = "@+id/destroyer"
-        android:background="@drawable/red"
+        android:layout_alignParentRight = "true"
         android:textColor="@android:color/white"
         android:gravity="center"
         android:textStyle="bold"

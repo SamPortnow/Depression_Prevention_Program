@@ -203,7 +203,7 @@ public class AnimatedNegative extends View
                 	score.setAntiAlias(true);
                 	score.setTypeface(Typeface.DEFAULT_BOLD);
 
-                	score.setTextSize(24);
+                	score.setTextSize(30);
                 	score.setColor(Color.BLUE);
                 	score_background.setStyle(TextPaint.Style.FILL);
                 	score_background.setColor(Color.WHITE);
