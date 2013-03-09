@@ -5,16 +5,21 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.PointStyle;
+import org.achartengine.model.SeriesSelection;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYValueSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -26,6 +31,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Graph extends Fragment
@@ -34,15 +40,20 @@ public class Graph extends Fragment
 	private CalendarDbAdapter mDbHelper;
 	long Day;
 	long Year;
-	float Hour;
-    ArrayList<Float> minutes = new ArrayList<Float>();
+	double Hour;
+	int adapter_minutes;
+    ArrayList<Double> minutes = new ArrayList<Double>();
     ArrayList<Integer> mood = new ArrayList<Integer>();
     Calendar cal = Calendar.getInstance();
     long Add;
     GraphicalView chartView;
     LinearLayout layout;
-
-
+    Map<Double, Integer> mMap;
+    TextView thoughts;
+    TextView event;
+    View events;
+    double mapping;
+    
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState)
@@ -52,6 +63,7 @@ public class Graph extends Fragment
 	    mDbHelper=new CalendarDbAdapter(mContext);
 	    mDbHelper.open();
 	    View view = inflater.inflate(R.layout.activity_graph, container, false);
+
 		Button next = (Button) view.findViewById(R.id.next);
 		Button previous = (Button) view.findViewById(R.id.previous);
 	    Day = cal.get(Calendar.DAY_OF_YEAR);
@@ -75,6 +87,7 @@ public class Graph extends Fragment
 				layout.removeView(chartView);
 				chartView = generate(Day, Year);
 		    	layout.addView(chartView);
+
 			}
 	    });
 	    previous.setOnClickListener(new OnClickListener()
@@ -106,9 +119,10 @@ public class Graph extends Fragment
 		mDbHelper.close();
 	}
 	
-	public GraphicalView generate(long Day, long Year)
+	public GraphicalView generate(final long Day, final long Year)
 	{
 	    Cursor calendar = mDbHelper.fetchDay(Year, Day);
+	    mMap = new HashMap<Double, Integer>();
 	    Calendar cal = Calendar.getInstance();  
 	    cal.set(Calendar.YEAR, (int)Year);  
 	    cal.set(Calendar.DAY_OF_YEAR, (int)Day);  
@@ -119,7 +133,9 @@ public class Graph extends Fragment
 	    mood.clear();
 	    	while (calendar.moveToNext())
 	    	{
-	    		Hour = Float.valueOf((calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_MINUTES))))/60;
+	    		Hour = (double)((double) (calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_MINUTES)))/60);
+	    		mMap.put(Hour, calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_MINUTES)));
+	    		Log.e("map size is",""+mMap.size());
 	    		minutes.add(Hour);
 	    		mood.add(calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_FEELING)));
 	    	}
@@ -141,7 +157,6 @@ public class Graph extends Fragment
 		
 		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
 		dataset.addSeries(series);
-		
 		XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer(); // Holds a collection of XYSeriesRenderer and customizes the graph
 		XYSeriesRenderer renderer = new XYSeriesRenderer();// This will be used to customize line 1
 		mRenderer.addSeriesRenderer(renderer);
@@ -194,6 +209,8 @@ public class Graph extends Fragment
 		mRenderer.setXAxisMax(23);
 		mRenderer.setPointSize(5);
 		mRenderer.setChartTitle(sDate);
+		mRenderer.setClickEnabled(true);
+
 		// Customization time for line 1!
 		renderer.setColor(Color.BLUE);
 		renderer.setLineWidth(3);
@@ -202,12 +219,46 @@ public class Graph extends Fragment
 		
 		// Customization time for line 2!
 
-		GraphicalView chartView;
-		
+		final GraphicalView chartView;
 		chartView = ChartFactory.getLineChartView(mContext, dataset, mRenderer);
+	    chartView.setOnClickListener(new View.OnClickListener()
+	    {
+
+			@Override
+			public void onClick(View arg0) {
+				SeriesSelection seriesSelection = chartView.getCurrentSeriesAndPoint();
+				if (seriesSelection != null)
+				{
+					
+				  mapping = seriesSelection.getXValue();
+				  if (mMap.get(mapping) != null)
+				  {
+				  adapter_minutes = mMap.get(mapping);
+			      Cursor fetchThoughtActivity = mDbHelper.fetchCalendar(Year, Day, adapter_minutes);
+				  if (fetchThoughtActivity.moveToFirst())
+				  {
+				  String thought = fetchThoughtActivity.getString(fetchThoughtActivity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT));
+				  String activity = fetchThoughtActivity.getString(fetchThoughtActivity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_ACTIVITY));
+				  AlertDialog.Builder builder = new Builder(mContext);
+				  events = getActivity().getLayoutInflater().inflate(R.layout.dialog_mood, null);
+				  builder.setView(events);
+				  builder.setTitle("Thought, Activity, and Mood");
+				  thoughts = (TextView) events.findViewById(R.id.thought);
+				  event = (TextView) events.findViewById(R.id.activity);
+				  thoughts.setText(thought);
+				  event.setText(activity);
+				  builder.setPositiveButton(android.R.string.ok, null);
+				  builder.create();
+				  builder.show();
+				  }
+
+				  }
+				}
+			}
+	    	
+	    });
 		return chartView;
-	
-	}
+		}
 	
 	
 }

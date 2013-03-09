@@ -5,29 +5,7 @@
     <string name="welcome_fragment_message">Thank you for participating in the BATO study!\n\nThere will be a brief setup process in which you configure the app for the rest of the week!</string>
     <string name="menu_settings">Mood</string>
     <string name="menu_destroyer_game">Destroyer</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_step1">Step 1</string>
-    <string name="step1">First step</string>
-    <string name="next2">Next step</string>
-    <string name="title_activity_step2">Step2</string>
-    <string name="step2">An important part of this program involves thinking
-	    about the most important areas of your life.</string>
-    <string name="relationship">Relationships</string>
-    <string name="education">Education/Career</string>
-    <string name="recreation">Reccreation/Interests</string>
-    <string name="mind">Mind/Body/Spirituality</string>
-    <string name="daily">Daily Responsibilities</string>
-    <string name="relationship_desc">This life area refers to the part of your life that involves family, friends, and your romantic partner</string>
-    <string name="education_desc">This life area refers to time spent developing your education and career</string>
-    <string name="recreation_desc">This life area refers to leisure time</string>
-    <string name="mind_desc">This life area refers to both physical and mental health as well as religion and/or spirituality</string>
-    <string name="daily_desc">This life area refers to your obligiations and responsibilities to other and your belongings </string>
-    <string name="continuing">Continue</string>
-    <string name="title_activity_step3">Relationships</string>
-    <string name="life_areas">The Life Areas, Values, and Activities Inventory allows you to turn your values across key areas of your life into a reality!</string>
-    <string name="life_areas_relationship">First, fill out 3 values and 5 activities for the life area RELATIONSHIP. Rate each activity for both enjoyment and importance</string>
-    <string name="value_relationship">Enter a value. e.g., being a good husband or wife  </string>
-    <string name="activity_relationship">"Enter an activity"</string>
+
     
     <string name="add_event_fragment_title">Add a new event&#x2026;</string>
     <string name="add_event_toast_created_event">New event created.</string>
@@ -37,68 +15,6 @@
     <string name="image_smiley_content_description">Happy</string>
     <string name="image_sad_content_description">Sad</string>
 
-    <string-array name="likert_enjoyment">
-        <item>Dislike strongly</item>
-        <item>Dislike somewhat</item>
-        <item>Dislike a little</item>
-        <item>Neutral</item>
-        <item>Enjoy a little</item>
-        <item>Enjoy somewhat</item>
-        <item>Enjoy a lot</item>
-    </string-array>
-    <string-array name="likert_importance">
-        <item>Completely unimportant</item>
-        <item>Somewhat unimportant</item>
-        <item>A little unimportant</item>
-        <item>Neutral</item>
-        <item>A little important</item>
-        <item>Somewhat important</item>
-        <item>Very important</item>
-    </string-array>
-
-    <string name="life_areas_education">First, fill out 3 values and 5 activities for the life area EDUCATION/CAREER. Rate each activity for both enjoyment and importance</string>
-    <string name="title_activity_education">Education/Career</string>
-    <string name="activity_education">"Enter an activity"</string>
-    <string name="value_education">Enter a value. e.g., learning new skils for work</string>
-    <string name="title_activity_recreation">Recreation/Interests</string>
-    <string name="life_areas_recreation">First, fill out 3 values and 5 activities for the life area RECREATION/INTERESTS. Rate each activity for both enjoyment and importance</string>
-    <string name="activity_recreation">"Enter an activity"</string>
-    <string name="value_recreation">Enter a value. e.g., being active</string>
-    <string name="title_activity_mind">Mind/Body/Spirituality</string>
-    <string name="life_areas_mind">First, fill out 3 values and 5 activities for the life area MIND/BODY/SPIRITUALITY. Rate each activity for both enjoyment and importance</string>
-    <string name="activity_mind">"Enter an activity"</string>
-    <string name="value_mind">Enter a value. e.g., being physically healthy</string>
-    <string name="title_activity_daily">Daily Responsibilities</string>
-    <string name="life_areas_daily">First, fill out 3 values and 5 activities for the life area DAILY RESPONSIBILIIES. Rate each activity for both enjoyment and importance</string>
-    <string name="activity_daily">"Enter an activity"</string>
-    <string name="value_daily">Enter a value. e.g., being organized</string>
-    <string name="title_activity_set_up">Set_up</string>
-    <string name="title_activity_time">Setting up your reminders</string>
-    <string name="instruction_time">Every day, you will be sent a reminder in the morning to set your daily goals. 
-        Your daily goals will be 5 of the activities that you just listed. You will also be sent a reminder
-        in evening to make sure your daily diary is complete.  
-        Please set the times at which you want the reminders to be sent. </string>
-    <string name="title_activity_notification_morning">Notification_morning</string>
-    <string name="title_activity_calendar_start">Calendar_start</string>
-    <string name="set_time">Set your morning time</string>
-    <string name="set_time_evening">Set your evening time</string>
-    <string name="title_activity_reminder">Reminder</string>
-    <string name="title_activity_contacts">Contacts</string>
-    <string name="instructions_contacts">Last step! Many of the activities you listed earlier can be difficult to accomplish. 
-        For the reason, it\'s helpful to think of people you know that can help you out. Given that, please list 5 people
-        you know that could help with some of the activities you listed, if it any point during the week you feel like
-        you\'re having trouble with your activities</string>
-    <string name="morning"> Morning</string>
-    <string name="evening">Evening</string>
-    <string name="contact1"> Enter the first person</string>
-    <string name="contact2"> Enter the second person</string>
-    <string name="contact3"> Enter the third person</string>
-    <string name="contact4"> Enter the fourth person</string>
-    <string name="contact5"> Enter the firth person </string>
-    <string name="complete"> Click here to finish the set-up! </string>
-    <string name="pic_desc"> Images of people </string>
-    <string name="relationship_activities">See the activities for this value</string>
-    <string name="add">+</string>
     <string name="destroyer">write a positive thought to destroy the negative thought</string>
     <string name="destroy">FIRE!</string>
     <string name="high_scores">High Scores</string>
@@ -108,5 +24,7 @@
     <string name="next">Next</string>
     <string name="previous">Prev</string>
     <string name="scientist">Personal Scientist points</string>
+    <string name="activity">You were doing</string>
+    <string name="thought">You were thinking</string>
 
 </resources>
