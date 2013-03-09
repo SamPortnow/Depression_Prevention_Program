@@ -18,8 +18,8 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.AlertDialog.Builder;
+import android.app.Fragment;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -135,7 +135,6 @@ public class Graph extends Fragment
 	    	{
 	    		Hour = (double)((double) (calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_MINUTES)))/60);
 	    		mMap.put(Hour, calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_MINUTES)));
-	    		Log.e("map size is",""+mMap.size());
 	    		minutes.add(Hour);
 	    		mood.add(calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_FEELING)));
 	    	}
@@ -160,29 +159,30 @@ public class Graph extends Fragment
 		XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer(); // Holds a collection of XYSeriesRenderer and customizes the graph
 		XYSeriesRenderer renderer = new XYSeriesRenderer();// This will be used to customize line 1
 		mRenderer.addSeriesRenderer(renderer);
-		double[] limits = new double [] {0, 23, 0, 7};
+		double[] limits = new double [] {1, 24, 0, 7};
 		mRenderer.setPanLimits(limits);
 		mRenderer.setPanEnabled(true, false);
-		for (int i = 0; i < 23; i++)
+
+		for (int i = 1; i < 24; i++)
 		{
-			if (i == 0)
+			if (i == 1)
 			{
-				mRenderer.addXTextLabel(i, ""+(i+12)+" AM");
+				mRenderer.addXTextLabel(i, "12 AM");
 
 			}
-			if (i > 0 && i < 12)
+			if (1 > 0 && i < 13)
 			{
-				mRenderer.addXTextLabel(i, ""+(i+" AM"));
+				mRenderer.addXTextLabel(i, ""+((i-1)+" AM"));
 			}
 			
-			if (i == 12)
+			if (i == 13)
 			{
-				mRenderer.addXTextLabel(i, ""+(i +" PM"));
+				mRenderer.addXTextLabel(i, ""+(12 +" PM"));
 			}
 			
-			if (i > 12 && i < 24)
+			if (i > 13 && i < 25)
 			{
-				mRenderer.addXTextLabel(i, ""+((i -12 ) +" PM"));
+				mRenderer.addXTextLabel(i, ""+((i -13 ) +" PM"));
 			}
 		}
 		
@@ -204,19 +204,28 @@ public class Graph extends Fragment
 			}
 			
 		}
+		
+		mRenderer.setXLabels(0);
+		mRenderer.setYLabels(0);
+		mRenderer.setAxisTitleTextSize(20);
+		mRenderer.setLabelsTextSize(10);
+		mRenderer.setYLabelsAngle(310);
+		mRenderer.setAxesColor(Color.CYAN);
+		mRenderer.setXLabelsColor(Color.RED);
+		mRenderer.setYLabelsColor(0, Color.RED);
 		mRenderer.setYAxisMax(7);
 		mRenderer.setYAxisMin(0);
 		mRenderer.setXAxisMax(23);
-		mRenderer.setPointSize(5);
+		mRenderer.setPointSize(10);
 		mRenderer.setChartTitle(sDate);
 		mRenderer.setClickEnabled(true);
+		mRenderer.setXLabelsAngle(45);
 
 		// Customization time for line 1!
-		renderer.setColor(Color.BLUE);
+		renderer.setColor(Color.GRAY);
 		renderer.setLineWidth(3);
 		renderer.setPointStyle(PointStyle.CIRCLE);
 		renderer.setFillPoints(true);
-		
 		// Customization time for line 2!
 
 		final GraphicalView chartView;
