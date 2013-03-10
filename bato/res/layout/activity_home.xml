@@ -12,7 +12,7 @@
         <View
             android:id="@+id/add_event_row"
             android:layout_width="wrap_content"
-            android:layout_height="65dip"
+            android:layout_height="68dip"
             android:background="#33B5E5" />
 
         <Button
@@ -26,7 +26,9 @@
 	    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:background = "@color/LightCoral"
+         >
 
         <TextView
             android:id="@+id/scientist"
@@ -37,10 +39,19 @@
             android:text="@string/scientist"
             android:textColor="#ff0000ff"
             android:textStyle="bold" />
+        <TextView 
+            android:id="@+id/scientist_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/scientist"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold" />
+            />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background = "#AA66CC"
         android:orientation="horizontal" >
 
         <TextView
@@ -52,17 +63,33 @@
             android:text="@string/body_count"
             android:textColor="#ff0000ff"
             android:textStyle="bold" />
+      <TextView 
+            android:id="@+id/body_count_score"
+            android:layout_toRightOf="@id/body_count" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold" />
+            />
     </RelativeLayout>
-
+      
+      <RelativeLayout
+          android:id="@+id/score_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+              android:background = "@color/LightSkyBlue">
+          
     <TextView
         android:id="@+id/high_scores"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif"
         android:text="@string/high_scores"
         android:textColor="#ff0000ff"
+        android:background = "@color/LightSkyBlue"
         android:textStyle="bold" />
+    </RelativeLayout>
      <LinearLayout
     android:id="@+id/scoring"
     android:layout_width="match_parent"
@@ -71,6 +98,5 @@
     android:layout_gravity = "center_horizontal" >
          
      </LinearLayout>
-        
 
 </LinearLayout>

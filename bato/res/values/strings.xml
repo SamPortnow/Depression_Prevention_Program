@@ -18,7 +18,7 @@
     <string name="destroyer">write a positive thought to destroy the negative thought</string>
     <string name="destroy">FIRE!</string>
     <string name="high_scores">High Scores</string>
-    <string name="body_count">Total number of negative thoughts destroyed</string>
+    <string name="body_count">Negative thoughts destroyed</string>
     <string name="score">SCORE</string>
     <string name="menu_daily_mood">Mood</string>
     <string name="next">Next</string>

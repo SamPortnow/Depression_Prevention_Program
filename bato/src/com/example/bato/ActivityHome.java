@@ -3,6 +3,7 @@ package com.example.bato;
 import android.app.Fragment;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,7 +32,7 @@ public class ActivityHome extends Fragment
 		mContext = this.getActivity();
 	    mDbHelper= new GameDbAdapter(mContext);
 	    mDbHelper.open();
-	    destroyers = (TextView) view.findViewById(R.id.body_count);
+	    destroyers = (TextView) view.findViewById(R.id.body_count_score);
 	    Cursor activity = mDbHelper.fetchGames();
 	    if (activity.moveToFirst())
 	    {
@@ -44,7 +45,9 @@ public class ActivityHome extends Fragment
     			
     			
     		}
-    		destroyers.append(" "+successes);
+    	    destroyers.setTextColor(Color.CYAN);
+    	    destroyers.setShadowLayer(1, 1, 1, Color.RED);
+    		destroyers.setText(" "+successes);
 	    }
 	    activity.close();
 	    successes = 0;
@@ -64,9 +67,10 @@ public class ActivityHome extends Fragment
 	    	score = score * 25;
 	    }
 	    
-	    scientist = (TextView) view.findViewById(R.id.scientist);
-	    scientist.append(" " + score);
-
+	    scientist = (TextView) view.findViewById(R.id.scientist_score);
+	    scientist.setTextColor(Color.CYAN);
+	    scientist.setShadowLayer(1, 1, 1, Color.RED);
+	    scientist.setText(" " + score);
 	    
 	    points.close();
 	    score = 0;
@@ -78,6 +82,9 @@ public class ActivityHome extends Fragment
 	    {
 	    	TextView high = new TextView(mContext);
 	    	high.setText(scores.getString(scores.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_SCORE)));
+		    high.setTextColor(Color.CYAN);
+		    high.setTextSize(30);
+		    high.setShadowLayer(1, 1, 1, Color.RED);
 	    	high.setGravity(Gravity.CENTER);
 	    	scoring.addView(high);
 	    	

@@ -209,7 +209,7 @@ public class AnimatedNegative extends View
                 	score_background.setColor(Color.WHITE);
                 	bonus_paint.setAntiAlias(true);
                 	bonus_paint.setTypeface(Typeface.DEFAULT_BOLD);
-                	bonus_paint.setTextSize(24);
+                	bonus_paint.setTextSize(30);
                 	bonus_paint.setColor(Color.WHITE);
             		canvas.save();
             		first = false;
@@ -434,7 +434,7 @@ public class AnimatedNegative extends View
        			 start_mills = starting.getTimeInMillis();
        			 start = false;
        		 }
-       		 if(!thunderPlayer.isPlaying())
+       		 if(!thunderPlayer.isPlaying() && add == false)
        		 {
  	    		thunderPlayer.start();
        		 }
@@ -470,7 +470,7 @@ public class AnimatedNegative extends View
         }
         
         
-        private Fragment game_over(Canvas canvas)
+        private void game_over(Canvas canvas)
         {
         	canvas.drawBitmap(sun, 0, 0 , null);
         	game_over.setColor(Color.WHITE);
@@ -478,8 +478,10 @@ public class AnimatedNegative extends View
 	    	canvas.translate(0, height/2);
         	StaticLayout game_over_layout = new StaticLayout("Good Job!", game_over, width, Layout.Alignment.ALIGN_NORMAL,1f,0f,true);
         	game_over_layout.draw(canvas);
-        	return new DestroyerView();
-
+        	if (thunderPlayer.isPlaying())
+        	{
+        		thunderPlayer.stop();
+        	}
         }
 
 }
