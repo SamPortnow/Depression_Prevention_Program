@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.achartengine.ChartFactory;
@@ -128,7 +129,7 @@ public class Graph extends Fragment
 	    cal.set(Calendar.DAY_OF_YEAR, (int)Day);  
 	    Log.e("Day is",""+Day);
 	    Date date = cal.getTime();  
-	    String sDate = new SimpleDateFormat("MM/dd/yyyy").format(date);  
+	    String sDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US).format(date);  
 	    minutes.clear();
 	    mood.clear();
 	    	while (calendar.moveToNext())

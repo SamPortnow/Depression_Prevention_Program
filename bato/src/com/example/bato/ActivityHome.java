@@ -1,6 +1,7 @@
 package com.example.bato;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -45,9 +46,8 @@ public class ActivityHome extends Fragment
     			
     			
     		}
-    	    destroyers.setTextColor(Color.CYAN);
-    	    destroyers.setShadowLayer(1, 1, 1, Color.RED);
-    		destroyers.setText(" "+successes);
+    		
+    		destroyers.setText(String.valueOf(successes));
 	    }
 	    activity.close();
 	    successes = 0;
@@ -68,9 +68,7 @@ public class ActivityHome extends Fragment
 	    }
 	    
 	    scientist = (TextView) view.findViewById(R.id.scientist_score);
-	    scientist.setTextColor(Color.CYAN);
-	    scientist.setShadowLayer(1, 1, 1, Color.RED);
-	    scientist.setText(" " + score);
+	    scientist.setText(String.valueOf(score));
 	    
 	    points.close();
 	    score = 0;
@@ -92,13 +90,15 @@ public class ActivityHome extends Fragment
 	    }
 		scores.close();
 		
-		view.findViewById(R.id.add_event).setOnClickListener(new OnClickListener()
+		view.findViewById(R.id.home_btn_destroyer_game).setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View view) 
 			{
-				AddEventFragment addThoughtFragment = new AddEventFragment();
-				addThoughtFragment.show(getFragmentManager(), null);
+				FragmentTransaction transaction = getFragmentManager().beginTransaction();
+				transaction.addToBackStack(null);
+				transaction.replace(R.id.fragment_container, new DestroyerView());
+				transaction.commit();
 			}
 			
 		});

@@ -3,7 +3,6 @@ package com.example.bato;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
