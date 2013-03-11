@@ -46,9 +46,8 @@ public class ActivityHome extends Fragment
     			
     			
     		}
-    	    destroyers.setTextColor(Color.CYAN);
-    	    destroyers.setShadowLayer(1, 1, 1, Color.RED);
-    		destroyers.setText(" "+successes);
+    		
+    		destroyers.setText(String.valueOf(successes));
 	    }
 	    activity.close();
 	    successes = 0;
@@ -69,9 +68,7 @@ public class ActivityHome extends Fragment
 	    }
 	    
 	    scientist = (TextView) view.findViewById(R.id.scientist_score);
-	    scientist.setTextColor(Color.CYAN);
-	    scientist.setShadowLayer(1, 1, 1, Color.RED);
-	    scientist.setText(" " + score);
+	    scientist.setText(String.valueOf(score));
 	    
 	    points.close();
 	    score = 0;

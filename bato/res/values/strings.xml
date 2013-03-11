@@ -8,7 +8,7 @@
     <string name="menu_daily_mood">Mood</string>
     <string name="menu_settings">Settings</string>
 
-    <string name="home_btn_destroyer_game">Destroyer Game</string>
+    <string name="home_destroyer_game_launch">Destroyer Game</string>
     
     <string name="add_event_fragment_title">Add a new event&#x2026;</string>
     <string name="add_event_toast_created_event">New event created.</string>
