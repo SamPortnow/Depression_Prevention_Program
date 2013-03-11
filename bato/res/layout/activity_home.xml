@@ -23,12 +23,12 @@
             android:background="@drawable/add_button"
             android:textColor="#ff0000ff" />
     </RelativeLayout>
-	    <RelativeLayout
+
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background = "@color/LightCoral"
-         >
+        android:background="#FFF08080"
+        android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/scientist"
@@ -38,20 +38,23 @@
             android:fontFamily="sans-serif"
             android:text="@string/scientist"
             android:textColor="#ff0000ff"
+            android:textIsSelectable="false"
             android:textStyle="bold" />
-        <TextView 
+
+        <TextView
             android:id="@+id/scientist_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/scientist"
             android:fontFamily="sans-serif"
+            android:textIsSelectable="false"
             android:textStyle="bold" />
-            />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background = "#AA66CC"
+        android:background="#AA66CC"
         android:orientation="horizontal" >
 
         <TextView
@@ -63,40 +66,41 @@
             android:text="@string/body_count"
             android:textColor="#ff0000ff"
             android:textStyle="bold" />
-      <TextView 
+
+        <TextView
             android:id="@+id/body_count_score"
-            android:layout_toRightOf="@id/body_count" 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/body_count"
             android:fontFamily="sans-serif"
+            android:textIsSelectable="false"
             android:textStyle="bold" />
-            />
     </RelativeLayout>
-      
-      <RelativeLayout
-          android:id="@+id/score_wrapper"
+
+    <RelativeLayout
+        android:id="@+id/score_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-              android:background = "@color/LightSkyBlue">
-          
-    <TextView
-        android:id="@+id/high_scores"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="sans-serif"
-        android:text="@string/high_scores"
-        android:textColor="#ff0000ff"
-        android:background = "@color/LightSkyBlue"
-        android:textStyle="bold" />
+        android:background="#FF87CEFA" >
+
+        <TextView
+            android:id="@+id/high_scores"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="#FF87CEFA"
+            android:fontFamily="sans-serif"
+            android:text="@string/high_scores"
+            android:textColor="#ff0000ff"
+            android:textStyle="bold" />
     </RelativeLayout>
-     <LinearLayout
-    android:id="@+id/scoring"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_gravity = "center_horizontal" >
-         
-     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/scoring"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical" >
+    </LinearLayout>
 
 </LinearLayout>

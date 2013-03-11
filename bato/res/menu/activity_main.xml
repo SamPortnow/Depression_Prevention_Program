@@ -2,15 +2,12 @@
 
     <item
         android:id="@+id/menu_destroyer_game"
-        android:title="@string/menu_destroyer_game"
-        android:showAsAction="always"
-        />
-    
-    	<item
-	    android:id="@+id/menu_daily_mood"
-	    android:title="@string/menu_daily_mood"
-	    android:showAsAction="always"/>
-    
+        android:showAsAction="ifRoom"
+        android:title="@string/menu_destroyer_game"/>
+    <item
+        android:id="@+id/menu_daily_mood"
+        android:showAsAction="ifRoom"
+        android:title="@string/menu_daily_mood"/>
     <item
         android:id="@+id/menu_settings"
         android:orderInCategory="100"
