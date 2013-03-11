@@ -36,12 +36,10 @@ public class MainActivity extends Activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-    	if (item.getItemId() == R.id.menu_destroyer_game)
+    	if (item.getItemId() == R.id.menu_add_event)
     	{
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.addToBackStack(null);            
-            fragmentTransaction.replace(R.id.fragment_container, new DestroyerView());
-            fragmentTransaction.commit();
+    		AddEventFragment fragment = new AddEventFragment();
+    		fragment.show(getFragmentManager(), "add_event_fragment");
     	}
     	
     	if (item.getItemId() == R.id.menu_daily_mood)
