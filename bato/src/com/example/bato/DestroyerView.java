@@ -136,7 +136,7 @@ public class DestroyerView extends Fragment
 
 	    
 	    View view = inflater.inflate(R.layout.activity_destroyer, container, false);
-	    Button fire = (Button) view.findViewById(R.id.destroy);
+	    final Button fire = (Button) view.findViewById(R.id.destroy);
 	    final EditText positive_thought = (EditText) view.findViewById(R.id.destroyer);
 	    InputFilter[] FilterArray = new InputFilter[1];
 	    FilterArray[0] = new InputFilter.LengthFilter(60);
@@ -228,7 +228,7 @@ public class DestroyerView extends Fragment
 				}
 				else
 				{
-					Log.e("game complete!", "yes");
+					fire.setClickable(false);
 					mDbHelper.createGame(current_mills, rt, score_tracker, game, yes, trial, positive_thought.getText().toString(), PositiveAnimatedNegative.negative.getText().toString(), yes);
 	
 				}

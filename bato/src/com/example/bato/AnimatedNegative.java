@@ -204,7 +204,8 @@ public class AnimatedNegative extends View
                 	score.setTypeface(Typeface.DEFAULT_BOLD);
 
                 	score.setTextSize(30);
-                	score.setColor(Color.BLUE);
+            	    score.setColor(Color.CYAN);
+            	    score.setShadowLayer(1, 1, 1, Color.RED);
                 	score_background.setStyle(TextPaint.Style.FILL);
                 	score_background.setColor(Color.WHITE);
                 	bonus_paint.setAntiAlias(true);
