@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnShowListener;
@@ -14,7 +13,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
@@ -25,7 +23,6 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 {
 	private EditText activityEditText = null;
 	private EditText thoughtEditText = null;
-	private Context mContext;
 	CalendarDbAdapter calendarDbHelper;
 	Post post_it;
 	
@@ -36,7 +33,7 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 		
 		builder.setView(getActivity().getLayoutInflater().inflate(R.layout.fragment_add_event, null));
 		builder.setTitle(R.string.add_event_fragment_title);
-		mContext = this.getActivity();
+		this.getActivity();
 
 		
 		builder.setNegativeButton(android.R.string.cancel, new OnClickListener()
@@ -70,12 +67,9 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 	{
 		AlertDialog alertDialog = (AlertDialog) dialog;
 		alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
+		
 		activityEditText = ((EditText) alertDialog.findViewById(R.id.add_event_user_activity));
 		thoughtEditText = ((EditText) alertDialog.findViewById(R.id.add_event_user_thought));
-	    InputFilter[] FilterArray = new InputFilter[1];
-	    FilterArray[0] = new InputFilter.LengthFilter(60);
-	    activityEditText.setFilters(FilterArray);
-	    thoughtEditText.setFilters(FilterArray);
 		
 		TextWatcher textWatcher = new TextWatcher()
 		{
@@ -89,12 +83,6 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 				
 				((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_POSITIVE)
 					.setEnabled(activityText.length() > 0 && thoughtText.length() > 0 && activityText.length() < 60 && thoughtText.length() < 60);
-				
-				if (activityText.length() >=60 || thoughtText.length() >= 60)
-				{
-					Toast.makeText(mContext, "Limit is 60 characters!", Toast.LENGTH_SHORT).show();
-				}
-				
 			}
 
 			@Override
