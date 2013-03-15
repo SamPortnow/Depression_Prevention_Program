@@ -53,7 +53,7 @@ public class CalendarDbAdapter {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { //if the db gets upgraded. android docs say that the memory from the db is wiped. I need a workaround here!! 
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS activities");
+            db.execSQL("DROP TABLE IF EXISTS calendar");
             onCreate(db);
         }
     }
@@ -165,8 +165,17 @@ public class CalendarDbAdapter {
 
     public Cursor fetchAll()
     {
-        return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_MINUTES,
+    	return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_MINUTES,
         		COLUMN_NAME_YEAR, COLUMN_NAME_DAY, COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, null , null, null, null, null); 
+
+    }
+    
+    public Cursor fetchLatest(int count)
+    {
+    	Log.e("count is", ""+count);
+    	String sLatest = String.valueOf(count);
+    	return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_MINUTES,
+        		COLUMN_NAME_YEAR, COLUMN_NAME_DAY, COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, KEY_ROWID +" >?" , new String[]{sLatest}, null, null, null); 
 
     }
 

@@ -69,9 +69,7 @@ public class Graph extends Fragment
 		Button previous = (Button) view.findViewById(R.id.previous);
 	    Day = cal.get(Calendar.DAY_OF_YEAR);
 	    Year = cal.get(Calendar.YEAR);
-	    chartView = generate(Day, Year);
 		layout = (LinearLayout) view.findViewById(R.id.graph);	
-		layout.addView(chartView);
 
 	    next.setOnClickListener(new OnClickListener()
 	    {
@@ -108,7 +106,10 @@ public class Graph extends Fragment
 			}
 	    	
 	    });
-	    
+	    chartView = generate(Day, Year);
+		layout.addView(chartView);
+
+
 	    return view;
 
 		}
@@ -171,20 +172,22 @@ public class Graph extends Fragment
 				mRenderer.addXTextLabel(i, "12 AM");
 
 			}
-			if (1 > 0 && i < 13)
+			if ( i== 4 || i == 7 || i == 10)
 			{
 				mRenderer.addXTextLabel(i, ""+((i-1)+" AM"));
 			}
 			
-			if (i == 13)
+			if (i == 13 )
 			{
 				mRenderer.addXTextLabel(i, ""+(12 +" PM"));
 			}
 			
-			if (i > 13 && i < 25)
+			if (i == 16 || i == 19 || i == 22)
 			{
 				mRenderer.addXTextLabel(i, ""+((i -13 ) +" PM"));
 			}
+			
+			
 		}
 		
 		for (int i = 0; i < 7; i++)
@@ -221,6 +224,8 @@ public class Graph extends Fragment
 		mRenderer.setChartTitle(sDate);
 		mRenderer.setClickEnabled(true);
 		mRenderer.setXLabelsAngle(45);
+		mRenderer.setLabelsTextSize(18);
+		mRenderer.setXLabelsPadding(30);
 
 		// Customization time for line 1!
 		renderer.setColor(Color.GRAY);

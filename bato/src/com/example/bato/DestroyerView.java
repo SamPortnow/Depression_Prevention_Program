@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Layout;
 import android.text.StaticLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;

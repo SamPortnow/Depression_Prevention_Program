@@ -38,7 +38,8 @@ import android.util.Log;
 
 	    private static class DatabaseHelper extends SQLiteOpenHelper {
 
-	        DatabaseHelper(Context context) {
+	        DatabaseHelper(Context context) 
+	        {
 	            super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	        }
 
@@ -52,7 +53,7 @@ import android.util.Log;
 	        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { //if the db gets upgraded. android docs say that the memory from the db is wiped. I need a workaround here!! 
 	            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
 	                    + newVersion + ", which will destroy all old data");
-	            db.execSQL("DROP TABLE IF EXISTS activities");
+	            db.execSQL("DROP TABLE IF EXISTS game");
 	            onCreate(db);
 	        }
 	    }

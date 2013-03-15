@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnShowListener;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
@@ -26,6 +27,7 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 	private EditText thoughtEditText = null;
 	private Context mContext;
 	CalendarDbAdapter calendarDbHelper;
+	Post post_it;
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -52,6 +54,8 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 			public void onClick(DialogInterface dialog, int which)
 			{
 				createEvent();
+				Intent service = new Intent(mContext, Post.class);
+				mContext.startService(service);
 			}			
 		});			
 		
