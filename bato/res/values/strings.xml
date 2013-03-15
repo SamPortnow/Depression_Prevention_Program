@@ -15,7 +15,7 @@
     <string name="destroyer_stats_negatives_destroyed">Negative thoughts destroyed</string>
     <string name="destroyer_stas_personal_points">Personal Scientist points</string>
     <string name="destroyer_stats_high_score">High Score</string>
-    <string name="destroyer_stats_more_scores">(more) \u25cf</string>
+    <string name="destroyer_stats_more_scores">(see more)</string>
     
     <string name="high_scores_title">High Scores</string>
     

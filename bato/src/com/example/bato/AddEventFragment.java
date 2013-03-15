@@ -24,37 +24,22 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 {
 	private EditText activityEditText = null;
 	private EditText thoughtEditText = null;
-	CalendarDbAdapter calendarDbHelper;
-	Post post_it;
-	Context mContext;
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState)
 	{ 
 		AlertDialog.Builder builder = new Builder(getActivity());
-		mContext = this.getActivity();
-		builder.setView(getActivity().getLayoutInflater().inflate(R.layout.fragment_add_event, null));
-		builder.setTitle(R.string.add_event_fragment_title);
-		this.getActivity();
 
-		
-		builder.setNegativeButton(android.R.string.cancel, new OnClickListener()
-		{		
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				dialog.dismiss();
-			}
-		});
+		builder.setView(getActivity().getLayoutInflater().inflate(R.layout.fragment_add_event, null));
+		builder.setTitle(R.string.add_event_fragment_title);		
+		builder.setNegativeButton(android.R.string.cancel, null);
 		
 		builder.setPositiveButton(android.R.string.ok, new OnClickListener()
 		{
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
-				createEvent();
-				Intent service = new Intent(mContext, Post.class);
-				mContext.startService(service);
+				createEvent();			
 			}			
 		});			
 		
@@ -82,15 +67,13 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 				String activityText = activityEditText.getText().toString();
 				String thoughtText = thoughtEditText.getText().toString();
 				
-				if (activityText.length() >=60 || thoughtText.length() >= 60)
-		        {
-		          Toast.makeText(mContext, "Limit is 60 characters!", Toast.LENGTH_SHORT).show();
-		        } 
+				boolean atMaxLength = ((activityText.length() >= 60) || (thoughtText.length() >= 60));
 				
-				
+				if (atMaxLength == true)
+		          Toast.makeText(getActivity(), "Limit is 60 characters!", Toast.LENGTH_SHORT).show();
+								
 				((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_POSITIVE)
-					.setEnabled(activityText.length() > 0 && thoughtText.length() > 0 && activityText.length() < 60 && thoughtText.length() < 60);
-				 
+					.setEnabled((activityText.length() > 0) && (thoughtText.length() > 0) && (atMaxLength == false));				 
 			}
 
 			@Override
@@ -121,33 +104,31 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 		String thoughtText = thoughtEditText.getText().toString();
 		int moodValue = ((SeekBar) getDialog().findViewById(R.id.add_event_user_mood)).getProgress();	
 		
-		CalendarDbAdapter calendarDbHelper = new CalendarDbAdapter(getActivity());
+		Context context = getActivity();
+		
+		CalendarDbAdapter calendarDbHelper = new CalendarDbAdapter(context);
 		calendarDbHelper.open();
 		
 		Cursor cursor = calendarDbHelper.fetchCalendar(eventYear, eventDayofYear, eventMinuteOfDay);
 		
 		if (cursor.moveToFirst() == false)
 		{
-			Log.e("add_event_fragment", "Creating a new event: " + eventDayofYear + ", " + eventMinuteOfDay);
+			Log.d("add_event_fragment", "Creating a new event: " + eventDayofYear + ", " + eventMinuteOfDay);
 			
 			calendarDbHelper.createCalendar(eventYear, eventDayofYear, eventMinuteOfDay, activityText, moodValue, thoughtText);
 		}
 		else
 		{
-			Log.e("add_event_fragment", "Updating an existing event: " + eventDayofYear + ", " + eventMinuteOfDay);
+			Log.d("add_event_fragment", "Updating an existing event: " + eventDayofYear + ", " + eventMinuteOfDay);
 			
 			calendarDbHelper.updateCalendar(eventYear, eventDayofYear, eventMinuteOfDay, activityText, moodValue, thoughtText);
 		}
 		
-		Toast.makeText(getActivity(), R.string.add_event_toast_created_event, Toast.LENGTH_SHORT).show();
+		Toast.makeText(context, R.string.add_event_toast_created_event, Toast.LENGTH_SHORT).show();
 		
 		calendarDbHelper.close();
+
+		Intent service = new Intent(context, Post.class);		
+		context.startService(service);		
 	}
-	
-	@Override
-	public void onDestroyView()
-	{
-		super.onDestroyView();
-	}
-	
 }
