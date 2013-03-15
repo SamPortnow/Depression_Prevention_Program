@@ -143,17 +143,6 @@ public class GameDbAdapter
         		COLUMN_NAME_SUCCESS}, null, null, null, null, null);
 
     }
-    
-    public Cursor fetchLatest(int count)
-    {
-    	String sLatest = String.valueOf(count);
-    	return mGameDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_TIME, COLUMN_NAME_RT,
-        		COLUMN_NAME_SCORE, COLUMN_NAME_GAME_NUMBER,
-        		COLUMN_NAME_GAME_COMPLETE, COLUMN_NAME_TRIAL,
-        		COLUMN_NAME_NEGATIVE_THOUGHT, COLUMN_NAME_POSITIVE_THOUGHT,
-        		COLUMN_NAME_SUCCESS}, KEY_ROWID +" >?" , new String[]{sLatest}, null, null, null);
-
-    }
    
 }
 

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -90,7 +89,6 @@ public class AnimatedNegative extends View
     int explode;
     boolean pull = true;
     StaticLayout positive_layout;
-    boolean push;
 
     //word bank of positive words to check against 
 
@@ -484,8 +482,6 @@ public class AnimatedNegative extends View
         	{
         		thunderPlayer.stop();
         	}
-        	
-        	push = true;
         }
 
 }

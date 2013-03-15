@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -22,7 +21,6 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Layout;
 import android.text.StaticLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -272,8 +270,6 @@ public class DestroyerView extends Fragment
 	public void onDestroyView()
 	{
 		super.onDestroyView();
-		Intent service = new Intent(mContext, PostGame.class);
-		mContext.startService(service);
 		mDbHelper.close();
 		getActivity().getActionBar().show();		
 	}
