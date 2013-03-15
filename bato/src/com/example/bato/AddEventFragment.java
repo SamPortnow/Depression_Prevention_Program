@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnShowListener;
@@ -25,12 +26,13 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 	private EditText thoughtEditText = null;
 	CalendarDbAdapter calendarDbHelper;
 	Post post_it;
+	Context mContext;
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState)
 	{ 
 		AlertDialog.Builder builder = new Builder(getActivity());
-		
+		mContext = this.getActivity();
 		builder.setView(getActivity().getLayoutInflater().inflate(R.layout.fragment_add_event, null));
 		builder.setTitle(R.string.add_event_fragment_title);
 		this.getActivity();
@@ -80,9 +82,15 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 				String activityText = activityEditText.getText().toString();
 				String thoughtText = thoughtEditText.getText().toString();
 				
+				if (activityText.length() >=60 || thoughtText.length() >= 60)
+		        {
+		          Toast.makeText(mContext, "Limit is 60 characters!", Toast.LENGTH_SHORT).show();
+		        } 
+				
 				
 				((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_POSITIVE)
 					.setEnabled(activityText.length() > 0 && thoughtText.length() > 0 && activityText.length() < 60 && thoughtText.length() < 60);
+				 
 			}
 
 			@Override

@@ -29,16 +29,8 @@
 
     <string name="destroyer">write a positive thought to destroy the negative thought</string>
     <string name="destroy">FIRE!</string>
-<<<<<<< HEAD
-    <string name="high_scores">High Scores</string>
-    <string name="body_count">Negative Thoughts Destroyed</string>
     <string name="next">Next</string>
     <string name="previous">Prev</string>
-    <string name="scientist">Personal Scientist Points</string>
-=======
-    <string name="next">Next</string>
-    <string name="previous">Prev</string>
->>>>>>> 60a1790c27f8fc860c93cb2e20f662c834c5e14a
     <string name="activity">You were doing</string>
     <string name="thought">You were thinking</string>
     <string name="username">enter a username</string>

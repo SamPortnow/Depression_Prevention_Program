@@ -14,8 +14,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
             android:padding="10dp"
+            android:textColor = "#ffffff"
             android:text="@string/destroyer_stats_title"
             android:textIsSelectable="false"
+            android:background = "#4B0082"
             android:textSize="20sp" />
 
         <Button
@@ -23,6 +25,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
+            android:background = "@drawable/destroyer_buttom"
             android:text="@string/destroyer_stats_play_game" />
     </LinearLayout>
 
@@ -51,7 +54,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
-                android:background="#ffefefef"
+                android:background="#ADD8E6"
                 android:padding="10dp"
                 android:text="@string/destroyer_stas_personal_points"
                 android:textIsSelectable="false"
@@ -78,7 +81,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
-                android:background="#ffefefef"
+                android:background="#00FA9A"
                 android:padding="10dp"
                 android:text="@string/destroyer_stats_negatives_destroyed"
                 android:textIsSelectable="false"
@@ -110,7 +113,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="#ffefefef"
+                    android:background="#FFDAB9"
                     android:padding="10dp"
                     android:text="@string/destroyer_stats_high_score"
                     android:textIsSelectable="false"
@@ -120,7 +123,7 @@
                     android:id="@+id/destroyer_stats_more_scores"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="#ffefefef"
+                    android:background="@drawable/more"
                     android:padding="10dp"
                     android:text="@string/destroyer_stats_more_scores"
                     android:textIsSelectable="false"
