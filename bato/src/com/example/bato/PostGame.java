@@ -3,6 +3,7 @@ package com.example.bato;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -16,6 +17,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.IBinder;
+import android.util.Log;
 
 public class PostGame extends IntentService
 {
@@ -23,6 +25,9 @@ public class PostGame extends IntentService
 	Cursor game;
 	int game_count;
 	int cal_count;
+	int current;
+	GamePushDbAdapter mPushDbHelper = new GamePushDbAdapter(this);
+
 	
 	  public PostGame() 
 	  {
@@ -33,13 +38,22 @@ public class PostGame extends IntentService
 	  @Override
 	  protected void onHandleIntent(Intent intent) 
 	  {
+		Log.e("I am here", "onHandleIntent");
+
 		mScoresHelper = new GameDbAdapter(this);
 		JSONArray jArrayGames = new JSONArray();
-
+		mPushDbHelper.open();
 		mScoresHelper.open();
-		game = mScoresHelper.fetchAll();
+		Cursor database = mPushDbHelper.fetchPush();
+		if (database.moveToFirst())
+		{
+			current = database.getInt(database.getColumnIndexOrThrow(CalendarPushDbAdapter.KEY_ROWID));
+		}
 		
-		
+		database.close();
+		Log.e("I am here", "yes i am");
+		game = mScoresHelper.fetchLatest(current);
+	
 		while (game.moveToNext())
 		{
 			try 
@@ -55,6 +69,7 @@ public class PostGame extends IntentService
 				jObjectGame.put("Positive Thought", game.getString(game.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_POSITIVE_THOUGHT)));
 				jObjectGame.put("Success", game.getString(game.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_SUCCESS)));
 				jArrayGames.put(jObjectGame);
+				current++;
 
 			} 
 			catch (IllegalArgumentException e) 
@@ -69,9 +84,12 @@ public class PostGame extends IntentService
 			
 		}
 		
+		mScoresHelper.close();
+		game.close();
+		
 		try 
 		{
-			PostData(jArrayGames);
+			PostData(jArrayGames, current);
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -81,10 +99,10 @@ public class PostGame extends IntentService
 		}
 	}
 		
-		private void PostData(JSONArray jArrayGames) throws ClientProtocolException, IOException
+		private void PostData(JSONArray jArrayGames, int current) throws ClientProtocolException, IOException
 		{
 		HttpClient httpclientgame = new DefaultHttpClient();
-		HttpPost httpostgame = new HttpPost("http://10.0.2.2:5000/");
+		HttpPost httpostgame = new HttpPost("http://10.0.2.2:5000/game");
 		StringEntity sGames;
 		try 
 		{
@@ -92,7 +110,16 @@ public class PostGame extends IntentService
 			httpostgame.setEntity(sGames);
 			httpostgame.setHeader("Accept", "application/json");
 			httpostgame.setHeader("Content-type", "application/json");
-			httpclientgame.execute(httpostgame);
+			HttpResponse postResponse = httpclientgame.execute(httpostgame);
+			Log.e("I am here", "did i post");
+
+			if (postResponse.getStatusLine().getStatusCode() == 200)
+			{
+					current++;
+					mPushDbHelper.createPush(current);
+			}
+			
+			mPushDbHelper.close();
 		} 
 		catch (UnsupportedEncodingException e) 
 		{
