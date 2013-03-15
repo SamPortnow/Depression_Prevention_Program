@@ -12,50 +12,56 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="0.7"
+            android:background="#4b0082"
             android:padding="10dp"
-            android:textColor = "#ffffff"
             android:text="@string/destroyer_stats_title"
+            android:textColor="#ffffff"
             android:textIsSelectable="false"
-            android:background = "#4B0082"
-            android:textSize="20sp" />
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/destroyer_stats_play_game"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.3"
-            android:background = "@drawable/destroyer_buttom"
             android:text="@string/destroyer_stats_play_game" />
     </LinearLayout>
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:stretchColumns="*" >
 
         <TableRow
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_bottom_dashed"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" >
 
             <TextView
                 android:id="@+id/destroyer_stats_personal_points"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
-                android:background="#ffcfcfcf"
                 android:gravity="center_horizontal"
-                android:padding="10dp"
+                android:paddingRight="5dp"
+                android:textColor="@android:color/holo_green_dark"
                 android:textIsSelectable="false"
-                android:textSize="18sp"
+                android:textSize="28sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="0.8"
-                android:background="#ADD8E6"
-                android:padding="10dp"
+                android:paddingLeft="5dp"
                 android:text="@string/destroyer_stas_personal_points"
                 android:textIsSelectable="false"
                 android:textSize="18sp" />
@@ -63,26 +69,29 @@
 
         <TableRow
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_bottom_dashed"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" >
 
             <TextView
                 android:id="@+id/destroyer_stats_negatives_destroyed"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
-                android:background="#ffcfcfcf"
                 android:gravity="center_horizontal"
-                android:padding="10dp"
+                android:paddingRight="5dp"
+                android:textColor="@android:color/holo_red_dark"
                 android:textIsSelectable="false"
-                android:textSize="18sp"
+                android:textSize="28sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="0.8"
-                android:background="#00FA9A"
-                android:padding="10dp"
+                android:paddingLeft="5dp"
                 android:text="@string/destroyer_stats_negatives_destroyed"
                 android:textIsSelectable="false"
                 android:textSize="18sp" />
@@ -90,31 +99,33 @@
 
         <TableRow
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" >
 
             <TextView
                 android:id="@+id/destroyer_stats_high_score"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
-                android:background="#ffcfcfcf"
                 android:gravity="center_horizontal"
-                android:padding="10dp"
+                android:paddingRight="5dp"
+                android:textColor="@android:color/holo_blue_dark"
                 android:textIsSelectable="false"
-                android:textSize="18sp"
+                android:textSize="28sp"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.8" >
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.8"
+                android:paddingLeft="5dp" >
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="#FFDAB9"
-                    android:padding="10dp"
                     android:text="@string/destroyer_stats_high_score"
                     android:textIsSelectable="false"
                     android:textSize="18sp" />
@@ -123,8 +134,8 @@
                     android:id="@+id/destroyer_stats_more_scores"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@drawable/more"
-                    android:padding="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:text="@string/destroyer_stats_more_scores"
                     android:textIsSelectable="false"
                     android:textSize="18sp" />
