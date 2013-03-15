@@ -10,6 +10,15 @@
 
     <string name="home_destroyer_game_launch">Destroyer Game</string>
     
+    <string name="destroyer_stats_title">Destroyer Game</string>
+    <string name="destroyer_stats_play_game">Play</string>
+    <string name="destroyer_stats_negatives_destroyed">Negative thoughts destroyed</string>
+    <string name="destroyer_stas_personal_points">Personal Scientist points</string>
+    <string name="destroyer_stats_high_score">High Score</string>
+    <string name="destroyer_stats_more_scores">(more) \u25cf</string>
+    
+    <string name="high_scores_title">High Scores</string>
+    
     <string name="add_event_fragment_title">Add a new event&#x2026;</string>
     <string name="add_event_toast_created_event">New event created.</string>
     <string name="add_event_user_activity_hint">What are you doing?</string>
@@ -20,11 +29,8 @@
 
     <string name="destroyer">write a positive thought to destroy the negative thought</string>
     <string name="destroy">FIRE!</string>
-    <string name="high_scores">High Scores</string>
-    <string name="body_count">Negative thoughts destroyed</string>
     <string name="next">Next</string>
     <string name="previous">Prev</string>
-    <string name="scientist">Personal Scientist points</string>
     <string name="activity">You were doing</string>
     <string name="thought">You were thinking</string>
 

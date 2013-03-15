@@ -18,7 +18,7 @@ public class MainActivity extends Activity
         if(savedInstanceState == null) 
         {
         	FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();			        
-        	fragmentTransaction.replace(R.id.fragment_container, new ActivityHome(), "activity_home_fragment");        
+        	fragmentTransaction.replace(R.id.fragment_container, new ActivityHome(), "activity_home_fragment");
         	fragmentTransaction.commit();
         	
         	WelcomeFragment welcomeFragment = new WelcomeFragment();
