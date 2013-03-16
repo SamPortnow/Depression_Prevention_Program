@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -270,6 +271,8 @@ public class DestroyerView extends Fragment
 	public void onDestroyView()
 	{
 		super.onDestroyView();
+		Intent service = new Intent(getActivity(), PostGame.class);		
+		getActivity().startService(service);	
 		mDbHelper.close();
 		getActivity().getActionBar().show();		
 	}

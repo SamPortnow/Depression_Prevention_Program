@@ -17,7 +17,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.IBinder;
-import android.util.Log;
 
 public class Post extends IntentService
 {
@@ -40,6 +39,7 @@ public class Post extends IntentService
 	  {
 		mCalHelper = new CalendarDbAdapter(this);
 		JSONArray jArrayCal = new JSONArray();
+		mCalHelper.open();
 		mPushDbHelper.open();
 		Cursor database = mPushDbHelper.fetchPush();
 		if (database.moveToFirst())
@@ -61,8 +61,8 @@ public class Post extends IntentService
 				jObjectCal.put("Activity", cal.getString(cal.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_ACTIVITY)));
 				jObjectCal.put("Feeling", cal.getInt(cal.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_FEELING)));
 				jObjectCal.put("Thought", cal.getString(cal.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)));
-				Log.e("Feeling is", cal.getString(cal.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)));
 				jArrayCal.put(jObjectCal);
+				current++;
 			} 
 			
 			catch (IllegalArgumentException e) 
@@ -78,6 +78,7 @@ public class Post extends IntentService
 		}
 		cal.close();
 		mCalHelper.close();
+		database.close();
 		try 
 		{
 			
@@ -110,6 +111,7 @@ public class Post extends IntentService
 					mPushDbHelper.createPush(current);
 			}
 			
+			mPushDbHelper.close();
 		}
 		catch (UnsupportedEncodingException e) 
 		{

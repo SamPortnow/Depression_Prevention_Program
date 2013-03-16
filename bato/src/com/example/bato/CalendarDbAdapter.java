@@ -172,7 +172,6 @@ public class CalendarDbAdapter {
     
     public Cursor fetchLatest(int count)
     {
-    	Log.e("count is", ""+count);
     	String sLatest = String.valueOf(count);
     	return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_MINUTES,
         		COLUMN_NAME_YEAR, COLUMN_NAME_DAY, COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, KEY_ROWID +" >?" , new String[]{sLatest}, null, null, null); 
