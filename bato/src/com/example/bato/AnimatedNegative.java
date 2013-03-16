@@ -199,7 +199,7 @@ public class AnimatedNegative extends View
         	    	positive_paint.setColor(Color.parseColor("#FF4444"));
                	 	positive_paint.setShadowLayer(5, 2, 2, Color.YELLOW);
                 	positive_paint.setTypeface(Typeface.DEFAULT_BOLD);
-        	    	positive_paint.setTextSize(25);
+        	    	positive_paint.setTextSize(height/25);
                 	score.setAntiAlias(true);
                 	score.setTypeface(Typeface.DEFAULT_BOLD);
 
