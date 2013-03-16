@@ -24,6 +24,7 @@ import android.app.AlertDialog.Builder;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -151,13 +152,19 @@ public class Graph extends Fragment
 	    
 	    else
 	    {
+			SharedPreferences prefs = getActivity().getSharedPreferences(
+				      "com.example.app", Context.MODE_PRIVATE);
+			if (prefs.getBoolean("Graph", true) == true)
+			{
 			AlertDialog.Builder builder = new Builder(getActivity());
-			
 			builder.setTitle("Note");
 			builder.setMessage("Click each point to see how what you were doing and what you were thinking are related to how you were feeling");		
 			builder.setPositiveButton(android.R.string.ok, null);
 			builder.create();
 			builder.show();
+			prefs.edit().putBoolean("Graph", false).commit();
+			}
+
 	    }
 		
 		XYValueSeries series = new XYValueSeries("Mood by Time"); 

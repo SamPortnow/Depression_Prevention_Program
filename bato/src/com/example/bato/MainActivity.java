@@ -2,6 +2,8 @@ package com.example.bato;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
@@ -28,11 +30,14 @@ public class MainActivity extends Activity
         	fragmentTransaction.commit();
             
 
-            
+			SharedPreferences prefs = this.getSharedPreferences(
+				      "com.example.app", Context.MODE_PRIVATE);
+			if (prefs.getString("username", null) == null)
+			{
         	WelcomeFragment welcomeFragment = new WelcomeFragment();
         	welcomeFragment.setCancelable(false);
         	welcomeFragment.show(getFragmentManager(), "welcome_fragment");
-        
+			}
     		
         }
     }

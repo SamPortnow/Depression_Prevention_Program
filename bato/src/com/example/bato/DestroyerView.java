@@ -14,7 +14,9 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -111,15 +113,30 @@ public class DestroyerView extends Fragment
 	    Cursor mean_rt_cursor = mDbHelper.fetchRT();
 	    View view = inflater.inflate(R.layout.activity_destroyer, container, false);
 	    PositiveAnimatedNegative = (AnimatedNegative) view.findViewById(R.id.anim_view);
-	    PositiveAnimatedNegative.start = true;
+	    
+		SharedPreferences prefs = getActivity().getSharedPreferences(
+			      "com.example.app", Context.MODE_PRIVATE);
+		if (prefs.getBoolean("Game", true) == true)
+		{
+		prefs.edit().putBoolean("Game", false).commit();
 		AlertDialog.Builder builder = new Builder(getActivity());
 		builder.setTitle("Note");
 		builder.setMessage("destroy the negative thoughts with positive thoughts! Be quick, you will be awarded bonus points for faster responses!");		
 		builder.setPositiveButton(android.R.string.ok, null);
 		builder.create();
 		builder.show();
+		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) 
+            {
+	    PositiveAnimatedNegative.start = true;
+            }
+        	});
+		}
 		
-
+		else
+		{
+			PositiveAnimatedNegative.start = true;
+		}
 	    if (mean_rt_cursor.moveToFirst())
 	    {
 	    	while (mean_rt_cursor.moveToNext())
