@@ -73,7 +73,7 @@ public class AnimatedNegative extends View
     long start_mills;
     long current_mills;
     long rt;
-    boolean start = true; 
+    boolean start = false; 
     long scorer;
     long tracker;
     String write_tracker;
@@ -89,6 +89,7 @@ public class AnimatedNegative extends View
     int explode;
     boolean pull = true;
     StaticLayout positive_layout;
+    boolean start_it;
 
     //word bank of positive words to check against 
 
@@ -430,7 +431,7 @@ public class AnimatedNegative extends View
        		 }
        		 if (start == true)
        		 {
-       			Calendar starting = Calendar.getInstance();
+       			 Calendar starting = Calendar.getInstance();
        			 start_mills = starting.getTimeInMillis();
        			 start = false;
        		 }

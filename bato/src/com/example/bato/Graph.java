@@ -19,9 +19,11 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.app.AlertDialog.Builder;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -145,6 +147,17 @@ public class Graph extends Fragment
 	    if (! calendar.moveToFirst())
 	    {
 	    	Toast.makeText(mContext, "No events this day!", Toast.LENGTH_SHORT).show();
+	    }
+	    
+	    else
+	    {
+			AlertDialog.Builder builder = new Builder(getActivity());
+			
+			builder.setTitle("Note");
+			builder.setMessage("Click each point to see how what you were doing and what you were thinking are related to how you were feeling");		
+			builder.setPositiveButton(android.R.string.ok, null);
+			builder.create();
+			builder.show();
 	    }
 		
 		XYValueSeries series = new XYValueSeries("Mood by Time"); 

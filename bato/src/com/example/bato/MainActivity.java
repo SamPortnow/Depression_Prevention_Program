@@ -2,28 +2,38 @@ package com.example.bato;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends Activity
 {
-    @Override
+    UserNameDbAdapter UserNameDbHelper;
+	
+	@Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+		UserNameDbHelper = new UserNameDbAdapter(this);
+		UserNameDbHelper.open();
+		Cursor username = UserNameDbHelper.fetchUserName();
         
         setContentView(R.layout.activity_main);
-        
+
         if(savedInstanceState == null) 
         {
         	FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();			        
         	fragmentTransaction.replace(R.id.fragment_container, new ActivityHome(), "activity_home_fragment");
         	fragmentTransaction.commit();
-        	
+            
+
+            
         	WelcomeFragment welcomeFragment = new WelcomeFragment();
         	welcomeFragment.setCancelable(false);
         	welcomeFragment.show(getFragmentManager(), "welcome_fragment");
+        
+    		
         }
     }
 

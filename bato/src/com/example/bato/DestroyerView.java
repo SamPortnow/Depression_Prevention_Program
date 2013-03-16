@@ -10,7 +10,9 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -107,6 +109,16 @@ public class DestroyerView extends Fragment
 	    mDbHelper.open();
 	    Cursor activity = mDbHelper.fetchGame(game);
 	    Cursor mean_rt_cursor = mDbHelper.fetchRT();
+	    View view = inflater.inflate(R.layout.activity_destroyer, container, false);
+	    PositiveAnimatedNegative = (AnimatedNegative) view.findViewById(R.id.anim_view);
+	    PositiveAnimatedNegative.start = true;
+		AlertDialog.Builder builder = new Builder(getActivity());
+		builder.setTitle("Note");
+		builder.setMessage("destroy the negative thoughts with positive thoughts! Be quick, you will be awarded bonus points for faster responses!");		
+		builder.setPositiveButton(android.R.string.ok, null);
+		builder.create();
+		builder.show();
+		
 
 	    if (mean_rt_cursor.moveToFirst())
 	    {
@@ -135,13 +147,11 @@ public class DestroyerView extends Fragment
 	    birdPlayer = MediaPlayer.create(mContext, R.raw.bird);
 
 	    
-	    View view = inflater.inflate(R.layout.activity_destroyer, container, false);
 	    final Button fire = (Button) view.findViewById(R.id.destroy);
 	    final EditText positive_thought = (EditText) view.findViewById(R.id.destroyer);
 	    InputFilter[] FilterArray = new InputFilter[1];
 	    FilterArray[0] = new InputFilter.LengthFilter(60);
 	    positive_thought.setFilters(FilterArray);
-	    PositiveAnimatedNegative = (AnimatedNegative) view.findViewById(R.id.anim_view);
 	    positive_thought.setOnTouchListener(new OnTouchListener()
 	    {
 

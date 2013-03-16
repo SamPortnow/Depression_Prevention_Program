@@ -29,6 +29,7 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 	public Dialog onCreateDialog(Bundle savedInstanceState)
 	{ 
 		AlertDialog.Builder builder = new Builder(getActivity());
+		Toast.makeText(getActivity(), "TAG YOUR THOUGHTS WITH A + FOR POSITIVE THOUGHTS, AND A - FOR NEGATIVE THOUGHTS", Toast.LENGTH_LONG).show();
 
 		builder.setView(getActivity().getLayoutInflater().inflate(R.layout.fragment_add_event, null));
 		builder.setTitle(R.string.add_event_fragment_title);		

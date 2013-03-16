@@ -34,30 +34,19 @@
     <string name="activity">You were doing</string>
     <string name="thought">You were thinking</string>
     <string name="username">enter a username</string>
-    <string name="finish">get to the app!</string>
+    <string name="finish">finish!</string>
     <string name="setup">The aim of this app is to help people build the skills that researchers find 
-helpful in feeling good. These two skills are:\n
+helpful in feeling good. These two skills are:\n \n
 
-1)  The skill of being your own "personal scientist". know the activities you do that make you feel good (or bad), 
+1)  Being your own "personal scientist". Know the activities you do that make you feel good (or bad), 
 and know the thoughts you think that make you feel good (or bad). \n
 
-2) The skill to replace negative thoughts with positive ones.\n \n
+2) Replacing negative thoughts with positive ones.\n \n
 
 
-You will build these skills through a daily diary and the "Negative Thought Destroyer Game". \n
+You will build these skills through a daily diary, daily mood graphs, and the "Negative Thought Destroyer Game". \n\n
 
-With the daily diary you will track what you are doing, 
-what you are thinking, and how  you are feeling. 
-TAG YOUR THOUGHTS WITH A + FOR POSITIVE THOUGHTS, AND A - 
-FOR NEGATIVE THOUGHTS. The diary will produce a graph
-of your daily mood. Click each point to see how what you were doing and what
-you were thinking are related to how you were feeling. \n
-
-With the "Negative Thought Destroyer Game", the thoughts you tagged with a - in your diary will be placed into a "negative thought cloud". 
-It is your task to destroy them with a positive thought! Be quick, you will be awarded 
-bonus points for faster responses! \n
-
-Enter a username and start the app!
+Enter a username and start!
 </string>
 
 </resources>
