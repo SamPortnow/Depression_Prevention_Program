@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,10 +27,8 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -39,7 +36,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class DestroyerView extends Fragment
+public class DestroyerView extends Activity
 {
 	private Context mContext;
 	Paint paint = new Paint();
@@ -63,8 +60,6 @@ public class DestroyerView extends Fragment
 	private int trial_check;
 	String yes = "Yes";
 	TextView positive;
-
-	
 	public static boolean populatePositiveWords(Context context)
 	{
 		mPositiveWords = new HashSet<String>();
@@ -91,35 +86,29 @@ public class DestroyerView extends Fragment
 		//TODO list of negative words 
 	}
 	
-	@Override
-	public void onAttach(Activity activity)
-	{
-		super.onAttach(activity);
-		
-		DestroyerView.populatePositiveWords(activity);
-		
-		activity.getActionBar().hide();
-	}
+
 	
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	        Bundle savedInstanceState) 
+	public void onCreate(Bundle savedInstanceState) 
 	{
 	    super.onCreate(savedInstanceState);
-	    mContext = this.getActivity();
+	    this.getActionBar().hide();
+	    mContext = this;
+	    populatePositiveWords(mContext);
 	    mDbHelper=new GameDbAdapter(mContext);
 	    mDbHelper.open();
 	    Cursor activity = mDbHelper.fetchGame(game);
 	    Cursor mean_rt_cursor = mDbHelper.fetchRT();
-	    View view = inflater.inflate(R.layout.activity_destroyer, container, false);
-	    PositiveAnimatedNegative = (AnimatedNegative) view.findViewById(R.id.anim_view);
+	    setContentView(R.layout.activity_destroyer);
+	    PositiveAnimatedNegative = (AnimatedNegative) findViewById(R.id.anim_view);
 	    
-		SharedPreferences prefs = getActivity().getSharedPreferences(
+		SharedPreferences prefs = this.getSharedPreferences(
 			      "com.example.app", Context.MODE_PRIVATE);
 		if (prefs.getBoolean("Game", true) == true)
 		{
 		prefs.edit().putBoolean("Game", false).commit();
-		AlertDialog.Builder builder = new Builder(getActivity());
+		AlertDialog.Builder builder = new Builder(this);
 		builder.setTitle("Note");
 		builder.setMessage("destroy the negative thoughts with positive thoughts! Be quick, you will be awarded bonus points for faster responses!");		
 		builder.setPositiveButton(android.R.string.ok, null);
@@ -164,21 +153,11 @@ public class DestroyerView extends Fragment
 	    birdPlayer = MediaPlayer.create(mContext, R.raw.bird);
 
 	    
-	    final Button fire = (Button) view.findViewById(R.id.destroy);
-	    final EditText positive_thought = (EditText) view.findViewById(R.id.destroyer);
+	    final Button fire = (Button) findViewById(R.id.destroy);
+	    final EditText positive_thought = (EditText) findViewById(R.id.destroyer);
 	    InputFilter[] FilterArray = new InputFilter[1];
 	    FilterArray[0] = new InputFilter.LengthFilter(60);
 	    positive_thought.setFilters(FilterArray);
-	    positive_thought.setOnTouchListener(new OnTouchListener()
-	    {
-
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				PositiveAnimatedNegative.typing = true;
-				return false;
-			}
-	    	
-	    });
 	    
 	    
 	    fire.setOnClickListener(new OnClickListener()
@@ -197,7 +176,7 @@ public class DestroyerView extends Fragment
 				
 				if (inputLine.isEmpty())
 				{
-					Toast.makeText(getActivity(), "You have to write something!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext, "You have to write something!", Toast.LENGTH_SHORT).show();
 					mDbHelper.createGame(current_mills, rt, 0, game, "No", trial, positive_thought.getText().toString(), PositiveAnimatedNegative.negative.getText().toString(), "No");
 					return;					
 				}
@@ -272,7 +251,6 @@ public class DestroyerView extends Fragment
 				{
 					birdPlayer.start();
 				}
-    			PositiveAnimatedNegative.typing = false;
     			PositiveAnimatedNegative.scorer = score_tracker;
 	    		StaticLayout positive_layout = new StaticLayout(positive_thought.getText().toString(), PositiveAnimatedNegative.positive_paint, PositiveAnimatedNegative.width/3, Layout.Alignment.ALIGN_CENTER,1f,0f,true);
 	    		PositiveAnimatedNegative.positive_layout = positive_layout;
@@ -291,16 +269,15 @@ public class DestroyerView extends Fragment
         	}
 	    });
 
-	    return view;	   
 	}
 
 	@Override
-	public void onDestroyView()
+	public void onDestroy()
 	{
-		super.onDestroyView();
-		Intent service = new Intent(getActivity(), PostGame.class);		
-		getActivity().startService(service);	
+		super.onDestroy();
+		Intent service = new Intent(this, PostGame.class);		
+		startService(service);	
 		mDbHelper.close();
-		getActivity().getActionBar().show();		
+		this.getActionBar().show();		
 	}
 }

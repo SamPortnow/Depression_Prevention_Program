@@ -68,7 +68,6 @@ public class AnimatedNegative extends View
     boolean starting = true;
     boolean moved_back;
     private MediaPlayer thunderPlayer;
-    boolean typing;
     int thunder_time = 0;
     long start_mills;
     long current_mills;
@@ -173,12 +172,7 @@ public class AnimatedNegative extends View
 
             
 			protected void onDraw (Canvas canvas)
-            {
-				if (typing == false)
-				{
-				h.postDelayed(r, FRAME_RATE);
-				}
-
+            {				
             	//save the canvas on the first draw
             	if (first == true)
             	{ 
@@ -225,7 +219,7 @@ public class AnimatedNegative extends View
 
             	if (tracker < scorer)
             	{
-            		tracker += 3;
+            		tracker ++;
             		write_tracker = Long.toString(tracker);
             		canvas.drawRect(0, 0, width, height/25, score_background);
             		canvas.drawText("SCORE " + write_tracker, width/3, height/25,  score);
@@ -369,7 +363,12 @@ public class AnimatedNegative extends View
     	    				posy = -1;
         	    		}
 
+        	    		
+        	    
         	    }
+				
+        	    
+        	    h.postDelayed(r, FRAME_RATE);
 
 				}
 				else
