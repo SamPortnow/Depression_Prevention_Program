@@ -27,11 +27,11 @@
         <fragment
             android:name="com.example.bato.Destroyer">
         </fragment>
-                <fragment
+                <activity
             	 android:name="com.example.bato.DestroyerView"
                  android:configChanges="orientation"
    				 android:screenOrientation="portrait">
-        </fragment>
+        </activity>
         <fragment
              android:name="com.example.bato.Graph" >
         </fragment>

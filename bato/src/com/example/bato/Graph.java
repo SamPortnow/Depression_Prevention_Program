@@ -19,11 +19,9 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.app.AlertDialog.Builder;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -139,6 +137,8 @@ public class Graph extends Fragment
 	    	while (calendar.moveToNext())
 	    	{
 	    		Hour = (double)((double) (calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_MINUTES)))/60);
+	    		Hour = Math.round(Hour*4)/4;
+	    		Log.e("Hour is", ""+Hour);
 	    		mMap.put(Hour, calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_MINUTES)));
 	    		minutes.add(Hour);
 	    		mood.add(calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_FEELING)));
