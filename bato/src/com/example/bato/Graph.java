@@ -44,13 +44,13 @@ public class Graph extends Fragment
 	long Year;
 	double Hour;
 	int adapter_minutes;
-    ArrayList<Double> minutes = new ArrayList<Double>();
+    ArrayList<Integer> minutes = new ArrayList<Integer>();
     ArrayList<Integer> mood = new ArrayList<Integer>();
     Calendar cal = Calendar.getInstance();
     long Add;
     GraphicalView chartView;
     LinearLayout layout;
-    Map<Double, Integer> mMap;
+    Map<Integer, Integer> mMap;
     TextView thoughts;
     TextView event;
     View events;
@@ -125,7 +125,7 @@ public class Graph extends Fragment
 	public GraphicalView generate(final long Day, final long Year)
 	{
 	    Cursor calendar = mDbHelper.fetchDay(Year, Day);
-	    mMap = new HashMap<Double, Integer>();
+	    mMap = new HashMap<Integer, Integer>();
 	    Calendar cal = Calendar.getInstance();  
 	    cal.set(Calendar.YEAR, (int)Year);  
 	    cal.set(Calendar.DAY_OF_YEAR, (int)Day);  
@@ -136,12 +136,12 @@ public class Graph extends Fragment
 	    mood.clear();
 	    	while (calendar.moveToNext())
 	    	{
-	    		Hour = (double)((double) (calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_MINUTES)))/60);
-	    		Hour = Math.round(Hour*4)/4;
-	    		Log.e("Hour is", ""+Hour);
-	    		mMap.put(Hour, calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_MINUTES)));
-	    		minutes.add(Hour);
-	    		mood.add(calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_FEELING)));
+	    		Hour = (float)((float) (calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_MINUTES)))/60);
+	    		Hour = Hour * 4;
+	    		mMap.put((int) Hour, calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_MINUTES)));
+	    		minutes.add((int) Hour);
+	    		Log.e("Hour is", ""+ (int) Hour);
+	    		mood.add((calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_FEELING)))+1);
 	    	}
 	     
 	    
@@ -185,44 +185,44 @@ public class Graph extends Fragment
 		mRenderer.setPanLimits(limits);
 		mRenderer.setPanEnabled(true, false);
 
-		for (int i = 1; i < 24; i++)
+		for (int i = 4; i < 96; i++)
 		{
-			if (i == 1)
+			if (i == 4)
 			{
 				mRenderer.addXTextLabel(i, "12 AM");
 
 			}
-			if ( i== 4 || i == 7 || i == 10)
+			if ( i== 16 || i == 28 || i == 40)
 			{
-				mRenderer.addXTextLabel(i, ""+((i-1)+" AM"));
+				mRenderer.addXTextLabel(i, ""+((i/4-1)+" AM"));
 			}
 			
-			if (i == 13 )
+			if (i == 52 )
 			{
 				mRenderer.addXTextLabel(i, ""+(12 +" PM"));
 			}
 			
-			if (i == 16 || i == 19 || i == 22)
+			if (i == 64 || i == 76 || i == 88)
 			{
-				mRenderer.addXTextLabel(i, ""+((i -13 ) +" PM"));
+				mRenderer.addXTextLabel(i, ""+((i/4 -13 ) +" PM"));
 			}
 			
 			
 		}
 		
-		for (int i = 0; i < 7; i++)
+		for (int i = 1; i < 8; i++)
 		{
-			if (i == 0)
+			if (i == 1)
 			{
 			mRenderer.addYTextLabel(i, "Terrible");
 			}
 			
-			if (i == 3)
+			if (i == 4)
 			{
 				mRenderer.addYTextLabel(i, "Neutral");
 			}
 			
-			if (i == 6)
+			if (i == 7)
 			{
 				mRenderer.addYTextLabel(i, "Fantastic");
 			}
@@ -237,9 +237,10 @@ public class Graph extends Fragment
 		mRenderer.setAxesColor(Color.CYAN);
 		mRenderer.setXLabelsColor(Color.RED);
 		mRenderer.setYLabelsColor(0, Color.RED);
-		mRenderer.setYAxisMax(7);
+		mRenderer.setYAxisMax(8);
 		mRenderer.setYAxisMin(0);
-		mRenderer.setXAxisMax(23);
+		mRenderer.setXAxisMax(96);
+		mRenderer.setXAxisMin(0);
 		mRenderer.setPointSize(20);
 		mRenderer.setChartTitle(sDate);
 		mRenderer.setClickEnabled(true);
@@ -264,8 +265,7 @@ public class Graph extends Fragment
 				SeriesSelection seriesSelection = chartView.getCurrentSeriesAndPoint();
 				if (seriesSelection != null)
 				{
-					
-				  mapping = seriesSelection.getXValue();
+				  mapping = (int) seriesSelection.getXValue();
 				  if (mMap.get(mapping) != null)
 				  {
 				  adapter_minutes = mMap.get(mapping);

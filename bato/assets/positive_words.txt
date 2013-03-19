@@ -1204,6 +1204,7 @@ light
 light
 light-hearted
 likable
+like
 liking
 lionhearted
 literate
@@ -2194,7 +2195,9 @@ willfully
 willing
 willingness
 willingness
-willpower 
+willpower
+will-power
+will power
 wink
 wink
 winnable

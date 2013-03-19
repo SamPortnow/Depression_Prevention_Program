@@ -20,7 +20,7 @@
         android:maxLength="140"
         android:layout_alignParentBottom="true"
         android:width ="250dip"
-        android:padding="5dip"	
+        android:padding="10dip"	
         android:hint="@string/destroyer"
         />    
        <Button
