@@ -240,7 +240,7 @@ public class Graph extends Fragment
 		mRenderer.setYAxisMax(7);
 		mRenderer.setYAxisMin(0);
 		mRenderer.setXAxisMax(23);
-		mRenderer.setPointSize(10);
+		mRenderer.setPointSize(20);
 		mRenderer.setChartTitle(sDate);
 		mRenderer.setClickEnabled(true);
 		mRenderer.setXLabelsAngle(45);
