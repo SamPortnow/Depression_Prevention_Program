@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -234,7 +235,6 @@ public class Graph extends Fragment
 		
 		mRenderer.setXLabels(0);
 		mRenderer.setYLabels(0);
-		mRenderer.setAxisTitleTextSize(20);
 		mRenderer.setLabelsTextSize(10);
 		mRenderer.setYLabelsAngle(310);
 		mRenderer.setAxesColor(Color.CYAN);
@@ -251,12 +251,16 @@ public class Graph extends Fragment
 		mRenderer.setXLabelsAngle(45);
 		mRenderer.setLabelsTextSize(18);
 		mRenderer.setXLabelsPadding(30);
-
+		mRenderer.setTextTypeface(Typeface.DEFAULT_BOLD);
+		mRenderer.setChartTitleTextSize(20);
+		mRenderer.setShowGrid(true);
+		mRenderer.setLegendTextSize(20);
 		// Customization time for line 1!
 		renderer.setColor(Color.GRAY);
 		renderer.setLineWidth(3);
 		renderer.setPointStyle(PointStyle.CIRCLE);
 		renderer.setFillPoints(true);
+		
 		// Customization time for line 2!
 
 		final GraphicalView chartView;
