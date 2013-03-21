@@ -238,8 +238,8 @@ public class Graph extends Fragment
 		mRenderer.setLabelsTextSize(10);
 		mRenderer.setYLabelsAngle(310);
 		mRenderer.setAxesColor(Color.CYAN);
-		mRenderer.setXLabelsColor(Color.RED);
-		mRenderer.setYLabelsColor(0, Color.RED);
+		mRenderer.setXLabelsColor(Color.parseColor("#0099cc"));
+		mRenderer.setYLabelsColor(0, Color.parseColor("#0099cc"));
 		mRenderer.setYAxisMax(8);
 		mRenderer.setYAxisMin(0);
 		mRenderer.setXAxisMin(0);

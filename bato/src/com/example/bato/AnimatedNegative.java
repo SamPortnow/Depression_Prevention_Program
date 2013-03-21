@@ -149,7 +149,6 @@ public class AnimatedNegative extends View
     	    	 negative_thoughts.add("I wonder if they are talking about me.");
     	    	 negative_thoughts.add("No matter how hard I try, people aren't satisfied.");
     	    	 negative_thoughts.add("I'll never make any good friends.");
-    	    	 negative_thoughts.add("I can’t do anything right.");
     	    	 negative_thoughts.add("Things will never work out for me.");
     	     }
    	    	 array_size = negative_thoughts.size();
