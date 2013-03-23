@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,28 +16,24 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-		UserNameDbHelper = new UserNameDbAdapter(this);
-		UserNameDbHelper.open();
-		Cursor username = UserNameDbHelper.fetchUserName();
         
         setContentView(R.layout.activity_main);
 
-        if(savedInstanceState == null) 
+        if (savedInstanceState == null) 
         {
         	FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();			        
         	fragmentTransaction.replace(R.id.fragment_container, new ActivityHome(), "activity_home_fragment");
-        	fragmentTransaction.commit();
-            
+        	fragmentTransaction.commit();            
 
-			SharedPreferences prefs = this.getSharedPreferences(
-				      "com.example.app", Context.MODE_PRIVATE);
-			if (prefs.getString("username", null) == null)
+			SharedPreferences preferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
+			String username = preferences.getString("username", null);
+			
+			if ((username == null) || (username.length() == 0))
 			{
-        	WelcomeFragment welcomeFragment = new WelcomeFragment();
-        	welcomeFragment.setCancelable(false);
-        	welcomeFragment.show(getFragmentManager(), "welcome_fragment");
-			}
-    		
+				WelcomeFragment welcomeFragment = new WelcomeFragment();
+				welcomeFragment.setCancelable(false);
+				welcomeFragment.show(getFragmentManager(), "welcome_fragment");
+			}    		
         }
     }
 
