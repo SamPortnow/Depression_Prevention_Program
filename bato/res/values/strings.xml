@@ -38,8 +38,8 @@
     <string name="setup">The aim of this app is to help people build the skills that researchers find 
 helpful in feeling good. These two skills are:\n \n
 
-1)  Being your own "personal scientist". Know the activities you do that make you feel good (or bad), 
-and know the thoughts you think that make you feel good (or bad). \n
+1)  Being your own "personal scientist". Learn how what you do, think, and feel relate to each other. 
+With this knowledge, do more of what makes you feel good, and less of what makes you feel bad.  \n
 
 2) Replacing negative thoughts with positive ones.\n \n
 
@@ -48,5 +48,7 @@ You will build these skills through a daily diary, daily mood graphs, and the "N
 
 Enter a username and start!
 </string>
+<string name = "thought_it"> write a positive counter thought to outweight the negative thought! </string>
+<string name = "scale_it">  Launch! </string>
 
 </resources>
