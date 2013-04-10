@@ -39,6 +39,14 @@
     <string name="next">Next</string>
     <string name="previous">Prev</string>
     <string name="activity">You were doing</string>
-    <string name="thought">You were thinking</string>
+    <string name="thought">You were thinking</string>   
+ <string name = "thought_it"> write a positive counter thought to outweight the negative thought! </string>
+ <string name = "scale_it">  Launch! </string>
+<string name = "lawyer">  If you were trying to act as your own attorney whose job was to defend yourself, and
+    whether or not you went to jail depended on the truth of this negative thought, 
+    what would you say in your own defense? </string>
+<string name = "friend"> If your friend called very upset and said this thought about themself, what
+    would you say to them?</string>
+<string name = "skip"> SKIP IT!</string> 
 
 </resources>
