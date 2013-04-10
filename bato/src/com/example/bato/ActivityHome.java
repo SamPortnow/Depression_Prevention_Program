@@ -16,7 +16,8 @@ public class ActivityHome extends Fragment
 		
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		
-		transaction.replace(R.id.home_fragment_container, new DestroyerStatsFragment(), "destroyer_stats_fragment");
+		transaction.add(R.id.home_fragment_container, new ScaleStatsFragment(), "scale_stats_fragment");
+		transaction.add(R.id.home_fragment_container, new DestroyerStatsFragment(), "destroyer_stats_fragment");
 		transaction.commit();
 		
 		return view;

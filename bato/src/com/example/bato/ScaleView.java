@@ -3,6 +3,7 @@ package com.example.bato;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -128,10 +129,11 @@ public class ScaleView extends View
 
 	};
 	
+	@SuppressLint("WrongCall")
 	@Override
 	protected void dispatchDraw (Canvas canvas)
     {
-		super.draw(canvas);
+		super.onDraw(canvas);
 		if (first == true)
 		{
 			width = this.getWidth();

@@ -21,6 +21,9 @@
     <string name="destroyer_stats_high_score">High Score</string>
     <string name="destroyer_stats_more_scores">(see more)</string>
     <string name="high_scores_title">High Scores</string>
+    <string name="scale_stats_title">Scale Game</string>
+    <string name="scale_stats_play_game">Play</string>
+    <string name="scale_stats_notice">No statistics available yet.</string>     
     <string name="add_event_fragment_title">Add a new event&#x2026;</string>
     <string name="add_event_toast_created_event">New event created.</string>
     <string name="add_event_user_activity_hint">What are you doing?</string>
