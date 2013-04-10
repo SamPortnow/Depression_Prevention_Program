@@ -3,7 +3,6 @@ package com.example.bato;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -16,19 +15,18 @@ import android.widget.TextView;
 public class DestroyerStatsFragment extends Fragment
 {
 	private String[] mHighScores = null;
-	Context mContext;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.fragment_destroyer_stats, container, false);
-		mContext  = this.getActivity();
+
 		view.findViewById(R.id.destroyer_stats_play_game).setOnClickListener(new OnClickListener()
 		{			
 			@Override
 			public void onClick(View v)
 			{
-				Intent i = new Intent(mContext, DestroyerView.class);				
-				getActivity().startActivity(i);
+				Intent intent = new Intent(getActivity(), DestroyerView.class);				
+				startActivity(intent);
 			}
 		});
 		
