@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/game_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/game_view" >
-     
-     <com.example.bato.DestroyerShooter
-                android:id="@+id/anim_view"
-                android:layout_height="fill_parent"
-                android:layout_width="fill_parent"
-                ></com.example.bato.DestroyerShooter>
-     <ImageView
+    android:layout_height="match_parent" >
+
+    <com.example.bato.DestroyerShooter
+        android:id="@+id/anim_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.example.bato.DestroyerShooter>
+
+    <ImageView
         android:id="@+id/cannon"
-        android:background="@drawable/cannon"  
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dip"	
-        android:layout_alignParentBottom = "true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
+        android:background="@drawable/cannon"
+        android:contentDescription="@string/destroyer_shooter_cannon_content_description"
         android:gravity="center"
-        android:textStyle="bold"
+        android:padding="5dip"
         android:text="@string/destroy"
-         ></ImageView>
-    
-  
-      
-       
+        android:textColor="@android:color/white"
+        android:textStyle="bold" >
+    </ImageView>
+
 </RelativeLayout>

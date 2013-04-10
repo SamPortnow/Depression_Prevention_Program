@@ -12,13 +12,11 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.text.TextPaint;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
