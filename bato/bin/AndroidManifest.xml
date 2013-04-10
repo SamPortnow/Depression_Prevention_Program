@@ -27,28 +27,11 @@
         <fragment
             android:name="com.example.bato.Destroyer">
         </fragment>
-                <activity
+                <fragment
             	 android:name="com.example.bato.DestroyerView"
                  android:configChanges="orientation"
    				 android:screenOrientation="portrait">
-        </activity>
-                        <activity
-            	 android:name="com.example.bato.DestroyerShooterView"
-                 android:configChanges="orientation"
-   				 android:screenOrientation="portrait">
-        </activity>
-          <activity
-            	 android:name="com.example.bato.ScaleView"
-                 android:configChanges="orientation"
-   				 android:screenOrientation="portrait">
-        </activity>
-                <fragment
-            android:name="com.example.bato.Scale">
-            </fragment>
-            
-        <fragment
-            android:name="com.example.bato.DestroyerShooter">
-            </fragment>
+        </fragment>
         <fragment
              android:name="com.example.bato.Graph" >
         </fragment>
