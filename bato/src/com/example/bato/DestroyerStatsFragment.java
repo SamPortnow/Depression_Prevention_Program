@@ -27,7 +27,7 @@ public class DestroyerStatsFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-				Intent i = new Intent(mContext, DestroyerView.class);				
+				Intent i = new Intent(mContext, ScaleView.class);				
 				getActivity().startActivity(i);
 			}
 		});

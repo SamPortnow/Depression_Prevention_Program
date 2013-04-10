@@ -17,7 +17,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.IBinder;
-import android.util.Log;
 
 public class PostGame extends IntentService
 {
