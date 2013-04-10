@@ -8,9 +8,8 @@
     <string name="welcome_text_aim_app">The aim of this app is to help people build the skills that researchers find helpful in feeling good.</string>
     <string name="welcome_text_skills_are">These two skills are&#8230;</string>
     <string name="welcome_text_personal_scientist">Being your own "personal scientist".</string>
-    <string name="welcome_text_know_activities">Learn how what you do, think, and feel relate to each other. 
-   With this knowledge, do more of what makes you feel good, and less of what makes you feel bad.</string>
-    <string name="welcome_text_replace_negative"> Replacing negative thoughts with positive ones.</string>
+    <string name="welcome_text_know_activities">Know the activities you do that make you feel good (or bad), and know the thoughts you think that make you feel good (or bad).</string>
+    <string name="welcome_text_replace_negative"> Replace negative thoughts with positive ones.</string>
     <string name="welcome_text_build_skills">You will build these skills through a daily diary, daily mood graphs, and the "Negative Thought Destroyer Game".</string>
     <string name="welcome_username_hint">Enter a username.</string>
     
@@ -39,17 +38,7 @@
     <string name="destroy">FIRE!</string>
     <string name="next">Next</string>
     <string name="previous">Prev</string>
-	<string name="activity">You were doing</string>
+    <string name="activity">You were doing</string>
     <string name="thought">You were thinking</string>
-
-   
-<string name = "thought_it"> write a positive counter thought to outweight the negative thought! </string>
-<string name = "scale_it">  Launch! </string>
-<string name = "lawyer">  If you were trying to act as your own attorney whose job was to defend yourself, and
-    whether or not you went to jail depended on the truth of this negative thought, 
-    what would you say in your own defense? </string>
-<string name = "friend"> If your friend called very upset and said this thought about themself, what
-    would you say to them?</string>
-<string name = "skip"> SKIP IT!</string>
 
 </resources>
