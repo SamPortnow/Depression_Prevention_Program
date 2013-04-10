@@ -38,7 +38,7 @@ import android.widget.Toast;
 public class ScaleActivity extends Activity
 {	
 	Context mContext;
-	Scale mScale;
+	ScaleView mScale;
 	EditText positive_thought;
 	Button fire;
 	TextView pos;
@@ -108,7 +108,7 @@ public class ScaleActivity extends Activity
 	    mContext = this;
 	    populatePositiveWords(mContext);
 	    setContentView(R.layout.activity_scale);
-	    mScale = new Scale(this);
+	    mScale = new ScaleView(this);
 	    mBag = new ImageView (mContext);
 	    mBag.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bag));
 	    mGreenBag = new ImageView(mContext);

@@ -23,7 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-public class Scale extends View
+public class ScaleView extends View
 {
 	Context mContext;
 	private Bitmap[] mScale= new Bitmap[72];
@@ -78,7 +78,7 @@ public class Scale extends View
     
     //set mscale to something... right???
     
-	public Scale(Context context) 
+	public ScaleView(Context context) 
 	{
 		super(context);
 		width = this.getWidth();
@@ -133,7 +133,7 @@ public class Scale extends View
 	@Override
 	protected void dispatchDraw (Canvas canvas)
     {
-		super.onDraw(canvas);
+		super.draw(canvas);
 		if (first == true)
 		{
 			width = this.getWidth();
