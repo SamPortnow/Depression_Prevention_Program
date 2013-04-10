@@ -67,8 +67,8 @@ public class Scale extends View
     Button question;
     EditText positive_thoughts;
     Button Skip;
-    ScaleView mScaleView;
-    ScaleView nScaleView;
+    ScaleActivity mScaleView;
+    ScaleActivity nScaleView;
     RelativeLayout layout;
 	boolean firstPlace;
 	boolean secondPlace;
@@ -84,7 +84,7 @@ public class Scale extends View
 		width = this.getWidth();
 		height = this.getHeight();
 		mContext = this.getContext();
-		mScaleView = (ScaleView) context;
+		mScaleView = (ScaleActivity) context;
     	negative = new TextView(mContext);
         h = new Handler();
         mCalendarDbHelper=new CalendarDbAdapter(mContext);

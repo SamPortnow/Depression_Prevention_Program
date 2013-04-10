@@ -19,7 +19,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,7 +35,7 @@ import android.widget.Toast;
 
 
 
-public class ScaleView extends Activity
+public class ScaleActivity extends Activity
 {	
 	Context mContext;
 	Scale mScale;
