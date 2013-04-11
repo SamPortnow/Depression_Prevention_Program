@@ -1,7 +1,6 @@
 package com.example.bato;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -15,9 +14,7 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -67,6 +64,7 @@ public class DestroyerShooter extends View
     boolean right_bound;
     boolean redraw = true; 
     boolean destroyed;
+    boolean match;
     int speed = 5; 
     float going_x;
     float going_y;
@@ -272,15 +270,20 @@ public class DestroyerShooter extends View
     	canvas.drawBitmap(positive.getDrawingCache(), going_x, going_y, null);
     	if ( going_x >= dark_coord_x - negative.getWidth()/2 && going_x <= dark_coord_x + negative.getWidth()/2 && going_y <= dark_coord_y + negative.getHeight()/2)
     	{
-    	 	for (int i = 0; i < 4; i ++)
+    	 	if (match == true)
     	 	{
-    		canvas.drawBitmap(mExplosions[i], dark_coord_x, dark_coord_y, paint);	
+    	 		for (int i = 0; i < 4; i ++)
+    	 		{
+    	 			canvas.drawBitmap(mExplosions[i], dark_coord_x, dark_coord_y, paint);	
+    	 		}
     	 	}
+    	 	
     	 	dark_coord_x = 0;
     	 	dark_coord_y = 0;
     		redraw = true;
     		touched = false;
     		destroyed = true;
+    		match = true;
     	}
     	
     	if ( going_y <= 0 - negative.getHeight())

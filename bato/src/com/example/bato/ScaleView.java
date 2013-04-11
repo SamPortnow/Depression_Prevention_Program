@@ -3,7 +3,6 @@ package com.example.bato;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -75,7 +74,6 @@ public class ScaleView extends View
 	boolean fourthPlace;
    
     
-    //set mscale to something... right???
     
 	public ScaleView(Context context) 
 	{
@@ -129,7 +127,6 @@ public class ScaleView extends View
 
 	};
 	
-	@SuppressLint("WrongCall")
 	@Override
 	protected void dispatchDraw (Canvas canvas)
     {
@@ -156,31 +153,34 @@ public class ScaleView extends View
         	positive_paint.setTypeface(Typeface.DEFAULT_BOLD);
 	    	positive_paint.setTextSize(25);
 	    	mCurrentXPos[0] = (width/2);
-	    	mCurrentYPos[0] = height/4;
+	    	mCurrentYPos[0] = height/4 + 71 * (height/150);
 	    	mCurrentXPos[1] = (width/2) + (width/8);
-	    	mCurrentYPos[1] = height/6;
+	    	mCurrentYPos[1] = height/6 + 71 * (height/150);
 	    	mCurrentXPos[2] = width/2;
-	    	mCurrentYPos[2] = height/12;
+	    	mCurrentYPos[2] = height/12 + 71 * (height/150);
 	    	mCurrentXPos[3] = (width/2) + (width/8);
-	    	mCurrentYPos[3] = height/18;
+	    	mCurrentYPos[3] = height/18 + 71 * (height/150);
 	    	mMoveXPos[0] = ((width/2) - width)/FRAME_RATE;
 	    	mMoveYPos[0] = ((height/4) - (height + (height/4)))/FRAME_RATE;
 	    	mMoveXPos[1] = (((width/2) + (width/8)) - width)/ FRAME_RATE;
-	    	mMoveYPos[1] = ((height/6) - (height + (height/4)))/FRAME_RATE;
+	    	mMoveYPos[1] = ((height/6) - (height))/FRAME_RATE;
 	    	mMoveXPos[2] = ((width/2) - width)/ FRAME_RATE;
-	    	mMoveYPos[2] = ((height/12) - (height + (height/4)))/FRAME_RATE;
+	    	mMoveYPos[2] = ((height/12) - (height))/FRAME_RATE;
 	    	mMoveXPos[3] = (((width/2) + (width/8)) - width)/ FRAME_RATE;
-	    	mMoveYPos[3] = ((height/18) - (height + (height/4)))/FRAME_RATE;
+	    	mMoveYPos[3] = ((height/18) - (height))/FRAME_RATE;
 	    	mMoveByXPos[0] = -(width/2)/ FRAME_RATE;
-	    	mMoveByYPos[0] = -(height/4)/FRAME_RATE;
+	    	mMoveByYPos[0] = -((height/4 + 71 * (height/150)))/FRAME_RATE;
 	    	mMoveByXPos[1] =  ((width - (width/3)) - (width/2 + (width/8)))/ FRAME_RATE;
-	    	mMoveByYPos[1] = -(height/6)/FRAME_RATE;
+	    	mMoveByYPos[1] = -((height/6 + 71 * (height/150)))/FRAME_RATE;
 	    	mMoveByXPos[2] = - (width/2)/ FRAME_RATE;
-	    	mMoveByYPos[2] =  ((height) - (height/12))/FRAME_RATE;
+	    	mMoveByYPos[2] =  ((height - (height/4)) - ((height/12) + 71 * (height/150)))/FRAME_RATE;
 	    	mMoveByXPos[3] =  ((width - (width/3)) - (width/2 + (width/8)))/ FRAME_RATE;
-	    	mMoveByYPos[3] =  ((height) - (height/18))/FRAME_RATE;
+	    	mMoveByYPos[3] =  ((height - (height/4)) - ((height/18) + 71 * (height/150)))/FRAME_RATE;
 	    	currentX = width;
 	    	currentY = height + height/4;
+	    	Log.e("71 is", "" + height/2);
+	    	Log.e("71 is", "" + height/150);
+
 			first = false;
 		}
 		
@@ -198,7 +198,7 @@ public class ScaleView extends View
 		if (mMoveScale == true)
 		{
 			i++;
-			j+=3;
+			j+= (height/150);
 			ScaleIt(canvas, i);
 			if (i == 21 || i == 37 || i == 53 || i == 71)
 			{
@@ -316,8 +316,10 @@ public class ScaleView extends View
 			
 			if (draw_em > 0 && game_over == false)
 			{
+				
 				for (int i = 0; i < draw_em; i ++)
 				{
+
 				if (i == 0)
 				{
 					canvas.drawBitmap(mPositive.get(i).getDrawingCache(), width/2, height/4 + j, null);
@@ -351,7 +353,7 @@ public class ScaleView extends View
 				
 				for (int i = 0; i < draw_em; i++)
 				{
-					Log.e("i is", "" + i);
+					
 					if (i == 0 && mCurrentXPos[0] > 0 && mCurrentYPos[0] >  0)
 					{
 						mCurrentXPos[0] += mMoveByXPos[0];
@@ -366,7 +368,7 @@ public class ScaleView extends View
 					}
 					
 					
-					if (i == 1 && mCurrentXPos[1] < (width - (mPositive.get(i).getWidth()/2)) && mCurrentYPos[1] >  mPositive.get(i).getHeight()/2)
+					if (i == 1 && mCurrentXPos[1] < (width - (mPositive.get(i).getWidth())) && mCurrentYPos[1] > 0)
 					{
 						mCurrentXPos[1] += mMoveByXPos[1];
 						mCurrentYPos[1] += mMoveByYPos[1];
@@ -374,33 +376,33 @@ public class ScaleView extends View
 
 					}
 					
-					else if (i == 1 && mCurrentXPos[1] >= (width - (mPositive.get(i).getWidth()/2)) || mCurrentYPos[1] <=  mPositive.get(i).getHeight()/2)
+					else if (i == 1 && mCurrentXPos[1] >= (width - (mPositive.get(i).getWidth())) || mCurrentYPos[1] <=  0)
 					{
 						canvas.drawBitmap(mPositive.get(1).getDrawingCache(), width - (width/3), 0, null);
 						secondPlace = true;
 					}
 					
-					if (i == 2 && mCurrentXPos[2] > (mPositive.get(i).getWidth()/2) && mCurrentYPos[2] <  (height - mPositive.get(i).getHeight()/2))
+					if (i == 2 && mCurrentXPos[2] > 0 && mCurrentYPos[2] <  (height - mPositive.get(i).getHeight()))
 					{
 						mCurrentXPos[2] += mMoveByXPos[2];
 						mCurrentYPos[2] += mMoveByYPos[2];
 						canvas.drawBitmap(mPositive.get(i).getDrawingCache(), mCurrentXPos[2], mCurrentYPos[2], null);
 					}
 					
-					else if (i == 2 && mCurrentXPos[2] <= (mPositive.get(i).getWidth()/2) || mCurrentYPos[2] >=  (height - mPositive.get(i).getHeight()/2))
+					else if (i == 2 && mCurrentXPos[2] <= 0 || mCurrentYPos[2] >=  (height - mPositive.get(i).getHeight()))
 					{
 						canvas.drawBitmap(mPositive.get(2).getDrawingCache(), 0, height - (height/4), null);
 						thirdPlace = true;
 					}
 					
-					if (i == 3 && mCurrentXPos[3] < (width - (mPositive.get(i).getWidth()/2)) && mCurrentYPos[3] < (height - mPositive.get(i).getHeight()/2))
+					if (i == 3 && mCurrentXPos[3] < (width - (mPositive.get(i).getWidth())) && mCurrentYPos[3] < (height - mPositive.get(i).getHeight()))
 					{
 						mCurrentXPos[3] += mMoveByXPos[3];
 						mCurrentYPos[3] += mMoveByYPos[3];
 						canvas.drawBitmap(mPositive.get(i).getDrawingCache(), mCurrentXPos[3], mCurrentYPos[3], null);
 					}
 					
-					else if (i == 3 && mCurrentXPos[3] >= (width - (mPositive.get(i).getWidth()/2)) || mCurrentYPos[3] >= (height - mPositive.get(i).getHeight()/2))
+					else if (i == 3 && mCurrentXPos[3] >= (width - (mPositive.get(i).getWidth())) || mCurrentYPos[3] >= (height - mPositive.get(i).getHeight()))
 					{
 						canvas.drawBitmap(mPositive.get(3).getDrawingCache(), width - (width/3), height - (height/4), null);
 						fourthPlace = true;
@@ -437,14 +439,7 @@ public class ScaleView extends View
 		}
 	
 	}
-	
-	protected void moveEm(Canvas canvas, int[]mMovePosX, int[] mMovePosY)
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			
-		}
-	}
+
 	
 	protected void ScaleIt(Canvas canvas, int i)
 	{

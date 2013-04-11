@@ -14,6 +14,7 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -68,6 +69,7 @@ public class ScaleActivity extends Activity
 	String word;
 	TextView mNegative;
 	boolean mStart;
+	private ScaleDbAdapter mDbHelper;
 
 
 	
@@ -106,6 +108,8 @@ public class ScaleActivity extends Activity
 	    super.onCreate(savedInstanceState);
 	    this.getActionBar().hide();
 	    mContext = this;
+	    mDbHelper=new ScaleDbAdapter(mContext);
+	    mDbHelper.open();
 	    populatePositiveWords(mContext);
 	    setContentView(R.layout.activity_scale);
 	    mScale = new ScaleView(this);
@@ -338,6 +342,7 @@ public class ScaleActivity extends Activity
 					                }
 
 					            case MotionEvent.ACTION_UP:
+					        	    mDbHelper.createRelation(mNegative.getText().toString(), mScale.mPositive.get(i).getText().toString());
 					            	if (x_coord >= (mScale.width/4) && x_coord <= (mScale.width/4 + mBag.getWidth())
 					                		&& y_coord >= (mScale.height/4) && y_coord <= (mScale.height/4 + mBag.getHeight()))
 					                		{

@@ -1,7 +1,10 @@
 package com.example.bato;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -40,6 +43,9 @@ public class DestroyerShooterView extends Activity
     Animation in;
     Animation out;
     TranslateAnimation LeftToRight;
+    ScaleDbAdapter mDbHelper;
+    ArrayList<String> mPositive = new ArrayList<String>();
+
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
@@ -47,6 +53,16 @@ public class DestroyerShooterView extends Activity
 	    super.onCreate(savedInstanceState);
 	    this.getActionBar().hide();
 	    mContext = this;
+	    mDbHelper=new ScaleDbAdapter(mContext);
+	    mDbHelper.open();
+	    Cursor cursor = mDbHelper.fetchPositives();
+	    if (cursor.moveToFirst())
+	    {
+	    	while (cursor.moveToNext())
+	    	{
+	    		mPositive.add(cursor.getString(cursor.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_POSITIVE)));
+	    	}
+	    }
 	    setContentView(R.layout.activity_destroyer_shooter);
 	    layout = (RelativeLayout) findViewById(R.id.game_view);
 	    mDestroyerShooter = (DestroyerShooter) findViewById(R.id.anim_view);
@@ -79,7 +95,7 @@ public class DestroyerShooterView extends Activity
 		positive.setShadowLayer(5, 2, 2, Color.YELLOW);
 		positive.setDrawingCacheEnabled(true);
 		positive.setBackgroundResource(R.drawable.whitecloud);
-	    positive.setText("I am awesome");
+	    positive.setText(mPositive.get((int) Math.random() * mPositive.size()));
 	    positive.setClickable(true);
         positive.setOnTouchListener(gestureListener);
         layout.addView(positive, params);
@@ -90,7 +106,7 @@ public class DestroyerShooterView extends Activity
 
 	        @Override
 	        public void onAnimationEnd(Animation animation) {
-	            positive.setText("New Text");
+	            positive.setText(mPositive.get((int) Math.random() * mPositive.size()));
 	            positive.startAnimation(in);
 
 	        }
@@ -114,7 +130,6 @@ public class DestroyerShooterView extends Activity
 			@Override
 			public boolean onTouch(View v, MotionEvent event) 
 			{
-			    Log.e("I was clicked", "YA!");
 				positive.startAnimation(out);
 				return true;
 			}
@@ -129,6 +144,12 @@ public class DestroyerShooterView extends Activity
 			       float x = event.getX();
 			       float y = event.getY();
 			       positive.startAnimation(LeftToRight);
+			       Cursor mMatch = mDbHelper.fetchThought(positive.getText().toString());
+			       if (mMatch.moveToFirst())
+			       {
+			    	   //have to change the cursor here!! 
+			    	   mDestroyerShooter.match = true;
+			       }
 			       mDestroyerShooter.touched = true;
 			       mDestroyerShooter.positive = positive;
 			       mDestroyerShooter.move_to_x = x;
