@@ -14,6 +14,7 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -22,7 +23,7 @@ public class DestroyerShooter extends View
 {
 	Context mContext; 
 	Handler h;
-    private CalendarDbAdapter mCalendarDbHelper;
+    private ScaleDbAdapter mScaleDbHelper;
     private Bitmap[] mExplosions = new Bitmap[4];
     ArrayList <TextView> positives = new ArrayList<TextView>();
     private Bitmap cloud;
@@ -68,6 +69,8 @@ public class DestroyerShooter extends View
     int speed = 5; 
     float going_x;
     float going_y;
+    int place;
+    DestroyerShooterView mDestroyer;
 
 
 
@@ -76,9 +79,10 @@ public class DestroyerShooter extends View
 	{
 		super(context, attrs);
         mContext = this.getContext();
+		mDestroyer = (DestroyerShooterView) context;
         h = new Handler();
-        mCalendarDbHelper=new CalendarDbAdapter(mContext);
-	    mCalendarDbHelper.open();
+        mScaleDbHelper=new ScaleDbAdapter(mContext);
+	    mScaleDbHelper.open();
 	    //declare the explosions images as well as the cloud images 
 	    mExplosions[0] = BitmapFactory.decodeResource(getResources(), R.drawable.asteroid_explode1);
 	    mExplosions[1] = BitmapFactory.decodeResource(getResources(), R.drawable.asteroid_explode2);
@@ -90,45 +94,21 @@ public class DestroyerShooter extends View
 	    sun = BitmapFactory.decodeResource(getResources(), R.drawable.sun);
 	    thunder = BitmapFactory.decodeResource(getResources(), R.drawable.thunder);
 		thunderPlayer = MediaPlayer.create(mContext, R.raw.thunder);
-	    Cursor thoughts = mCalendarDbHelper.fetchThoughts();
+	    Cursor thoughts = mScaleDbHelper.fetchNegs();
 	    array_size = positives.size();
 	    
 
 	    //create a string array of negative thoughts from the db
 	    	while (thoughts.moveToNext())
 	    	{
-	    		if (thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)).length() > 0 && thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)).charAt(0) == '-')
+	    		if (thoughts.getString(thoughts.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_NEGATIVE)).length() > 0 && thoughts.getString(thoughts.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_NEGATIVE)).charAt(0) == '-')
 	    		{
-	    			negative_thoughts.add(thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)));
+	    			negative_thoughts.add(thoughts.getString(thoughts.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_NEGATIVE)));
 	    		}
 	   
 	    	}
 	     thoughts.close();
-	     
-	     if (negative_thoughts.size() < 12)
-	     {
-	    	 negative_thoughts.add("I am wasting my life.");
-	    	 negative_thoughts.add("I'll end up living all alone.");
-	    	 negative_thoughts.add("People don't consider friendship important anymore.");
-	    	 negative_thoughts.add("Life has no meaning.");
-	    	 negative_thoughts.add("I'm ugly.");
-	    	 negative_thoughts.add("Nobody loves me.");
-	    	 negative_thoughts.add("I'll never find what I really want.");
-	    	 negative_thoughts.add("I am worthless.");
-	    	 negative_thoughts.add("It's all my fault.");
-	    	 negative_thoughts.add("Why do so many bad things happen to me?");
-	    	 negative_thoughts.add("I can't think of anything that would be fun.");
-	    	 negative_thoughts.add("I don't have what it takes to be successful.");
-	    	 negative_thoughts.add("Things are so messed up that doing anything about them is useless.");
-	    	 negative_thoughts.add("I don't have enough willpower.");
-	    	 negative_thoughts.add("I wish I had never been born.");
-	    	 negative_thoughts.add("Things are just going to get worse and worse.");
-	    	 negative_thoughts.add("I wonder if they are talking about me.");
-	    	 negative_thoughts.add("No matter how hard I try, people aren't satisfied.");
-	    	 negative_thoughts.add("I'll never make any good friends.");
-	    	 negative_thoughts.add("Things will never work out for me.");
-	     }
-	    	 array_size = negative_thoughts.size();
+	     array_size = negative_thoughts.size();
 	    	 //default positive thougts after a certain amount of time... 
 	    	
 	    
@@ -146,14 +126,21 @@ public class DestroyerShooter extends View
 
 	};
 	
+	
+	@Override
+	 protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld)
+	{
+	     super.onSizeChanged(xNew, yNew, xOld, yOld);
+	     width = xNew;
+	     height = yNew;
+	}
 
 	protected void onDraw (Canvas canvas)
     {		
-    	
+		if (negative_thoughts.size() > 0)
+		{
 		if (first == true)
     	{ 
-        	width = this.getWidth();
-        	height = this.getHeight();
     		mExplosions[0] = Bitmap.createScaledBitmap(mExplosions[0], width/2, height/2, true);
     	    mExplosions[1] = Bitmap.createScaledBitmap(mExplosions[1], width/2, height/2, true);
     	    mExplosions[2] = Bitmap.createScaledBitmap(mExplosions[2], width/2, height/2, true);
@@ -188,9 +175,9 @@ public class DestroyerShooter extends View
 		
 		if (redraw == true)
 		{
-        	move_x = width/2;
+        	move_x = width/3;
         	move_y = height + (height/25);
-        	going_x = width/2;
+        	going_x = width/3;
         	going_y = height + (height/25);
         	redraw = false;
 		}
@@ -206,7 +193,7 @@ public class DestroyerShooter extends View
 		}
 	
 	
-		if (dark_coord_x > width)
+		if (dark_coord_x > width - (width/3))
 		{
 			speed = speed * -1;
 		}
@@ -233,6 +220,8 @@ public class DestroyerShooter extends View
     }
     	
 	    h.postDelayed(r, FRAME_RATE);
+	    
+	}
 
     }
 	
@@ -241,7 +230,8 @@ public class DestroyerShooter extends View
 		if (new_negative == true)
 		{
 		 negative = new TextView(mContext);
-		 word = negative_thoughts.get((int) (Math.random() * array_size));
+		 place = (int) (Math.random() * array_size);
+		 word = negative_thoughts.get(place);
 		 negative.setText(word);
 		 negative.layout(0, 0, width/3, height/4);
 		 negative.setGravity(Gravity.CENTER);
@@ -272,18 +262,43 @@ public class DestroyerShooter extends View
     	{
     	 	if (match == true)
     	 	{
-    	 		for (int i = 0; i < 4; i ++)
+    	 		for (int i = 0; i < 100; i ++)
     	 		{
-    	 			canvas.drawBitmap(mExplosions[i], dark_coord_x, dark_coord_y, paint);	
+    	 			if (i >= 0 && i  < 25)
+    	 			{
+    	 			canvas.drawBitmap(mExplosions[0], dark_coord_x, dark_coord_y, paint);	
+    	 			}
+    	 			
+    	 			if (i >= 25 && i  < 50)
+    	 			{
+    	 			canvas.drawBitmap(mExplosions[0], dark_coord_x, dark_coord_y, paint);	
+    	 			}
+    	 			
+    	 			
+    	 			if (i >= 50 && i  < 75)
+    	 			{
+    	 			canvas.drawBitmap(mExplosions[0], dark_coord_x, dark_coord_y, paint);	
+    	 			}
+    	 			
+    	 			
+    	 			if (i >= 75 && i  < 100)
+    	 			{
+    	 			canvas.drawBitmap(mExplosions[0], dark_coord_x, dark_coord_y, paint);	
+    	 			}
+    	 			
+    	 			
     	 		}
+    	 		
+    	 		negative_thoughts.remove(place);
+        	 	dark_coord_x = 0;
+        	 	dark_coord_y = 0;
+        		redraw = true;
+        		touched = false;
+        		destroyed = true;
+        		match = false;
     	 	}
     	 	
-    	 	dark_coord_x = 0;
-    	 	dark_coord_y = 0;
-    		redraw = true;
-    		touched = false;
-    		destroyed = true;
-    		match = true;
+
     	}
     	
     	if ( going_y <= 0 - negative.getHeight())

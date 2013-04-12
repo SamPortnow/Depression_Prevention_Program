@@ -103,6 +103,11 @@ public class ScaleDbAdapter {
         return mScaleDb.insert(DATABASE_TABLE, null, initialValues);
     }
 
+    public Cursor fetchNegs()
+    {
+    	return mScaleDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_NEGATIVE}, null, null, null, null, null); 
+
+    }
 
     public Cursor fetchThought(String positive_thought)
     {

@@ -14,12 +14,12 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -275,7 +275,7 @@ public class ScaleActivity extends Activity
 		layout.removeView(mScale);
 		for (int i = 0; i < 4; i++)
 		{
-		params[i] = new RelativeLayout.LayoutParams(mScale.width/3, layout.getHeight()/4);
+		params[i] = new RelativeLayout.LayoutParams(mScale.width/3, mScale.height/4); //changed this from layout.getheight()/4
 		}
 		params[0].leftMargin = 0;
 		params[0].topMargin = 0;
@@ -342,7 +342,8 @@ public class ScaleActivity extends Activity
 					                }
 
 					            case MotionEvent.ACTION_UP:
-					        	    mDbHelper.createRelation(mNegative.getText().toString(), mScale.mPositive.get(i).getText().toString());
+
+					        	    mDbHelper.createRelation(mScale.negative.getText().toString(), mScale.mPositive.get(i).getText().toString());
 					            	if (x_coord >= (mScale.width/4) && x_coord <= (mScale.width/4 + mBag.getWidth())
 					                		&& y_coord >= (mScale.height/4) && y_coord <= (mScale.height/4 + mBag.getHeight()))
 					                		{

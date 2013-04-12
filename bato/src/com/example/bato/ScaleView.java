@@ -178,9 +178,6 @@ public class ScaleView extends View
 	    	mMoveByYPos[3] =  ((height - (height/4)) - ((height/18) + 71 * (height/150)))/FRAME_RATE;
 	    	currentX = width;
 	    	currentY = height + height/4;
-	    	Log.e("71 is", "" + height/2);
-	    	Log.e("71 is", "" + height/150);
-
 			first = false;
 		}
 		
