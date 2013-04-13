@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DestroyerShooter extends View
 {
@@ -71,6 +72,14 @@ public class DestroyerShooter extends View
     float going_y;
     int place;
     DestroyerShooterView mDestroyer;
+    boolean clear;
+    boolean moveIt;
+    int stored_x;
+    int stored_y;
+    int mTrack = 1;
+    boolean hit;
+
+    
 
 
 
@@ -95,10 +104,7 @@ public class DestroyerShooter extends View
 	    thunder = BitmapFactory.decodeResource(getResources(), R.drawable.thunder);
 		thunderPlayer = MediaPlayer.create(mContext, R.raw.thunder);
 	    Cursor thoughts = mScaleDbHelper.fetchNegs();
-	    array_size = positives.size();
-	    
-
-	    //create a string array of negative thoughts from the db
+	    	    //create a string array of negative thoughts from the db
 	    	while (thoughts.moveToNext())
 	    	{
 	    		if (thoughts.getString(thoughts.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_NEGATIVE)).length() > 0 && thoughts.getString(thoughts.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_NEGATIVE)).charAt(0) == '-')
@@ -200,16 +206,17 @@ public class DestroyerShooter extends View
     
 	dark_coord_x += speed;
 	
+	if (positives.size() > 2)
+	{
+    	canvas.drawBitmap(sun, 0, dark_coord_y - height, null);
+
+	}
     placeDarkClouds(canvas, dark_coord_x, dark_coord_y, thunder_time);
 	
 	thunder_time += 1;
 	
-	if (count % 3 == 0) //move the position of the dark cloud
-	{
-		dark_coord_y = dark_coord_y + height/4;
-	}
-	 
-    	
+
+
     
 	if (touched == true)
     {
@@ -218,8 +225,25 @@ public class DestroyerShooter extends View
 	    	going_y -= (move_y - move_to_y)/FRAME_RATE;
 			fireCloud(canvas, going_x, going_y);
     }
-    	
-	    h.postDelayed(r, FRAME_RATE);
+	
+	if (positives.size() > 0)
+	{	
+		Log.e("positives size", "" + positives.size());
+	for (int i = 1; i < positives.size() + 1; i++)
+	{             				
+		canvas.drawBitmap(positives.get(i-1).getDrawingCache(), stored_x, stored_y, null);
+		stored_x += width/3;
+    	if (i % 3 == 0)
+ 		{
+    		 stored_y += height/4;
+ 			 stored_x = 0;
+ 		}
+
+	}
+	}
+	stored_x = 0;
+	stored_y = 0;	
+	h.postDelayed(r, FRAME_RATE);
 	    
 	}
 
@@ -230,8 +254,7 @@ public class DestroyerShooter extends View
 		if (new_negative == true)
 		{
 		 negative = new TextView(mContext);
-		 place = (int) (Math.random() * array_size);
-		 word = negative_thoughts.get(place);
+		 word = negative_thoughts.get((int) (Math.random() * negative_thoughts.size()));
 		 negative.setText(word);
 		 negative.layout(0, 0, width/3, height/4);
 		 negative.setGravity(Gravity.CENTER);
@@ -258,10 +281,16 @@ public class DestroyerShooter extends View
 	private void fireCloud(Canvas canvas, float going_x, float going_y)
 	{
     	canvas.drawBitmap(positive.getDrawingCache(), going_x, going_y, null);
+    	if (going_y <= height - mDestroyer.cannon.getHeight() && clear == true)
+    	{
+    		mDestroyer.clear(mContext);
+    		clear = false;
+    	}
     	if ( going_x >= dark_coord_x - negative.getWidth()/2 && going_x <= dark_coord_x + negative.getWidth()/2 && going_y <= dark_coord_y + negative.getHeight()/2)
     	{
     	 	if (match == true)
     	 	{
+    	 		hit = true;
     	 		for (int i = 0; i < 100; i ++)
     	 		{
     	 			if (i >= 0 && i  < 25)
@@ -289,9 +318,24 @@ public class DestroyerShooter extends View
     	 			
     	 		}
     	 		
-    	 		negative_thoughts.remove(place);
+    	 		negative_thoughts.remove((int) (Math.random() * negative_thoughts.size()));
+    	 		positives.add(positive);
+    	 		if (positives.size() % 3 == 0)
+    	 		{
+    	 			dark_coord_y = dark_coord_y + height/4;
+    	 		}
+    	 		
+    	 		if (positives.size() == 9)
+    	 		{
+    	 			Toast.makeText(mContext, "GREAT JOB! KEEP GETTING THOSE POINTS!!!", Toast.LENGTH_LONG).show();
+    	 			dark_coord_y = 0;
+    	 			for (int i = 0; i < 9; i++)
+    	 			{
+    	 				positives.remove(0);
+    	 			}
+    	 		}
+    	 		array_size = negative_thoughts.size();
         	 	dark_coord_x = 0;
-        	 	dark_coord_y = 0;
         		redraw = true;
         		touched = false;
         		destroyed = true;
@@ -301,12 +345,16 @@ public class DestroyerShooter extends View
 
     	}
     	
+    	
     	if ( going_y <= 0 - negative.getHeight())
     	{
+    		match = false;
     		touched = false;
     		redraw = true;
     	}
 	}
+	
+
 
 }
 

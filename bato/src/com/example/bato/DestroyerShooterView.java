@@ -10,16 +10,17 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -28,7 +29,7 @@ import android.widget.Toast;
 
 public class DestroyerShooterView extends Activity
 {
-	TextView positive;
+	TextView [] positive = new TextView[2];
 	Context mContext;
 	Bitmap cloud;
 	private DestroyerShooter mDestroyerShooter;
@@ -49,7 +50,10 @@ public class DestroyerShooterView extends Activity
     ArrayList <String> mMatchNeg = new ArrayList<String>();
     ImageView cannon;
     ImageView rCannon;
-    
+    float slope;
+    RelativeLayout.LayoutParams params;
+    AnimationSet set;
+    AlphaAnimation fade;
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
@@ -64,7 +68,7 @@ public class DestroyerShooterView extends Activity
 	    	{
 	    		mPositive.add(cursor.getString(cursor.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_POSITIVE)));
 	    	}
-	    
+	    cursor.close();
 	    setContentView(R.layout.activity_destroyer_shooter);
 	    mDestroyerShooter = (DestroyerShooter) findViewById(R.id.anim_view);
 	    layout = (RelativeLayout) findViewById(R.id.game_view);
@@ -89,30 +93,38 @@ public class DestroyerShooterView extends Activity
 	@Override
 	 public void onWindowFocusChanged(boolean hasFocus) {
 	    super.onWindowFocusChanged(hasFocus);
-	    positive = new TextView(mContext);
-	    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(mDestroyerShooter.width/3, mDestroyerShooter.height/4);
+	    positive[0] = new TextView(mContext);
+	    params = new RelativeLayout.LayoutParams(mDestroyerShooter.width/3, mDestroyerShooter.height/4);
 	    params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
 	    params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-	    positive.layout(0, 0, mDestroyerShooter.width/3, mDestroyerShooter.height/4);
-		positive.setGravity(Gravity.CENTER);
-		positive.setTextSize(15);
-		positive.setTextColor(Color.RED);
-		positive.setTypeface(Typeface.DEFAULT_BOLD);
-		positive.setShadowLayer(5, 2, 2, Color.YELLOW);
-		positive.setDrawingCacheEnabled(true);
-		positive.setBackgroundResource(R.drawable.whitecloud);
-	    positive.setText(mPositive.get((int) Math.random() * mPositive.size()));
-	    positive.setClickable(true);
-        positive.setOnTouchListener(gestureListener);
-        layout.addView(positive, params);
+	    positive[0].layout(0, 0, mDestroyerShooter.width/3, mDestroyerShooter.height/4);
+		positive[0].setGravity(Gravity.CENTER);
+		positive[0].setTextSize(15);
+		positive[0].setTextColor(Color.RED);
+		positive[0].setTypeface(Typeface.DEFAULT_BOLD);
+		positive[0].setShadowLayer(5, 2, 2, Color.YELLOW);
+		positive[0].setDrawingCacheEnabled(true);
+		positive[0].setBackgroundResource(R.drawable.whitecloud);
+	    positive[0].setText(mPositive.get((int) (Math.random() * mPositive.size())));
+	    positive[0].setClickable(true);
+        positive[0].setOnTouchListener(gestureListener);
+        layout.addView(positive[0], params);
         LeftToRight = new TranslateAnimation(0, mDestroyerShooter.width/3, 0, 0);
         LeftToRight.setDuration(1000);
+        LeftToRight.setFillEnabled(true);
         LeftToRight.setFillAfter(true);
+        set = new AnimationSet(true);
+	    fade = new AlphaAnimation(1.0f, 0.0f);
+	    fade.setDuration(300);
+        set.addAnimation(LeftToRight);
+        set.addAnimation(fade);
+        set.setFillEnabled(true);
+        set.setFillAfter(true);
 	    out.setAnimationListener(new AnimationListener() {
 
 	        @Override
 	        public void onAnimationEnd(Animation animation) {
-	            positive.startAnimation(in);
+	            positive[0].startAnimation(in);
 
 	        }
 
@@ -130,14 +142,21 @@ public class DestroyerShooterView extends Activity
 	    });
 	    
 	    
-	    positive.setOnTouchListener(new OnTouchListener()
+	    positive[0].setOnTouchListener(new OnTouchListener()
 	    {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) 
 			{
-				positive.startAnimation(out);
-	            positive.setText(mPositive.get((int) (Math.random() * mPositive.size())));
+				int action = event.getActionMasked();
+				if (action == MotionEvent.ACTION_DOWN)
+				{
+				positive[0].startAnimation(out);
+				if (mDestroyerShooter.match == false)
+				{
+	            positive[0].setText(mPositive.get((int) (Math.random() * mPositive.size())));
+				}
+				}
 				return true;
 			}
 	    	
@@ -148,35 +167,67 @@ public class DestroyerShooterView extends Activity
 
 			@Override
 			public boolean onTouch(View arg0, MotionEvent event) {
+				int action = event.getActionMasked();
+				if (action == MotionEvent.ACTION_DOWN)
+				{
 			       float x = event.getX();
-			       float y = event.getY();
-			       positive.startAnimation(LeftToRight);
+			       float y = 0;
+			       positive[1] = new TextView (mContext);
+			       positive[1].layout(0, 0, mDestroyerShooter.width/3, mDestroyerShooter.height/4);
+				   positive[1].setGravity(Gravity.CENTER);
+				   positive[1].setTextSize(15);
+				   positive[1].setTextColor(Color.RED);
+				   positive[1].setTypeface(Typeface.DEFAULT_BOLD);
+				   positive[1].setShadowLayer(5, 2, 2, Color.YELLOW);
+				   positive[1].setDrawingCacheEnabled(true);
+				   positive[1].setBackgroundResource(R.drawable.whitecloud);
+				   positive[1].setText(positive[0].getText().toString());
+				   positive[0].startAnimation(set);
+				   
 				   rCannon.setVisibility(View.VISIBLE);
 				   cannon.setVisibility(View.INVISIBLE);
 
-			       Cursor mMatch = mDbHelper.fetchThought(positive.getText().toString());
+			       Cursor mMatch = mDbHelper.fetchThought(positive[1].getText().toString());
 			       while (mMatch.moveToNext())
 			       {
 			    	   mMatchNeg.add(mMatch.getString(mMatch.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_NEGATIVE)));
 			    	   if (mMatchNeg.contains(mDestroyerShooter.negative.getText().toString()))
 			    	   {
 	    					mDestroyerShooter.match = true;
+	    					if (mDestroyerShooter.match == true)
+	    					{
+		    				    break;
+	    					}
+
 			    	   }
 			       }
+			       
+			       mMatch.close();
 			       mDestroyerShooter.touched = true;
-			       mDestroyerShooter.positive = positive;
+			       mDestroyerShooter.clear = true;
+			       
+			       mDestroyerShooter.positive = positive[1];
 			       mDestroyerShooter.move_to_x = x;
 			       mDestroyerShooter.move_to_y = y;
-			       return true;
 			       
 			}
-	    	
+			       return true;
+
+			}
 	    });
 
 
 
 }
 
+	protected void clear(Context context)
+	{
+		rCannon.setVisibility(View.GONE);
+		cannon.setVisibility(View.VISIBLE);
+		layout.removeView(positive[0]);
+	    positive[0].setText(mPositive.get((int) (Math.random() * mPositive.size())));
+		layout.addView(positive[0], params);
+	}
 
 
 	   class MyGestureDetector extends SimpleOnGestureListener {
@@ -212,4 +263,12 @@ public class DestroyerShooterView extends Activity
 
 
 	    }
+	   
+	   
+		@Override
+		public void onDestroy()
+		{
+			super.onDestroy();
+			mDbHelper.close();
+		}
 }
