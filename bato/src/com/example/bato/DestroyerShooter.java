@@ -72,6 +72,7 @@ public class DestroyerShooter extends View
     float going_y;
     int place;
     DestroyerShooterView mDestroyer;
+    Score mScore;
     boolean clear;
     boolean moveIt;
     int stored_x;
@@ -317,7 +318,7 @@ public class DestroyerShooter extends View
     	 			
     	 			
     	 		}
-    	 		
+    	 		mDestroyer.update(mContext); //update the score! 
     	 		negative_thoughts.remove((int) (Math.random() * negative_thoughts.size()));
     	 		positives.add(positive);
     	 		if (positives.size() % 3 == 0)

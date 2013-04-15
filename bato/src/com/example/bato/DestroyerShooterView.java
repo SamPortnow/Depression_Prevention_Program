@@ -54,6 +54,8 @@ public class DestroyerShooterView extends Activity
     RelativeLayout.LayoutParams params;
     AnimationSet set;
     AlphaAnimation fade;
+    TextView score;
+    Score mScore;
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
@@ -70,7 +72,10 @@ public class DestroyerShooterView extends Activity
 	    	}
 	    cursor.close();
 	    setContentView(R.layout.activity_destroyer_shooter);
+	    score = (TextView) findViewById(R.id.score);
+	    score.setText("SCORE");
 	    mDestroyerShooter = (DestroyerShooter) findViewById(R.id.anim_view);
+	    mScore = (Score) findViewById(R.id.score_view);
 	    layout = (RelativeLayout) findViewById(R.id.game_view);
 	    cannon = (ImageView) findViewById(R.id.cannon);
 	    rCannon = (ImageView) findViewById(R.id.rcannon);
@@ -94,6 +99,8 @@ public class DestroyerShooterView extends Activity
 	 public void onWindowFocusChanged(boolean hasFocus) {
 	    super.onWindowFocusChanged(hasFocus);
 	    positive[0] = new TextView(mContext);
+	    Log.e("what the crap!", "DAWG");
+	    Log.e("mdestroyer", "" + mDestroyerShooter.width);
 	    params = new RelativeLayout.LayoutParams(mDestroyerShooter.width/3, mDestroyerShooter.height/4);
 	    params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
 	    params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
@@ -227,6 +234,11 @@ public class DestroyerShooterView extends Activity
 		layout.removeView(positive[0]);
 	    positive[0].setText(mPositive.get((int) (Math.random() * mPositive.size())));
 		layout.addView(positive[0], params);
+	}
+	
+	protected void update(Context context)
+	{
+		mScore.update = true;
 	}
 
 
