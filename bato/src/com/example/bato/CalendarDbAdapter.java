@@ -19,6 +19,7 @@ public class CalendarDbAdapter {
     private static final String DATABASE_NAME = "calendar_data"; //my database name
     private static final String DATABASE_TABLE = "calendar"; //this particular table is the activities table. I might make a separate table for a ranking system. We will see. 
     private static final int DATABASE_VERSION = 2;
+    public static final String COLUMN_NAME_PUSHED = "Pushed";
     public static final String COLUMN_NAME_MINUTES="minutes";
     public static final String COLUMN_NAME_YEAR="Year";
     public static final String COLUMN_NAME_DAY="Day";
@@ -33,7 +34,7 @@ public class CalendarDbAdapter {
     
     private static final String DATABASE_CREATE =  //create the database! you already know!! // modified android code of text . I want to allow for null text! 
         "create table calendar  (_id integer primary key autoincrement, " +
-        "Year integer, Day integer, minutes integer, Activity text, Feeling integer, Thought text)";
+        "Year integer, Day integer, minutes integer, Activity text, Feeling integer, Thought text, Pushed text)";
     
     private final Context mCalendarCtx; //declare a context. activity extends from context. it's a basic part of android app. need to research this more. 
 
@@ -129,6 +130,14 @@ public class CalendarDbAdapter {
         return mCalendarDb.update(DATABASE_TABLE, args, COLUMN_NAME_YEAR+" =? AND " + COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_MINUTES+" = ?", new String[] {sYear, day,sminutes}) > 0;
         
     }
+    
+    public boolean updatePush(long Id)
+    {
+    	String filter = "_id=" + Id;
+    	ContentValues args = new ContentValues();
+    	args.put(COLUMN_NAME_PUSHED, "Yes");
+    	return mCalendarDb.update(DATABASE_TABLE, args, filter, null) > 0;	    	
+    }
  
     /*
     public Cursor fetchWholeCalendar(long Day, long hour)
@@ -139,7 +148,7 @@ public class CalendarDbAdapter {
         
     }
 	*/
-
+    
     public Cursor fetchCalendar(long Year, long Day, long minutes)
     {
     	String sYear = String.valueOf(Year);
@@ -166,7 +175,13 @@ public class CalendarDbAdapter {
     public Cursor fetchAll()
     {
     	return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_MINUTES,
-        		COLUMN_NAME_YEAR, COLUMN_NAME_DAY, COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, null , null, null, null, null); 
+        		COLUMN_NAME_YEAR, COLUMN_NAME_DAY, COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, null , null, null, null, COLUMN_NAME_YEAR+ " DESC, " + COLUMN_NAME_DAY  + " DESC, " + COLUMN_NAME_MINUTES + " DESC"); 
+
+    }
+    
+    public Cursor fetchActivity(String activity)
+    {
+        return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_FEELING}, COLUMN_NAME_ACTIVITY+" =?", new String[] {activity}, null, null, null);
 
     }
     

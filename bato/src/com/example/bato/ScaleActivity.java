@@ -19,7 +19,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,7 +42,6 @@ public class ScaleActivity extends Activity
 	EditText positive_thought;
 	Button fire;
 	TextView pos;
-	private static Set<String> mPositiveWords;
 	private static Set<String> mNegativeWords;
 	int count;
 	private Pattern four_letter_words = Pattern.compile("not|cant|cnt|can't"); 
@@ -145,7 +143,7 @@ public class ScaleActivity extends Activity
 			public void onClick(View arg0) {
 					AlertDialog.Builder builder = new Builder(mContext);
 					
-					builder.setTitle("HELP: Strategies for Challening Negative Thoughts");
+					builder.setTitle("HELP: Strategies for Challenging Negative Thoughts");
 					builder.setView(getLayoutInflater().inflate(R.layout.dialog_help, null));
 					builder.setPositiveButton(android.R.string.ok, null);
 					builder.create().show();				
@@ -295,6 +293,7 @@ public class ScaleActivity extends Activity
 		paramsBag.leftMargin = mScale.width/4;
 		paramsBag.topMargin =  mScale.height/4;
 		layout.addView(mBag, paramsBag);
+		
 		for (int i = 0; i <4; i++)
 		{
 			mScale.mPositive.get(i).setOnTouchListener(new MyListener(i)

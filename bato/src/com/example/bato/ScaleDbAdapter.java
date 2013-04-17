@@ -16,6 +16,7 @@ public class ScaleDbAdapter {
     private static final int DATABASE_VERSION = 2;
     public static final String COLUMN_NAME_NEGATIVE = "negative";
     public static final String COLUMN_NAME_POSITIVE = "positive";
+    public static final String COLUMN_NAME_PUSHED = "pushed";
     public static final String KEY_ROWID = "_id"; //all my vars are now declared 
 
     private static final String TAG = "ScaleDbAdapter";
@@ -23,7 +24,7 @@ public class ScaleDbAdapter {
     private SQLiteDatabase mScaleDb;
     
     private static final String DATABASE_CREATE =  //create the database! you already know!! // modified android code of text . I want to allow for null text! 
-        "create table scale  (_id integer primary key autoincrement, negative text, positive text)";
+        "create table scale  (_id integer primary key autoincrement, negative text, positive text, pushed text)";
     
     private final Context mScaleCtx; //declare a context. activity extends from context. it's a basic part of android app. need to research this more. 
 
@@ -101,6 +102,14 @@ public class ScaleDbAdapter {
         initialValues.put(COLUMN_NAME_NEGATIVE, negative_thought);
         initialValues.put(COLUMN_NAME_POSITIVE, positive_thought);
         return mScaleDb.insert(DATABASE_TABLE, null, initialValues);
+    }
+    
+    public boolean updatePush(long Id)
+    {
+    	String filter = "_id=" + Id;
+    	ContentValues args = new ContentValues();
+    	args.put(COLUMN_NAME_PUSHED, "Yes");
+    	return mScaleDb.update(DATABASE_TABLE, args, filter, null) > 0;	    	
     }
 
     public Cursor fetchNegs()

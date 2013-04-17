@@ -46,6 +46,7 @@ public class DestroyerShooterView extends Activity
     Animation out;
     TranslateAnimation LeftToRight;
     ScaleDbAdapter mDbHelper;
+    GameDbAdapter mGameDbHelper;
     ArrayList<String> mPositive = new ArrayList<String>();
     ArrayList <String> mMatchNeg = new ArrayList<String>();
     ImageView cannon;
@@ -65,6 +66,8 @@ public class DestroyerShooterView extends Activity
 	    mContext = this;
 	    mDbHelper=new ScaleDbAdapter(mContext);
 	    mDbHelper.open();
+	    mGameDbHelper = new GameDbAdapter(mContext);
+	    mGameDbHelper.open();
 	    Cursor cursor = mDbHelper.fetchPositives();
 	    	while (cursor.moveToNext())
 	    	{
@@ -240,6 +243,11 @@ public class DestroyerShooterView extends Activity
 	{
 		mScore.update = true;
 	}
+	
+	protected void updateDb()
+	{
+		mGameDbHelper.createGame(mScore.count);
+	}
 
 
 	   class MyGestureDetector extends SimpleOnGestureListener {
@@ -281,6 +289,8 @@ public class DestroyerShooterView extends Activity
 		public void onDestroy()
 		{
 			super.onDestroy();
+			updateDb();
 			mDbHelper.close();
+			mGameDbHelper.close();
 		}
 }

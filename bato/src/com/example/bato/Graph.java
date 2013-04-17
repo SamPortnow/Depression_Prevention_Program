@@ -27,7 +27,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -130,7 +129,6 @@ public class Graph extends Fragment
 	    Calendar cal = Calendar.getInstance();  
 	    cal.set(Calendar.YEAR, (int)Year);  
 	    cal.set(Calendar.DAY_OF_YEAR, (int)Day);  
-	    Log.e("Day is",""+Day);
 	    Date date = cal.getTime();  
 	    String sDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US).format(date);  
 	    minutes.clear();

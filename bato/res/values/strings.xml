@@ -16,10 +16,11 @@
     <string name="menu_settings">Settings</string>
     <string name="destroyer_stats_title">Destroyer Game</string>
     <string name="destroyer_stats_play_game">Play</string>
-    <string name="destroyer_stats_negatives_destroyed">Negative thoughts destroyed</string>
+    <string name="destroyer_stats_bank_thoughts">Thoughts in the bank</string>
     <string name="destroyer_stas_personal_points">Personal Scientist points</string>
     <string name="destroyer_stats_high_score">High Score</string>
     <string name="destroyer_stats_more_scores">(see more)</string>
+    <string name="personal_scientist_breakdown">(breakdown)</string>
     <string name="high_scores_title">High Scores</string>
     <string name="scale_stats_title">Scale Game</string>
     <string name="scale_stats_play_game">Play</string>
@@ -45,5 +46,6 @@
     <string name="friend"> If your friend called very upset and said this thought about themself, what
     would you say to them?</string>
     <string name="skip"> SKIP IT!</string>
+    <string name="plus">+</string>
 
 </resources>

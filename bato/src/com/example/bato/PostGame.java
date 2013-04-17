@@ -2,6 +2,7 @@ package com.example.bato;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -21,10 +22,12 @@ import android.os.IBinder;
 public class PostGame extends IntentService
 {
 	GameDbAdapter mScoresHelper;
-	Cursor game;
+	Cursor update;
 	int game_count;
 	int cal_count;
 	int current; 
+    ArrayList<Long> mRowId = new ArrayList<Long>();
+
 	GamePushDbAdapter mPushDbHelper = new GamePushDbAdapter(this);
 
 	
@@ -40,30 +43,17 @@ public class PostGame extends IntentService
 		mScoresHelper = new GameDbAdapter(this);
 		JSONArray jArrayGames = new JSONArray();
 		mScoresHelper.open();
-		mPushDbHelper.open();
-		
-		Cursor database = mPushDbHelper.fetchPush();
-		if (database.moveToFirst())
-		{
-			current = database.getInt(database.getColumnIndexOrThrow(CalendarPushDbAdapter.KEY_ROWID));
-		}
-		
-		game = mScoresHelper.fetchLatest(current);
-
-		while (game.moveToNext())
+		update = mScoresHelper.fetchScores();
+		while (update.moveToNext())
 		{
 			try 
 			{
 				JSONObject jObjectGame = new JSONObject();
-				jObjectGame.put("Time", game.getLong(game.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_TIME)));
-				jObjectGame.put("RT", game.getLong(game.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_RT)));
-				jObjectGame.put("Score", game.getInt(game.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_SCORE)));
-				jObjectGame.put("Game Number", game.getInt(game.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_GAME_NUMBER)));
-				jObjectGame.put("Game Complete", game.getString(game.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_GAME_COMPLETE)));
-				jObjectGame.put("Trial", game.getInt(game.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_TRIAL)));
-				jObjectGame.put("Negative Thought", game.getString(game.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_NEGATIVE_THOUGHT)));
-				jObjectGame.put("Positive Thought", game.getString(game.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_POSITIVE_THOUGHT)));
-				jObjectGame.put("Success", game.getString(game.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_SUCCESS)));
+				if (update.getString(update.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_SCORE)) != "Yes")
+				{
+					jObjectGame.put("Score", update.getInt(update.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_SCORE)));
+					mRowId.add(update.getLong(update.getColumnIndexOrThrow(GameDbAdapter.KEY_ROWID)));
+				}
 				jArrayGames.put(jObjectGame);
 				current++;
 
@@ -79,9 +69,8 @@ public class PostGame extends IntentService
 			}
 			
 		}
-		game.close();
+		update.close();
 		mScoresHelper.close();
-		database.close();
 		try 
 		{
 			PostData(jArrayGames, current);
@@ -109,9 +98,9 @@ public class PostGame extends IntentService
 			if (postResponse.getStatusLine().getStatusCode() == 200)
 			{
 					current++;
-					mPushDbHelper.createPush(current);
+					for (int i = 0; i < mRowId.size(); i++)
+					mScoresHelper.updatePush(mRowId.get(i));
 			}
-			mPushDbHelper.close();
 		} 
 		catch (UnsupportedEncodingException e) 
 		{

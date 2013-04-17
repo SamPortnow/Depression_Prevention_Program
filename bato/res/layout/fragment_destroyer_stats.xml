@@ -7,7 +7,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:id="@+id/destroyerLayout" >
 
         <TextView
             android:layout_width="0dp"
@@ -56,15 +57,35 @@
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
-            <TextView
+                        <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.8"
+                android:paddingLeft="5dp" >
+                
+                            
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:paddingLeft="5dp"
                 android:text="@string/destroyer_stas_personal_points"
                 android:textIsSelectable="false"
                 android:textSize="18sp" />
+            
+            
+           <TextView
+                    android:id="@+id/personal_scientist_breakdown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="@string/personal_scientist_breakdown"
+                    android:textIsSelectable="false"
+                    android:textSize="18sp" />
+            </LinearLayout>
+            
         </TableRow>
 
         <TableRow
@@ -75,7 +96,7 @@
             android:paddingTop="10dp" >
 
             <TextView
-                android:id="@+id/destroyer_stats_negatives_destroyed"
+                android:id="@+id/destroyer_stats_bank"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
@@ -92,7 +113,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.8"
                 android:paddingLeft="5dp"
-                android:text="@string/destroyer_stats_negatives_destroyed"
+                android:text="@string/destroyer_stats_bank_thoughts"
                 android:textIsSelectable="false"
                 android:textSize="18sp" />
         </TableRow>
