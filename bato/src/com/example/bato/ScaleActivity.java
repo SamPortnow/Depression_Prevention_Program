@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,9 +21,11 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.DragShadowBuilder;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
@@ -306,6 +309,9 @@ public class ScaleActivity extends Activity
 					{ 
 						int i = getPosition();
 						mMoveParams[i] = (RelativeLayout.LayoutParams) mScale.mPositive.get(i).getLayoutParams();
+					    ClipData data = ClipData.newPlainText("", "");
+					    DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+					    v.startDrag(data, shadowBuilder, v, 0);
 					        switch(event.getActionMasked())
 					        {
 					            case MotionEvent.ACTION_DOWN:
@@ -323,65 +329,10 @@ public class ScaleActivity extends Activity
 					                mMoveParams[i].leftMargin = x_coord - 25;
 					                mMoveParams[i].topMargin = y_coord - 75;
 					                mScale.mPositive.get(i).setLayoutParams(mMoveParams[i]);
-					                if (x_coord >= (mScale.width/4) && x_coord <= (mScale.width/4 + mBag.getWidth())
-					                		&& y_coord >= (mScale.height/4) && y_coord <= (mScale.height/4 + mBag.getHeight()) && mRemoved == false)
-					                {
-					                	layout.removeView(mBag);
-					                	layout.addView(mGreenBag);
-					                	mRemoved = true;
-					                }
-					                
-					                else
-					                {
-					                	if (mRemoved == true)
-					                	{
-					                		layout.removeView(mGreenBag);
-					                		layout.addView(mBag);
-					                		mRemoved = false;
-					                	}
-					                }
 					                break;
 
 					            case MotionEvent.ACTION_UP:
-
-					            	if (x_coord >= (mScale.width/4) && x_coord <= (mScale.width/4 + mBag.getWidth())
-					                		&& y_coord >= (mScale.height/4) && y_coord <= (mScale.height/4 + mBag.getHeight()))
-					                		{
-						        	    mDbHelper.createRelation(mScale.negative.getText().toString(), mScale.mPositive.get(i).getText().toString());
-					            		AlertDialog.Builder builder = new Builder(mContext);
-					            		builder.setTitle("Great Job!");		
-					            		builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
-					            		{
-
-											@Override
-											public void onClick(DialogInterface dialog,int which)
-											{
-												{
-						            				Intent i = new Intent(mContext, MainActivity.class);				
-						            				mContext.startActivity(i);	
-												}
-
-											}
-		
-					            		
-					            		});
-					            		
-					            		builder.setPositiveButton("Play again!", new DialogInterface.OnClickListener()
-					            		{
-					            			@Override
-					            			public void onClick(DialogInterface dialog, int which)
-					            			{
-					            				Intent i = new Intent(mContext, MainActivity.class);				
-					            				mContext.startActivity(i);
-					            			}
-					            			
-					            		});			
-					            		
-					            		builder.create().show();
-					            		Log.e("WHAT THE CRAP", "kid");
-					            		break;
-					                		}
-					            		break;
+					            	break;
 		
 					            default:
 					                break;
@@ -391,6 +342,68 @@ public class ScaleActivity extends Activity
 				
 				
 				});
+			
+			mBag.setOnDragListener(new MyDragListener(i)
+			{
+
+				@Override
+				public boolean onDrag(View arg0, DragEvent arg1) 
+				{
+					int i = getPosition();
+            		RelativeLayout.LayoutParams paramsBag = new RelativeLayout.LayoutParams(layout.getWidth()/2, layout.getHeight()/2);
+            		paramsBag.leftMargin = mScale.width/4;
+            		paramsBag.topMargin =  mScale.height/4;
+            		
+					switch(arg1.getAction())
+					{
+					case DragEvent.ACTION_DROP:
+						Log.e("what the crap!","ugh!!!");
+		        	    mDbHelper.createRelation(mScale.negative.getText().toString(), mScale.mPositive.get(i).getText().toString());
+	            		AlertDialog.Builder builder = new Builder(mContext);
+	            		builder.setTitle("Great Job!");		
+	            		builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
+	            		{
+
+							@Override
+							public void onClick(DialogInterface dialog,int which)
+							{
+								{
+		            				Intent i = new Intent(mContext, MainActivity.class);				
+		            				mContext.startActivity(i);	
+								}
+
+							}
+
+	            		
+	            		});
+	            		
+	            		builder.setPositiveButton("Play again!", new DialogInterface.OnClickListener()
+	            		{
+	            			@Override
+	            			public void onClick(DialogInterface dialog, int which)
+	            			{
+	            				Intent i = new Intent(mContext, MainActivity.class);				
+	            				mContext.startActivity(i);
+	            			}
+	            			
+	            		});			
+	            		
+	            		builder.create().show();
+		            	
+	            		break;
+					case DragEvent.ACTION_DRAG_ENTERED:
+					    mBag.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.green_bag));
+					    break;
+					case DragEvent.ACTION_DRAG_EXITED:
+					    	mBag.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bag));
+							break;
+						}
+						
+					
+					return true;
+				}
+				
+			});
 			
 			
 
