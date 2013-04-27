@@ -3,7 +3,10 @@ package com.example.bato;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -94,7 +97,17 @@ public class DestroyerShooterView extends Activity
             }
         };
 
-	    
+		SharedPreferences preferences = this.getSharedPreferences(this.getPackageName(), Context.MODE_PRIVATE);
+		if (preferences.getString("shooter instructions", null) == null)
+		{
+			
+		AlertDialog.Builder builder = new Builder(mContext);
+		builder.setTitle("Instructions");
+		builder.setMessage("Pick the correct positive thought and shoot down the negative thought!");
+		builder.setPositiveButton(android.R.string.ok, null);
+		builder.create().show();				
+		preferences.edit().putString("shooter instructions", "Yes").commit();
+		}
 	    
 	}
 	

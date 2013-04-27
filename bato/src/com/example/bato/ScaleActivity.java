@@ -3,6 +3,7 @@ package com.example.bato;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -15,12 +16,15 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.util.Log;
+import android.view.Display;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -30,12 +34,18 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mobeta.android.dslv.DragSortListView;
+import com.mobeta.android.dslv.DragSortListView.DropListener;
 
 
 
@@ -72,9 +82,12 @@ public class ScaleActivity extends Activity
 	TextView mNegative;
 	boolean mStart;
 	private ScaleDbAdapter mDbHelper;
-
-
-	
+	ScrollView mScroll;
+	TextView mNegs;
+	ArrayList<String> negative_thoughts = new ArrayList<String>();
+	CalendarDbAdapter mCalHelper;
+	ListAdapter mAdapter;
+	ArrayAdapter<String> arrayAdapter;
 	
 
 	public static boolean populatePositiveWords(Context context)
@@ -112,9 +125,44 @@ public class ScaleActivity extends Activity
 	    mContext = this;
 	    mDbHelper=new ScaleDbAdapter(mContext);
 	    mDbHelper.open();
+	    mCalHelper = new CalendarDbAdapter(mContext);
+	    mCalHelper.open();
+	    Cursor thoughts = mCalHelper.fetchThoughts();
+	    while (thoughts.moveToNext())
+	    	{
+	    		if (thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)).length() > 0 && thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)).charAt(0) == '-')
+	    		{
+	    			negative_thoughts.add(thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)));
+	    		}
+	   
+	    	}
+	    thoughts.close();
+	    mCalHelper.close();
 	    populatePositiveWords(mContext);
 	    setContentView(R.layout.activity_scale);
-	    mScale = new ScaleView(this);
+	    mScale = (ScaleView) findViewById(R.id.scale_view);
+	    mScale.negative.setText(negative_thoughts.get(0));
+	    arrayAdapter =  new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, negative_thoughts);
+	    DragSortListView listView = (DragSortListView) findViewById(R.id.listview);
+	    listView.setDropListener(new DropListener()
+	    {
+
+			@Override
+			public void drop(int from, int to) 
+			{
+				String item=arrayAdapter.getItem(from);
+				arrayAdapter.remove(item);
+				arrayAdapter.insert(item, to);
+				if (to == 0)
+				{
+					mScale.mSwitch(item);
+				}
+			}
+
+
+	    	
+	    });
+	    listView.setAdapter(arrayAdapter);
 	    mBag = new ImageView (mContext);
 	    mBag.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bag));
 	    mGreenBag = new ImageView(mContext);
@@ -122,21 +170,8 @@ public class ScaleActivity extends Activity
 	    layout = (RelativeLayout) findViewById(R.id.game_view);
 	    positive_thought = (EditText) findViewById(R.id.thoughts);
 	    fire = (Button) findViewById(R.id.scale_it);
-	    skip = new Button(mContext);
-	    skip.setText("SKIP!");
-	    skip.setId(1);
 	    question = (Button) new Button(mContext);
 	    question.setBackgroundResource(R.drawable.question);
-		RelativeLayout.LayoutParams sSkipParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT); 
-		sSkipParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		RelativeLayout.LayoutParams sQuestionParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT); 
-		sQuestionParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		sQuestionParams.addRule(RelativeLayout.CENTER_VERTICAL);
-	    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,  LayoutParams.MATCH_PARENT);
-	    params.addRule(RelativeLayout.ABOVE, R.id.thoughts);
-	    layout.addView(mScale, params);
-		layout.addView(skip, sSkipParams);
-		layout.addView(question, sQuestionParams);
 	    InputFilter[] FilterArray = new InputFilter[1];
 	    FilterArray[0] = new InputFilter.LengthFilter(60);
 	    positive_thought.setFilters(FilterArray);
@@ -156,33 +191,6 @@ public class ScaleActivity extends Activity
 			
 	    	
 	    });
-	    skip.setOnClickListener(new OnClickListener()
-	    {
-
-			@Override
-			public void onClick(View v) 
-			{
-				if (mStart == false)
-				{
-				int array_size = mScale.negative_thoughts.size();
-				word = mScale.negative_thoughts.get((int) (Math.random() * array_size));
-				mNegative = new TextView(mContext);
-	    		mNegative.setText(word);
-	        	mNegative.layout(0, 0, mScale.width/3, mScale.height/4);
-	        	mNegative.setGravity(Gravity.CENTER);
-	        	mNegative.setTextSize(15);
-	        	mNegative.setTextColor(Color.BLACK);
-	         	mNegative.setTypeface(Typeface.DEFAULT_BOLD);
-	        	mNegative.setShadowLayer(5, 2, 2, Color.WHITE);
-	        	mNegative.setDrawingCacheEnabled(true);
-	        	mNegative.setBackgroundResource(R.drawable.graycloud);
-				mScale.negative = mNegative;
-				}
-			}
-	    	
-	    });
-	    
-	    
 	    
 	    fire.setOnClickListener(new OnClickListener()
 	    {
@@ -258,14 +266,33 @@ public class ScaleActivity extends Activity
         		
         	}
 	    });
-	
-	
+		SharedPreferences preferences = this.getSharedPreferences(this.getPackageName(), Context.MODE_PRIVATE);
+		if (preferences.getString("scale instructions", null) == null)
+		{
+			
+		AlertDialog.Builder builder = new Builder(mContext);
+		builder.setTitle("Instructions");
+		builder.setMessage("Outweight the negative thought by coming up with thoughts that CHALLENGE the truth of it");
+		builder.setPositiveButton(android.R.string.ok, null);
+		builder.create().show();				
+		preferences.edit().putString("scale instructions", "Yes").commit();
+		}
 	
 	}
 	
-	
-
-	
+	@Override
+	public void onWindowFocusChanged(boolean focus)
+	{
+		super.onWindowFocusChanged(focus);
+		RelativeLayout.LayoutParams sQuestionParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT); 
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int width = size.x;
+		sQuestionParams.leftMargin = width/5 + mScale.getWidth()/2;
+		sQuestionParams.topMargin = mScale.getHeight()/2;
+		layout.addView(question, sQuestionParams);
+	}
 
 	
 	protected void clear(Context context)
@@ -275,6 +302,8 @@ public class ScaleActivity extends Activity
 		layout.removeView(skip);
 		layout.removeView(question);
 		layout.removeView(mScale);
+		layout.removeView(mNegs);
+		layout.removeView(mScroll);
 		for (int i = 0; i < 4; i++)
 		{
 		params[i] = new RelativeLayout.LayoutParams(mScale.width/3, mScale.height/4); //changed this from layout.getheight()/4
@@ -294,10 +323,21 @@ public class ScaleActivity extends Activity
 		}
 		
 		RelativeLayout.LayoutParams paramsBag = new RelativeLayout.LayoutParams(layout.getWidth()/2, layout.getHeight()/2);
-		paramsBag.leftMargin = mScale.width/4;
-		paramsBag.topMargin =  mScale.height/4;
+		paramsBag.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		paramsBag.addRule(RelativeLayout.CENTER_VERTICAL);
 		layout.addView(mBag, paramsBag);
 		
+		SharedPreferences preferences = this.getSharedPreferences(this.getPackageName(), Context.MODE_PRIVATE);
+		if (preferences.getString("bank instructions", null) == null)
+				{
+					
+				AlertDialog.Builder builder = new Builder(mContext);
+				builder.setTitle("Instructions");
+				builder.setMessage("Drag and drop the thought you BELIEVE the most into the bank!");
+				builder.setPositiveButton(android.R.string.ok, null);
+				builder.create().show();				
+				preferences.edit().putString("bank instructions", "Yes").commit();
+				}
 		for (int i = 0; i <4; i++)
 		{
 			mScale.mPositive.get(i).setOnTouchListener(new MyListener(i)
@@ -357,7 +397,6 @@ public class ScaleActivity extends Activity
 					switch(arg1.getAction())
 					{
 					case DragEvent.ACTION_DROP:
-						Log.e("what the crap!","ugh!!!");
 		        	    mDbHelper.createRelation(mScale.negative.getText().toString(), mScale.mPositive.get(i).getText().toString());
 	            		AlertDialog.Builder builder = new Builder(mContext);
 	            		builder.setTitle("Great Job!");		
@@ -409,8 +448,15 @@ public class ScaleActivity extends Activity
 
 		}
 	}
+	
 
-
+		
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		mDbHelper.close();
+	}
 
 
 }

@@ -18,7 +18,7 @@
     </TextView>
 	
     
-        <com.example.bato.Score
+     <com.example.bato.Score
         android:id="@+id/score_view"
         android:layout_weight ="1"
         android:layout_width="0dp"

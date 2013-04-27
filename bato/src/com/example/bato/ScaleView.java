@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.text.TextPaint;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +25,7 @@ import android.widget.TextView;
 public class ScaleView extends View
 {
 	Context mContext;
-	private Bitmap[] mScale= new Bitmap[72];
+	private Bitmap mScale;
 	private Bitmap mBag;
 	Bitmap mGreenBag;
     ArrayList<TextView> mPositive = new ArrayList<TextView>();
@@ -71,47 +73,22 @@ public class ScaleView extends View
 	boolean secondPlace;
 	boolean thirdPlace;
 	boolean fourthPlace;
-   
+	AssetManager mAssets;
     
     
-	public ScaleView(Context context) 
+	public ScaleView(Context context, AttributeSet attrs) 
 	{
-		super(context);
+		super(context, attrs);
+		mAssets = context.getAssets();
 		width = this.getWidth();
 		height = this.getHeight();
 		mContext = this.getContext();
 		mScaleView = (ScaleActivity) context;
     	negative = new TextView(mContext);
         h = new Handler();
-        mCalendarDbHelper=new CalendarDbAdapter(mContext);
-        mCalendarDbHelper.open();
-	    Cursor thoughts = mCalendarDbHelper.fetchThoughts();
-
-	    //create a string array of negative thoughts from the db
-	    	while (thoughts.moveToNext())
-	    	{
-	    		if (thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)).length() > 0 && thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)).charAt(0) == '-')
-	    		{
-	    			negative_thoughts.add(thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)));
-	    		}
-	   
-	    	}
-	     thoughts.close();
-	     array_size = negative_thoughts.size();
-	     mBag =BitmapFactory.decodeResource(getResources(), R.drawable.bag);
-	     mGreenBag = BitmapFactory.decodeResource(getResources(), R.drawable.green_bag);
+	    mBag =BitmapFactory.decodeResource(getResources(), R.drawable.bag);
 	     
-		for (int i = 0; i < 72; i ++)
-		{
-			try
-			{
-			mScale[i] = BitmapFactory.decodeStream(context.getAssets().open("scale_"+i+".gif"));
-			}
-			catch (IOException e) 
-			{
-		    
-			}
-		}
+
 	}
 	
 	
@@ -134,11 +111,16 @@ public class ScaleView extends View
 		{
 			width = this.getWidth();
 			height = this.getHeight();
-			mScale[i] = Bitmap.createScaledBitmap(mScale[i], (int) (width * 1.5), height, true);
+			try 
+			{
+				mScale = ScaleIt(canvas, i);
+			} catch (IOException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			mBag = Bitmap.createScaledBitmap(mBag, width/2, height/2, true);
 			mGreenBag = Bitmap.createScaledBitmap(mBag, width/4, height/4, true);
-    		word = negative_thoughts.get((int) (Math.random() * array_size));
-    		negative.setText(word);
         	negative.layout(0, 0, width/3, height/4);
         	negative.setGravity(Gravity.CENTER);
         	negative.setTextSize(15);
@@ -182,7 +164,7 @@ public class ScaleView extends View
 		
 		if (game_over == false)
 		{
-			canvas.drawBitmap(mScale[i], 0 - (width/4), 0, null);
+			canvas.drawBitmap(mScale, 0 - (width/4), 0, null);
 			canvas.drawBitmap(negative.getDrawingCache(),(int) (width/12), (int) (height - (height)/2.5) - (j), null);
 		}
 		
@@ -195,12 +177,18 @@ public class ScaleView extends View
 		{
 			i++;
 			j+= (height/150);
-			ScaleIt(canvas, i);
-			if (i == 21 || i == 37 || i == 53 || i == 71)
+			try 
+			{
+				mScale = ScaleIt(canvas, i);
+			} catch (IOException e) 
+			{
+
+			}
+			if (i == 20 || i ==40 || i == 60 || i == 80)
 			{
 				mMoveScale = false;
 			}
-			if (i == 71)
+			if (i == 80)
 			{
 				game_over = true;
 			}
@@ -437,13 +425,26 @@ public class ScaleView extends View
 	}
 
 	
-	protected void ScaleIt(Canvas canvas, int i)
+	protected Bitmap ScaleIt(Canvas canvas, int i) throws IOException
 	{
-    	mScale[i] = Bitmap.createScaledBitmap(mScale[i], (int) (width * 1.5), height, true);
-    	mScale[i-1].recycle();
-
+		mScale = BitmapFactory.decodeStream(mAssets.open("scale_"+i+".gif"));
+		mScale = Bitmap.createScaledBitmap(mScale, (int) (width * 1.5), height, true);
+		return mScale;
 	}
 
+	void mSwitch(String item)
+	{
+    	negative = new TextView(mContext);
+		negative.layout(0, 0, width/3, height/4);
+    	negative.setGravity(Gravity.CENTER);
+    	negative.setTextSize(15);
+    	negative.setTextColor(Color.BLACK);
+     	negative.setTypeface(Typeface.DEFAULT_BOLD);
+    	negative.setShadowLayer(5, 2, 2, Color.WHITE);
+    	negative.setDrawingCacheEnabled(true);
+    	negative.setBackgroundResource(R.drawable.graycloud);
+		negative.setText(item);
+	}
 
 	
 

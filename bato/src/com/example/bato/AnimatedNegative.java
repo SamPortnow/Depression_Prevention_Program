@@ -241,8 +241,8 @@ public class AnimatedNegative extends View
         	    	
         	    		if (move >= 0 && move < 10)
         	    		{
-        	    		move +=1;
-        	    		x += (width/10)/(FRAME_RATE);
+        	    			move +=1;
+        	    			x += (width)/(FRAME_RATE);
         	    			
         	    		}
         	    	
@@ -250,7 +250,7 @@ public class AnimatedNegative extends View
         	    		if (move >= 10 && move < 20)
         	    		{
         	    			move += 1;
-            	    		x -= (width/10)/(FRAME_RATE);
+            	    		x -= (width)/(FRAME_RATE);
         	    			
         	    		}
         	    		

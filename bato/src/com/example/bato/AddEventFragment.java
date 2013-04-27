@@ -131,5 +131,9 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 
 		Intent service = new Intent(context, Post.class);		
 		context.startService(service);		
+		
+		Intent back = new Intent(context, MainActivity.class);
+		context.startService(back);
+		
 	}
 }

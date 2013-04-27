@@ -12,6 +12,22 @@
         android:layout_centerVertical="true"
         android:background="@drawable/question"
         />
+    <view 
+    class="com.mobeta.android.dslv.DragSortListView"
+    android:id="@+id/listview"
+    android:drawSelectorOnTop="false"
+	android:layout_height="wrap_content"
+	android:layout_width="100dp"
+	android:textColor="#ffffff"
+	android:background="@drawable/back">
+   	</view>    
+	 <com.example.bato.ScaleView
+        android:id="@+id/scale_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/thoughts"
+        android:layout_toRightOf= "@id/listview">
+	   </com.example.bato.ScaleView>
      
       <EditText 
         android:id="@+id/thoughts"
