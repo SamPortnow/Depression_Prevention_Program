@@ -27,11 +27,21 @@
     </com.example.bato.Score>
     
     </LinearLayout>
+   <view 
+    class="com.mobeta.android.dslv.DragSortListView"
+    android:id="@+id/listview"
+    android:drawSelectorOnTop="false"
+	android:layout_height="wrap_content"
+	android:layout_width="75dp"
+	android:textColor="#ffffff"
+	android:background="@drawable/back">
+   	</view>    
     <com.example.bato.DestroyerShooter
         android:id="@+id/anim_view"
         android:layout_below = "@id/score_stuff"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_toRightOf= "@id/listview">
     </com.example.bato.DestroyerShooter>
 
     <ImageView
