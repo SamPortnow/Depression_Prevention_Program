@@ -175,7 +175,7 @@ public class ScaleView extends View
 		
 		else
 		{
-			canvas.drawBitmap(mBag, width/4, height/4, null);
+			canvas.drawBitmap(mBag, width/3, height/4, null);
 		}
 		
 		if (mMoveScale == true)

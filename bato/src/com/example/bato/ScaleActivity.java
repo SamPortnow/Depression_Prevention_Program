@@ -33,22 +33,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnClickListener;
+import android.view.View.OnDragListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup.LayoutParams;
-import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.mobeta.android.dslv.DragSortListView;
-import com.mobeta.android.dslv.DragSortListView.DropListener;
 
 
 
@@ -91,7 +88,7 @@ public class ScaleActivity extends Activity
 	CalendarDbAdapter mCalHelper;
 	ListAdapter mAdapter;
 	ArrayAdapter<String> arrayAdapter;
-	DragSortListView listView;
+	ListView listView;
 	int width;
 	
 
@@ -127,6 +124,7 @@ public class ScaleActivity extends Activity
 	{
 	    super.onCreate(savedInstanceState);
 	    this.getActionBar().hide();
+	    Log.e("Umm", "PLEASE");
 	    mContext = this;
 	    mDbHelper=new ScaleDbAdapter(mContext);
 	    mDbHelper.open();
@@ -147,26 +145,8 @@ public class ScaleActivity extends Activity
 	    setContentView(R.layout.activity_scale);
 	    mScale = (ScaleView) findViewById(R.id.scale_view);
 	    mScale.negative.setText(negative_thoughts.get(0));
-	    arrayAdapter =  new ArrayAdapter<String>(this, R.layout.negatives, android.R.id.text1, negative_thoughts);
-	    listView = (DragSortListView) findViewById(R.id.listview);
-	    listView.setDropListener(new DropListener()
-	    {
-
-			@Override
-			public void drop(int from, int to) 
-			{
-				String item=arrayAdapter.getItem(from);
-				arrayAdapter.remove(item);
-				arrayAdapter.insert(item, to);
-				if (to == 0)
-				{
-					mScale.mSwitch(item);
-				}
-			}
-
-
-	    	
-	    });
+	    arrayAdapter =  new ScaleArrayAdapter(this, R.layout.negatives, android.R.id.text1, negative_thoughts);
+	    listView = (ListView) findViewById(R.id.listview);
 	    listView.setAdapter(arrayAdapter);
 
 	    mBag = new ImageView (mContext);
@@ -287,6 +267,31 @@ public class ScaleActivity extends Activity
 		builder.create().show();				
 		preferences.edit().putString("scale instructions", "Yes").commit();
 		}
+		
+		mScale.setOnDragListener(new OnDragListener()
+		{
+
+			@Override
+			public boolean onDrag(View arg0, DragEvent arg1) 
+			{
+				switch (arg1.getAction())
+				{
+					case DragEvent.ACTION_DRAG_LOCATION:
+						break;
+					
+					case DragEvent.ACTION_DRAG_STARTED:
+						Log.e("DRAG", "has started");
+						break;
+						
+					case DragEvent.ACTION_DROP:
+						break;
+				}
+				
+
+				return true;
+			}
+			
+		});
 	
 	}
 	
@@ -308,9 +313,6 @@ public class ScaleActivity extends Activity
 		layout.removeView(skip);
 		//layout.removeView(question);
 		layout.removeView(listView);
-		Log.e("widith is", "" + width);
-		Log.e("layout widith is", "" + layout.getWidth());
-		Log.e("mScale width is", "" + mScale.width);
 		mScale.width = layout.getWidth();
 		mScale.update();
 	    }
@@ -368,37 +370,10 @@ public class ScaleActivity extends Activity
 					@Override
 					public boolean onTouch(View v, MotionEvent event) 
 					{ 
-						int i = getPosition();
-						mMoveParams[i] = (RelativeLayout.LayoutParams) mScale.mPositive.get(i).getLayoutParams();
 					    ClipData data = ClipData.newPlainText("", "");
 					    DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
 					    v.startDrag(data, shadowBuilder, v, 0);
-					        switch(event.getActionMasked())
-					        {
-					            case MotionEvent.ACTION_DOWN:
-					                break;
-					            case MotionEvent.ACTION_MOVE:
-					                y_coord = (int) event.getRawY();
-					                x_coord = (int) event.getRawX();
-					                if (x_coord > mScale.width) 
-					                {
-					                    x_coord = mScale.width;
-					                }
-					                if (y_coord > mScale.height) {
-					                    y_coord= mScale.height;
-					                }
-					                mMoveParams[i].leftMargin = x_coord - 25;
-					                mMoveParams[i].topMargin = y_coord - 75;
-					                mScale.mPositive.get(i).setLayoutParams(mMoveParams[i]);
-					                break;
-
-					            case MotionEvent.ACTION_UP:
-					            	break;
-		
-					            default:
-					                break;
-					        }
-					        return true;
+					    return true;
 					    }
 				
 				
@@ -468,6 +443,7 @@ public class ScaleActivity extends Activity
 			
 
 		}
+		
 	}
 	
 
