@@ -78,6 +78,7 @@ public class ScaleView extends View
 	boolean start;
     boolean reposition;
     boolean reset;
+    boolean move;
     
 	public ScaleView(Context context, AttributeSet attrs) 
 	{
@@ -425,9 +426,11 @@ public class ScaleView extends View
 		{
 			try 
 			{
+				if (move == true)
+				{
 				mScale = ScaleIt(canvas, i);
-				canvas.drawBitmap(mScale, 0 - (width/4), 0, null);
-
+				Log.e("I am", "CREATING");
+				}
 			} 
 			catch (IOException e) 
 			{
@@ -435,9 +438,19 @@ public class ScaleView extends View
 				e.printStackTrace();
 			}
 			
+			canvas.drawBitmap(mScale, 0 - (width/4), 0, null);
+
 			if (reposition == true && i < 48 && i <= 80)
 			{
 				i++;
+				try 
+				{
+				mScale = ScaleIt(canvas, i);
+				} catch (IOException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if (i == 46)
 				{
 					mScaleView.j = 0;
@@ -478,6 +491,7 @@ public class ScaleView extends View
 	
 	protected Bitmap ScaleIt(Canvas canvas, int i) throws IOException
 	{
+		Log.e("scale it was", "called");
 		mScale = BitmapFactory.decodeStream(mAssets.open("scale_"+i+".gif"));
 		mScale = Bitmap.createScaledBitmap(mScale, (int) (width * 1.5), height, true);
 		return mScale;

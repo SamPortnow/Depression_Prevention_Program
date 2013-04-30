@@ -284,14 +284,14 @@ public class ScaleActivity extends Activity
 						if (x >= mScale.getWidth()/6 && x <= mScale.getWidth()/3 
 						&& y <= ((mScale.getHeight()/2 + mScale.getHeight()/6) + j) && y >= (mScale.getHeight()/2) + j)
 						{
+							mScale.move = true;
 							mScale.i -=1;
 							j += (mScale.getHeight()/200);
 						}
 						
 						else
 						{
-							Log.e("mscaleX ", "is" +mScale.getWidth());
-							Log.e("mScaleY ", "is" +mScale.getHeight());
+							mScale.move = false;
 						}
 						break;
 					
