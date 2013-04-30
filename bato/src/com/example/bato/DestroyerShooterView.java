@@ -2,9 +2,6 @@ package com.example.bato;
 
 import java.util.ArrayList;
 
-import com.mobeta.android.dslv.DragSortListView;
-import com.mobeta.android.dslv.DragSortListView.DropListener;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -16,23 +13,20 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnDragListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class DestroyerShooterView extends Activity
 {
@@ -40,7 +34,6 @@ public class DestroyerShooterView extends Activity
 	Context mContext;
 	Bitmap cloud;
 	private DestroyerShooter mDestroyerShooter;
-    private GestureDetector gestureDetector;
     View.OnTouchListener gestureListener;
     int width;
     int height;
@@ -61,7 +54,7 @@ public class DestroyerShooterView extends Activity
     AlphaAnimation fade;
     TextView score;
     Score mScore;
-    ArrayAdapter<String> arrayAdapter;
+    ScaleArrayAdapter arrayAdapter;
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
@@ -83,42 +76,14 @@ public class DestroyerShooterView extends Activity
 	    score = (TextView) findViewById(R.id.score);
 	    score.setText("SCORE");
 	    mDestroyerShooter = (DestroyerShooter) findViewById(R.id.anim_view);
-	    arrayAdapter = new ArrayAdapter<String>(this, R.layout.positives, android.R.id.text1, mPositive);
-	    DragSortListView listView = (DragSortListView) findViewById(R.id.listview);
-	    listView.setDropListener(new DropListener()
-	    {
-
-			@Override
-			public void drop(int from, int to) 
-			{
-				String item=arrayAdapter.getItem(from);
-				arrayAdapter.remove(item);
-				arrayAdapter.insert(item, to);
-				if (to == (mPositive.size() - 1))
-				{
-					mSwitch(item);
-				}
-			}
-
-
-	    	
-	    });
+	    arrayAdapter = 	new ScaleArrayAdapter(this, R.layout.positives, android.R.id.text1, mPositive);
+	    ListView listView = (ListView) findViewById(R.id.listview);
 	    listView.setAdapter(arrayAdapter);
 	    mScore = (Score) findViewById(R.id.score_view);
 	    layout = (RelativeLayout) findViewById(R.id.game_view);
 	    cannon = (ImageView) findViewById(R.id.cannon);
 	    rCannon = (ImageView) findViewById(R.id.rcannon);
 	    rCannon.setVisibility(View.INVISIBLE);
-        LeftToRight = new TranslateAnimation(0, mDestroyerShooter.width/2, 0, 0);
-        LeftToRight.setDuration(1000);
-        LeftToRight.setFillEnabled(true);
-        LeftToRight.setFillAfter(true);
-        set = new AnimationSet(true);
-        fade = new AlphaAnimation(1.0f, 0.0f);
-        fade.setDuration(300);
-        set.addAnimation(LeftToRight);
-        set.addAnimation(fade);
-        set.setFillAfter(false);
 		SharedPreferences preferences = this.getSharedPreferences(this.getPackageName(), Context.MODE_PRIVATE);
 		if (preferences.getString("shooter instructions", null) == null)
 		{
@@ -131,22 +96,40 @@ public class DestroyerShooterView extends Activity
 		preferences.edit().putString("shooter instructions", "Yes").commit();
 		}
 	    
+		cannon.setOnDragListener(new OnDragListener()
+		{
+
+			@Override
+			public boolean onDrag(View arg0, DragEvent arg1) 
+			{
+				switch (arg1.getAction())
+				{
+					
+				case DragEvent.ACTION_DRAG_ENTERED:
+					cannon.setVisibility(View.INVISIBLE);
+					rCannon.setVisibility(View.VISIBLE);
+					break;
+				case DragEvent.ACTION_DROP:
+						View view = (View) arg1.getLocalState();
+						TextView positive = (TextView) view.findViewById(android.R.id.text1);
+						createPositive(positive.getText().toString());
+						break;
+						
+				case DragEvent.ACTION_DRAG_EXITED:
+					cannon.setVisibility(View.VISIBLE);
+					rCannon.setVisibility(View.INVISIBLE);
+				
+				}
+				
+				return true;
+			}
+			
+		});
 	}
 	
 	@Override
 	 public void onWindowFocusChanged(boolean hasFocus) {
 	    super.onWindowFocusChanged(hasFocus);
-	    positive[0] = (TextView) findViewById(R.id.positive);
-	    params = new RelativeLayout.LayoutParams(mDestroyerShooter.width/3, mDestroyerShooter.height/4);
-	    positive[0].layout(0, 0, mDestroyerShooter.width/3, mDestroyerShooter.height/4);
-		positive[0].setGravity(Gravity.CENTER);
-		positive[0].setTextSize(15);
-		positive[0].setTextColor(Color.RED);
-		positive[0].setTypeface(Typeface.DEFAULT_BOLD);
-		positive[0].setShadowLayer(5, 2, 2, Color.YELLOW);
-		positive[0].setDrawingCacheEnabled(true);
-		positive[0].setBackgroundResource(R.drawable.whitecloud);
-	    positive[0].setText(mPositive.get((int) (Math.random() * mPositive.size())));
 	     
 	    mDestroyerShooter.setOnTouchListener(new OnTouchListener()
 	    {
@@ -168,9 +151,8 @@ public class DestroyerShooterView extends Activity
 				   positive[1].setDrawingCacheEnabled(true);
 				   positive[1].setBackgroundResource(R.drawable.whitecloud);
 				   positive[1].setText(positive[0].getText().toString());
-				   positive[0].startAnimation(set);
-				   rCannon.setVisibility(View.VISIBLE);
-				   cannon.setVisibility(View.INVISIBLE);
+				   rCannon.setVisibility(View.INVISIBLE);
+				   cannon.setVisibility(View.VISIBLE);
 
 			       Cursor mMatch = mDbHelper.fetchThought(positive[1].getText().toString());
 			       while (mMatch.moveToNext())
@@ -204,10 +186,23 @@ public class DestroyerShooterView extends Activity
 
 
 }
+	public void createPositive(String positive_string)
+	{
+		positive[0]= new TextView(mContext);
+		params = new RelativeLayout.LayoutParams(mDestroyerShooter.width/3, mDestroyerShooter.height/4);
+		positive[0].layout(0, 0, mDestroyerShooter.width/3, mDestroyerShooter.height/4);
+		positive[0].setGravity(Gravity.CENTER);
+		positive[0].setTextSize(15);
+		positive[0].setTextColor(Color.RED);
+		positive[0].setTypeface(Typeface.DEFAULT_BOLD);
+		positive[0].setShadowLayer(5, 2, 2, Color.YELLOW);
+		positive[0].setDrawingCacheEnabled(true);
+		positive[0].setBackgroundResource(R.drawable.whitecloud);
+		positive[0].setText(positive_string);
+	}
 
 	protected void clear(Context context)
 	{
-		rCannon.setVisibility(View.GONE);
 		cannon.setVisibility(View.VISIBLE);
 	}
 	
@@ -224,17 +219,13 @@ public class DestroyerShooterView extends Activity
 
 
 	   
-	   public void mSwitch(String item)
-	   {
-		   positive[0].setText(item);
-	   }
 	   
-	   public void mSwitchSuccess()
-	   {
-		   String item=arrayAdapter.getItem(mPositive.size() - 1);
-		   arrayAdapter.remove(item);
-		   arrayAdapter.remove(item);
-	   }
+	 public void mSwitchSuccess()
+	 {
+		   String item=mDestroyerShooter.positive.getText().toString();
+		   mPositive.remove(item);
+		   arrayAdapter.notifyDataSetChanged(); 
+	 }
 	   
 		@Override
 		public void onDestroy()

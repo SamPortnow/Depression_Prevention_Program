@@ -27,10 +27,7 @@
     </com.example.bato.Score>
     
     </LinearLayout>
-   <view 
-    xmlns:dslv="http://schemas.android.com/apk/res/com.example.bato"
-    class="com.mobeta.android.dslv.DragSortListView"
-    dslv:drag_scroll_start="0.33"
+   <ListView
     android:id="@+id/listview"
     android:layout_above="@+id/positive"
     android:drawSelectorOnTop="false"
@@ -40,14 +37,7 @@
 	android:background="@drawable/back"
 	android:scrollbars="vertical"
 	>
-   	</view>    
-   	<TextView 
-   	    android:id="@+id/positive"
-   	    android:layout_toLeftOf="@+id/anim_view"
-   	    android:layout_width = "wrap_content"
-   	    android:layout_height ="wrap_content"
-   	    android:layout_alignParentBottom="true">
-   	 </TextView>
+   	</ListView>    
     <com.example.bato.DestroyerShooter
         android:id="@+id/anim_view"
         android:layout_below = "@id/score_stuff"

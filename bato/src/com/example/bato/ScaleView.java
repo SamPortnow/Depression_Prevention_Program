@@ -41,7 +41,7 @@ public class ScaleView extends View
     int array_size;
     String word;
     boolean scale_it = false;
-    int i = 4;
+    int i = 46;
     int j;
     int mMoveNeg;
     int tracker;
@@ -75,7 +75,9 @@ public class ScaleView extends View
 	boolean fourthPlace;
 	boolean remove = true;
 	AssetManager mAssets;
-    
+	boolean start;
+    boolean reposition;
+    boolean reset;
     
 	public ScaleView(Context context, AttributeSet attrs) 
 	{
@@ -128,6 +130,8 @@ public class ScaleView extends View
 	protected void dispatchDraw (Canvas canvas)
     {
 		super.onDraw(canvas);
+
+		
 		if (first == true)
 		{
 			width = this.getWidth();
@@ -166,16 +170,31 @@ public class ScaleView extends View
 	    	currentY = height + height/4;
 			first = false;
 		}
+		if (start == true)
+		{
+			if (reset == true)
+			{
+				try 
+				{
+					mScale = ScaleIt(canvas, i);
+				} 
+				catch (IOException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				reset = false;
+			}
 		
 		if (game_over == false)
 		{
 			canvas.drawBitmap(mScale, 0 - (width/4), 0, null);
-			canvas.drawBitmap(negative.getDrawingCache(),(int) (width/12), (int) (height - (height)/2.5) - (j), null);
+			canvas.drawBitmap(negative.getDrawingCache(),(int) (width/7.5), (int) (height - (height)/2.5) - (j), null);
 		}
 		
 		else
 		{
-			canvas.drawBitmap(mBag, width/3, height/4, null);
+			canvas.drawBitmap(mBag, width/3, height/4, null); //do I need to change this?
 		}
 		
 		if (mMoveScale == true)
@@ -335,11 +354,6 @@ public class ScaleView extends View
 			
 			else if (game_over == true)
 			{
-				if (remove == true)
-				{
-					mScaleView.getRid(mContext);
-					remove = false;
-				}
 				
 				if (firstPlace == true && secondPlace == true && thirdPlace == true && fourthPlace == true)
 				{
@@ -406,6 +420,32 @@ public class ScaleView extends View
 				}
 			}
 		}
+		}
+		else
+		{
+			try 
+			{
+				mScale = ScaleIt(canvas, i);
+				canvas.drawBitmap(mScale, 0 - (width/4), 0, null);
+
+			} 
+			catch (IOException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (reposition == true && i < 48 && i <= 80)
+			{
+				i++;
+				if (i == 46)
+				{
+					mScaleView.j = 0;
+					reposition = false;
+				}
+			}
+			
+		}
 		h.postDelayed(r, FRAME_RATE);
 			
     }
@@ -443,19 +483,19 @@ public class ScaleView extends View
 		return mScale;
 	}
 
-	void mSwitch(String item)
-	{
-    	negative = new TextView(mContext);
-		negative.layout(0, 0, width/3, height/4);
-    	negative.setGravity(Gravity.CENTER);
-    	negative.setTextSize(15);
-    	negative.setTextColor(Color.BLACK);
-     	negative.setTypeface(Typeface.DEFAULT_BOLD);
-    	negative.setShadowLayer(5, 2, 2, Color.WHITE);
-    	negative.setDrawingCacheEnabled(true);
-    	negative.setBackgroundResource(R.drawable.graycloud);
-		negative.setText(item);
-	}
+//	void mSwitch(String item)
+//	{
+//    	negative = new TextView(mContext);
+//		negative.layout(0, 0, width/3, height/4);
+//    	negative.setGravity(Gravity.CENTER);
+//    	negative.setTextSize(15);
+//    	negative.setTextColor(Color.BLACK);
+//     	negative.setTypeface(Typeface.DEFAULT_BOLD);
+//    	negative.setShadowLayer(5, 2, 2, Color.WHITE);
+//    	negative.setDrawingCacheEnabled(true);
+//    	negative.setBackgroundResource(R.drawable.graycloud);
+//		negative.setText(item);
+//	}
 
 	
 

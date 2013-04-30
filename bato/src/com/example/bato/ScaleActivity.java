@@ -87,9 +87,10 @@ public class ScaleActivity extends Activity
 	ArrayList<String> negative_thoughts = new ArrayList<String>();
 	CalendarDbAdapter mCalHelper;
 	ListAdapter mAdapter;
-	ArrayAdapter<String> arrayAdapter;
+	ScaleArrayAdapter arrayAdapter;
 	ListView listView;
 	int width;
+	int j;
 	
 
 	public static boolean populatePositiveWords(Context context)
@@ -274,16 +275,53 @@ public class ScaleActivity extends Activity
 			@Override
 			public boolean onDrag(View arg0, DragEvent arg1) 
 			{
+				float x = arg1.getX();
+				float y = arg1.getY();
+				
 				switch (arg1.getAction())
 				{
 					case DragEvent.ACTION_DRAG_LOCATION:
+						if (x >= mScale.getWidth()/6 && x <= mScale.getWidth()/3 
+						&& y <= ((mScale.getHeight()/2 + mScale.getHeight()/6) + j) && y >= (mScale.getHeight()/2) + j)
+						{
+							mScale.i -=1;
+							j += (mScale.getHeight()/200);
+						}
+						
+						else
+						{
+							Log.e("mscaleX ", "is" +mScale.getWidth());
+							Log.e("mScaleY ", "is" +mScale.getHeight());
+						}
 						break;
 					
 					case DragEvent.ACTION_DRAG_STARTED:
-						Log.e("DRAG", "has started");
 						break;
 						
 					case DragEvent.ACTION_DROP:
+
+					
+					case DragEvent.ACTION_DRAG_ENDED:
+						if (x >= mScale.getWidth()/6 && x <= mScale.getWidth()/3 
+						&& y <= ((mScale.getHeight()/2 + mScale.getHeight()/6) + j) && y >= (mScale.getHeight()/2) + j)
+						{
+							View view = (View) arg1.getLocalState();
+							TextView negative = (TextView) view.findViewById(android.R.id.text1);
+							mScale.width = layout.getWidth();
+							mScale.update();
+							mScale.negative.setText(negative.getText().toString());
+							mScale.i = 0;
+							mScale.reset = true;
+							mScale.start = true;
+							layout.removeView(listView);
+
+
+							
+						}
+						else
+						{
+						mScale.reposition = true;
+						}
 						break;
 				}
 				
@@ -305,20 +343,7 @@ public class ScaleActivity extends Activity
 		width = size.x;
 	}
 	
-	protected void getRid(Context context)
-	{
-	new Handler().post(new Runnable() {
-	    public void run() 
-	    {
-		layout.removeView(skip);
-		//layout.removeView(question);
-		layout.removeView(listView);
-		mScale.width = layout.getWidth();
-		mScale.update();
-	    }
-	});
 
-	}
 
 	protected void clear(Context context)
 	{

@@ -295,7 +295,7 @@ public class DestroyerShooter extends View
     		mDestroyer.clear(mContext);
     		clear = false;
     	}
-    	if ( going_x >= dark_coord_x - negative.getWidth()/2 && going_x <= dark_coord_x + negative.getWidth()/2 && going_y <= dark_coord_y + negative.getHeight()/2)
+    	if ( going_x >= dark_coord_x - negative.getWidth()/2 && going_x <= dark_coord_x + negative.getWidth()/2 && going_y <= dark_coord_y + negative.getHeight()/2 && going_y >= dark_coord_y - negative.getHeight()/2)
     	{
     	 	if (match == true)
     	 	{
@@ -326,7 +326,8 @@ public class DestroyerShooter extends View
     	 			
     	 			
     	 		}
-    	 		mDestroyer.update(mContext); //update the score! 
+    	 		mDestroyer.update(mContext); //update the score!
+    	 		//mDestroyer.mSwitchSuccess(); //
     	 		negative_thoughts.remove(index);
     	 		new_negative = true;
     	 		
