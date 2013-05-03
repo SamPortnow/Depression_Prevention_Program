@@ -170,7 +170,7 @@ public class CalendarDbAdapter {
     public Cursor fetchThoughts()
     {
         return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_THOUGHT}, null , null, null, null, null); 
-    }
+    }    
 
     public Cursor fetchAll()
     {

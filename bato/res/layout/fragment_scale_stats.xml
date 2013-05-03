@@ -7,8 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/lLayout" >
+        android:orientation="horizontal" >
 
         <TextView
             android:layout_width="0dp"
@@ -30,5 +29,43 @@
             android:layout_weight="0.3"
             android:text="@string/scale_stats_play_game" />
     </LinearLayout>
-    
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/scale_stats_notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/scale_stats_notice"
+        android:textIsSelectable="false"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:id="@+id/scale_stats_thoughts_generated_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/scale_stats_positive_thoughts_generated_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:gravity="center_horizontal"
+            android:paddingRight="5dp"
+            android:textColor="@android:color/holo_green_dark"
+            android:textIsSelectable="false"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.8"
+            android:paddingLeft="5dp"
+            android:text="@string/scale_stats_positive_thoughts_generated_label"
+            android:textIsSelectable="false"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</LinearLayout>

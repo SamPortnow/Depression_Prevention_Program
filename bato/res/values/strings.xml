@@ -20,11 +20,14 @@
     <string name="destroyer_stas_personal_points">Personal Scientist points</string>
     <string name="destroyer_stats_high_score">High Score</string>
     <string name="destroyer_stats_more_scores">(see more)</string>
-    <string name="personal_scientist_breakdown">(breakdown)</string>
+    <string name="destroyer_stats_notice">Play the Scale Game to generate positive thoughts to unlock this game!</string>
+    <string name="personal_scientist_breakdown">(breakdown)</string>   
+    <string name="personal_points_title">Personal Scientist Points</string> 
     <string name="high_scores_title">High Scores</string>
     <string name="scale_stats_title">Scale Game</string>
     <string name="scale_stats_play_game">Play</string>
-    <string name="scale_stats_notice">No statistics available yet.</string>     
+    <string name="scale_stats_notice">Populate your diary with your daily thoughts to unlock this game!</string>
+    <string name="scale_stats_positive_thoughts_generated_label">Positive thoughts generated</string>   
     <string name="add_event_fragment_title">Add a new event&#x2026;</string>
     <string name="add_event_toast_created_event">New event created.</string>
     <string name="add_event_user_activity_hint">What are you doing?</string>

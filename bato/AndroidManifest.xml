@@ -30,11 +30,6 @@
         </fragment>
 
         <activity
-            android:name="com.example.bato.DestroyerView"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
             android:name="com.example.bato.DestroyerShooterView"
             android:configChanges="orientation"
             android:screenOrientation="portrait" >

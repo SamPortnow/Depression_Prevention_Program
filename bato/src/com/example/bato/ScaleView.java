@@ -3,6 +3,7 @@ package com.example.bato;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -127,6 +128,7 @@ public class ScaleView extends View
     	mCurrentYPos[3] = height/18 + 71 * (height/150);
 	}
 	
+	@SuppressLint("WrongCall")
 	@Override
 	protected void dispatchDraw (Canvas canvas)
     {

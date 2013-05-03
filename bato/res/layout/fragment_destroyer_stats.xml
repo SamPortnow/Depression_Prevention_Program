@@ -5,10 +5,10 @@
     android:orientation="vertical" >
 
     <LinearLayout
+        android:id="@+id/destroyerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/destroyerLayout" >
+        android:orientation="horizontal" >
 
         <TextView
             android:layout_width="0dp"
@@ -31,7 +31,17 @@
             android:text="@string/destroyer_stats_play_game" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/destroyer_stats_notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/destroyer_stats_notice"
+        android:textIsSelectable="false"
+        android:textSize="18sp" />
+
     <TableLayout
+        android:id="@+id/destroyer_stats_points_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
@@ -57,25 +67,23 @@
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
-                        <LinearLayout
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.8"
                 android:paddingLeft="5dp" >
-                
-                            
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingLeft="5dp"
-                android:text="@string/destroyer_stas_personal_points"
-                android:textIsSelectable="false"
-                android:textSize="18sp" />
-            
-            
-           <TextView
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="5dp"
+                    android:text="@string/destroyer_stas_personal_points"
+                    android:textIsSelectable="false"
+                    android:textSize="18sp" />
+
+                <TextView
                     android:id="@+id/personal_scientist_breakdown"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -85,7 +93,6 @@
                     android:textIsSelectable="false"
                     android:textSize="18sp" />
             </LinearLayout>
-            
         </TableRow>
 
         <TableRow
