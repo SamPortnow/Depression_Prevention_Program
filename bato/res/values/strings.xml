@@ -50,5 +50,8 @@
     would you say to them?</string>
     <string name="skip"> SKIP IT!</string>
     <string name="plus">+</string>
+    
+    <string name="scientist_points_title">Scientist Points</string>
+    <string name="scientist_points_total_earned_text">Total points earned</string>
 
 </resources>

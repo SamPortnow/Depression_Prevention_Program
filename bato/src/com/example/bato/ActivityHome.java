@@ -16,7 +16,9 @@ public class ActivityHome extends Fragment
 		
 		if (savedInstanceState == null)
 		{
-			FragmentTransaction transaction = getFragmentManager().beginTransaction();		
+			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+			
+			transaction.replace(R.id.home_fragment_container, new ScientistPointsFragment(), "scientist_points_fragment");
 			transaction.add(R.id.home_fragment_container, new ScaleStatsFragment(), "scale_stats_fragment");
 			transaction.add(R.id.home_fragment_container, new DestroyerStatsFragment(), "destroyer_stats_fragment");
 			transaction.commit();
