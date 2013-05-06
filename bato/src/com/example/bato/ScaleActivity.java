@@ -23,12 +23,12 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.Display;
 import android.view.DragEvent;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.DragShadowBuilder;
@@ -36,7 +36,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnDragListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,6 +43,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,6 +91,12 @@ public class ScaleActivity extends Activity
 	ListView listView;
 	int width;
 	int j;
+	String negative;
+	String positive;
+	int believe;
+	int help;
+	LayoutInflater inflater;
+	View view;
 	
 
 	public static boolean populatePositiveWords(Context context)
@@ -125,7 +131,7 @@ public class ScaleActivity extends Activity
 	{
 	    super.onCreate(savedInstanceState);
 	    this.getActionBar().hide();
-	    Log.e("Umm", "PLEASE");
+	    inflater = LayoutInflater.from(this);
 	    mContext = this;
 	    mDbHelper=new ScaleDbAdapter(mContext);
 	    mDbHelper.open();
@@ -157,6 +163,7 @@ public class ScaleActivity extends Activity
 	    layout = (RelativeLayout) findViewById(R.id.game_view);
 	    positive_thought = (EditText) findViewById(R.id.thoughts);
 	    fire = (Button) findViewById(R.id.scale_it);
+	    fire.setClickable(false);
 	    question = (Button) new Button(mContext);
 	    question.setBackgroundResource(R.drawable.question);
 	    InputFilter[] FilterArray = new InputFilter[1];
@@ -188,6 +195,7 @@ public class ScaleActivity extends Activity
 	    	@Override
 	    	public void onClick(View view) 
 	    	{
+	    		Log.e("You were", "CLICKED!");
 	    		//if the button is clicked invalidate the ondraw method and pass in the text of the positive word 
 				inputLine = positive_thought.getText().toString();
 				inputTokens = inputLine.split(" ");
@@ -314,9 +322,7 @@ public class ScaleActivity extends Activity
 							mScale.reset = true;
 							mScale.start = true;
 							layout.removeView(listView);
-
-
-							
+						    fire.setClickable(true);
 						}
 						else
 						{
@@ -418,38 +424,60 @@ public class ScaleActivity extends Activity
 					switch(arg1.getAction())
 					{
 					case DragEvent.ACTION_DROP:
-		        	    mDbHelper.createRelation(mScale.negative.getText().toString(), mScale.mPositive.get(i).getText().toString());
-	            		AlertDialog.Builder builder = new Builder(mContext);
-	            		builder.setTitle("Great Job!");		
-	            		builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
-	            		{
+						
+						AlertDialog.Builder build_believe = new AlertDialog.Builder(mContext);	
+						view =  inflater.inflate(R.layout.believe_dialog, null);
+						negative = mScale.negative.getText().toString();
+						positive = mScale.mPositive.get(i).getText().toString();
+						build_believe.setView(view);
+						build_believe.setTitle("How much do you believe this thought?");
+						build_believe.setPositiveButton("Next", new DialogInterface.OnClickListener()
+						{
 
 							@Override
-							public void onClick(DialogInterface dialog,int which)
+							public void onClick(DialogInterface dialog,
+									int which) 
 							{
-								{
-		            				Intent i = new Intent(mContext, MainActivity.class);				
-		            				mContext.startActivity(i);	
-								}
 
-							}
+								believe = ((SeekBar) view.findViewById(R.id.believe)).getProgress();
+								help = ((SeekBar) view.findViewById(R.id.help)).getProgress();
+								Log.e("helpful is", "" + help);								
+								mDbHelper.createRelation(negative, positive, believe, help);
+			            		AlertDialog.Builder builder = new Builder(mContext);
+			            		builder.setTitle("Great Job!");		
+			            		builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
+			            		{
 
-	            		
-	            		});
-	            		
-	            		builder.setPositiveButton("Play again!", new DialogInterface.OnClickListener()
-	            		{
-	            			@Override
-	            			public void onClick(DialogInterface dialog, int which)
-	            			{
-	            				Intent i = new Intent(mContext, MainActivity.class);				
-	            				mContext.startActivity(i);
-	            			}
-	            			
-	            		});			
-	            		
-	            		builder.create().show();
-		            	
+									@Override
+									public void onClick(DialogInterface dialog,int which)
+									{
+										{
+				            				Intent i = new Intent(mContext, MainActivity.class);				
+				            				mContext.startActivity(i);	
+										}
+
+									}
+
+			            		
+			            		});
+			            		
+			            		builder.setPositiveButton("Play again!", new DialogInterface.OnClickListener()
+			            		{
+			            			@Override
+			            			public void onClick(DialogInterface dialog, int which)
+			            			{
+			            				Intent i = new Intent(mContext, MainActivity.class);				
+			            				mContext.startActivity(i);
+			            			}
+			            			
+			            		});			
+			            		
+			            		builder.create().show();
+
+							}		
+						});
+						AlertDialog dialog = build_believe.create();
+		            	dialog.show();
 	            		break;
 					case DragEvent.ACTION_DRAG_ENTERED:
 					    mBag.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.green_bag));

@@ -50,5 +50,8 @@
     would you say to them?</string>
     <string name="skip"> SKIP IT!</string>
     <string name="plus">+</string>
+    <string name="not">Not at all</string>
+    <string name="alot">Completely</string>
+    <string name="title_help">How helpful do you think this thought would be?</string>
 
 </resources>

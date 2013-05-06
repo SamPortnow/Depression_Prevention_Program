@@ -137,6 +137,8 @@ public class DestroyerShooterView extends Activity
 			@Override
 			public boolean onTouch(View arg0, MotionEvent event) {
 				int action = event.getActionMasked();
+				if (rCannon.getVisibility() == View.VISIBLE)
+				{
 				if (action == MotionEvent.ACTION_DOWN)
 				{
 			       float x = event.getX();
@@ -179,7 +181,11 @@ public class DestroyerShooterView extends Activity
 			       
 			}
 			       return true;
-
+			}
+				else
+				{
+					return true;
+				}
 			}
 	    });
 

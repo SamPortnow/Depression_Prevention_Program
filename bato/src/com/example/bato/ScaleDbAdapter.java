@@ -16,6 +16,8 @@ public class ScaleDbAdapter {
     private static final int DATABASE_VERSION = 2;
     public static final String COLUMN_NAME_NEGATIVE = "negative";
     public static final String COLUMN_NAME_POSITIVE = "positive";
+    public static final String COLUMN_NAME_BELIEVE = "believe";
+    public static final String COLUMN_NAME_HELPFUL = "helpful";
     public static final String COLUMN_NAME_PUSHED = "pushed";
     public static final String KEY_ROWID = "_id"; //all my vars are now declared 
 
@@ -24,7 +26,7 @@ public class ScaleDbAdapter {
     private SQLiteDatabase mScaleDb;
     
     private static final String DATABASE_CREATE =  //create the database! you already know!! // modified android code of text . I want to allow for null text! 
-        "create table scale  (_id integer primary key autoincrement, negative text, positive text, pushed text)";
+        "create table scale  (_id integer primary key autoincrement, negative text, positive text, pushed text, believe int, helpful int)";
     
     private final Context mScaleCtx; //declare a context. activity extends from context. it's a basic part of android app. need to research this more. 
 
@@ -96,11 +98,13 @@ public class ScaleDbAdapter {
     
     //now do a create, update, and fetch functions!!!
     
-    public long createRelation(String negative_thought, String positive_thought)
+    public long createRelation(String negative_thought, String positive_thought, int helpful, int believe)
     {
         ContentValues initialValues = new ContentValues();
         initialValues.put(COLUMN_NAME_NEGATIVE, negative_thought);
         initialValues.put(COLUMN_NAME_POSITIVE, positive_thought);
+        initialValues.put(COLUMN_NAME_HELPFUL, helpful);
+        initialValues.put(COLUMN_NAME_BELIEVE, believe);
         return mScaleDb.insert(DATABASE_TABLE, null, initialValues);
     }
     
@@ -111,6 +115,24 @@ public class ScaleDbAdapter {
     	args.put(COLUMN_NAME_PUSHED, "Yes");
     	return mScaleDb.update(DATABASE_TABLE, args, filter, null) > 0;	    	
     }
+    
+    public boolean updateHelp(long Id, int helpful)
+    {
+    	String filter = "_id=" + Id;
+    	ContentValues args = new ContentValues();
+    	args.put(COLUMN_NAME_HELPFUL, helpful);
+    	return mScaleDb.update(DATABASE_TABLE, args, filter, null) > 0;	 
+    }
+    
+    
+    public boolean updateBelieve(long Id, int believe)
+    {
+    	String filter = "_id=" + Id;
+    	ContentValues args = new ContentValues();
+    	args.put(COLUMN_NAME_HELPFUL, believe);
+    	return mScaleDb.update(DATABASE_TABLE, args, filter, null) > 0;	 
+    }
+
 
     public Cursor fetchNegs()
     {
