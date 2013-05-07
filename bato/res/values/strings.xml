@@ -53,5 +53,7 @@
     <string name="not">Not at all</string>
     <string name="alot">Completely</string>
     <string name="title_help">How helpful do you think this thought would be?</string>
+    <string name="scientist_points_title">Scientist Points</string>
+    <string name="scientist_points_total_earned_text">Total points earned</string>    
 
 </resources>
