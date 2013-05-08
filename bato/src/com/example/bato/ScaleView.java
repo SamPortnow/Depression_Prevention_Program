@@ -179,6 +179,7 @@ public class ScaleView extends View
 			{
 				try 
 				{
+					Log.e("if start is true!!", "RIGHT HERE");
 					mScale = ScaleIt(canvas, i);
 				} 
 				catch (IOException e) 
@@ -213,6 +214,7 @@ public class ScaleView extends View
 			}
 			if (i == 20 || i ==40 || i == 60 || i == 80)
 			{
+		    	mScaleView.fire.setClickable(true);
 				mMoveScale = false;
 			}
 			if (i == 80)
@@ -431,7 +433,6 @@ public class ScaleView extends View
 				if (move == true)
 				{
 				mScale = ScaleIt(canvas, i);
-				Log.e("I am", "CREATING");
 				}
 			} 
 			catch (IOException e) 
@@ -447,7 +448,9 @@ public class ScaleView extends View
 				i++;
 				try 
 				{
+				Log.e("I am", "right here!!!");
 				mScale = ScaleIt(canvas, i);
+				Log.e("i is", "" + i);
 				} catch (IOException e) 
 				{
 					// TODO Auto-generated catch block

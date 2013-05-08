@@ -64,8 +64,8 @@
         android:id ="@+id/not_help"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight = "0"
-        android:text="@string/not">
+        android:text="@string/bad"
+        android:textSize="16sp">
         </TextView>
         
         <SeekBar
@@ -82,7 +82,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight = "0"
-        android:text="@string/alot">
+        android:text="@string/good"
+        android:textSize="16sp">
         </TextView>
         
         

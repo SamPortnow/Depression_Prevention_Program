@@ -46,12 +46,14 @@
     <string name="lawyer">  If you were trying to act as your own attorney whose job was to defend yourself, and
     whether or not you went to jail depended on the truth of this negative thought, 
     what would you say in your own defense? </string>
-    <string name="friend"> If your friend called very upset and said this thought about themself, what
-    would you say to them?</string>
+    <string name="friend"> If your friend called very upset and said this thought about himself/herself, what
+    would you say to him/her?</string>
     <string name="skip"> SKIP IT!</string>
     <string name="plus">+</string>
     <string name="not">Not at all</string>
     <string name="alot">Completely</string>
-    <string name="title_help">How helpful do you think this thought would be?</string>
+    <string name="good">Great</string>
+    <string name="bad">Terrible</string>
+    <string name="title_help">How would this thought make you feel?</string>
 
 </resources>

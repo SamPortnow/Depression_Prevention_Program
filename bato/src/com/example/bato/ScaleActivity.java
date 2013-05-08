@@ -239,7 +239,7 @@ public class ScaleActivity extends Activity
 	    		
 				else
 				{
-				
+				fire.setClickable(false);
 				InputMethodManager imm = (InputMethodManager)mContext.getSystemService(
 					      Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(positive_thought.getWindowToken(), 0);
@@ -310,6 +310,8 @@ public class ScaleActivity extends Activity
 
 					
 					case DragEvent.ACTION_DRAG_ENDED:
+						mScale.move = false;
+						
 						if (x >= mScale.getWidth()/6 && x <= mScale.getWidth()/3 
 						&& y <= ((mScale.getHeight()/2 + mScale.getHeight()/6) + j) && y >= (mScale.getHeight()/2) + j)
 						{
@@ -326,7 +328,7 @@ public class ScaleActivity extends Activity
 						}
 						else
 						{
-						mScale.reposition = true;
+							mScale.reposition = true;
 						}
 						break;
 				}
@@ -396,12 +398,12 @@ public class ScaleActivity extends Activity
 		{
 			mScale.mPositive.get(i).setOnTouchListener(new MyListener(i)
 				{
-					 
+					int i = getPosition();
 					
 					@Override
 					public boolean onTouch(View v, MotionEvent event) 
 					{ 
-					    ClipData data = ClipData.newPlainText("", "");
+					    ClipData data = ClipData.newPlainText(mScale.mPositive.get(i).getText().toString(), null);
 					    DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
 					    v.startDrag(data, shadowBuilder, v, 0);
 					    return true;
@@ -425,10 +427,11 @@ public class ScaleActivity extends Activity
 					{
 					case DragEvent.ACTION_DROP:
 						
+						ClipData data = arg1.getClipData();
 						AlertDialog.Builder build_believe = new AlertDialog.Builder(mContext);	
 						view =  inflater.inflate(R.layout.believe_dialog, null);
 						negative = mScale.negative.getText().toString();
-						positive = mScale.mPositive.get(i).getText().toString();
+						positive = data.getDescription().getLabel().toString();
 						build_believe.setView(view);
 						build_believe.setTitle("How much do you believe this thought?");
 						build_believe.setPositiveButton("Next", new DialogInterface.OnClickListener()
@@ -445,6 +448,7 @@ public class ScaleActivity extends Activity
 								mDbHelper.createRelation(negative, positive, believe, help);
 			            		AlertDialog.Builder builder = new Builder(mContext);
 			            		builder.setTitle("Great Job!");		
+			            		builder.setNeutralButton("Drop another thought in the bank", null);
 			            		builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
 			            		{
 
