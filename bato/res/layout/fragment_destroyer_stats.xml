@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.7"
-            android:background="#4b0082"
+            android:background="@android:color/holo_red_dark"
             android:padding="10dp"
             android:text="@string/destroyer_stats_title"
             android:textColor="#ffffff"

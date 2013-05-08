@@ -52,8 +52,14 @@
     <string name="plus">+</string>
     <string name="not">Not at all</string>
     <string name="alot">Completely</string>
+<<<<<<< HEAD
     <string name="good">Great</string>
     <string name="bad">Terrible</string>
     <string name="title_help">How would this thought make you feel?</string>
+=======
+    <string name="title_help">How helpful do you think this thought would be?</string>
+    <string name="scientist_points_title">Scientist Points</string>
+    <string name="scientist_points_total_points_earned">Total points earned</string>    
+>>>>>>> c8601d263f6096add2850bec822523262877c664
 
 </resources>
