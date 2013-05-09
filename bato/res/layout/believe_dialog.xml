@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/bad"
-        android:textSize="16sp">
+        android:textSize="14sp">
         </TextView>
         
         <SeekBar
@@ -83,7 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_weight = "0"
         android:text="@string/good"
-        android:textSize="16sp">
+        android:textSize="14sp">
         </TextView>
         
         
