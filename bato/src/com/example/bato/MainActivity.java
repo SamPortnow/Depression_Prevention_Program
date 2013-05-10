@@ -16,6 +16,8 @@ public class MainActivity extends Activity
 {
     UserNameDbAdapter UserNameDbHelper;
     
+    private String[] mFragmentTitles = { "Personal Scientist Points", "Scale Game", "Destroyer Game" };
+    
     class MainFragmentPagerAdapter extends FragmentPagerAdapter
     {
 		public MainFragmentPagerAdapter(FragmentManager fm)
@@ -29,7 +31,7 @@ public class MainActivity extends Activity
 			switch (position)
 			{
 				case 0:
-					return new ScientistPointsFragment();
+					return new PointsSummaryFragment();
 					
 				case 1:
 					return new ScaleStatsFragment();
@@ -50,19 +52,10 @@ public class MainActivity extends Activity
 		@Override
 		public CharSequence getPageTitle(int position)
 		{
-			switch (position)
-			{
-				case 0:
-					return "Personal Scientist Points";
-					
-				case 1:
-					return "Scale Game";
-					
-				case 2:
-					return "Destroyer Game";
-			}
+			if (position < 0 || position >= mFragmentTitles.length)
+				return "";
 			
-			return "";
+			return mFragmentTitles[position];
 		}
     }
     
