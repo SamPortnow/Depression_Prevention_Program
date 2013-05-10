@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class ScientistPointsFragment extends Fragment
+public class PointsSummaryFragment extends Fragment
 {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.fragment_scientist_points, container, false);
+		View view = inflater.inflate(R.layout.fragment_points_summary, container, false);
+		
+		return view;
 	}
 	
 	@Override
@@ -21,7 +23,7 @@ public class ScientistPointsFragment extends Fragment
 	{
 		super.onResume();
 		
-		((TextView) getView().findViewById(R.id.scientist_points_total_earned_value)).setText(String.valueOf(getPoints()));
+		((TextView) getView().findViewById(R.id.points_summary_points_value)).setText(String.valueOf(getPoints()));
 	}
 	
 	private int getPoints()
@@ -39,7 +41,7 @@ public class ScientistPointsFragment extends Fragment
 			Cursor subCursor = adapter.fetchActivity(cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_ACTIVITY)));
 
 			if (subCursor.getCount() > 1)
-				points += 25;
+				points += 50;
 
 			subCursor.close();
 		}

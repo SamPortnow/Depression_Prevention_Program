@@ -3,16 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-   
 
- <TextView
+    <TextView
         android:id="@+android:id/text1"
         android:layout_width="75dp"
         android:layout_height="93dp"
-        android:textSize="15sp"
+        android:background="@drawable/graycloud"
         android:gravity="center"
-		android:background="@drawable/graycloud"
-        >
-        </TextView>
+        android:textIsSelectable="false"
+        android:textSize="15sp" />
+
 </LinearLayout>
-    
