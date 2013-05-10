@@ -1,17 +1,71 @@
 package com.example.bato;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends Activity
 {
     UserNameDbAdapter UserNameDbHelper;
-	
+    
+    class MainFragmentPagerAdapter extends FragmentPagerAdapter
+    {
+		public MainFragmentPagerAdapter(FragmentManager fm)
+		{
+			super(fm);
+		}
+
+		@Override
+		public Fragment getItem(int position)
+		{
+			switch (position)
+			{
+				case 0:
+					return new ScientistPointsFragment();
+					
+				case 1:
+					return new ScaleStatsFragment();
+					
+				case 2:
+					return new DestroyerStatsFragment();
+			}
+			
+			return null;
+		}
+
+		@Override
+		public int getCount()
+		{
+			return 3;
+		}    	
+		
+		@Override
+		public CharSequence getPageTitle(int position)
+		{
+			switch (position)
+			{
+				case 0:
+					return "Personal Scientist Points";
+					
+				case 1:
+					return "Scale Game";
+					
+				case 2:
+					return "Destroyer Game";
+			}
+			
+			return "";
+		}
+    }
+    
 	@Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -21,9 +75,9 @@ public class MainActivity extends Activity
 
         if (savedInstanceState == null) 
         {
-        	FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();			        
-        	fragmentTransaction.replace(R.id.fragment_container, new ActivityHome(), "activity_home_fragment");
-        	fragmentTransaction.commit();            
+//        	FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();			        
+//        	fragmentTransaction.replace(R.id.fragment_container, new ActivityHome(), "activity_home_fragment");
+//        	fragmentTransaction.commit();            
 
 			SharedPreferences preferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
 			String username = preferences.getString("username", null);
@@ -35,6 +89,11 @@ public class MainActivity extends Activity
 				welcomeFragment.show(getFragmentManager(), "welcome_fragment");
 			}    		
         }
+        
+        MainFragmentPagerAdapter pagerAdapter = new MainFragmentPagerAdapter(getFragmentManager());
+        
+        ViewPager viewPager = (ViewPager) findViewById(R.id.fragment_view_pager);        
+        viewPager.setAdapter(pagerAdapter);
     }
 
     @Override
