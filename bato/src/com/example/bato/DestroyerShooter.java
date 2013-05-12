@@ -82,7 +82,7 @@ public class DestroyerShooter extends View
     boolean hit;
     int speed;
     int index;
-    
+    Typeface sans;
 
 
 
@@ -92,6 +92,7 @@ public class DestroyerShooter extends View
 		super(context, attrs);
         mContext = this.getContext();
 		mDestroyer = (DestroyerShooterView) context;
+   	 	sans = Typeface.create("sans-serif-condensed", Typeface.BOLD);
         h = new Handler();
         mScaleDbHelper=new ScaleDbAdapter(mContext);
 	    mScaleDbHelper.open();
@@ -160,15 +161,9 @@ public class DestroyerShooter extends View
     	    sun = Bitmap.createScaledBitmap(sun, width, height + (height/4), true);
         	//setting my background color...
         	paint.setColor(Color.BLACK); 
+        	paint.setTypeface(sans);
         	paint.setTextSize(25); 
-        	//setting the paint for the positive word, within the positive cloud
-	    	positive_paint.setColor(Color.parseColor("#FF4444"));
-       	 	positive_paint.setShadowLayer(5, 2, 2, Color.YELLOW);
-        	positive_paint.setTypeface(Typeface.DEFAULT_BOLD);
-	    	positive_paint.setTextSize(25);
         	score.setAntiAlias(true);
-        	score.setTypeface(Typeface.DEFAULT_BOLD);
-
         	score.setTextSize(height/25);
     	    score.setColor(Color.CYAN);
     	    score.setShadowLayer(1, 1, 1, Color.RED);
@@ -250,10 +245,10 @@ public class DestroyerShooter extends View
 	    
 	}
 		
-		else
-		{
-			game_over(canvas);
-		}
+	else
+	{
+		game_over(canvas);
+	}
 
     }
 	
@@ -262,8 +257,9 @@ public class DestroyerShooter extends View
 		if (new_negative == true)
 		{
 		 negative = new TextView(mContext);
+		 Log.e("index is", "" + index);
 		 index = (int) (Math.random() * negative_thoughts.size());
-		 word = negative_thoughts.get(place);
+		 word = negative_thoughts.get(index);
 		 negative.setText(word);
 		 negative.layout(0, 0, width/3, height/4);
 		 negative.setGravity(Gravity.CENTER);

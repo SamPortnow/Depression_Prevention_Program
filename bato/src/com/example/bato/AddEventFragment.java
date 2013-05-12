@@ -2,6 +2,7 @@ package com.example.bato;
 
 import java.util.Calendar;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -24,10 +25,12 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 {
 	private EditText activityEditText = null;
 	private EditText thoughtEditText = null;
+	private Activity activity;
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState)
 	{ 
+		activity = this.getActivity();
 		AlertDialog.Builder builder = new Builder(getActivity());
 		Toast.makeText(getActivity(), "TAG YOUR THOUGHTS WITH A + FOR POSITIVE THOUGHTS, AND A - FOR NEGATIVE THOUGHTS", Toast.LENGTH_LONG).show();
 
@@ -40,7 +43,7 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
-				createEvent();			
+				createEvent();
 			}			
 		});			
 		

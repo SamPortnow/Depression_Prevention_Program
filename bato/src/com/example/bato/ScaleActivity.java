@@ -97,6 +97,8 @@ public class ScaleActivity extends Activity
 	int help;
 	LayoutInflater inflater;
 	View view;
+	int times;
+	Typeface sans;
 	
 
 	public static boolean populatePositiveWords(Context context)
@@ -132,6 +134,7 @@ public class ScaleActivity extends Activity
 	    super.onCreate(savedInstanceState);
 	    this.getActionBar().hide();
 	    inflater = LayoutInflater.from(this);
+   	 	sans = Typeface.create("sans-serif-condensed", Typeface.BOLD);
 	    mContext = this;
 	    mDbHelper=new ScaleDbAdapter(mContext);
 	    mDbHelper.open();
@@ -250,6 +253,7 @@ public class ScaleActivity extends Activity
 		    	pos.setTextColor(Color.RED);
 		    	pos.setTypeface(Typeface.DEFAULT_BOLD);
 		    	pos.setShadowLayer(5, 2, 2, Color.YELLOW);
+		    	pos.setTypeface(sans);
 				pos.setText(positive_thought.getText().toString());
 		    	pos.setDrawingCacheEnabled(true);
 		    	pos.setBackgroundResource(R.drawable.whitecloud);
@@ -276,6 +280,7 @@ public class ScaleActivity extends Activity
 		builder.create().show();				
 		preferences.edit().putString("scale instructions", "Yes").commit();
 		}
+		
 		
 		mScale.setOnDragListener(new OnDragListener()
 		{
@@ -389,7 +394,7 @@ public class ScaleActivity extends Activity
 					
 				AlertDialog.Builder builder = new Builder(mContext);
 				builder.setTitle("Instructions");
-				builder.setMessage("Drag and drop the thought you BELIEVE the most into the bank!");
+				builder.setMessage("Drag and drop a thought into the bank!");
 				builder.setPositiveButton(android.R.string.ok, null);
 				builder.create().show();				
 				preferences.edit().putString("bank instructions", "Yes").commit();
@@ -418,7 +423,6 @@ public class ScaleActivity extends Activity
 				@Override
 				public boolean onDrag(View arg0, DragEvent arg1) 
 				{
-					int i = getPosition();
             		RelativeLayout.LayoutParams paramsBag = new RelativeLayout.LayoutParams(layout.getWidth()/2, layout.getHeight()/2);
             		paramsBag.leftMargin = mScale.width/4;
             		paramsBag.topMargin =  mScale.height/4;
@@ -427,13 +431,17 @@ public class ScaleActivity extends Activity
 					{
 					case DragEvent.ACTION_DROP:
 						
+					    times++;
+					    
+	
+						mBag.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bag));
 						ClipData data = arg1.getClipData();
 						AlertDialog.Builder build_believe = new AlertDialog.Builder(mContext);	
 						view =  inflater.inflate(R.layout.believe_dialog, null);
 						negative = mScale.negative.getText().toString();
 						positive = data.getDescription().getLabel().toString();
 						build_believe.setView(view);
-						build_believe.setTitle("How much do you believe this thought?");
+						build_believe.setTitle("How would this thought make you feel?");
 						build_believe.setPositiveButton("Next", new DialogInterface.OnClickListener()
 						{
 
@@ -444,11 +452,13 @@ public class ScaleActivity extends Activity
 
 								believe = ((SeekBar) view.findViewById(R.id.believe)).getProgress();
 								help = ((SeekBar) view.findViewById(R.id.help)).getProgress();
-								Log.e("helpful is", "" + help);								
 								mDbHelper.createRelation(negative, positive, believe, help);
 			            		AlertDialog.Builder builder = new Builder(mContext);
-			            		builder.setTitle("Great Job!");		
+			            		builder.setTitle("Great Job!");
+			            		if (times != 4)
+			            		{
 			            		builder.setNeutralButton("Drop another thought in the bank", null);
+			            		}
 			            		builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
 			            		{
 
@@ -456,7 +466,8 @@ public class ScaleActivity extends Activity
 									public void onClick(DialogInterface dialog,int which)
 									{
 										{
-				            				Intent i = new Intent(mContext, MainActivity.class);				
+											finish();
+											Intent i = new Intent(mContext, MainActivity.class);				
 				            				mContext.startActivity(i);	
 										}
 

@@ -80,11 +80,13 @@ public class ScaleView extends View
     boolean reposition;
     boolean reset;
     boolean move;
+    Typeface sans;
     
 	public ScaleView(Context context, AttributeSet attrs) 
 	{
 		super(context, attrs);
 		mAssets = context.getAssets();
+   	 	sans = Typeface.create("sans-serif-condensed", Typeface.BOLD);
 		width = this.getWidth();
 		height = this.getHeight();
 		mContext = this.getContext();
@@ -153,14 +155,10 @@ public class ScaleView extends View
         	negative.setGravity(Gravity.CENTER);
         	negative.setTextSize(15);
         	negative.setTextColor(Color.BLACK);
-         	negative.setTypeface(Typeface.DEFAULT_BOLD);
+         	negative.setTypeface(sans);
         	negative.setShadowLayer(5, 2, 2, Color.WHITE);
         	negative.setDrawingCacheEnabled(true);
         	negative.setBackgroundResource(R.drawable.graycloud);
-	    	positive_paint.setColor(Color.parseColor("#FF4444"));
-       	 	positive_paint.setShadowLayer(5, 2, 2, Color.YELLOW);
-        	positive_paint.setTypeface(Typeface.DEFAULT_BOLD);
-	    	positive_paint.setTextSize(25);
 	    	mMoveXPos[0] = ((width/2) - width)/FRAME_RATE;
 	    	mMoveYPos[0] = ((height/4) - (height + (height/4)))/FRAME_RATE;
 	    	mMoveXPos[1] = (((width/2) + (width/8)) - width)/ FRAME_RATE;
