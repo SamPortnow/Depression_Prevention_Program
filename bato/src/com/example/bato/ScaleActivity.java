@@ -275,7 +275,7 @@ public class ScaleActivity extends Activity
 			
 		AlertDialog.Builder builder = new Builder(mContext);
 		builder.setTitle("Instructions");
-		builder.setMessage("Outweight the negative thought by coming up with thoughts that CHALLENGE the truth of it");
+		builder.setMessage("Outweight the negative thought by coming up with thoughts that CHALLENGE it. Touch the question mark for help");
 		builder.setPositiveButton(android.R.string.ok, null);
 		builder.create().show();				
 		preferences.edit().putString("scale instructions", "Yes").commit();
@@ -432,8 +432,6 @@ public class ScaleActivity extends Activity
 					case DragEvent.ACTION_DROP:
 						
 					    times++;
-					    
-	
 						mBag.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bag));
 						ClipData data = arg1.getClipData();
 						AlertDialog.Builder build_believe = new AlertDialog.Builder(mContext);	
@@ -481,7 +479,7 @@ public class ScaleActivity extends Activity
 			            			@Override
 			            			public void onClick(DialogInterface dialog, int which)
 			            			{
-			            				Intent i = new Intent(mContext, MainActivity.class);				
+			            				Intent i = new Intent(mContext, ScaleActivity.class);				
 			            				mContext.startActivity(i);
 			            			}
 			            			

@@ -189,6 +189,7 @@ public class DestroyerShooterView extends Activity
 			    	   }
 			       }
 			       
+			       mMatchNeg.clear();
 			       mMatch.close();
 			       mDestroyerShooter.touched = true;
 			       mDestroyerShooter.clear = true;
