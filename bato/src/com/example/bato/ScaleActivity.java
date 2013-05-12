@@ -441,7 +441,7 @@ public class ScaleActivity extends Activity
 						negative = mScale.negative.getText().toString();
 						positive = data.getDescription().getLabel().toString();
 						build_believe.setView(view);
-						build_believe.setTitle("How would this thought make you feel?");
+						build_believe.setTitle("Rate your thought");
 						build_believe.setPositiveButton("Next", new DialogInterface.OnClickListener()
 						{
 

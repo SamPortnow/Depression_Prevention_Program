@@ -15,7 +15,7 @@
     <ListView
     android:id="@+id/listview"
     android:drawSelectorOnTop="false"
-    android:dividerHeight="15dp"
+    android:dividerHeight="25dp"
 	android:layout_height="wrap_content"
 	android:layout_width="75dp"
 	android:textColor="#ffffff"

@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -246,6 +248,36 @@ public class DestroyerShooterView extends Activity
 		   String item=mDestroyerShooter.positive.getText().toString();
 		   mPositive.remove(item);
 		   arrayAdapter.notifyDataSetChanged(); 
+	 }
+	 
+	 public void game_over()
+	 {
+			AlertDialog.Builder builder = new Builder(mContext);
+			builder.setTitle("Great Job!");
+			builder.setPositiveButton("Play Again", new DialogInterface.OnClickListener()
+    		{
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) 
+				{
+					Intent i = new Intent(mContext, DestroyerShooterView.class);				
+    				mContext.startActivity(i);	
+				}
+				
+    		});
+			builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
+    		{
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) 
+				{
+					finish();
+					Intent i = new Intent(mContext, MainActivity.class);				
+    				mContext.startActivity(i);	
+				}
+				
+    		});
+			builder.create().show();	
 	 }
 	   
 		@Override
