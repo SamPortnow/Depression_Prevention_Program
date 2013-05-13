@@ -21,6 +21,7 @@ public class Score extends View
 	int FRAME_RATE = 30;
 	TextPaint score = new TextPaint();
 	boolean update;
+	int fin;
 	
 	public Score(Context context, AttributeSet attrs) 
 	{
@@ -62,13 +63,10 @@ public class Score extends View
     {		
 		super.onDraw(canvas);
 		canvas.drawText("" + count, 0, height, score);
-		if (update == true)
+		if (count != fin)
 		{
 			count += 1;
-			if (count % 25 == 0)
-			{
-				update = false;
-			}
+		
 		}
 	    h.postDelayed(r, FRAME_RATE);
     }

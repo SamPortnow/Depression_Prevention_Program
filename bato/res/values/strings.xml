@@ -8,8 +8,8 @@
     <string name="welcome_text_skills_are">These two skills are&#8230;</string>
     <string name="welcome_text_personal_scientist">Being your own "personal scientist".</string>
     <string name="welcome_text_know_activities">Know the activities you do that make you feel good (or bad), and know the thoughts you think that make you feel good (or bad).</string>
-    <string name="welcome_text_replace_negative"> Replace negative thoughts with positive ones.</string>
-    <string name="welcome_text_build_skills">You will build these skills through a daily diary, daily mood graphs, and the "Negative Thought Destroyer Game".</string>
+    <string name="welcome_text_replace_negative">The ability to challenge negative thoughts</string>
+    <string name="welcome_text_build_skills">You will build these skills through a daily diary, daily mood graphs, the "Scale Game" and "Negative Thought Destroyer Game".</string>
     <string name="welcome_username_hint">Enter a username.</string>
     <string name="menu_add_event">Add Event</string>
     <string name="menu_daily_mood">Mood Graphs</string>
@@ -20,7 +20,7 @@
     <string name="destroyer_stas_personal_points">Personal Scientist points</string>
     <string name="destroyer_stats_high_score">High Score</string>
     <string name="destroyer_stats_more_scores">(see more)</string>
-    <string name="destroyer_stats_notice">Play the Scale Game to generate positive thoughts to unlock this game!</string>
+    <string name="destroyer_stats_notice">Play the Scale Game to generate challenging thoughts that can destroy the negative thoughts in order to unlock this game!</string>
     <string name="personal_scientist_breakdown">(breakdown)</string>   
     <string name="personal_points_title">Personal Scientist Points</string> 
     <string name="high_scores_title">High Scores</string>
@@ -54,9 +54,10 @@
     <string name="alot">Completely</string>
     <string name="good">Great</string>
     <string name="bad">Terrible</string>
-    <string name="title_help">How helpful do you think this thought would be?</string>  
+    <string name="title_help">How would this thought make you feel?</string>  
 	<string name="points_summary_value_prefix">You have earned&#8230;</string>
 	<string name="points_summary_value_postfix">personal scientist points.</string>
 	<string name="points_summary_view_breakdown">View detailed points breakdown.</string>
 	<string name="points_summary_badge_description">Add to Diary</string>
+	<string name="title_believe">How much do you believe this thought </string>
 </resources>

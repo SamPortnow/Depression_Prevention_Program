@@ -8,6 +8,7 @@
         android:id="@+android:id/text1"
         android:layout_width="75dp"
         android:layout_height="93dp"
+        android:fontFamily="sans-serif-condensed"
         android:background="@drawable/graycloud"
         android:gravity="center"
         android:textIsSelectable="false"

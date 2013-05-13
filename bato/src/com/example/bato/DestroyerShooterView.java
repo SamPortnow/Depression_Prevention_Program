@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -55,12 +57,16 @@ public class DestroyerShooterView extends Activity
     TextView score;
     Score mScore;
     ScaleArrayAdapter arrayAdapter;
+    int count;
+    Typeface sans;
+    //I need a new one every time! not just when the screen reloads! Also, I destroy with the correct thought!!
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
 	    super.onCreate(savedInstanceState);
 	    this.getActionBar().hide();
+   	 	sans = Typeface.create("sans-serif-condensed", Typeface.BOLD);
 	    mContext = this;
 	    mDbHelper=new ScaleDbAdapter(mContext);
 	    mDbHelper.open();
@@ -152,6 +158,7 @@ public class DestroyerShooterView extends Activity
 				   positive[1].setShadowLayer(5, 2, 2, Color.YELLOW);
 				   positive[1].setDrawingCacheEnabled(true);
 				   positive[1].setBackgroundResource(R.drawable.whitecloud);
+				   positive[1].setTypeface(sans);
 				   positive[1].setText(positive[0].getText().toString());
 				   rCannon.setVisibility(View.INVISIBLE);
 				   cannon.setVisibility(View.VISIBLE);
@@ -163,6 +170,17 @@ public class DestroyerShooterView extends Activity
 			    	   if (mMatchNeg.contains(mDestroyerShooter.negative.getText().toString()))
 			    	   {
 	    					mDestroyerShooter.match = true;
+	    					//scores code will go here
+	    					if (mMatch.getInt(mMatch.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_HELPFUL)) > 3 &&
+	    							mMatch.getInt(mMatch.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_BELIEVE)) >3)
+	    					{
+	    						count = 75;
+	    					}
+	    					
+	    					else
+	    					{
+	    						count = 25;
+	    					}
 	    					if (mDestroyerShooter.match == true)
 	    					{
 	    						break;
@@ -171,6 +189,7 @@ public class DestroyerShooterView extends Activity
 			    	   }
 			       }
 			       
+			       mMatchNeg.clear();
 			       mMatch.close();
 			       mDestroyerShooter.touched = true;
 			       mDestroyerShooter.clear = true;
@@ -204,6 +223,7 @@ public class DestroyerShooterView extends Activity
 		positive[0].setShadowLayer(5, 2, 2, Color.YELLOW);
 		positive[0].setDrawingCacheEnabled(true);
 		positive[0].setBackgroundResource(R.drawable.whitecloud);
+		positive[0].setTypeface(sans);
 		positive[0].setText(positive_string);
 	}
 
@@ -214,7 +234,7 @@ public class DestroyerShooterView extends Activity
 	
 	protected void update(Context context)
 	{
-		mScore.update = true;
+		mScore.fin += count;
 	}
 	
 	protected void updateDb()
@@ -224,13 +244,41 @@ public class DestroyerShooterView extends Activity
 
 
 
-	   
-	   
 	 public void mSwitchSuccess()
 	 {
 		   String item=mDestroyerShooter.positive.getText().toString();
 		   mPositive.remove(item);
 		   arrayAdapter.notifyDataSetChanged(); 
+	 }
+	 
+	 public void game_over()
+	 {
+			AlertDialog.Builder builder = new Builder(mContext);
+			builder.setTitle("Great Job!");
+			builder.setPositiveButton("Play Again", new DialogInterface.OnClickListener()
+    		{
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) 
+				{
+					Intent i = new Intent(mContext, DestroyerShooterView.class);				
+    				mContext.startActivity(i);	
+				}
+				
+    		});
+			builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
+    		{
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) 
+				{
+					finish();
+					Intent i = new Intent(mContext, MainActivity.class);				
+    				mContext.startActivity(i);	
+				}
+				
+    		});
+			builder.create().show();	
 	 }
 	   
 		@Override

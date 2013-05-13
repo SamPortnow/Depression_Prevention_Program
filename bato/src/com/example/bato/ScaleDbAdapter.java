@@ -142,7 +142,7 @@ public class ScaleDbAdapter {
 
     public Cursor fetchThought(String positive_thought)
     {
-    	return mScaleDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_NEGATIVE}, COLUMN_NAME_POSITIVE + "=?", new String[] {positive_thought}, null, null, null); 
+    	return mScaleDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_NEGATIVE, COLUMN_NAME_BELIEVE, COLUMN_NAME_HELPFUL}, COLUMN_NAME_POSITIVE + "=?", new String[] {positive_thought}, null, null, null); 
 
     }
 
