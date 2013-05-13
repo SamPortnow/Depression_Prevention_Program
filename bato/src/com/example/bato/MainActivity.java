@@ -29,7 +29,7 @@ public class MainActivity extends Activity
 		public Fragment getItem(int position)
 		{
 			switch (position)
-			{
+			{					
 				case 0:
 					return new PointsSummaryFragment();
 					
@@ -68,10 +68,6 @@ public class MainActivity extends Activity
 
         if (savedInstanceState == null) 
         {
-//        	FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();			        
-//        	fragmentTransaction.replace(R.id.fragment_container, new ActivityHome(), "activity_home_fragment");
-//        	fragmentTransaction.commit();            
-
 			SharedPreferences preferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
 			String username = preferences.getString("username", null);
 			

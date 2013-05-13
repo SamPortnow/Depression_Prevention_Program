@@ -58,4 +58,5 @@
 	<string name="points_summary_value_prefix">You have earned&#8230;</string>
 	<string name="points_summary_value_postfix">personal scientist points.</string>
 	<string name="points_summary_view_breakdown">View detailed points breakdown.</string>
+	<string name="points_summary_badge_description">Add to Diary</string>
 </resources>
