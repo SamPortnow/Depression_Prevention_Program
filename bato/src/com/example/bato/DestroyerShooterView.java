@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DestroyerShooterView extends Activity
 {
@@ -187,6 +188,11 @@ public class DestroyerShooterView extends Activity
 	    					}
 
 			    	   }
+			       }
+			       
+			       if (mDestroyerShooter.match == false)
+			       {
+			    	 Toast.makeText(mContext,"That thought can't destroy this negative thought cloud!", Toast.LENGTH_SHORT).show();
 			       }
 			       
 			       mMatchNeg.clear();

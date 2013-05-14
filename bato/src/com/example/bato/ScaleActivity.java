@@ -42,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -99,7 +100,7 @@ public class ScaleActivity extends Activity
 	View view;
 	int times;
 	Typeface sans;
-	
+	SharedPreferences preferences;
 
 	public static boolean populatePositiveWords(Context context)
 	{
@@ -171,10 +172,7 @@ public class ScaleActivity extends Activity
 	    question.setBackgroundResource(R.drawable.question);
 	    InputFilter[] FilterArray = new InputFilter[1];
 	    FilterArray[0] = new InputFilter.LengthFilter(60);
-//		RelativeLayout.LayoutParams sQuestionParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT); 
-//		sQuestionParams.leftMargin = layout.getWidth()/5 + layout.getWidth()/2;
-//		sQuestionParams.topMargin = mScale.getHeight()/2;
-//		layout.addView(question, sQuestionParams);
+	    preferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
 	    positive_thought.setFilters(FilterArray);
 	    question.setOnClickListener(new OnClickListener()
 	    {
@@ -198,7 +196,6 @@ public class ScaleActivity extends Activity
 	    	@Override
 	    	public void onClick(View view) 
 	    	{
-	    		Log.e("You were", "CLICKED!");
 	    		//if the button is clicked invalidate the ondraw method and pass in the text of the positive word 
 				inputLine = positive_thought.getText().toString();
 				inputTokens = inputLine.split(" ");
@@ -264,22 +261,28 @@ public class ScaleActivity extends Activity
     			mScale.sStop = false;
     			mScale.tracker = count;
     			mStart = true;
+    			
+    			if (count == 4)
+    				{
+        			layout.removeView(question);
+    				}
 				}
         		positive_thought.setText(null);
         		
         	}
 	    });
-		SharedPreferences preferences = this.getSharedPreferences(this.getPackageName(), Context.MODE_PRIVATE);
-		if (preferences.getString("scale instructions", null) == null)
-		{
-			
-		AlertDialog.Builder builder = new Builder(mContext);
-		builder.setTitle("Instructions");
-		builder.setMessage("Outweight the negative thought by coming up with thoughts that CHALLENGE it. Touch the question mark for help");
-		builder.setPositiveButton(android.R.string.ok, null);
-		builder.create().show();				
-		preferences.edit().putString("scale instructions", "Yes").commit();
-		}
+		preferences = this.getSharedPreferences(this.getPackageName(), Context.MODE_PRIVATE);
+		if (preferences.getString("list instructions", null) == null)
+				{
+					
+				AlertDialog.Builder builder = new Builder(mContext);
+				builder.setTitle("Instructions");
+				builder.setMessage("Drag a negative thought onto the scale to begin");
+				builder.setPositiveButton(android.R.string.ok, null);
+				builder.create().show();				
+				preferences.edit().putString("list instructions", "Yes").commit();
+				}
+	    
 		
 		
 		mScale.setOnDragListener(new OnDragListener()
@@ -318,7 +321,7 @@ public class ScaleActivity extends Activity
 						mScale.move = false;
 						
 						if (x >= mScale.getWidth()/6 && x <= mScale.getWidth()/3 
-						&& y <= ((mScale.getHeight()/2 + mScale.getHeight()/6) + j) && y >= (mScale.getHeight()/2) + j)
+						&& y <= ((mScale.getHeight()/2 + mScale.getHeight()/5) + j) && y >= (mScale.getHeight()/2) + j)
 						{
 							View view = (View) arg1.getLocalState();
 							TextView negative = (TextView) view.findViewById(android.R.id.text1);
@@ -330,6 +333,20 @@ public class ScaleActivity extends Activity
 							mScale.start = true;
 							layout.removeView(listView);
 						    fire.setClickable(true);
+							RelativeLayout.LayoutParams sQuestionParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT); 
+							sQuestionParams.leftMargin = width/2 - width/8;
+							sQuestionParams.topMargin = mScale.getHeight()/2;
+							layout.addView(question, sQuestionParams);
+							if (preferences.getString("scale instructions", null) == null)
+							{
+								
+							AlertDialog.Builder builder = new Builder(mContext);
+							builder.setTitle("Instructions");
+							builder.setMessage("Outweight the negative thought by coming up with thoughts that CHALLENGE it. Touch the question mark for help");
+							builder.setPositiveButton(android.R.string.ok, null);
+							builder.create().show();				
+							preferences.edit().putString("scale instructions", "Yes").commit();
+							}
 						}
 						else
 						{
@@ -357,10 +374,8 @@ public class ScaleActivity extends Activity
 	}
 	
 
-
 	protected void clear(Context context)
 	{
-		
 		layout.removeView(fire);
 		layout.removeView(mScale);
 		layout.removeView(mNegs);
@@ -457,6 +472,7 @@ public class ScaleActivity extends Activity
 			            		{
 			            		builder.setNeutralButton("Drop another thought in the bank", null);
 			            		}
+			            		
 			            		builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
 			            		{
 

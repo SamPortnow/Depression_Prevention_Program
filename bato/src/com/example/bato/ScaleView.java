@@ -446,7 +446,6 @@ public class ScaleView extends View
 				i++;
 				try 
 				{
-				Log.e("I am", "right here!!!");
 				mScale = ScaleIt(canvas, i);
 				Log.e("i is", "" + i);
 				} catch (IOException e) 
