@@ -4,22 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/add_event_user_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:hint="@string/add_event_user_activity_hint"
         android:inputType="text"
+        android:completionThreshold="2"
+    	android:scrollbars="vertical"
         android:maxLength="60" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/add_event_user_thought"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:hint="@string/add_event_user_thought_hint"
         android:inputType="text"
+        android:completionThreshold="2"
+    	android:scrollbars="vertical"
         android:maxLength="60" />
 
     <LinearLayout

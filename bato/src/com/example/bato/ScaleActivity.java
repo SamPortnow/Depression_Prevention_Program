@@ -146,7 +146,12 @@ public class ScaleActivity extends Activity
 	    	{
 	    		if (thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)).length() > 0 && thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)).charAt(0) == '-')
 	    		{
-	    			negative_thoughts.add(thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)));
+	    			String thought = thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT));
+	    			if (! negative_thoughts.contains(thought))
+	    			{
+	    				negative_thoughts.add(thought);
+	    			}
+
 	    		}
 	   
 	    	}
@@ -155,11 +160,9 @@ public class ScaleActivity extends Activity
 	    populatePositiveWords(mContext);
 	    setContentView(R.layout.activity_scale);
 	    mScale = (ScaleView) findViewById(R.id.scale_view);
-	    mScale.negative.setText(negative_thoughts.get(0));
 	    arrayAdapter =  new ScaleArrayAdapter(this, R.layout.negatives, android.R.id.text1, negative_thoughts);
 	    listView = (ListView) findViewById(R.id.listview);
 	    listView.setAdapter(arrayAdapter);
-
 	    mBag = new ImageView (mContext);
 	    mBag.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bag));
 	    mGreenBag = new ImageView(mContext);

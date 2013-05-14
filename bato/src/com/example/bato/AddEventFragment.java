@@ -1,5 +1,6 @@
 package com.example.bato;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -17,20 +18,58 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
 public class AddEventFragment extends DialogFragment implements OnShowListener
 {
-	private EditText activityEditText = null;
-	private EditText thoughtEditText = null;
+	private AutoCompleteTextView activityEditText = null;
+	private AutoCompleteTextView thoughtEditText = null;
 	private Activity activity;
+	ArrayList<String> negative_thoughts = new ArrayList<String>();
+	ArrayList<String> cal_activities = new ArrayList<String>();
+	ArrayAdapter<String> adapter;
+	ArrayAdapter<String> activity_adapter;
+
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState)
 	{ 
 		activity = this.getActivity();
+		CalendarDbAdapter calendarDbHelper = new CalendarDbAdapter(activity);
+		calendarDbHelper.open();
+		Cursor thoughts = calendarDbHelper.fetchThoughts();
+	    while (thoughts.moveToNext())
+    	{
+    		if (thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)).length() > 0 && thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)).charAt(0) == '-')
+    		{
+    			String thought = thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT));
+    			if (! negative_thoughts.contains(thought))
+    			{
+    				negative_thoughts.add(thought);
+    			}
+
+    		}
+   
+    	}
+	    thoughts.close();
+	    
+	    Cursor activities = calendarDbHelper.fetchActivities();
+	    while (activities.moveToNext())
+	    {
+			String event = activities.getString(activities.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_ACTIVITY));
+			if (! cal_activities.contains(event))
+			{
+				cal_activities.add(event);
+			}	
+	    }
+	    activities.close();
+	    calendarDbHelper.close();
+	    adapter = new ArrayAdapter<String> (activity, android.R.layout.simple_dropdown_item_1line, negative_thoughts);
+	    activity_adapter = new ArrayAdapter<String> (activity, android.R.layout.simple_dropdown_item_1line, cal_activities);
 		AlertDialog.Builder builder = new Builder(getActivity());
 		Toast.makeText(getActivity(), "TAG YOUR THOUGHTS WITH A + FOR POSITIVE THOUGHTS, AND A - FOR NEGATIVE THOUGHTS", Toast.LENGTH_LONG).show();
 
@@ -59,8 +98,10 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 		AlertDialog alertDialog = (AlertDialog) dialog;
 		alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
 		
-		activityEditText = ((EditText) alertDialog.findViewById(R.id.add_event_user_activity));
-		thoughtEditText = ((EditText) alertDialog.findViewById(R.id.add_event_user_thought));
+		activityEditText = ((AutoCompleteTextView) alertDialog.findViewById(R.id.add_event_user_activity));
+		thoughtEditText = ((AutoCompleteTextView) alertDialog.findViewById(R.id.add_event_user_thought));
+		thoughtEditText.setAdapter(adapter);
+		activityEditText.setAdapter(activity_adapter);
 		
 		TextWatcher textWatcher = new TextWatcher()
 		{

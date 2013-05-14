@@ -170,7 +170,13 @@ public class CalendarDbAdapter {
     public Cursor fetchThoughts()
     {
         return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_THOUGHT}, null , null, null, null, null); 
-    }    
+    }   
+    
+    public Cursor fetchActivities()
+    {
+        return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_ACTIVITY}, null, null, null, null, null);
+
+    }
 
     public Cursor fetchAll()
     {
@@ -178,6 +184,8 @@ public class CalendarDbAdapter {
         		COLUMN_NAME_YEAR, COLUMN_NAME_DAY, COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, null , null, null, null, COLUMN_NAME_YEAR+ " DESC, " + COLUMN_NAME_DAY  + " DESC, " + COLUMN_NAME_MINUTES + " DESC"); 
 
     }
+    
+    
     
     public Cursor fetchActivity(String activity)
     {

@@ -188,17 +188,14 @@ public class ScaleView extends View
 				reset = false;
 			}
 		
+
+		canvas.drawBitmap(mScale, 0 - (width/4), 0, null);
 		if (game_over == false)
 		{
-			canvas.drawBitmap(mScale, 0 - (width/4), 0, null);
 			canvas.drawBitmap(negative.getDrawingCache(),(int) (width/7.5), (int) (height - (height)/2.5) - (j), null);
 		}
 		
-		else
-		{
-			canvas.drawBitmap(mBag, width/3, height/4, null); //do I need to change this?
-		}
-		
+	
 		if (mMoveScale == true)
 		{
 			i++;
