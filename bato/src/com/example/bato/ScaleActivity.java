@@ -24,7 +24,6 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.Display;
 import android.view.DragEvent;
 import android.view.Gravity;
@@ -36,6 +35,9 @@ import android.view.View.OnClickListener;
 import android.view.View.OnDragListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -54,7 +56,7 @@ public class ScaleActivity extends Activity
 {	
 	Context mContext;
 	ScaleView mScale;
-	EditText positive_thought;
+	AutoCompleteTextView positive_thought;
 	Button fire;
 	TextView pos;
 	private static Set<String> mNegativeWords;
@@ -101,6 +103,7 @@ public class ScaleActivity extends Activity
 	int times;
 	Typeface sans;
 	SharedPreferences preferences;
+	ArrayList <String> positive_thoughts = new ArrayList<String>();
 
 	public static boolean populatePositiveWords(Context context)
 	{
@@ -139,6 +142,15 @@ public class ScaleActivity extends Activity
 	    mContext = this;
 	    mDbHelper=new ScaleDbAdapter(mContext);
 	    mDbHelper.open();
+	    Cursor positives = mDbHelper.fetchPositives();
+	    while (positives.moveToNext())
+	    {	
+	    	String pos_thought = positives.getString(positives.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_POSITIVE));
+			if (! positive.contains(pos_thought))
+			{
+				positive_thoughts.add(pos_thought);
+			}
+		}
 	    mCalHelper = new CalendarDbAdapter(mContext);
 	    mCalHelper.open();
 	    Cursor thoughts = mCalHelper.fetchThoughts();
@@ -153,7 +165,6 @@ public class ScaleActivity extends Activity
 	    			}
 
 	    		}
-	   
 	    	}
 	    thoughts.close();
 	    mCalHelper.close();
@@ -168,7 +179,9 @@ public class ScaleActivity extends Activity
 	    mGreenBag = new ImageView(mContext);
 	    mGreenBag.setImageBitmap(mScale.mGreenBag);
 	    layout = (RelativeLayout) findViewById(R.id.game_view);
-	    positive_thought = (EditText) findViewById(R.id.thoughts);
+	    ArrayAdapter<String> adapter = new ArrayAdapter<String> (this, android.R.layout.simple_dropdown_item_1line, positive_thoughts);
+	    positive_thought = (AutoCompleteTextView) findViewById(R.id.thoughts);
+	    positive_thought.setAdapter(adapter);
 	    fire = (Button) findViewById(R.id.scale_it);
 	    fire.setClickable(false);
 	    question = (Button) new Button(mContext);
