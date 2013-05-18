@@ -14,18 +14,55 @@
         android:completionThreshold="2"
     	android:scrollbars="vertical"
         android:maxLength="60" />
-
-    <AutoCompleteTextView
-        android:id="@+id/add_event_user_thought"
+    
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:orientation="horizontal" >
+        
+
+    <AutoCompleteTextView
+        android:id="@+id/add_event_user_thought"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_weight="1"
         android:hint="@string/add_event_user_thought_hint"
         android:inputType="text"
         android:completionThreshold="2"
     	android:scrollbars="vertical"
         android:maxLength="60" />
+    
+          <RadioGroup
+        android:id="@+id/pos_or_neg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_weight="0">
+        
+        <RadioButton
+            android:id="@+id/radioPos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radio_pos"  />
+        
+           <RadioButton
+            android:id="@+id/radio_neu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+ 
+        <RadioButton
+            android:id="@+id/radioNeg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radio_neg" />
+    
+        
+        </RadioGroup>
 
+    
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -153,18 +153,16 @@ public class ScaleActivity extends Activity
 		}
 	    mCalHelper = new CalendarDbAdapter(mContext);
 	    mCalHelper.open();
-	    Cursor thoughts = mCalHelper.fetchThoughts();
+	    Cursor thoughts = mCalHelper.fetchNegs();
 	    while (thoughts.moveToNext())
 	    	{
-	    		if (thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)).length() > 0 && thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT)).charAt(0) == '-')
-	    		{
 	    			String thought = thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT));
 	    			if (! negative_thoughts.contains(thought))
 	    			{
 	    				negative_thoughts.add(thought);
 	    			}
 
-	    		}
+	    	
 	    	}
 	    thoughts.close();
 	    mCalHelper.close();

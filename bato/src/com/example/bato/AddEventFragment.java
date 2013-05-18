@@ -20,7 +20,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -29,6 +30,12 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 	private AutoCompleteTextView activityEditText = null;
 	private AutoCompleteTextView thoughtEditText = null;
 	private Activity activity;
+	private RadioGroup radioPosGroup;
+	private AlertDialog alertDialog;
+	boolean atMaxLength;
+	boolean checked;
+	int idCheck;
+	String thought_tag;
 	ArrayList<String> negative_thoughts = new ArrayList<String>();
 	ArrayList<String> cal_activities = new ArrayList<String>();
 	ArrayAdapter<String> adapter;
@@ -72,7 +79,6 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 	    activity_adapter = new ArrayAdapter<String> (activity, android.R.layout.simple_dropdown_item_1line, cal_activities);
 		AlertDialog.Builder builder = new Builder(getActivity());
 		Toast.makeText(getActivity(), "TAG YOUR THOUGHTS WITH A + FOR POSITIVE THOUGHTS, AND A - FOR NEGATIVE THOUGHTS", Toast.LENGTH_LONG).show();
-
 		builder.setView(getActivity().getLayoutInflater().inflate(R.layout.fragment_add_event, null));
 		builder.setTitle(R.string.add_event_fragment_title);		
 		builder.setNegativeButton(android.R.string.cancel, null);
@@ -95,9 +101,9 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 	@Override
 	public void onShow(DialogInterface dialog)
 	{
-		AlertDialog alertDialog = (AlertDialog) dialog;
+		alertDialog = (AlertDialog) dialog;
 		alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
-		
+		radioPosGroup = (RadioGroup) alertDialog.findViewById(R.id.pos_or_neg);
 		activityEditText = ((AutoCompleteTextView) alertDialog.findViewById(R.id.add_event_user_activity));
 		thoughtEditText = ((AutoCompleteTextView) alertDialog.findViewById(R.id.add_event_user_thought));
 		thoughtEditText.setAdapter(adapter);
@@ -111,14 +117,14 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 			{
 				String activityText = activityEditText.getText().toString();
 				String thoughtText = thoughtEditText.getText().toString();
-				
-				boolean atMaxLength = ((activityText.length() >= 60) || (thoughtText.length() >= 60));
+				atMaxLength = ((activityText.length() >= 60) || (thoughtText.length() >= 60));
 				
 				if (atMaxLength == true)
 		          Toast.makeText(getActivity(), "Limit is 60 characters!", Toast.LENGTH_SHORT).show();
-								
+				
 				((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_POSITIVE)
-					.setEnabled((activityText.length() > 0) && (thoughtText.length() > 0) && (atMaxLength == false));				 
+				.setEnabled((activityEditText.getText().toString().length() > 0) && checked == true && (thoughtEditText.getText().toString().length() > 0) && (atMaxLength == false));		
+											 
 			}
 
 			@Override
@@ -136,6 +142,25 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 		
 		activityEditText.addTextChangedListener(textWatcher);
 		thoughtEditText.addTextChangedListener(textWatcher);
+		radioPosGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+		{
+
+			@Override
+			public void onCheckedChanged(RadioGroup r1, int checked_id) 
+			{
+				if (checked_id != -1)
+				{
+					checked = true;
+					((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_POSITIVE)
+					.setEnabled((activityEditText.getText().toString().length() > 0) && checked == true && (thoughtEditText.getText().toString().length() > 0) && (atMaxLength == false));	
+					RadioButton radio_thought = (RadioButton) (alertDialog.findViewById(checked_id));
+					thought_tag = radio_thought.getText().toString();
+				}
+				
+			}
+			
+		});
+
 	}
 	
 	public void createEvent()
@@ -160,13 +185,13 @@ public class AddEventFragment extends DialogFragment implements OnShowListener
 		{
 			Log.d("add_event_fragment", "Creating a new event: " + eventDayofYear + ", " + eventMinuteOfDay);
 			
-			calendarDbHelper.createCalendar(eventYear, eventDayofYear, eventMinuteOfDay, activityText, moodValue, thoughtText);
+			calendarDbHelper.createCalendar(eventYear, eventDayofYear, eventMinuteOfDay, activityText, moodValue, thoughtText, thought_tag);
 		}
 		else
 		{
 			Log.d("add_event_fragment", "Updating an existing event: " + eventDayofYear + ", " + eventMinuteOfDay);
 			
-			calendarDbHelper.updateCalendar(eventYear, eventDayofYear, eventMinuteOfDay, activityText, moodValue, thoughtText);
+			calendarDbHelper.updateCalendar(eventYear, eventDayofYear, eventMinuteOfDay, activityText, moodValue, thoughtText, thought_tag);
 		}
 		
 		Toast.makeText(context, R.string.add_event_toast_created_event, Toast.LENGTH_SHORT).show();

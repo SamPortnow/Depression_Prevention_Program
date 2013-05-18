@@ -60,4 +60,6 @@
 	<string name="points_summary_view_breakdown">View detailed points breakdown.</string>
 	<string name="points_summary_badge_description">Add to Diary</string>
 	<string name="title_believe">How much do you believe this thought </string>
+	<string name="radio_pos">+</string>
+	<string name="radio_neg">-</string>
 </resources>

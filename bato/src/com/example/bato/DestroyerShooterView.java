@@ -71,8 +71,6 @@ public class DestroyerShooterView extends Activity
 	    mContext = this;
 	    mDbHelper=new ScaleDbAdapter(mContext);
 	    mDbHelper.open();
-	    mGameDbHelper = new GameDbAdapter(mContext);
-	    mGameDbHelper.open();
 	    Cursor cursor = mDbHelper.fetchPositives();
 	    	while (cursor.moveToNext())
 	    	{
@@ -293,6 +291,5 @@ public class DestroyerShooterView extends Activity
 			super.onDestroy();
 			updateDb();
 			mDbHelper.close();
-			mGameDbHelper.close();
 		}
 }

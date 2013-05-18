@@ -54,19 +54,15 @@ public class ScaleStatsFragment extends Fragment
 	private boolean isUnlocked()
 	{
 		CalendarDbAdapter adapter = new CalendarDbAdapter(getActivity()).open();
-		Cursor cursor = adapter.fetchThoughts();
+		Cursor cursor = adapter.fetchNegs();
 		
 		boolean flag = false;
 
-		while (cursor.moveToNext())
+		if (cursor.moveToFirst())
 		{
-			String thought = cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT));
-
-			if ((thought.length() > 0) && (thought.charAt(0) == '-'))
-			{
-				flag = true;
-				break;
-			}
+		
+			flag = true;
+			
 		}	
 		
 		cursor.close();
