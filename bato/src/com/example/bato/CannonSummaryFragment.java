@@ -31,8 +31,7 @@ public class CannonSummaryFragment extends Fragment
 			view.findViewById(R.id.cannon_summary_locked_container).setVisibility(View.GONE);
 			
 			ImageView badgeImageView = (ImageView) view.findViewById(R.id.cannon_summary_badge);
-			
-			badgeImageView.setImageResource(R.drawable.ic_cannon);			
+		
 			badgeImageView.setOnClickListener(new OnClickListener()
 			{			
 				@Override
@@ -45,8 +44,8 @@ public class CannonSummaryFragment extends Fragment
 		}
 		else
 		{
-			view.findViewById(R.id.cannon_summary_container).setVisibility(View.GONE);
 			view.findViewById(R.id.cannon_summary_locked_container).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.cannon_summary_container).setVisibility(View.GONE);
 		}
 	}
 	

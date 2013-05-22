@@ -8,8 +8,8 @@
         android:id="@+id/points_summary_badge"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
         android:layout_gravity="center"
+        android:layout_weight="0.5"
         android:contentDescription="@string/points_summary_badge_description"
         android:paddingTop="12dp"
         android:src="@drawable/ic_points" />
@@ -20,7 +20,7 @@
         android:layout_weight="0.5"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="8dp" >
+        android:padding="12dp" >
 
         <TextView
             android:layout_width="match_parent"
@@ -49,16 +49,16 @@
             android:paddingTop="8dp"
             android:text="@string/points_summary_value_postfix"
             android:textSize="20sp" />
-    </LinearLayout>
 
-    <TextView
-        android:id="@+id/points_summary_view_breakdown"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:gravity="center"
-        android:padding="16dp"
-        android:text="@string/points_summary_view_breakdown"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/points_summary_view_breakdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/points_summary_view_breakdown"
+            android:textSize="18sp" />
+    </LinearLayout>
 
 </LinearLayout>
