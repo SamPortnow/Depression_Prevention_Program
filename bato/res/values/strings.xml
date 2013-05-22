@@ -55,11 +55,16 @@
     <string name="good">Great</string>
     <string name="bad">Terrible</string>
     <string name="title_help">How would this thought make you feel?</string>  
+    <string name="title_believe">How much do you believe this thought </string>
+    
 	<string name="points_summary_value_prefix">You have earned&#8230;</string>
 	<string name="points_summary_value_postfix">personal scientist points.</string>
 	<string name="points_summary_view_breakdown">View detailed points breakdown.</string>
 	<string name="points_summary_badge_description">Add to Diary</string>
-	<string name="title_believe">How much do you believe this thought </string>
+	
+	<string name="cannon_summary_badge_description">Play \'Command the Cannon\'</string>
+	<string name="cannon_summary_locked_badge_description">\'Command the Cannon\' is locked.</string>
+	<string name="cannon_summary_locked_notice">To unlock this game, play \'Tip the Scales\' to generate challenging thoughts!</string>
 	<string name="radio_pos">+</string>
 	<string name="radio_neg">-</string>
 </resources>
