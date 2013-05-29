@@ -49,6 +49,8 @@
     <string name="friend"> If your friend called very upset and said this thought about himself/herself, what
     would you say to him/her?</string>
     <string name="skip"> SKIP IT!</string>
+    <string name="title_feeling">How are you feeling?</string>
+    <string name="pos_or_neg">Is this a negative thought?</string>
     <string name="plus">+</string>
     <string name="not">Not at all</string>
     <string name="alot">Completely</string>
@@ -60,6 +62,29 @@
 	<string name="points_summary_view_breakdown">View detailed points breakdown.</string>
 	<string name="points_summary_badge_description">Add to Diary</string>
 	<string name="title_believe">How much do you believe this thought </string>
-	<string name="radio_pos">+</string>
-	<string name="radio_neg">-</string>
+	<string name="radio_pos">Yes</string>
+	<string name="radio_neg">No</string>
+	<string name="Mind_reading_title">Mind reading</string>
+	<string name="Fortunetelling_title">Fortunetelling</string>
+	<string name="Catastrophizing_title">Catastrophizing</string>
+	<string name="Labeling_title">Labeling</string>
+	<string name="Discounting_positives_title">Discounting positives</string>
+	<string name="Dark_glasses_title">Dark glasses</string>
+	<string name="Black_and_white_thinking_title">Black-and-white Thinking</string>
+	<string name="Overgeneralizing_title">Overgeneralizing</string>
+	<string name="Personalizing_title">Personalizing</string>
+	<string name="Shoulds_title">Shoulds</string>
+	<string name="Unfair_comparisons_title">Unfair comparisons</string>
+	<string name="Mind_reading">You assume what others think about you. "He thinks I am stupid."</string>
+	<string name="Fortunetelling">You predict the future will be negative. "Things will always be bad."</string>
+	<string name="Catastrophizing">You believe that, if something bad happens, it will be awful and unbearable. "If I fail the test, I will not get a job, and my life will be failure."</string>
+	<string name="Labeling">You put negative lables on yourself and others. "I am a stupid person."</string>
+	<string name="Dark_glasses">You only think about the bad side of things. "I don't have any good friends."</string>
+	<string name="Discounting_positives">You claim that the positive things you do are not important."Anyone could have done well on that test."</string>
+	<string name="Black_and_white_thinking">You think about things in black-and-white terms. E.g., good or bad, all or none. "If I don't get an A+ on this test, the whole class has been worthless."</string>
+	<string name="Overgeneralizing">You make conclusions about how things are based on one event. "I fail at everything".</string>
+	<string name="Personalizing">You blame yourself for negative events."My friend and I got in a fight because I'm an awful person".</string>
+	<string name="Shoulds">You view things in term of how they "should" be, now how they are."I should have lots more friends than I do". </string>
+	<string name="Unfair_comparisons">You compare yourself to others doing better than you."I did well on the test, but Joe got the better grade."</string>
+	<string name="train_instructions">See if the negative thought you entered corresponds to any of these common types of negative thinking. If it does, drag and drop it in to the correct train, so it can be sent of the Tip the Scales Game, and later the Destroyer Game, where you will destroy the negative thought!</string>
 </resources>

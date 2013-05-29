@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <AutoCompleteTextView
+        android:id="@+id/add_event_user_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="@string/add_event_user_activity_hint"
+        android:inputType="text"
+    	android:scrollbars="vertical"
+        android:maxLength="60" />
+	<Button
+	    android:id="@+id/next"	
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/next">
+   </Button>
+</LinearLayout>

@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 public class MainActivity extends Activity
 {
     UserNameDbAdapter UserNameDbHelper;
+    Context mContext;
     
     private String[] mFragmentTitles = { "Personal Scientist Points", "Scale Game", "Destroyer Game" };
     
@@ -63,7 +65,7 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        
+        mContext = this;
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) 
@@ -98,8 +100,8 @@ public class MainActivity extends Activity
     {
     	if (item.getItemId() == R.id.menu_add_event)
     	{
-    		AddEventFragment fragment = new AddEventFragment();
-    		fragment.show(getFragmentManager(), "add_event_fragment");
+			Intent i = new Intent(mContext, AddEventActivity.class);				
+			mContext.startActivity(i);	
     	}
     	
     	if (item.getItemId() == R.id.menu_daily_mood)

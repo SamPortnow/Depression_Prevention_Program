@@ -51,6 +51,10 @@
         </service>
         <service android:name="com.example.bato.PostGame" >
         </service>
+        <activity android:name="com.example.bato.AddEventActivity"></activity>
+        <activity android:name="com.example.bato.AddFeelingActivity"></activity>
+        <activity android:name="com.example.bato.AddThoughtActivity"></activity>
+        <activity android:name="com.example.bato.TrainActivity"></activity>
     </application>
 
 </manifest>
