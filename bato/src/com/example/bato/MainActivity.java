@@ -18,7 +18,7 @@ public class MainActivity extends Activity
     UserNameDbAdapter UserNameDbHelper;
     Context mContext;
     
-    private String[] mFragmentTitles = { "Personal Scientist Points", "Scale Game", "Destroyer Game" };
+    private String[] mFragmentTitles = { "Personal Scientist Points", "Tip the Scales", "Command the Cannon" };
     
     class MainFragmentPagerAdapter extends FragmentPagerAdapter
     {
@@ -36,10 +36,10 @@ public class MainActivity extends Activity
 					return new PointsSummaryFragment();
 					
 				case 1:
-					return new ScaleStatsFragment();
+					return new ScalesSummaryFragment();
 					
 				case 2:
-					return new DestroyerStatsFragment();
+					return new CannonSummaryFragment();
 			}
 			
 			return null;
