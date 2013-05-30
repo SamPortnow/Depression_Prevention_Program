@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class AddEventActivity extends Fragment
 {
@@ -29,7 +30,11 @@ public class AddEventActivity extends Fragment
 			@Override
 			public void afterTextChanged(Editable arg0) 
 			{
-				pager.thought = add_act.getText().toString();
+				String act = add_act.getText().toString();
+				boolean atMaxLength = (act.length() >= 60);
+				if (atMaxLength == true)
+		          Toast.makeText(getActivity(), "Limit is 60 characters!", Toast.LENGTH_SHORT).show();
+				pager.thought = act;
 			}
 
 			@Override

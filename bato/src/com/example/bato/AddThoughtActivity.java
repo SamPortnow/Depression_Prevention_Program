@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AddThoughtActivity extends Fragment
 {
@@ -22,6 +23,7 @@ public class AddThoughtActivity extends Fragment
 	View view;
 	AddThoughtPager pager;
 	EditText add_thought;
+	TextView neg_question;
 	boolean added; 
 	
 	@Override
@@ -31,7 +33,10 @@ public class AddThoughtActivity extends Fragment
 	    mContext = this.getActivity();
 	    pager = (AddThoughtPager) getActivity();
 	    view = inflater.inflate(R.layout.fragment_add_thought, null);
-	    thought = (TextView) view.findViewById(R.id.add_event_user_thought);
+	    radioPosGroup = (RadioGroup) view.findViewById(R.id.pos_neg);
+	    radioPosGroup.setVisibility(View.INVISIBLE);
+	    neg_question = (TextView) view.findViewById(R.id.pos_or_neg);
+	    neg_question.setVisibility(View.INVISIBLE);
 	    add_thought = (EditText) view.findViewById(R.id.add_event_user_thought);
 		TextWatcher textWatcher = new TextWatcher()
 		{
@@ -39,7 +44,14 @@ public class AddThoughtActivity extends Fragment
 			@Override
 			public void afterTextChanged(Editable arg0) 
 			{
-				pager.thought = add_thought.getText().toString();
+				String thought = add_thought.getText().toString();
+				boolean atMaxLength = (thought.length() >= 60);
+				if (atMaxLength == true)
+		          Toast.makeText(getActivity(), "Limit is 60 characters!", Toast.LENGTH_SHORT).show();
+				pager.thought = thought;
+			    radioPosGroup.setVisibility(View.VISIBLE);
+			    neg_question.setVisibility(View.VISIBLE);
+
 			}
 
 			@Override
@@ -59,7 +71,6 @@ public class AddThoughtActivity extends Fragment
 			
 		};
 		add_thought.addTextChangedListener(textWatcher);
-	    radioPosGroup = (RadioGroup) view.findViewById(R.id.pos_neg);
 	    radioPosGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
 	    {
 
