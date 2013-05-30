@@ -13,10 +13,4 @@
         android:inputType="text"
     	android:scrollbars="vertical"
         android:maxLength="60" />
-	<Button
-	    android:id="@+id/next"	
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="@string/next">
-   </Button>
 </LinearLayout>

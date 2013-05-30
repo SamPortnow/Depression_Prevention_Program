@@ -1,30 +1,65 @@
 package com.example.bato;
 
-import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-public class AddThoughtActivity extends Activity
+public class AddThoughtActivity extends Fragment
 {
 	RadioGroup radioPosGroup;
 	RadioButton radioPosButton;
 	Context mContext;
 	TextView thought;
+	View view;
+	AddThoughtPager pager;
+	EditText add_thought;
+	boolean added; 
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) 
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 	    super.onCreate(savedInstanceState);
-	    mContext = this;
-	    setContentView(R.layout.fragment_add_thought);
-	    thought = (TextView) findViewById(R.id.add_event_user_thought);
-	    radioPosGroup = (RadioGroup) findViewById(R.id.pos_neg);
+	    mContext = this.getActivity();
+	    pager = (AddThoughtPager) getActivity();
+	    view = inflater.inflate(R.layout.fragment_add_thought, null);
+	    thought = (TextView) view.findViewById(R.id.add_event_user_thought);
+	    add_thought = (EditText) view.findViewById(R.id.add_event_user_thought);
+		TextWatcher textWatcher = new TextWatcher()
+		{
+
+			@Override
+			public void afterTextChanged(Editable arg0) 
+			{
+				pager.thought = add_thought.getText().toString();
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) 
+			{
+				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) 
+			{
+				
+			
+			}
+			
+		};
+		add_thought.addTextChangedListener(textWatcher);
+	    radioPosGroup = (RadioGroup) view.findViewById(R.id.pos_neg);
 	    radioPosGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
 	    {
 
@@ -33,26 +68,18 @@ public class AddThoughtActivity extends Activity
 			{
 			
 				int selectedId = radioPosGroup.getCheckedRadioButtonId();
-			    radioPosButton = (RadioButton) findViewById(selectedId);
-			    Log.e("text is", "" + radioPosButton.getText());
-			    if (radioPosButton.getText().toString().equals("Yes"))
-			    {
-					SharedPreferences preferences = mContext.getSharedPreferences(mContext.getPackageName(), Context.MODE_PRIVATE);
-					preferences.edit().putString("thought", thought.getText().toString()).commit();
-			    	finish();
-					Intent i = new Intent(mContext, TrainActivity.class);				
-					mContext.startActivity(i);	
-			    }
-			    
-			    else
-			    {
-					finish();
-					Intent i = new Intent(mContext, MainActivity.class);				
-					mContext.startActivity(i);	
-			    }
+			    radioPosButton = (RadioButton) view.findViewById(selectedId);
+				if (radioPosButton.getText().toString().equals("Yes") && added == false)
+				{
+					pager.addView();
+					added = true;
+				}
+	
 			}
 	    	
 	    });
+	    
+	    return view;
 	}
 
 }

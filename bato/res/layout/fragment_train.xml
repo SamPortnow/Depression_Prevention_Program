@@ -5,13 +5,6 @@
     android:orientation="vertical"
     android:id="@+id/layout" >
     
-    <TextView
-        android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_margin="8dp"
-    	android:text="@string/train_instructions"
-        ></TextView>
-    
     <RelativeLayout
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"

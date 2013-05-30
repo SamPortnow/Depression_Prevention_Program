@@ -100,7 +100,7 @@ public class MainActivity extends Activity
     {
     	if (item.getItemId() == R.id.menu_add_event)
     	{
-			Intent i = new Intent(mContext, AddEventActivity.class);				
+			Intent i = new Intent(mContext, AddThoughtPager.class);				
 			mContext.startActivity(i);	
     	}
     	
