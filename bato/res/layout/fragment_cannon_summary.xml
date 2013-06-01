@@ -23,9 +23,39 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5"
-            android:gravity="center"
+            android:gravity="top|center_horizontal"
             android:orientation="vertical"
             android:padding="12dp" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center_horizontal"
+                android:paddingBottom="8dp"
+                android:text="@string/cannon_summary_high_score_prefix"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/cannon_summary_high_score"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@android:color/holo_red_dark"
+                android:textIsSelectable="false"
+                android:textSize="72sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/cannon_summary_see_more"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center_horizontal"
+                android:paddingTop="8dp"
+                android:text="@string/cannon_summary_see_more"
+                android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -55,4 +85,5 @@
             android:textIsSelectable="false"
             android:textSize="18sp" />
     </LinearLayout>
+
 </FrameLayout>

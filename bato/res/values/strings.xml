@@ -57,10 +57,7 @@
     <string name="good">Great</string>
     <string name="bad">Terrible</string>
     <string name="title_help">How would this thought make you feel?</string>  
-	<string name="points_summary_value_prefix">You have earned&#8230;</string>
-	<string name="points_summary_value_postfix">personal scientist points.</string>
-	<string name="points_summary_view_breakdown">View detailed points breakdown.</string>
-	<string name="points_summary_badge_description">Add to Diary</string>
+
 	<string name="title_believe">How much do you believe this thought </string>
 	<string name="radio_pos">Yes</string>
 	<string name="radio_neg">No</string>
@@ -87,10 +84,23 @@
 	<string name="Shoulds">You view things in term of how they "should" be, now how they are."I should have lots more friends than I do". </string>
 	<string name="Unfair_comparisons">You compare yourself to others doing better than you."I did well on the test, but Joe got the better grade."</string>
 	<string name="train_instructions">See if the negative thought you entered corresponds to any of these common types of negative thinking. If it does, drag and drop it in to the correct train, so it can be sent of the Tip the Scales Game, and later the Destroyer Game, where you will destroy the negative thought!</string>
-	<string name="cannon_summary_badge_description">Play \'Command the Cannon\'</string>
-	<string name="cannon_summary_locked_badge_description">\'Command the Cannon\' is locked.</string>
-	<string name="cannon_summary_locked_notice">To unlock this game, play \'Tip the Scales\' to generate challenging thoughts!</string>
+	
+	<!-- fragment_points_sumamry -->
+	<string name="points_summary_badge_description">Add to Diary</string>
+	<string name="points_summary_value_prefix">You have earned&#8230;</string>
+	<string name="points_summary_value_postfix">personal scientist points.</string>
+	<string name="points_summary_view_breakdown">(view detailed points breakdown)</string>
+	
+	<!-- fragment_scales_summary -->
 	<string name="scales_summary_badge_description">Play \'Tip the Scales\'</string>
 	<string name="scales_summary_locked_badge_description">\'Tip the Scales\' is locked.</string>
 	<string name="scales_summary_locked_notice">To unlock this game, populate your diary with daily thoughts!</string>
+	
+	<!-- fragment_cannon_summary -->
+	<string name="cannon_summary_badge_description">Play \'Command the Cannon\'</string>
+	<string name="cannon_summary_locked_badge_description">\'Command the Cannon\' is locked.</string>
+	<string name="cannon_summary_locked_notice">To unlock this game, play \'Tip the Scales\' to generate challenging thoughts!</string>
+	<string name="cannon_summary_high_score_prefix">Your high score for this game is&#8230;</string>
+	<string name="cannon_summary_see_more">(view complete list of high scores)</string>
+	<string name="cannon_summary_high_scores_dialog_title">Command the Cannon High Scores</string>
 </resources>
