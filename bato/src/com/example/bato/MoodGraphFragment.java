@@ -36,7 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Graph extends Fragment
+public class MoodGraphFragment extends Fragment
 {
 	Context mContext;
 	private CalendarDbAdapter mDbHelper;
