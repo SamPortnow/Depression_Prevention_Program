@@ -9,8 +9,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.View;
 
 public class AddThoughtPager extends Activity
 {
@@ -94,14 +92,5 @@ public class AddThoughtPager extends Activity
 		Fragment trainActivity = new TrainActivity();
 		frags.add(trainActivity);
 		mFragmentTitles.add("Send the Thought Away");
-	}
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        
-        return true;
-    }
-    
+	}   
 }
