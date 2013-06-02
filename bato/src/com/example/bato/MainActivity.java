@@ -106,10 +106,8 @@ public class MainActivity extends Activity
     	
     	if (item.getItemId() == R.id.menu_daily_mood)
     	{
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.addToBackStack(null);            
-            fragmentTransaction.replace(R.id.fragment_container, new Graph());
-            fragmentTransaction.commit();
+    		Intent intent = new Intent(this, MoodGraphActivity.class);
+    		startActivity(intent);
     	}
     	
     	return true;

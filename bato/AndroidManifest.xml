@@ -26,6 +26,8 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".MoodGraphActivity" />
+        <activity
             android:name="com.example.bato.DestroyerShooterView"
             android:configChanges="orientation"
             android:screenOrientation="portrait" >
