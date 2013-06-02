@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class ScalesSummaryFragment extends Fragment
 {
@@ -41,6 +42,9 @@ public class ScalesSummaryFragment extends Fragment
 					startActivity(intent);
 				}
 			});
+			
+			int count = getPositiveThoughtsCount();
+			((TextView) view.findViewById(R.id.scales_summary_count)).setText(String.valueOf(count));
 		}
 		else
 		{
@@ -63,5 +67,18 @@ public class ScalesSummaryFragment extends Fragment
 		adapter.close();
 
 		return flag;
+	}
+	
+	private int getPositiveThoughtsCount()
+	{
+		ScaleDbAdapter adapter = new ScaleDbAdapter(getActivity()).open();
+		Cursor cursor = adapter.fetchPositives();
+		
+		int count = cursor.getCount();
+		
+		cursor.close();
+		adapter.close();
+		
+		return count;
 	}
 }

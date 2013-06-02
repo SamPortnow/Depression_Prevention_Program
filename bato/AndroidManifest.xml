@@ -25,10 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <fragment android:name="com.example.bato.Destroyer" >
-        </fragment>
-
         <activity
             android:name="com.example.bato.DestroyerShooterView"
             android:configChanges="orientation"
@@ -40,23 +36,10 @@
             android:screenOrientation="portrait" >
         </activity>
 
-        <fragment android:name="com.example.bato.ScaleView" >
-        </fragment>
-        <fragment android:name="com.example.bato.DestroyerShooter" >
-        </fragment>
-        <fragment android:name="com.example.bato.Graph" >
-        </fragment>
+        <service android:name="com.example.bato.Post" />
+        <service android:name="com.example.bato.PostGame" />
 
-        <service android:name="com.example.bato.Post" >
-        </service>
-        <service android:name="com.example.bato.PostGame" >
-        </service>
-        <fragment android:name="com.example.bato.AddEventActivity"></fragment>
-        <fragment android:name="com.example.bato.AddFeelingActivity"></fragment>
-        <fragment android:name="com.example.bato.AddThoughtActivity"></fragment>
-        <fragment android:name="com.example.bato.TrainActivity"></fragment>
-        <activity android:name="com.example.bato.AddThoughtPager"></activity>
-        
+        <activity android:name=".AddThoughtPager" />
     </application>
 
 </manifest>

@@ -44,8 +44,7 @@ public class CannonSummaryFragment extends Fragment
 				}
 			});
 			
-			final String[] highScores = getHighScores();			
-			
+			final String[] highScores = getHighScores();						
 			((TextView) view.findViewById(R.id.cannon_summary_high_score)).setText(highScores[0]);
 			
 			view.findViewById(R.id.cannon_summary_see_more).setOnClickListener(new View.OnClickListener()

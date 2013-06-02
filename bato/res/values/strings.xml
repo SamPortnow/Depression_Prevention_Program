@@ -14,20 +14,7 @@
     <string name="menu_add_event">Add Event</string>
     <string name="menu_daily_mood">Mood Graphs</string>
     <string name="menu_settings">Settings</string>
-    <string name="destroyer_stats_title">Destroyer Game</string>
-    <string name="destroyer_stats_play_game">Play</string>
-    <string name="destroyer_stats_bank_thoughts">Thoughts in the bank</string>
-    <string name="destroyer_stas_personal_points">Personal Scientist points</string>
-    <string name="destroyer_stats_high_score">High Score</string>
-    <string name="destroyer_stats_more_scores">(see more)</string>
-    <string name="destroyer_stats_notice">Play the Scale Game to generate challenging thoughts that can destroy the negative thoughts in order to unlock this game!</string>
-    <string name="personal_scientist_breakdown">(breakdown)</string>   
-    <string name="personal_points_title">Personal Scientist Points</string> 
-    <string name="high_scores_title">High Scores</string>
-    <string name="scale_stats_title">Scale Game</string>
-    <string name="scale_stats_play_game">Play</string>
-    <string name="scale_stats_notice">Populate your diary with your daily thoughts to unlock this game!</string>
-    <string name="scale_stats_positive_thoughts_generated_label">Positive thoughts generated</string>   
+
     <string name="add_event_fragment_title">Add a new event&#x2026;</string>
     <string name="add_event_toast_created_event">New event created.</string>
     <string name="add_event_user_activity_hint">What are you doing?</string>
@@ -95,6 +82,8 @@
 	<string name="scales_summary_badge_description">Play \'Tip the Scales\'</string>
 	<string name="scales_summary_locked_badge_description">\'Tip the Scales\' is locked.</string>
 	<string name="scales_summary_locked_notice">To unlock this game, populate your diary with daily thoughts!</string>
+	<string name="scales_summary_count_prefix">You have generated&#8230;</string>
+	<string name="scales_summary_count_postfix">positive thoughts.</string>
 	
 	<!-- fragment_cannon_summary -->
 	<string name="cannon_summary_badge_description">Play \'Command the Cannon\'</string>
