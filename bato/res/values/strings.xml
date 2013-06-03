@@ -83,7 +83,7 @@
 	<string name="scales_summary_locked_badge_description">\'Tip the Scales\' is locked.</string>
 	<string name="scales_summary_locked_notice">To unlock this game, populate your diary with daily thoughts!</string>
 	<string name="scales_summary_count_prefix">You have generated&#8230;</string>
-	<string name="scales_summary_count_postfix">positive thoughts.</string>
+	<string name="scales_summary_count_postfix">thoughts to challenge negative thoughts.</string>
 	
 	<!-- fragment_cannon_summary -->
 	<string name="cannon_summary_badge_description">Play \'Command the Cannon\'</string>

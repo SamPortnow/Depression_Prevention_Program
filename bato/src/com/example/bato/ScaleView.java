@@ -447,7 +447,6 @@ public class ScaleView extends View
 				Log.e("i is", "" + i);
 				} catch (IOException e) 
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				if (i == 46)
@@ -490,7 +489,6 @@ public class ScaleView extends View
 	
 	protected Bitmap ScaleIt(Canvas canvas, int i) throws IOException
 	{
-		Log.e("scale it was", "called");
 		mScale = BitmapFactory.decodeStream(mAssets.open("scale_"+i+".gif"));
 		mScale = Bitmap.createScaledBitmap(mScale, (int) (width * 1.5), height, true);
 		return mScale;

@@ -27,6 +27,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -55,6 +56,7 @@ public class MoodGraphFragment extends Fragment
     TextView event;
     View events;
     double mapping;
+    TextView mDate;
     
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,11 +67,17 @@ public class MoodGraphFragment extends Fragment
 	    mDbHelper=new CalendarDbAdapter(mContext);
 	    mDbHelper.open();
 	    View view = inflater.inflate(R.layout.activity_graph, container, false);
-
 		Button next = (Button) view.findViewById(R.id.next);
 		Button previous = (Button) view.findViewById(R.id.previous);
+		mDate = (TextView) view.findViewById(R.id.date);
 	    Day = cal.get(Calendar.DAY_OF_YEAR);
 	    Year = cal.get(Calendar.YEAR);
+	    Calendar cal = Calendar.getInstance();  
+	    cal.set(Calendar.YEAR, (int)Year);  
+	    cal.set(Calendar.DAY_OF_YEAR, (int)Day);  
+	    Date date = cal.getTime();  
+	    String sDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US).format(date);  
+	    mDate.setText(sDate);
 		layout = (LinearLayout) view.findViewById(R.id.graph);	
 
 	    next.setOnClickListener(new OnClickListener()
@@ -84,6 +92,12 @@ public class MoodGraphFragment extends Fragment
 					Day = 0;
 					Year++;
 				}
+			    Calendar cal = Calendar.getInstance();  
+			    cal.set(Calendar.YEAR, (int)Year);  
+			    cal.set(Calendar.DAY_OF_YEAR, (int)Day);  
+			    Date date = cal.getTime();  
+			    String sDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US).format(date);  
+			    mDate.setText(sDate);
 				layout.removeView(chartView);
 				chartView = generate(Day, Year);
 		    	layout.addView(chartView);
@@ -101,6 +115,12 @@ public class MoodGraphFragment extends Fragment
 					Day = 0;
 					Year--;
 				}
+			    Calendar cal = Calendar.getInstance();  
+			    cal.set(Calendar.YEAR, (int)Year);  
+			    cal.set(Calendar.DAY_OF_YEAR, (int)Day);  
+			    Date date = cal.getTime();  
+			    String sDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US).format(date);  
+			    mDate.setText(sDate);
 				layout.removeView(chartView);
 		    	chartView = generate(Day, Year);
 		    	layout.addView(chartView);
@@ -129,8 +149,6 @@ public class MoodGraphFragment extends Fragment
 	    Calendar cal = Calendar.getInstance();  
 	    cal.set(Calendar.YEAR, (int)Year);  
 	    cal.set(Calendar.DAY_OF_YEAR, (int)Day);  
-	    Date date = cal.getTime();  
-	    String sDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US).format(date);  
 	    minutes.clear();
 	    mood.clear();
 	    	while (calendar.moveToNext())
@@ -244,7 +262,6 @@ public class MoodGraphFragment extends Fragment
 		mRenderer.setXAxisMax(26);
 		mRenderer.setPointSize(25);
 		mRenderer.setSelectableBuffer(25);
-		mRenderer.setChartTitle(sDate);
 		mRenderer.setClickEnabled(true);
 		mRenderer.setXLabelsAngle(45);
 		mRenderer.setLabelsTextSize(18);

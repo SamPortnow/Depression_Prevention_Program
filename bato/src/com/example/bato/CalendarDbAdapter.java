@@ -208,7 +208,7 @@ public class CalendarDbAdapter {
     public Cursor fetchNegs()
     {
     
-        return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_THOUGHT}, COLUMN_NAME_THOUGHT_TAG+" =?", new String[] {"-"}, null, null, null);
+        return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_THOUGHT}, COLUMN_NAME_THOUGHT_TAG+" =?", new String[] {"No"}, null, null, null);
 
     }
 

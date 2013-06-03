@@ -25,7 +25,7 @@
             android:layout_weight="0.5"
             android:gravity="top|center_horizontal"
             android:orientation="vertical"
-            android:padding="12dp" >
+            android:padding="10dp" >
 
             <TextView
                 android:layout_width="match_parent"
@@ -34,7 +34,7 @@
                 android:gravity="center_horizontal"
                 android:paddingBottom="8dp"
                 android:text="@string/scales_summary_count_prefix"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/scales_summary_count"
@@ -53,7 +53,7 @@
                 android:gravity="center_horizontal"
                 android:paddingTop="8dp"
                 android:text="@string/scales_summary_count_postfix"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
 

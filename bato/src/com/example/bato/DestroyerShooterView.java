@@ -74,7 +74,11 @@ public class DestroyerShooterView extends Activity
 	    Cursor cursor = mDbHelper.fetchPositives();
 	    	while (cursor.moveToNext())
 	    	{
-	    		mPositive.add(cursor.getString(cursor.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_POSITIVE)));
+	    		String positive_thought = cursor.getString(cursor.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_POSITIVE));
+	    		if (! mPositive.contains(positive_thought))
+	    			{
+	    				mPositive.add(positive_thought);
+	    			}
 	    	}
 	    cursor.close();
 	    setContentView(R.layout.activity_destroyer_shooter);

@@ -111,7 +111,7 @@ public class DestroyerShooter extends View
 	    	    //create a string array of negative thoughts from the db
 	    	while (thoughts.moveToNext())
 	    	{
-	    		if (thoughts.getString(thoughts.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_NEGATIVE)).length() > 0 && thoughts.getString(thoughts.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_NEGATIVE)).charAt(0) == '-')
+	    		if (thoughts.getString(thoughts.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_NEGATIVE)).length() > 0)
 	    		{
 	    			negative_thoughts.add(thoughts.getString(thoughts.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_NEGATIVE)));
 	    		}
@@ -177,7 +177,6 @@ public class DestroyerShooter extends View
     		canvas.save();
     		first = false;
     	}
-		Log.e("negative thought size is", "" + negative_thoughts.size());
 		if (redraw == true)
 		{
         	move_x = width/3;
