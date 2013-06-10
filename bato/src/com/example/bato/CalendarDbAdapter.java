@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.TextView;
 
 /**
  * Simple notes database access helper class. Defines the basic CRUD operations
@@ -17,7 +18,9 @@ import android.util.Log;
 public class CalendarDbAdapter {
 	//FIRST STEP CREATE THE VARS YOU NEED FOR THE DATABASE
     private static final String DATABASE_NAME = "calendar_data"; //my database name
-    private static final String DATABASE_TABLE = "calendar"; //this particular table is the activities table. I might make a separate table for a ranking system. We will see. 
+    private static final String DATABASE_TABLE = "calendar"; 
+    private static final String DATABASE_TABLE2 = "challenging_thoughts";
+    private static final String DATABASE_TABLE3 = "thought_types";
     private static final int DATABASE_VERSION = 2;
     public static final String COLUMN_NAME_PUSHED = "Pushed";
     public static final String COLUMN_NAME_MINUTES="minutes";
@@ -27,6 +30,11 @@ public class CalendarDbAdapter {
     public static final String COLUMN_NAME_FEELING = "Feeling";
     public static final String COLUMN_NAME_THOUGHT = "Thought";
     public static final String COLUMN_NAME_THOUGHT_TAG = "Thought_Tag";
+    public static final String COLUMN_NAME_TYPE = "Type";
+    public static final String COLUMN_NAME_NEGATIVE_THOUGHT = "Negative_Thought";
+    public static final String COLUMN_NAME_COUNTER_THOUGHT = "Counter_Thought";
+    public static final String COLUMN_NAME_COUNTER_THOUGHT_BELIEVE = "Counter_Thought_Believe";
+    public static final String COLUMN_NAME_COUNTER_THOUGHT_HELPFUL = "Counter_Thought_Helpful";
     public static final String KEY_ROWID = "_id"; //all my vars are now declared 
 
     private static final String TAG = "CalendarDbAdapter";
@@ -36,6 +44,13 @@ public class CalendarDbAdapter {
     private static final String DATABASE_CREATE =  //create the database! you already know!! // modified android code of text . I want to allow for null text! 
         "create table calendar  (_id integer primary key autoincrement, " +
         "Year integer, Day integer, minutes integer, Activity text, Feeling integer, Thought text, Thought_Tag text, Pushed text)";
+
+   private static final String DATABASE2_CREATE =         
+		"create table thought_types (_id integer primary key autoincrement," +
+	    "Type text, Negative_Thought text, FOREIGN KEY (Negative_Thought) REFERENCES calendar(Thought))";
+		   
+   private static final String DATABASE3_CREATE =  "create table challenging_thoughts (_id integer primary key autoincrement," +
+		    "Counter_Thought text, Negative_Thought text, Counter_Thought_Believe integer, Counter_Thought_Helpful integer, FOREIGN KEY (Negative_Thought) REFERENCES calendar(Thought))";
     
     private final Context mCalendarCtx; //declare a context. activity extends from context. it's a basic part of android app. need to research this more. 
 
@@ -49,6 +64,8 @@ public class CalendarDbAdapter {
         public void onCreate(SQLiteDatabase db) {
 
             db.execSQL(DATABASE_CREATE); //and here is where the database is created. because we declared the string DATA_BASE_CREATE above
+            db.execSQL(DATABASE2_CREATE);
+            db.execSQL(DATABASE3_CREATE);
         }
 
         @Override
@@ -56,6 +73,7 @@ public class CalendarDbAdapter {
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
             db.execSQL("DROP TABLE IF EXISTS calendar");
+            db.execSQL("DROP TABLE IF EXISTS challening_thoughts");
             onCreate(db);
         }
     }
@@ -104,6 +122,25 @@ public class CalendarDbAdapter {
      */
     
     //now do a create, update, and fetch functions!!!
+    public long createChallenging(String mNegativeThought, String mChallengingThought, int belief, int helpful)
+    {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(COLUMN_NAME_NEGATIVE_THOUGHT, mNegativeThought);
+        initialValues.put(COLUMN_NAME_COUNTER_THOUGHT, mChallengingThought);
+        initialValues.put(COLUMN_NAME_COUNTER_THOUGHT_BELIEVE, belief);
+        initialValues.put(COLUMN_NAME_COUNTER_THOUGHT_HELPFUL, helpful);
+        return mCalendarDb.insert(DATABASE_TABLE2, null, initialValues);
+        
+    }
+    
+    public long createType(String mNegativeThought, String mType)
+    {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(COLUMN_NAME_NEGATIVE_THOUGHT, mNegativeThought);
+        initialValues.put(COLUMN_NAME_TYPE, mType);
+        return mCalendarDb.insert(DATABASE_TABLE3, null, initialValues);
+        
+    }
     
     public long createCalendar(long Year, long Day, long minutes, String Activity, int Feeling, String Thought, String thought_tag) {
         ContentValues initialValues = new ContentValues();
@@ -151,6 +188,10 @@ public class CalendarDbAdapter {
         
     }
 	*/
+    public Cursor fetchNegsByType(String mType)
+    {
+    	return mCalendarDb.query(DATABASE_TABLE3, new String[] {KEY_ROWID,COLUMN_NAME_NEGATIVE_THOUGHT}, COLUMN_NAME_TYPE+" =?" , new String[] {mType}, null, null, "RANDOM() LIMIT 1");
+    }
     
     public Cursor fetchCalendar(long Year, long Day, long minutes)
     {
@@ -208,7 +249,7 @@ public class CalendarDbAdapter {
     public Cursor fetchNegs()
     {
     
-        return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_THOUGHT}, COLUMN_NAME_THOUGHT_TAG+" =?", new String[] {"No"}, null, null, null);
+        return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_THOUGHT}, COLUMN_NAME_THOUGHT_TAG+" =?", new String[] {"Yes"}, null, null, null);
 
     }
 

@@ -24,6 +24,7 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.Display;
 import android.view.DragEvent;
 import android.view.Gravity;
@@ -40,13 +41,14 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.meetme.android.horizontallistview.HorizontalListView;
 
 
 
@@ -89,7 +91,7 @@ public class ScaleActivity extends Activity
 	CalendarDbAdapter mCalHelper;
 	ListAdapter mAdapter;
 	ScaleArrayAdapter arrayAdapter;
-	ListView listView;
+	HorizontalListView listView;
 	int width;
 	int j;
 	String negative;
@@ -144,7 +146,7 @@ public class ScaleActivity extends Activity
 	    while (positives.moveToNext())
 	    {	
 	    	String pos_thought = positives.getString(positives.getColumnIndexOrThrow(ScaleDbAdapter.COLUMN_NAME_POSITIVE));
-			if (! positive.contains(pos_thought))
+			if (! pos_thought.contains(pos_thought))
 			{
 				positive_thoughts.add(pos_thought);
 			}
@@ -155,6 +157,7 @@ public class ScaleActivity extends Activity
 	    while (thoughts.moveToNext())
 	    	{
 	    			String thought = thoughts.getString(thoughts.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT));
+	    			Log.e("thought is", "" + thought);
 	    			if (! negative_thoughts.contains(thought))
 	    			{
 	    				negative_thoughts.add(thought);
@@ -168,7 +171,7 @@ public class ScaleActivity extends Activity
 	    setContentView(R.layout.activity_scale);
 	    mScale = (ScaleView) findViewById(R.id.scale_view);
 	    arrayAdapter =  new ScaleArrayAdapter(this, R.layout.negatives, android.R.id.text1, negative_thoughts);
-	    listView = (ListView) findViewById(R.id.listview);
+	    listView = (HorizontalListView) findViewById(R.id.listview);
 	    listView.setAdapter(arrayAdapter);
 	    mBag = new ImageView (mContext);
 	    mBag.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bag));
@@ -178,7 +181,9 @@ public class ScaleActivity extends Activity
 	    ArrayAdapter<String> adapter = new ArrayAdapter<String> (this, android.R.layout.simple_dropdown_item_1line, positive_thoughts);
 	    positive_thought = (AutoCompleteTextView) findViewById(R.id.thoughts);
 	    positive_thought.setAdapter(adapter);
+	    positive_thought.setVisibility(View.INVISIBLE);
 	    fire = (Button) findViewById(R.id.scale_it);
+	    fire.setVisibility(View.INVISIBLE);
 	    fire.setClickable(false);
 	    question = (Button) new Button(mContext);
 	    question.setBackgroundResource(R.drawable.question);
@@ -256,6 +261,7 @@ public class ScaleActivity extends Activity
 					      Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(positive_thought.getWindowToken(), 0);
 		    	pos = new TextView (mContext);
+		    	
     			pos.layout(0, 0, mScale.width/3, mScale.height/4);
 		    	pos.setGravity(Gravity.CENTER);
 		    	pos.setTextSize(15);
@@ -337,13 +343,15 @@ public class ScaleActivity extends Activity
 						{
 							View view = (View) arg1.getLocalState();
 							TextView negative = (TextView) view.findViewById(android.R.id.text1);
-							mScale.width = layout.getWidth();
+							
 							mScale.update();
 							mScale.negative.setText(negative.getText().toString());
 							mScale.i = 0;
 							mScale.reset = true;
 							mScale.start = true;
 							layout.removeView(listView);
+							fire.setVisibility(View.VISIBLE);
+							positive_thought.setVisibility(View.INVISIBLE);
 						    fire.setClickable(true);
 							RelativeLayout.LayoutParams sQuestionParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT); 
 							sQuestionParams.leftMargin = width/2 - width/8;

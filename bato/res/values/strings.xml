@@ -28,14 +28,16 @@
     <string name="previous">Prev</string>
     <string name="activity">You were doing</string>
     <string name="thought">You were thinking</string>
-    <string name="thought_it"> Write a counter thought to outweigh the negative thought! </string>
-    <string name="scale_it">  Launch! </string>
+    <string name="thought_it"> Create a thought that challenges
+        the truth of this negative thought. </string>
+    <string name="scale_it">  Create! </string>
     <string name="lawyer">  If you were trying to act as your own attorney whose job was to defend yourself, and
     whether or not you went to jail depended on the truth of this negative thought, 
     what would you say in your own defense? </string>
     <string name="friend"> If your friend called very upset and said this thought about himself/herself, what
     would you say to him/her?</string>
     <string name="skip"> SKIP IT!</string>
+    <string name="help">Help</string>
     <string name="title_feeling">How are you feeling?</string>
     <string name="pos_or_neg">Is this a negative thought?</string>
     <string name="plus">+</string>

@@ -1,6 +1,7 @@
 package com.example.bato;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -9,6 +10,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 public class AddThoughtPager extends Activity
 {
@@ -16,6 +18,8 @@ public class AddThoughtPager extends Activity
     Context mContext;
     String thought;
     String event;
+    String tag;
+    String mType;
     int feeling; 
     
     private ArrayList<String> mFragmentTitles = new ArrayList<String>();    
@@ -38,13 +42,13 @@ public class AddThoughtPager extends Activity
 					return new AddEventActivity();
 					
 				case 1:
-					return new AddFeelingActivity();
+					return new AddFeelingFragment();
 					
 				case 2:
-					return new AddThoughtActivity();
+					return new AddThoughtFragment();
 				
 				case 3:
-					return new TrainActivity();
+					return new TrainFragment();
 				
 			}
 			
@@ -74,8 +78,8 @@ public class AddThoughtPager extends Activity
         mContext = this;
         setContentView(R.layout.activity_add_event);
         Fragment addEventActivity = new AddEventActivity();
-        Fragment addFeelingActivity = new AddFeelingActivity();
-        Fragment addThoughtActivity = new AddThoughtActivity();
+        Fragment addFeelingActivity = new AddFeelingFragment();
+        Fragment addThoughtActivity = new AddThoughtFragment();
         frags.add(addEventActivity);
         frags.add(addFeelingActivity);
         frags.add(addThoughtActivity);
@@ -89,8 +93,30 @@ public class AddThoughtPager extends Activity
 	
 	public void addView()
 	{
-		Fragment trainActivity = new TrainActivity();
+		Fragment trainActivity = new TrainFragment();
 		frags.add(trainActivity);
 		mFragmentTitles.add("Send the Thought Away");
-	}   
+	} 
+	
+	public void createCalendar()
+	{
+		CalendarDbAdapter mCalHelper = new CalendarDbAdapter(mContext);
+		mCalHelper.open();
+		Calendar calendar = Calendar.getInstance();
+		int eventYear = calendar.get(Calendar.YEAR);
+		int eventDayofYear = calendar.get(Calendar.DAY_OF_YEAR);
+		int eventMinuteOfDay = (calendar.get(Calendar.HOUR_OF_DAY) * 60) + calendar.get(Calendar.MINUTE);
+		mCalHelper.createCalendar(eventYear, eventDayofYear, eventMinuteOfDay, event, feeling, thought, tag);
+		mCalHelper.close();
+	}
+
+	public void createTypetable()
+	{
+		CalendarDbAdapter mCalHelper = new CalendarDbAdapter(mContext);
+		mCalHelper.open();
+		Log.e("thought is", "" + thought);
+		Log.e("type is", "" + mType);
+		mCalHelper.createType(thought, mType);
+		mCalHelper.close();
+	}
 }

@@ -130,6 +130,7 @@ public class ScaleView extends View
     	mCurrentYPos[3] = height/18 + 71 * (height/150);
 	}
 	
+	
 	@SuppressLint("WrongCall")
 	@Override
 	protected void dispatchDraw (Canvas canvas)
@@ -177,7 +178,6 @@ public class ScaleView extends View
 			{
 				try 
 				{
-					Log.e("if start is true!!", "RIGHT HERE");
 					mScale = ScaleIt(canvas, i);
 				} 
 				catch (IOException e) 
@@ -188,7 +188,6 @@ public class ScaleView extends View
 				reset = false;
 			}
 		
-
 		canvas.drawBitmap(mScale, 0 - (width/4), 0, null);
 		if (game_over == false)
 		{
@@ -354,7 +353,7 @@ public class ScaleView extends View
 			
 			else if (game_over == true)
 			{
-				
+	
 				if (firstPlace == true && secondPlace == true && thirdPlace == true && fourthPlace == true)
 				{
 					mScaleView.clear(mContext);
@@ -435,7 +434,6 @@ public class ScaleView extends View
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 			canvas.drawBitmap(mScale, 0 - (width/4), 0, null);
 
 			if (reposition == true && i < 48 && i <= 80)
