@@ -10,8 +10,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" >
     </uses-permission>
-  
-    
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -26,25 +25,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.example.bato.MoodGraphActivity" />
+        <activity android:name="com.example.bato.MoodGraphActivity" />
         <activity
             android:name="com.example.bato.DestroyerShooterView"
             android:configChanges="orientation"
             android:screenOrientation="portrait" >
         </activity>
-        <activity
-            android:name="com.example.bato.ScaleActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait">
-        </activity>
+
         <service android:name="com.example.bato.Post" />
         <service android:name="com.example.bato.PostGame" />
 
         <activity android:name=".AddThoughtPager" />
-        <activity android:name="com.example.bato.CaptureActivity"/>
-                <activity android:name="com.example.bato.DestroyerGame"/>
-        
+        <activity android:name="com.example.bato.CaptureActivity" />
+        <activity android:name="com.example.bato.DestroyerGame" />
     </application>
 
 </manifest>

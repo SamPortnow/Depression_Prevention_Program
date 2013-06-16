@@ -94,4 +94,8 @@
 	<string name="cannon_summary_high_score_prefix">Your high score for this game is&#8230;</string>
 	<string name="cannon_summary_see_more">(view complete list of high scores)</string>
 	<string name="cannon_summary_high_scores_dialog_title">Command the Cannon High Scores</string>
+	
+	<!-- fragment_mood_graph -->
+	<string name="mood_graph_previous_day">&#x21e6;</string>
+	<string name="mood_graph_next_day">&#x21e8;</string>
 </resources>
