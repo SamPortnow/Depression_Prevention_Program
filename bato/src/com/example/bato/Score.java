@@ -12,7 +12,7 @@ import android.view.View;
 public class Score extends View
 {
 	Context mContext;
-	DestroyerShooterView mDestroyer;
+	DestroyerGame mDestroyer;
 	Handler h;
 	int size;
 	int width;
@@ -27,7 +27,7 @@ public class Score extends View
 	{
 		super(context, attrs);
         mContext = this.getContext();
-		mDestroyer = (DestroyerShooterView) context;
+		mDestroyer = (DestroyerGame) context;
         h = new Handler();
         size = getResources().getDimensionPixelSize(R.dimen.myFontSize);
     	score.setAntiAlias(true);

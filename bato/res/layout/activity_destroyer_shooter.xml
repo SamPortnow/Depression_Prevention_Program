@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="right"
+            android:background="@android:color/holo_blue_light"
             android:textIsSelectable="true" >
         </TextView>
 
@@ -24,6 +25,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@android:color/holo_blue_light"
             android:gravity="center" >
         </com.example.bato.Score>
     </LinearLayout>
@@ -39,13 +41,13 @@
         android:textColor="#ffffff" >
     </ListView>
 
-    <com.example.bato.DestroyerShooter
+    <com.example.bato.DestroyerGameView
         android:id="@+id/anim_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/score_stuff"
         android:layout_toRightOf="@id/listview" >
-    </com.example.bato.DestroyerShooter>
+    </com.example.bato.DestroyerGameView>
 
     <ImageView
         android:id="@+id/cannon"

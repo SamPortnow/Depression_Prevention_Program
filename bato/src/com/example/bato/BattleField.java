@@ -14,13 +14,17 @@ public class BattleField extends View
 	int min = 0;
 	int container_height;
 	int container_width;
-    private int xVelocity = 10;
-    private int yVelocity = 5;
+    int xVelocity = 10;
+    int yVelocity = 5;
     int FRAME_RATE = 30;
     Handler h;
     CaptureActivity mCapture;
     boolean mSetBounds;
     boolean mGameOver;
+    int xLessBound;
+    int xGreatBound;
+    boolean boundLess;
+    boolean boundGreat;
     
     
 	public BattleField(Context context, AttributeSet attrs) 
@@ -39,6 +43,8 @@ public class BattleField extends View
 	     container_height = yNew;
 		 x = container_width/2;
 		 y = container_height;
+		 xLessBound = 0;
+		 xGreatBound = container_width - container_width/3;
 	}
 	
 	@Override
@@ -50,12 +56,26 @@ public class BattleField extends View
         	x += xVelocity;
         	y -= yVelocity;
         	//reverse if you're out of bounds
-        	if (x > (container_width - mCapture.mNeg.width)  || (x < 0))
+        	if (x > xGreatBound || (x < xLessBound))
         		{
 
         			if (! mGameOver)
         			{
-        				xVelocity = xVelocity*-1;
+        				if (boundLess && (x > xLessBound))
+        				{
+        					boundLess = false;
+        				}
+        				
+        				if (boundGreat && (x < xGreatBound))
+        				{
+        					boundGreat = false;
+        				}
+        				
+        				if (! boundLess && ! boundGreat)
+        				{
+        					xVelocity = xVelocity*-1;
+        				}
+        				
         			}
         			
         			else

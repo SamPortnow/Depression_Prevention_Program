@@ -9,10 +9,10 @@ import android.util.Log;
 import android.view.View;
 
 
-public class LaserBeam extends View
+public class LaserBeamDestroyer extends View
 {
 	Paint mLaserPaint;
-	CaptureActivity mCapture;
+	DestroyerGame mDestroyer;
 	int mStartX;
 	int mStartY;
 	int mStopX;
@@ -37,30 +37,40 @@ public class LaserBeam extends View
 	int xOfCenter;
 	int yOfCenter;
 	float offset;
+	int mTextWidth;
+	int mTextHeight;
+	int negY;
 	
-	public LaserBeam(Context context, int mPosition)
+	public LaserBeamDestroyer(Context context, int mPosition)
 	{
 		super(context);
 		Position = mPosition;
-		mCapture = (CaptureActivity) context;
+		mDestroyer = (DestroyerGame) context;
 		mLaserPaint = new Paint();
 		//mLaserPaint.setStyle(Paint.Style.FILL);
 		//mLaserPaint.setStrokeWidth(15);
 		mLaserPaint.setColor(Color.parseColor("#FFFF99"));
 		mLaserPaint.setAlpha(150);
-		mBattle = (BattleField) mCapture.findViewById(R.id.battle_field);
-		yOfCenter = mCapture.mBattle.container_height + mCapture.mNeg.getHeight()/2;
-		xOfCenter = (mCapture.mPos[mPosition].width * mPosition) + mCapture.mNeg.getWidth()/2;
-		offset = offSet(xOfCenter, yOfCenter);
 		oval = new RectF();
 
 	}
 	
-	
-	public float radius(int x, int y)
+	@Override
+	 protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld)
 	{
-		double A2 = Math.pow(((x + mCapture.mNeg.width/2) - xOfCenter),2);
-		double B2 = Math.pow((yOfCenter - y),2);
+	     super.onSizeChanged(xNew, yNew, xOld, yOld);
+	     mTextWidth = mDestroyer.mNeg.width;
+	     mTextHeight = mDestroyer.mNeg.height;
+		 yOfCenter = mTextHeight * Position;
+		 //negY = mTextHeight/2;
+		 xOfCenter = mDestroyer.mDestroyerShooter.mPosX + mTextWidth/2;
+		 offset = offSet();
+	}
+	
+	public float radius(int Posx, int Negx)
+	{
+		double A2 = Math.pow((Negx  - Posx), 2);
+		double B2 = Math.pow((yOfCenter), 2);
 		return (float) Math.sqrt(A2+B2);
 	}
 	
@@ -71,36 +81,28 @@ public class LaserBeam extends View
 	
 	public float endAngle(int x, int y)
 	{
-		return (float)((Math.atan2((x + mCapture.mNeg.width)-xOfCenter, yOfCenter - y) * 180/Math.PI + 360 ) % 360)- 30;
+		return (float)((Math.atan2((x+mTextWidth/2)-xOfCenter, yOfCenter - y) * 180/Math.PI + 360 ) % 360)- 30;
 	
 	}
 	
-	public float offSet(int x, int y)
+	public float offSet()
 	{
 		return (float)(Math.atan2(-xOfCenter, yOfCenter) * 180/Math.PI + 360 ) % 360;
-
 	}
+	
 	
 	@Override 
 	public void onDraw(Canvas canvas)
 	{
 		super.onDraw(canvas);
-		float radius = radius(mBattle.x, mBattle.y);
-		float startAngle = startAngle(mBattle.x, mBattle.y);
-		float endAngle = endAngle(mBattle.x, mBattle.y);
+		xOfCenter = mDestroyer.mDestroyerShooter.mNegX;
+		Log.e("my pos x is", "" + mDestroyer.mDestroyerShooter.mPosX);
+		float radius = radius(mDestroyer.mDestroyerShooter.mPosX, mDestroyer.mDestroyerShooter.mNegX);
+		float startAngle = startAngle(mDestroyer.mDestroyerShooter.mPosX, mDestroyer.mDestroyerShooter.mNegX);
+		float endAngle = endAngle(mDestroyer.mDestroyerShooter.mPosX, mDestroyer.mDestroyerShooter.mNegX);
 		oval.set(xOfCenter - radius, yOfCenter - radius, xOfCenter + radius, yOfCenter + radius);
-		if (startAngle + endAngle -90 + (360-offset) > 360 )
-		{
-			startAngle-=360;
-			endAngle-=360;
-		}
-		canvas.drawArc(oval, -90 + (360-offset) + startAngle, endAngle, true, mLaserPaint);
-//		canvas.drawLine(mStartX, mStartY, mBattle.x + mCapture.mNeg.width/2, 
-//				mBattle.y + mCapture.mNeg.height/2, mLaserPaint);
-		if (mGameOver)
-		{
-			xOfCenter += 15;
-		}
+		canvas.drawArc(oval, -45f -(7.5f * Position), startAngle-endAngle, true, mLaserPaint);
+
 	}
 
 }

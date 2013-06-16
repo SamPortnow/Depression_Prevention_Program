@@ -59,8 +59,6 @@ public class CaptureActivity extends Activity
 	AlphaAnimation mGone;
 	AlphaAnimation mGo;
 	int width;
-	int container_width;
-	int container_height;
 	BattleField mBattle;
 	Context mContext;
 	int mPosCounter;
@@ -75,7 +73,9 @@ public class CaptureActivity extends Activity
 	TranslateAnimation mGameOver;
 	CalendarDbAdapter mCalHelper;
 	View view;
-
+	EndGame mEndGame;
+	String mChallenging;
+	int countBounds;
 	
 	public static boolean populatePositiveWords(Context context)
 	{
@@ -246,7 +246,8 @@ public class CaptureActivity extends Activity
 				else
 				{
 					mCreateThought.setClickable(false);
-					mPos[mPosCounter] = new PositiveThought(mContext, null);
+					mChallenging = mChallengingThought.getText().toString();
+					mPos[mPosCounter] = new PositiveThought(mContext, null, inputLine);
 					mLaserBeam[mPosCounter] = new LaserBeam(mContext, mPosCounter);
 					mPos[mPosCounter].setText(inputLine);
 					mPosHolder.addView(mPos[mPosCounter]);
@@ -272,55 +273,59 @@ public class CaptureActivity extends Activity
 									int belief = ((SeekBar) view.findViewById(R.id.believe)).getProgress();
 									int helpful = ((SeekBar) view.findViewById(R.id.help)).getProgress();
 									mCalHelper.createChallenging(mNeg.getText().toString(), 
-											mChallengingThought.getText().toString(), belief, helpful);
+											mChallenging, belief, helpful);
 									mCalHelper.close();
 									container.addView(mLaserBeam[mPosCounter]);
 									mLaserBeam[mPosCounter].startAnimation(mGo);
-									Toast.makeText(mContext, "Great job! Come up with another thought!", Toast.LENGTH_SHORT).show();
+									mBattle.xLessBound += mBattle.container_width/12;
+									if (mBattle.x  < mBattle.xLessBound)
+									{
+										mBattle.boundLess = true;
+									}
+									if (mBattle.x > mBattle.xGreatBound)
+									{
+										mBattle.boundGreat = true;
+									}
+									mBattle.xGreatBound -= mBattle.container_width/12;
+									
+									if (mBattle.xVelocity < 0)
+									{
+										mBattle.xVelocity += 2;
+									}
+									else
+									{
+										mBattle.xVelocity -=2;
+
+									}
+									if (mBattle.yVelocity < 0)
+									{
+										mBattle.yVelocity +=2;
+									}
+									else
+									{
+										mBattle.yVelocity -=2;
+
+									}
 									mCreateThought.setClickable(true);
 									mPosCounter+=1;
 									if (mPosCounter == 4)
 									{
-										mPosHolder.startAnimation(mGameOver);
+										//mPosHolder.startAnimation(mGameOver);
+										mBattle.xVelocity = 5;
 										for (int i=0; i <4; i++)
 										{
-										mLaserBeam[i].mGameOver = true;
+											mPosHolder.removeView(mPos[i]);
+											mLaserBeam[i].mGameOver = true;
 										}
+										mEndGame = new EndGame(mContext);
+										mPosHolder.addView(mEndGame);
 										mBattle.mGameOver = true;
-								        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-								        builder.setTitle("Great Job!");
-								        builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
-								         			{
+									}
+									else
+									{
+										Toast.makeText(mContext, "Great job! Come up with another thought!", Toast.LENGTH_SHORT).show();
 
-														@Override
-														public void onClick(DialogInterface dialog,int which)
-														{
-															{
-																finish();
-																Intent i = new Intent(mContext, MainActivity.class);				
-									            				mContext.startActivity(i);	
-															}
-
-														}
-
-								            		
-								            		});
-								            		
-								            		builder.setPositiveButton("Play again!", new DialogInterface.OnClickListener()
-								            		{
-								            			@Override
-								            			public void onClick(DialogInterface dialog, int which)
-								            			{
-								            				Intent i = new Intent(mContext, CaptureActivity.class);				
-								            				mContext.startActivity(i);
-								            			}
-								            			
-								            		});			
-								            		
-								            		builder.create().show();
-
-											}
-									
+									}
 									}
 
 							
@@ -395,5 +400,43 @@ public class CaptureActivity extends Activity
 		shoulds.setOnClickListener(mStartGameListener);
 		unfair_comparisons.setOnClickListener(mStartGameListener);
 	}
+
+	public void endGame()
+	{
+        mPosHolder.removeView(mEndGame);
+		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("Great Job!");
+        builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
+         			{
+
+						@Override
+						public void onClick(DialogInterface dialog,int which)
+						{
+							{
+								finish();
+								Intent i = new Intent(mContext, MainActivity.class);				
+	            				mContext.startActivity(i);	
+							}
+
+						}
+
+            		
+            		});
+            		
+            		builder.setPositiveButton("Play again!", new DialogInterface.OnClickListener()
+            		{
+            			@Override
+            			public void onClick(DialogInterface dialog, int which)
+            			{
+            				Intent i = new Intent(mContext, CaptureActivity.class);				
+            				mContext.startActivity(i);
+            			}
+            			
+            		});			
+            		
+            		builder.create().show();
+	}
+
+
 
 }

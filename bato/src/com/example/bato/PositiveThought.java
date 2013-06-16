@@ -16,10 +16,11 @@ public class PositiveThought extends TextView
 	CaptureActivity mCapture;
 	int width;
 	int height;
+	boolean game_over;
 	int xPos;
 	int yPos;
 	
-	public PositiveThought(Context context, AttributeSet attrs) 
+	public PositiveThought(Context context, AttributeSet attrs, String text) 
 	{	
 		super(context, attrs);
 		mCapture = (CaptureActivity) context;
@@ -39,20 +40,24 @@ public class PositiveThought extends TextView
     	width = container.getWidth()/4;
     	height = container.getHeight()/4;
 	    this.layout(0, 0, width, height);
+	    this.setText(text);
 	}	
 	
-	public void init()
-	{
-		
-	}
+
+	
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) 
 	{
 		//set the height and width of the view
+		int this_coords[] = {0,0};
+		this.getLocationOnScreen(this_coords);
+	    xPos = Math.round(this_coords[0]);
+	    yPos = Math.round(this_coords[1]);
 		int width = mCapture.findViewById(R.id.container).getWidth()/4;
 		int height = mCapture.findViewById(R.id.container).getHeight()/4;
 		this.setMeasuredDimension(width, height);
 
 	}
+	
 	
 }

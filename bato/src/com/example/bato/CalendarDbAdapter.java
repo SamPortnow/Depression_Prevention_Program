@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.TextView;
 
 /**
  * Simple notes database access helper class. Defines the basic CRUD operations
@@ -19,8 +18,8 @@ public class CalendarDbAdapter {
 	//FIRST STEP CREATE THE VARS YOU NEED FOR THE DATABASE
     private static final String DATABASE_NAME = "calendar_data"; //my database name
     private static final String DATABASE_TABLE = "calendar"; 
-    private static final String DATABASE_TABLE2 = "challenging_thoughts";
-    private static final String DATABASE_TABLE3 = "thought_types";
+    private static final String DATABASE_TABLE2 = "thought_types";
+    private static final String DATABASE_TABLE3 = "challenging_thoughts";
     private static final int DATABASE_VERSION = 2;
     public static final String COLUMN_NAME_PUSHED = "Pushed";
     public static final String COLUMN_NAME_MINUTES="minutes";
@@ -125,11 +124,12 @@ public class CalendarDbAdapter {
     public long createChallenging(String mNegativeThought, String mChallengingThought, int belief, int helpful)
     {
         ContentValues initialValues = new ContentValues();
+        Log.e("I am here", "poo" + mChallengingThought);
         initialValues.put(COLUMN_NAME_NEGATIVE_THOUGHT, mNegativeThought);
         initialValues.put(COLUMN_NAME_COUNTER_THOUGHT, mChallengingThought);
         initialValues.put(COLUMN_NAME_COUNTER_THOUGHT_BELIEVE, belief);
         initialValues.put(COLUMN_NAME_COUNTER_THOUGHT_HELPFUL, helpful);
-        return mCalendarDb.insert(DATABASE_TABLE2, null, initialValues);
+        return mCalendarDb.insert(DATABASE_TABLE3, null, initialValues);
         
     }
     
@@ -138,7 +138,7 @@ public class CalendarDbAdapter {
         ContentValues initialValues = new ContentValues();
         initialValues.put(COLUMN_NAME_NEGATIVE_THOUGHT, mNegativeThought);
         initialValues.put(COLUMN_NAME_TYPE, mType);
-        return mCalendarDb.insert(DATABASE_TABLE3, null, initialValues);
+        return mCalendarDb.insert(DATABASE_TABLE2, null, initialValues);
         
     }
     
@@ -179,18 +179,27 @@ public class CalendarDbAdapter {
     	return mCalendarDb.update(DATABASE_TABLE, args, filter, null) > 0;	    	
     }
  
-    /*
-    public Cursor fetchWholeCalendar(long Day, long hour)
-    {
-    	String day=String.valueOf(Day);
-    	String shour=String.valueOf(hour);
-        return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_HOUR+" = ?", new String[] {day,shour}, null, null, null);
-        
-    }
-	*/
     public Cursor fetchNegsByType(String mType)
     {
-    	return mCalendarDb.query(DATABASE_TABLE3, new String[] {KEY_ROWID,COLUMN_NAME_NEGATIVE_THOUGHT}, COLUMN_NAME_TYPE+" =?" , new String[] {mType}, null, null, "RANDOM() LIMIT 1");
+    	return mCalendarDb.query(DATABASE_TABLE2, 
+    			new String[] {KEY_ROWID,COLUMN_NAME_NEGATIVE_THOUGHT}, 
+    			COLUMN_NAME_TYPE+" =?" , new String[] {mType}, null, null, "RANDOM() LIMIT 1");
+    }
+    
+    public Cursor fetchNeg()
+    {
+    	return mCalendarDb.query(DATABASE_TABLE3,
+    			new String[] {KEY_ROWID,COLUMN_NAME_NEGATIVE_THOUGHT}, 
+    			null, null, null, null, "RANDOM() LIMIT 1");
+    }
+    
+    public Cursor fetchChallenging(String mNegThought)
+    {
+    	return mCalendarDb.query(DATABASE_TABLE3, new String[] {
+    			KEY_ROWID, COLUMN_NAME_COUNTER_THOUGHT, COLUMN_NAME_COUNTER_THOUGHT_HELPFUL, 
+    			COLUMN_NAME_COUNTER_THOUGHT_BELIEVE}, COLUMN_NAME_NEGATIVE_THOUGHT+" =?" , 
+    			new String[] {mNegThought}, null, null, null);
+
     }
     
     public Cursor fetchCalendar(long Year, long Day, long minutes)
@@ -198,7 +207,10 @@ public class CalendarDbAdapter {
     	String sYear = String.valueOf(Year);
     	String day=String.valueOf(Day);
     	String sminutes=String.valueOf(minutes);
-        return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, COLUMN_NAME_YEAR+" =? AND " + COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_MINUTES+" = ?" , new String[] {sYear, day,sminutes}, null, null, null);
+        return mCalendarDb.query(DATABASE_TABLE, 
+        		new String[] {KEY_ROWID,COLUMN_NAME_ACTIVITY, 
+        		COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, COLUMN_NAME_YEAR+" =? AND " + COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_MINUTES+" = ?" , 
+        		new String[] {sYear, day,sminutes}, null, null, null);
         
     }
     
@@ -252,5 +264,5 @@ public class CalendarDbAdapter {
         return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_THOUGHT}, COLUMN_NAME_THOUGHT_TAG+" =?", new String[] {"Yes"}, null, null, null);
 
     }
-
+    
 }

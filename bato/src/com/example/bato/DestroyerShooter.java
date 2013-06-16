@@ -256,7 +256,6 @@ public class DestroyerShooter extends View
 		if (new_negative == true)
 		{
 		 negative = new TextView(mContext);
-		 Log.e("index is", "" + index);
 		 index = (int) (Math.random() * negative_thoughts.size());
 		 word = negative_thoughts.get(index);
 		 negative.setText(word);
@@ -318,8 +317,7 @@ public class DestroyerShooter extends View
     	 			{
     	 			canvas.drawBitmap(mExplosions[3], dark_coord_x, dark_coord_y, paint);	
     	 			}
-    	 			
-    	 			
+    	 				
     	 		}
     	 		mDestroyer.update(mContext); //update the score!
     	 		//mDestroyer.mSwitchSuccess(); //
