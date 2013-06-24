@@ -39,7 +39,7 @@ public class AddThoughtPager extends Activity
 			switch (position)
 			{					
 				case 0:
-					return new AddEventActivity();
+					return new AddEventUserActivityFragment();
 					
 				case 1:
 					return new AddFeelingFragment();
@@ -76,8 +76,8 @@ public class AddThoughtPager extends Activity
     {
         super.onCreate(savedInstanceState);
         mContext = this;
-        setContentView(R.layout.activity_add_event);
-        Fragment addEventActivity = new AddEventActivity();
+        setContentView(R.layout.activity_add_thought_pager);
+        Fragment addEventActivity = new AddEventUserActivityFragment();
         Fragment addFeelingActivity = new AddFeelingFragment();
         Fragment addThoughtActivity = new AddThoughtFragment();
         frags.add(addEventActivity);

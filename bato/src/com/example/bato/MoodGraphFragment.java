@@ -15,6 +15,7 @@ import org.achartengine.chart.PointStyle;
 import org.achartengine.model.SeriesSelection;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYValueSeries;
+import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
@@ -32,6 +33,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,14 +46,20 @@ public class MoodGraphFragment extends Fragment
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
-		mCalendarDbAdapter = new CalendarDbAdapter(getActivity());
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{		
-		View view = inflater.inflate(R.layout.fragment_mood_graph, container, false);		
+		View view = inflater.inflate(R.layout.fragment_mood_graph, container, false);	
+		
+		mCalendarDbAdapter = new CalendarDbAdapter(getActivity()).open();
+		
+		Calendar calendar = Calendar.getInstance();
+		GraphicalView graphView = generateGraphView(calendar.get(Calendar.YEAR), calendar.get(Calendar.DAY_OF_YEAR));
+		
+		FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.mood_graph_container);
+		frameLayout.addView(graphView);
 		
 		return view;
 	}
@@ -80,15 +88,34 @@ public class MoodGraphFragment extends Fragment
 			moodDataset.add(calendarCursor.getInt(feelingColumnIndex));					
 		}
 		
-		XYValueSeries series = new XYValueSeries("Mood by Time");
+		XYValueSeries valueSeries = new XYValueSeries("Mood by Time");
 		
 		if (timeDataset.size() > 0 && moodDataset.size() > 0)
 		{
 			for (int i = 0; i < timeDataset.size() && i < moodDataset.size(); i++)
-				series.add(timeDataset.get(i), moodDataset.get(i));
+				valueSeries.add(timeDataset.get(i), moodDataset.get(i));
 		}
 		
-		return null;
+		XYMultipleSeriesDataset multipleSeriesDataset = new XYMultipleSeriesDataset();
+		multipleSeriesDataset.addSeries(valueSeries);
+		
+		XYSeriesRenderer seriesRenderer = new XYSeriesRenderer();
+		
+		XYMultipleSeriesRenderer multipleSeriesRenderer = new XYMultipleSeriesRenderer();
+		multipleSeriesRenderer.addSeriesRenderer(seriesRenderer);
+		
+		double[] limits = {1, 24, 0, 7};
+		
+		multipleSeriesRenderer.setPanLimits(limits);
+		multipleSeriesRenderer.setPanEnabled(true);
+		
+		multipleSeriesRenderer.setApplyBackgroundColor(true);
+		multipleSeriesRenderer.setBackgroundColor(Color.argb(0, 255, 255, 255));
+		multipleSeriesRenderer.setMarginsColor(Color.argb(0, 255, 255, 255));
+		
+		GraphicalView graphView = ChartFactory.getLineChartView(getActivity(), multipleSeriesDataset, multipleSeriesRenderer);		
+		
+		return graphView;
 	}
 	
 //	Context mContext;

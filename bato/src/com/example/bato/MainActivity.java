@@ -15,7 +15,6 @@ import android.view.MenuItem;
 public class MainActivity extends Activity
 {
     UserNameDbAdapter UserNameDbHelper;
-    Context mContext;
     
     private String[] mFragmentTitles = { "Personal Scientist Points", "Tip the Scales", "Command the Cannon" };
     
@@ -64,7 +63,7 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mContext = this;
+        
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) 
@@ -99,8 +98,8 @@ public class MainActivity extends Activity
     {
     	if (item.getItemId() == R.id.menu_add_event)
     	{
-			Intent i = new Intent(mContext, AddThoughtPager.class);				
-			mContext.startActivity(i);	
+			Intent intent = new Intent(this, AddEventActivity.class);				
+			startActivity(intent);	
     	}
     	
     	if (item.getItemId() == R.id.menu_daily_mood)
