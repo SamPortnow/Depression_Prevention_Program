@@ -1,6 +1,7 @@
 package com.example.bato;
 
 import android.app.Fragment;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,9 +16,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 public class AddEventUserActivityFragment extends Fragment
-{	
-	private static final String[] TEST = new String[] {"Rawr", "Rawring", "Rawrzil;a", "Rawwwwr", "Rararara"};
-	
+{		
 	private ArrayAdapter<String> mAdapter = null;
 	
 	private EditText mActivityEditText = null;
@@ -31,8 +30,19 @@ public class AddEventUserActivityFragment extends Fragment
 		super.onCreate(savedInstanceState);
 		
 		View view = inflater.inflate(R.layout.fragment_add_event_user_activity, null);
+
+		CalendarDbAdapter calendarDbAdapter = new CalendarDbAdapter(getActivity()).open();
+		Cursor cursor = calendarDbAdapter.fetchActivities();
+		int index = cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_ACTIVITY);
 		
-		mAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, TEST);
+		String[] activities = new String[cursor.getCount()];
+		
+		while (cursor.moveToNext() == true)
+			activities[cursor.getPosition()] = cursor.getString(index);
+		
+		cursor.close();
+		
+		mAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, activities);
 		
 		mHistoryListView = (ListView) view.findViewById(R.id.user_activity_history);
 		mHistoryListView.setAdapter(mAdapter);
@@ -60,8 +70,7 @@ public class AddEventUserActivityFragment extends Fragment
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after)
 			{
-				// TODO Auto-generated method stub
-				
+
 			}
 			
 			@Override
@@ -73,6 +82,14 @@ public class AddEventUserActivityFragment extends Fragment
 		
 		mNextButton = (Button) view.findViewById(R.id.next_fragment);
 		mNextButton.setEnabled(false);
+		mNextButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				getFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddEventUserFeelingFragment()).commit();
+			}
+		});
 		
 		return view;
 	}

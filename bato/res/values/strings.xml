@@ -17,7 +17,6 @@
 
     <string name="add_event_fragment_title">Add a new event&#x2026;</string>
     <string name="add_event_toast_created_event">New event created.</string>
-    <string name="add_event_user_activity_hint">What are you doing?</string>
     <string name="add_event_user_thought_hint">What are you thinking?</string>
     <string name="image_smiley_content_description">Happy</string>
     <string name="image_sad_content_description">Sad</string>
@@ -38,13 +37,11 @@
     would you say to him/her?</string>
     <string name="skip"> SKIP IT!</string>
     <string name="help">Help</string>
-    <string name="title_feeling">How are you feeling?</string>
     <string name="pos_or_neg">Is this a negative thought?</string>
     <string name="plus">+</string>
     <string name="not">Not at all</string>
     <string name="alot">Completely</string>
-    <string name="good">Great</string>
-    <string name="bad">Terrible</string>
+
     <string name="title_help">How would this thought make you feel?</string>  
 
 	<string name="title_believe">How much do you believe this thought </string>
@@ -73,6 +70,13 @@
 	<string name="Shoulds">You view things in term of how they "should" be, now how they are."I should have lots more friends than I do". </string>
 	<string name="Unfair_comparisons">You compare yourself to others doing better than you."I did well on the test, but Joe got the better grade."</string>
 	<string name="train_instructions">See if the negative thought you entered corresponds to any of these common types of negative thinking. If it does, drag and drop it in to the correct train, so it can be sent of the Tip the Scales Game, and later the Destroyer Game, where you will destroy the negative thought!</string>
+	
+	<!-- activity_add_event -->
+	<string name="add_event_next_fragment">&#x21e8;</string>	
+	<string name="add_event_user_activity_hint">What are you doing?</string>
+	<string name="add_event_user_feeling_hint">How are you feeling?</string>
+    <string name="add_event_user_feeling_terrible">Terrible</string>
+  	<string name="add_event_user_feeling_great">Great</string>
 	
 	<!-- fragment_points_sumamry -->
 	<string name="points_summary_badge_description">Add to Diary</string>
