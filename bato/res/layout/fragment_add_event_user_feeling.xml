@@ -2,21 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="8dp" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:paddingLeft="8dp"
             android:text="@string/add_event_user_feeling_hint"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -31,42 +29,37 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="12dp"
-        android:layout_marginLeft="28dp"
-        android:layout_marginRight="28dp"
         android:background="@android:color/darker_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp" >
+        android:padding="16dp" >
 
         <TextView
             android:id="@+id/not_help"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:text="@string/add_event_user_feeling_terrible"
             android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/alot_help"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:gravity="right"
-            android:text="@string/add_event_user_feeling_great"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-    <SeekBar
+        
+            <SeekBar
         android:id="@+id/user_feeling"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:max="6"
         android:progress="3" />
+
+        <TextView
+            android:id="@+id/alot_help"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/add_event_user_feeling_great"
+            android:textSize="18sp" />
+    </LinearLayout>
 
 </LinearLayout>

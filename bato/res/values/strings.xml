@@ -72,6 +72,7 @@
 	<string name="train_instructions">See if the negative thought you entered corresponds to any of these common types of negative thinking. If it does, drag and drop it in to the correct train, so it can be sent of the Tip the Scales Game, and later the Destroyer Game, where you will destroy the negative thought!</string>
 	
 	<!-- activity_add_event -->
+	<string name="add_event_cancel_task">Cancel</string>
 	<string name="add_event_next_fragment">&#x21e8;</string>	
 	<string name="add_event_user_activity_hint">What are you doing?</string>
 	<string name="add_event_user_feeling_hint">How are you feeling?</string>
