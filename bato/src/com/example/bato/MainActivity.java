@@ -16,7 +16,7 @@ public class MainActivity extends Activity
 {
     UserNameDbAdapter UserNameDbHelper;
     
-    private String[] mFragmentTitles = { "Personal Scientist Points", "Tip the Scales", "Command the Cannon" };
+    private String[] mFragmentTitles = null;
     
     class MainFragmentPagerAdapter extends FragmentPagerAdapter
     {
@@ -64,6 +64,8 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         
+        mFragmentTitles = getResources().getStringArray(R.array.main_fragment_titles);
+        
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) 
@@ -82,7 +84,7 @@ public class MainActivity extends Activity
         MainFragmentPagerAdapter pagerAdapter = new MainFragmentPagerAdapter(getFragmentManager());
         
         ViewPager viewPager = (ViewPager) findViewById(R.id.fragment_view_pager);        
-        viewPager.setAdapter(pagerAdapter);
+        viewPager.setAdapter(pagerAdapter);                
     }
 
     @Override

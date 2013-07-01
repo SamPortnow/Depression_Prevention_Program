@@ -68,6 +68,13 @@
 	<string name="Unfair_comparisons">You compare yourself to others doing better than you."I did well on the test, but Joe got the better grade."</string>
 	<string name="train_instructions">See if the negative thought you entered corresponds to any of these common types of negative thinking. If it does, drag and drop it in to the correct train, so it can be sent of the Tip the Scales Game, and later the Destroyer Game, where you will destroy the negative thought!</string>
 	
+	<!-- activity_main -->
+	<string-array name="main_fragment_titles">
+	    <item>Personal Scientist Points</item>
+	    <item>Nab the Negative</item>
+	    <item>Command the Cannon</item>
+	</string-array>
+	
 	<!-- activity_add_event -->
 	<string name="add_event_cancel_task">Cancel</string>
 	<string name="add_event_next_fragment">&#x21e8;</string>	
