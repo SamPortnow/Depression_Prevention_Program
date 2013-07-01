@@ -17,7 +17,6 @@
 
     <string name="add_event_fragment_title">Add a new event&#x2026;</string>
     <string name="add_event_toast_created_event">New event created.</string>
-    <string name="add_event_user_thought_hint">What are you thinking?</string>
     <string name="image_smiley_content_description">Happy</string>
     <string name="image_sad_content_description">Sad</string>
     <string name="destroyer">write a positive thought to destroy the negative thought</string>
@@ -37,7 +36,6 @@
     would you say to him/her?</string>
     <string name="skip"> SKIP IT!</string>
     <string name="help">Help</string>
-    <string name="pos_or_neg">Is this a negative thought?</string>
     <string name="plus">+</string>
     <string name="not">Not at all</string>
     <string name="alot">Completely</string>
@@ -45,8 +43,7 @@
     <string name="title_help">How would this thought make you feel?</string>  
 
 	<string name="title_believe">How much do you believe this thought </string>
-	<string name="radio_pos">Yes</string>
-	<string name="radio_neg">No</string>
+
 	<string name="Mind_reading_title">Mind reading</string>
 	<string name="Fortunetelling_title">Fortunetelling</string>
 	<string name="Catastrophizing_title">Catastrophizing</string>
@@ -78,6 +75,10 @@
 	<string name="add_event_user_feeling_hint">How are you feeling?</string>
     <string name="add_event_user_feeling_terrible">Terrible</string>
   	<string name="add_event_user_feeling_great">Great</string>
+	<string name="add_event_user_thought_hint">What are you thinking?</string>
+	<string name="add_event_user_thought_is_negative">Is this a negative thought?</string>
+	<string name="add_event_user_thought_radio_positive">Yes</string>
+	<string name="add_event_user_thought_radio_negative">No</string>
 	
 	<!-- fragment_points_sumamry -->
 	<string name="points_summary_badge_description">Add to Diary</string>

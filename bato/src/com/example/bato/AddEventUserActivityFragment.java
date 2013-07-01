@@ -17,11 +17,10 @@ import android.widget.ListView;
 
 public class AddEventUserActivityFragment extends Fragment
 {		
-	private ArrayAdapter<String> mAdapter = null;
+	private ArrayAdapter<String> mHistoryAdapter = null;
 	
 	private EditText mActivityEditText = null;
-	private ListView mHistoryListView = null;
-	
+	private ListView mHistoryListView = null;	
 	private Button mNextButton = null;
 
 	@Override
@@ -42,16 +41,17 @@ public class AddEventUserActivityFragment extends Fragment
 		
 		cursor.close();
 		
-		mAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, activities);
+		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, activities);
 		
 		mHistoryListView = (ListView) view.findViewById(R.id.user_activity_history);
-		mHistoryListView.setAdapter(mAdapter);
+		mHistoryListView.setAdapter(mHistoryAdapter);
 		mHistoryListView.setOnItemClickListener(new OnItemClickListener()
 		{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
 				String item = (String) mHistoryListView.getItemAtPosition(position);
+				
 				mActivityEditText.setText(item);
 				mActivityEditText.setSelection(item.length());
 			}			
@@ -64,7 +64,7 @@ public class AddEventUserActivityFragment extends Fragment
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count)
 			{
-				mAdapter.getFilter().filter(s);
+				mHistoryAdapter.getFilter().filter(s);
 			}
 			
 			@Override
@@ -87,7 +87,10 @@ public class AddEventUserActivityFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-				getFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddEventUserFeelingFragment()).commit();
+				getFragmentManager()
+					.beginTransaction()
+					.replace(R.id.fragment_container, new AddEventUserFeelingFragment())
+					.commit();
 			}
 		});
 		

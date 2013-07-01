@@ -19,6 +19,18 @@ public class AddEventUserFeelingFragment extends Fragment
 	    
 	    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 	    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+	    
+		view.findViewById(R.id.next_fragment).setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				getFragmentManager()
+					.beginTransaction()
+					.replace(R.id.fragment_container, new AddEventUserThoughtFragment())
+					.commit();
+			}
+		});
 
 	    return view;
 	}
