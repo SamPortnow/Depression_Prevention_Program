@@ -108,6 +108,7 @@ public class AddEventUserThoughtFragment extends Fragment
 	
 	private void updateNextButtonState()
 	{
-		mNextButton.setEnabled((mThoughtEditText.getText().length() > 0) && (mIsNegativeRadioGroup.getCheckedRadioButtonId() != -1));
+		mNextButton.setEnabled(
+			(mThoughtEditText.getText().length() > 0) && (mIsNegativeRadioGroup.getCheckedRadioButtonId() != -1));
 	}
 }
