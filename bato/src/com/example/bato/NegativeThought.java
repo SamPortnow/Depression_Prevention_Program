@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,12 +36,13 @@ public class NegativeThought extends TextView
     	setTextSize(15);
     	setTextColor(Color.BLACK);
     	setDrawingCacheEnabled(true);
+    	
     	RelativeLayout container = (RelativeLayout) mCapture.findViewById(R.id.container);
     	width = container.getWidth()/3;
     	height = container.getHeight()/4;
     	layout(0, 0, width, height);
-    	Typeface sans = Typeface.create("sans-serif-condensed", Typeface.BOLD);
-     	setTypeface(sans);
+		Typeface typeFace=Typeface.createFromAsset(this.getContext().getAssets(),"fonts/Humor-Sans.ttf");
+		setTypeface(typeFace);
 	}
 	
 	

@@ -1,18 +1,20 @@
 package com.example.bato;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.View;
 
 
+@SuppressLint("ViewConstructor")
 public class LaserBeamDestroyer extends View
 {
 	Paint mLaserPaint;
 	DestroyerGame mDestroyer;
+	DestroyerGameView mDestroyerView;
 	int mStartX;
 	int mStartY;
 	int mStopX;
@@ -63,7 +65,8 @@ public class LaserBeamDestroyer extends View
 	     mTextHeight = mDestroyer.mNeg.height;
 		 yOfCenter = mTextHeight * Position;
 		 //negY = mTextHeight/2;
-		 xOfCenter = mDestroyer.mDestroyerShooter.mPosX + mTextWidth/2;
+		 mDestroyerView = (DestroyerGameView) mDestroyer.findViewById(R.id.anim_view);
+		 xOfCenter = mDestroyerView.mPosX + mTextWidth/2;
 		 offset = offSet();
 	}
 	
@@ -95,11 +98,10 @@ public class LaserBeamDestroyer extends View
 	public void onDraw(Canvas canvas)
 	{
 		super.onDraw(canvas);
-		xOfCenter = mDestroyer.mDestroyerShooter.mNegX;
-		Log.e("my pos x is", "" + mDestroyer.mDestroyerShooter.mPosX);
-		float radius = radius(mDestroyer.mDestroyerShooter.mPosX, mDestroyer.mDestroyerShooter.mNegX);
-		float startAngle = startAngle(mDestroyer.mDestroyerShooter.mPosX, mDestroyer.mDestroyerShooter.mNegX);
-		float endAngle = endAngle(mDestroyer.mDestroyerShooter.mPosX, mDestroyer.mDestroyerShooter.mNegX);
+		xOfCenter = mDestroyerView.mNegX;
+		float radius = radius(mDestroyerView.mPosX, mDestroyerView.mNegX);
+		float startAngle = startAngle(mDestroyerView.mPosX, mDestroyerView.mNegX);
+		float endAngle = endAngle(mDestroyerView.mPosX, mDestroyerView.mNegX);
 		oval.set(xOfCenter - radius, yOfCenter - radius, xOfCenter + radius, yOfCenter + radius);
 		canvas.drawArc(oval, -45f -(7.5f * Position), startAngle-endAngle, true, mLaserPaint);
 

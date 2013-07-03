@@ -10,13 +10,16 @@ import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +32,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -39,43 +43,20 @@ public class CaptureActivity extends Activity
 {
 	
 	private static Set<String> mNegativeWords;
-	TextView mind_reading;
-	TextView fortunetelling; 
-	TextView catastrophizing;
-	TextView labeling;
-	TextView dark_glasses;
-	TextView discounting_positives;
-	TextView black_and_white_thinking;
-	TextView overgeneralizing;
-	TextView personalizing;
-	TextView shoulds;
-	TextView unfair_comparisons;
     HorizontalScrollView train;
-    LinearLayout mEditTextContainer;
     RelativeLayout container;
     NegativeThought mNeg;
     PositiveThought [] mPos = new PositiveThought[4];
-	LaserBeam [] mLaserBeam = new LaserBeam[4];
-	AlphaAnimation mGone;
-	AlphaAnimation mGo;
+    LaserBeam [] mLaserBeam = new LaserBeam[4];
 	int width;
-	BattleField mBattle;
-	Context mContext;
+    BattleField mBattle;
 	int mPosCounter;
 	LinearLayout mPosHolder;
 	AutoCompleteTextView mChallengingThought;
-	String inputLine;
+	AlphaAnimation mGone;
 	private String[] inputTokens;
 	private Pattern four_letter_words = Pattern.compile("not|cant|cnt|can't"); 
-	Button mCreateThought;
-	LayoutInflater inflater;
-	AlphaAnimation mGoAddLaser;
-	TranslateAnimation mGameOver;
-	CalendarDbAdapter mCalHelper;
-	View view;
 	EndGame mEndGame;
-	String mChallenging;
-	int countBounds;
 	
 	public static boolean populatePositiveWords(Context context)
 	{
@@ -111,9 +92,9 @@ public class CaptureActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 	    this.getActionBar().hide();
-	    mContext = this;
+	    Context mContext = this;
 	    //layout inflater
-	    inflater = LayoutInflater.from(this);
+	    final LayoutInflater inflater = LayoutInflater.from(this);
 	    populatePositiveWords(mContext);
 	    //set content view
 	    setContentView(R.layout.activity_capture);
@@ -132,11 +113,10 @@ public class CaptureActivity extends Activity
 	    //the battle field!
 	    mBattle = (BattleField) findViewById(R.id.battle_field);
 	    //the layout that contains the edit text and button, set to invisible at the begining
-	    mEditTextContainer = (LinearLayout) findViewById(R.id.edit_container);
 		//setup the animation for the train coming in
 		TranslateAnimation mSlide = new TranslateAnimation(width, 0, 0, 0);
 		//game over translate animation
-		mGameOver = new TranslateAnimation(0, width, 0, 0);
+		TranslateAnimation mGameOver = new TranslateAnimation(0, width, 0, 0);
 		mGameOver.setFillAfter(true);
 		mGameOver.setDuration(2000);
 		mSlide.setDuration(100);
@@ -169,28 +149,23 @@ public class CaptureActivity extends Activity
 		//set up the other animations
 		mGone = new AlphaAnimation(1.0f, 0.0f);
 		mGone.setAnimationListener(remove);
-		mGo = new AlphaAnimation(0.0f, 1.0f);
 		mGone.setDuration(2000);
 		mGone.setFillAfter(true);
-		mGo.setDuration(2000);
-		mGoAddLaser = new AlphaAnimation(0.0f, 1.0f);
-		mGoAddLaser.setFillAfter(true);
-		mGoAddLaser.setDuration(2000);
 		//layout that will contain the positive thoughts
 		mPosHolder = (LinearLayout) findViewById(R.id.pos_container);
 		//onclick listener for each member of the train! woof!
-		mind_reading = (TextView) findViewById(R.id.mind_reading);
-		fortunetelling = (TextView) findViewById(R.id.fortune_telling);
-		catastrophizing = (TextView) findViewById(R.id.catastrophizing);
-		labeling = (TextView) findViewById(R.id.labeling);
-		dark_glasses = (TextView) findViewById(R.id.dark_glass);
-		discounting_positives = (TextView) findViewById(R.id.discounting_positives);
-		black_and_white_thinking = (TextView) findViewById(R.id.black_and_white_thinking);
-		overgeneralizing = (TextView) findViewById(R.id.overgeneralizing);
-		personalizing = (TextView) findViewById(R.id.personalizing);
-		shoulds = (TextView) findViewById(R.id.shoulds);
-		unfair_comparisons = (TextView) findViewById(R.id.unfair_comparisons);
-		mCreateThought = (Button) findViewById(R.id.scale_it);
+		TextView mind_reading = (TextView) findViewById(R.id.mind_reading);
+		TextView fortunetelling = (TextView) findViewById(R.id.fortune_telling);
+		TextView catastrophizing = (TextView) findViewById(R.id.catastrophizing);
+		TextView labeling = (TextView) findViewById(R.id.labeling);
+		TextView dark_glasses = (TextView) findViewById(R.id.dark_glass);
+		TextView discounting_positives = (TextView) findViewById(R.id.discounting_positives);
+		TextView black_and_white_thinking = (TextView) findViewById(R.id.black_and_white_thinking);
+		TextView overgeneralizing = (TextView) findViewById(R.id.overgeneralizing);
+		TextView personalizing = (TextView) findViewById(R.id.personalizing);
+		TextView shoulds = (TextView) findViewById(R.id.shoulds);
+		TextView unfair_comparisons = (TextView) findViewById(R.id.unfair_comparisons);
+		final Button mCreateThought = (Button) findViewById(R.id.scale_it);
 		//disable the button after 4 thoughts
 		if (mPosCounter == 4)
 		{
@@ -204,24 +179,24 @@ public class CaptureActivity extends Activity
 			@Override
 			public void onClick(View arg0) 
 			{
-				inputLine = mChallengingThought.getText().toString();
+				String inputLine = mChallengingThought.getText().toString();
 				inputTokens = inputLine.split(" ");
 				
 				if (inputLine.isEmpty())
 				{
-					Toast.makeText(mContext, "You have to write something!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(arg0.getContext(), "You have to write something!", Toast.LENGTH_SHORT).show();
 					return;					
 				}
 				
 				if (inputTokens.length < 3)
 				{
-					Toast.makeText(mContext, "At least three words are required.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(arg0.getContext(), "At least three words are required.", Toast.LENGTH_SHORT).show();
 					return;
 				}				
 				
 				if (four_letter_words.matcher(inputLine).find() == true)
 				{
-					Toast.makeText(mContext, "Make an affirmative statement!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(arg0.getContext(), "Make an affirmative statement!", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				
@@ -239,26 +214,32 @@ public class CaptureActivity extends Activity
 				
 				if (matchesToken == true)
 				{
-					Toast.makeText(mContext, "Use positive words!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(arg0.getContext(), "Use positive words!", Toast.LENGTH_SHORT).show();
 					return;
 				}
 	    		
 				else
 				{
 					mCreateThought.setClickable(false);
-					mChallenging = mChallengingThought.getText().toString();
-					mPos[mPosCounter] = new PositiveThought(mContext, null, inputLine);
-					mLaserBeam[mPosCounter] = new LaserBeam(mContext, mPosCounter);
+					final String mChallenging = mChallengingThought.getText().toString();
+					mPos[mPosCounter] = new PositiveThought(arg0.getContext(), null, inputLine);
+					mLaserBeam[mPosCounter] = new LaserBeam(arg0.getContext(), mPosCounter);
+					Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Action_Man.ttf");
+					mPos[mPosCounter].setTypeface(typeFace);
 					mPos[mPosCounter].setText(inputLine);
+					AlphaAnimation mGoAddLaser = new AlphaAnimation(0.0f, 1.0f);
+					mGoAddLaser.setFillAfter(true);
+					mGoAddLaser.setDuration(2000);
 					mPosHolder.addView(mPos[mPosCounter]);
+					final Context mText = arg0.getContext();
 					mGoAddLaser.setAnimationListener(new AnimationListener()
 					{
 
 						@Override
 						public void onAnimationEnd(Animation arg0) 
 						{
-							AlertDialog.Builder build_believe = new AlertDialog.Builder(mContext);	
-							view =  inflater.inflate(R.layout.believe_dialog, null);
+							AlertDialog.Builder build_believe = new AlertDialog.Builder(mText);	
+							View view =  inflater.inflate(R.layout.believe_dialog, null);
 							build_believe.setView(view);
 							build_believe.setTitle("Rate your thought");
 							build_believe.setPositiveButton("OK", new DialogInterface.OnClickListener()
@@ -268,14 +249,19 @@ public class CaptureActivity extends Activity
 								public void onClick(DialogInterface dialog,
 										int which) 
 								{
-									CalendarDbAdapter mCalHelper = new CalendarDbAdapter(mContext);
+									CalendarDbAdapter mCalHelper = new CalendarDbAdapter(CaptureActivity.this.getApplicationContext());
 									mCalHelper.open();
+									View view =  inflater.inflate(R.layout.believe_dialog, null);
 									int belief = ((SeekBar) view.findViewById(R.id.believe)).getProgress();
 									int helpful = ((SeekBar) view.findViewById(R.id.help)).getProgress();
 									mCalHelper.createChallenging(mNeg.getText().toString(), 
 											mChallenging, belief, helpful);
 									mCalHelper.close();
 									container.addView(mLaserBeam[mPosCounter]);
+									AlphaAnimation mGo = new AlphaAnimation(0.0f, 1.0f);
+									mGo.setDuration(2000);
+									mGo.setFillAfter(true);
+									mGo.setDuration(2000);
 									mLaserBeam[mPosCounter].startAnimation(mGo);
 									mBattle.xLessBound += mBattle.container_width/12;
 									if (mBattle.x  < mBattle.xLessBound)
@@ -317,13 +303,13 @@ public class CaptureActivity extends Activity
 											mPosHolder.removeView(mPos[i]);
 											mLaserBeam[i].mGameOver = true;
 										}
-										mEndGame = new EndGame(mContext);
+										mEndGame = new EndGame(mText);
 										mPosHolder.addView(mEndGame);
 										mBattle.mGameOver = true;
 									}
 									else
 									{
-										Toast.makeText(mContext, "Great job! Come up with another thought!", Toast.LENGTH_SHORT).show();
+										Toast.makeText(mText, "Great job! Come up with another thought!", Toast.LENGTH_SHORT).show();
 
 									}
 									}
@@ -345,11 +331,13 @@ public class CaptureActivity extends Activity
 						}
 						
 					});
+					AlphaAnimation mGo = new AlphaAnimation(0.0f, 1.0f);
+					mGo.setDuration(2000);
 					mGo.setFillAfter(true);
 					mGo.setDuration(2000);
 					mPos[mPosCounter].startAnimation(mGoAddLaser);
 					mChallengingThought.setText(null);
-					InputMethodManager imm = (InputMethodManager)mContext.getSystemService(
+					InputMethodManager imm = (InputMethodManager)CaptureActivity.this.getApplicationContext().getSystemService(
 					      Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(mChallengingThought.getWindowToken(), 0);
 				
@@ -364,26 +352,31 @@ public class CaptureActivity extends Activity
 				public void onClick(View v) 
 				{
 
-					CalendarDbAdapter mCalHelper = new CalendarDbAdapter(mContext);
+					CalendarDbAdapter mCalHelper = new CalendarDbAdapter(v.getContext());
 					mCalHelper.open();
 					Cursor cursor = mCalHelper.fetchNegsByType(((TextView) v).getText().toString());
 					if (cursor.moveToFirst())
 					{
 						String mNegThought = cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_NEGATIVE_THOUGHT));
 						//the thought that will dance on the screen
-						mNeg = new NegativeThought(mContext);
+						mNeg = new NegativeThought(v.getContext());
 						mNeg.setText(mNegThought);
 					
 					cursor.close();
 					mCalHelper.close();
 					train.startAnimation(mGone);
+					AlphaAnimation mGo = new AlphaAnimation(0.0f, 1.0f);
+					mGo.setDuration(2000);
+					mGo.setFillAfter(true);
+					mGo.setDuration(2000);
+				    LinearLayout mEditTextContainer = (LinearLayout) findViewById(R.id.edit_container);
 					mEditTextContainer.setVisibility(View.VISIBLE);
 					mEditTextContainer.startAnimation(mGo);
 					//should set button clickable here
 					}
 					else
 					{
-						Toast.makeText(mContext, "No negative thoughts in this train", Toast.LENGTH_SHORT).show();
+						Toast.makeText(v.getContext(), "No negative thoughts in this train", Toast.LENGTH_SHORT).show();
 					}	
 				}
 				
@@ -399,11 +392,122 @@ public class CaptureActivity extends Activity
 		personalizing.setOnClickListener(mStartGameListener);
 		shoulds.setOnClickListener(mStartGameListener);
 		unfair_comparisons.setOnClickListener(mStartGameListener);
+		
+		SharedPreferences preferences = this.getSharedPreferences(this.getPackageName(), Context.MODE_PRIVATE);
+		if (preferences.getString("capture instructions", null) == null)
+				{
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				final Context context = this;
+	        	LayoutInflater inflation = LayoutInflater.from(this); 
+				LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
+				TextView instructions = (TextView) layout.findViewById(R.id.instructions);
+				Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+		        instructions.setTypeface(typeFace);
+		        instructions.setTextColor(Color.BLUE);
+		        instructions.setText("Not all of the negative thoughts that we have are true. For example...");
+		        builder.setView(layout);
+				builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
+				{
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) 
+					{
+						AlertDialog.Builder builder = new AlertDialog.Builder(context);
+			        	LayoutInflater inflation = LayoutInflater.from(context); 
+						LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
+						TextView instructions = (TextView) layout.findViewById(R.id.instructions);
+						Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+				        instructions.setTypeface(typeFace);
+				        instructions.setTextColor(Color.BLUE);
+				        instructions.setText("You may think, 'I am stupid', even though there's evidence against it. " +
+				        		"Like the time you got a good grade on a test. Or the time you did well on an interview.");
+						builder.setView(layout);
+						builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
+						{
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) 
+							{
+								AlertDialog.Builder builder = new AlertDialog.Builder(context);
+					        	LayoutInflater inflation = LayoutInflater.from(context); 
+								LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
+								TextView instructions = (TextView) layout.findViewById(R.id.instructions);
+								Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+						        instructions.setTypeface(typeFace);
+						        instructions.setTextColor(Color.BLUE);
+						        instructions.setText("But sometimes, coming up with the evidence against those negative thoughts is hard. " +
+						        		"With this game, you will learn to challenge the truthiness of your negative thoughts.");
+						        builder.setView(layout);
+								builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
+								{
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) 
+									{
+										AlertDialog.Builder builder = new AlertDialog.Builder(context);
+							        	LayoutInflater inflation = LayoutInflater.from(context); 
+										LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
+										TextView instructions = (TextView) layout.findViewById(R.id.instructions);
+										Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+								        instructions.setTypeface(typeFace);
+								        instructions.setTextColor(Color.BLUE);
+								        instructions.setText("To start, click on the type of thought you want to challenge. " +
+								        		"When you come up with enough thoughts that challenge the truthiness of the negative thought, " +
+								        		"your challenging thoughts will take the negative thought to the 'Destroyer Game' where YOU will get rid of them!");
+								        builder.setView(layout);
+								        builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
+								        {
+
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) 
+											{
+												final Dialog sketchDialog = new Dialog(context);
+												sketchDialog.setTitle("An Example, Click to Play!");
+												sketchDialog.setContentView(R.layout.custom_dialog);
+												ImageView mSketch = (ImageView) sketchDialog.findViewById(R.id.sketch);
+												mSketch.setOnClickListener(new OnClickListener()
+												{
+
+													@Override
+													public void onClick(
+															View arg0) 
+													{
+														sketchDialog.dismiss();
+													}
+													
+												});
+												sketchDialog.show();	
+											}
+								        	
+								        });
+								        builder.create().show();
+									}
+								});
+						        builder.create().show();
+							}
+							
+						});
+						builder.create().show();				
+						
+					}
+					
+				});
+				builder.create().show();
+				
+				// preferences.edit().putString("capture instructions", "Yes").commit();
+				// change this after the presentation
+				}
+		
 	}
 
 	public void endGame()
 	{
-        mPosHolder.removeView(mEndGame);
+		mPosHolder.removeView(mEndGame);
+		final Context mContext = this;
 		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("Great Job!");
         builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
@@ -428,6 +532,7 @@ public class CaptureActivity extends Activity
             			@Override
             			public void onClick(DialogInterface dialog, int which)
             			{
+							Context mContext = CaptureActivity.this.getApplicationContext();
             				Intent i = new Intent(mContext, CaptureActivity.class);				
             				mContext.startActivity(i);
             			}

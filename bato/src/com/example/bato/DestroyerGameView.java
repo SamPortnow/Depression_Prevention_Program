@@ -1,22 +1,20 @@
 package com.example.bato;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 public class DestroyerGameView extends View
 {
 	Context mContext; 
 	DestroyerGame mDestroyer;
+	NegativeThoughtDestroyer mNegThought;
 	Handler h;
     int FRAME_RATE = 30;
     int width;
@@ -43,6 +41,8 @@ public class DestroyerGameView extends View
     int mMoveStationX;
     int mMoveStationVelocity = 2;
     ArrayList <PositiveThoughtDestroyer> mPositive = new ArrayList<PositiveThoughtDestroyer>();
+    PositiveThoughtDestroyer mPosCannon;
+    HashMap<PositiveThoughtDestroyer, int[]> mThoughtInfo = new HashMap<PositiveThoughtDestroyer, int[]>();
 
 
 
@@ -85,30 +85,7 @@ public class DestroyerGameView extends View
 	{
 		
 		
-		if (mDestroy)
-		{
-			//logic for destroying thoughts goes here
-			//if fits within the bounds and greater than 0
-			if ( mMoveX >= mNegX && mMoveX <= mNegX + mDestroyer.mNeg.width && mMoveY > 0 && mMoveY < 
-	    	mDestroyer.mNeg.height/2)
-	    	{
-	 	    		//stay in here if there's a hit
-	    		if (! explode)
-	    		{
-	    			//here are all of our reset methods
-	    			mDestroyer.explode();
-	    			//reset our variables
-	    		    mPosX = width;
-	    		    mNegX = (int) (width + (width/1.5));
-	    		    mPosY = 0;
-	    		}
-	    		explode = true;
-	    		mDestroy=false;
-	    	}
-			canvas.drawBitmap(mPositive.get(0).getDrawingCache(), mMoveX, mMoveY,  null);
-			mMoveX += mMoveByX;
-			mMoveY -= mMoveByY;
-		}
+		
 		if (mDrawPos)
 		{
 			for (int i = 1; i < mDestroyer.mStationPositive.size() + 1; i++)
@@ -124,11 +101,12 @@ public class DestroyerGameView extends View
 
 			}
 			
-			if (mMoveStationX < -width/6 || mMoveStationX > width/6)
+			if (mMoveStationX < -width/12 || mMoveStationX > width/12)
 			{
 				mMoveStationVelocity = mMoveStationVelocity * -1;
-			}
-			mMoveStationX += mMoveStationVelocity;
+			}			
+				mMoveStationX += mMoveStationVelocity;
+			
 	    	mDrawStationX = 0;
 	    	mDrawStationY = 0;
 	
@@ -142,24 +120,50 @@ public class DestroyerGameView extends View
 				{
 					//if it gets to 0, populate the listview and stop drawing the positive thought
 					//set mNeg to true so the negative thought can start moving
+					mDestroyer.mPositive.clear();
 					mDestroyer.populateListView();
 					mMovePos = false;
 					mMoveNeg = true;
 				}
 			}
 			mPosX -= 5;
-			canvas.drawBitmap(mDestroyer.mNeg.getDrawingCache(), mNegX, mPositive.get(0).yPos, null);
+			canvas.drawBitmap(mDestroyer.mNeg.getDrawingCache(), mNegX, 0, null);
 			mNegX -=5;
 		}
 		if (mMoveNeg)
 		{
 			//moving the negative thought. it moves back and forth on the screen 
-			if (mNegX < 0 || mNegX > width)
+			if (mNegX < 0 || mNegX > width - mDestroyer.mNeg.getWidth())
 			{
 				xVelocity = xVelocity *-1;
 			}
-			canvas.drawBitmap(mDestroyer.mNeg.getDrawingCache(), mNegX, mPositive.get(0).yPos, null);
+			canvas.drawBitmap(mDestroyer.mNeg.getDrawingCache(), mNegX, 0, null);
 			mNegX -= xVelocity;
+		}
+		
+		if (mDestroy)
+		{
+			//logic for destroying thoughts goes here
+			//if fits within the bounds and greater than 0
+			if ( mMoveX >= mNegX - mDestroyer.mNeg.width/2 && mMoveX <= mNegX + mDestroyer.mNeg.width && mMoveY > 0 && mMoveY < 
+	    	mDestroyer.mNeg.height/2)
+	    	{
+	 	    		//stay in here if there's a hit
+	    		if (! explode)
+	    		{
+	    			//here are all of our reset methods
+	    			mDestroyer.explode();
+	    			//reset our variables
+	    		    mPosX = width;
+	    		    mNegX = (int) (width + (width/1.5));
+	    		    mPosY = 0;
+	    		}
+	    		explode = true;
+	    		mDestroy=false;
+	    	}
+			canvas.drawBitmap(mDestroyer.mPosCannon[0].getDrawingCache(), mMoveX, mMoveY,  null);
+			mMoveX += mMoveByX;
+			mMoveY -= mMoveByY;
 		}
 		h.postDelayed(r, FRAME_RATE);
 	}

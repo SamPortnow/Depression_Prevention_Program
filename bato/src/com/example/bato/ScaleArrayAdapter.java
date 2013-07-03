@@ -4,20 +4,24 @@ import java.util.ArrayList;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 public class ScaleArrayAdapter extends ArrayAdapter<String> implements OnTouchListener
 {
     int index;
+    Context mContext;
 
 	public ScaleArrayAdapter(Context context, int resource, int textViewResourceId, ArrayList <String> objects) 
 	{
 		super(context, resource, textViewResourceId, objects);
+		mContext = context;
 		
 	}
 	
@@ -27,7 +31,10 @@ public class ScaleArrayAdapter extends ArrayAdapter<String> implements OnTouchLi
     public View getView(int position, View convertView, ViewGroup parent) 
     {
         View v = super.getView(position, convertView, parent);
-        index = position;
+        TextView textView = (TextView) v.findViewById(android.R.id.text1);
+		Typeface typeFace=Typeface.createFromAsset(this.getContext().getAssets(),"fonts/Action_Man.ttf");
+		textView.setTypeface(typeFace);
+		index = position;
         v.setOnTouchListener(this);
         return v;
     }

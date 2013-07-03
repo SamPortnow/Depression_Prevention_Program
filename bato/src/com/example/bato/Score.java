@@ -29,9 +29,11 @@ public class Score extends View
         mContext = this.getContext();
 		mDestroyer = (DestroyerGame) context;
         h = new Handler();
+        fin = 0;
         size = getResources().getDimensionPixelSize(R.dimen.myFontSize);
     	score.setAntiAlias(true);
-    	score.setTypeface(Typeface.DEFAULT_BOLD);
+		Typeface typeFace=Typeface.createFromAsset(mContext.getAssets(),"fonts/Humor-Sans.ttf");
+    	score.setTypeface(typeFace);
     	score.setTextSize(size);
 	    score.setColor(Color.CYAN);
 	    score.setShadowLayer(1, 1, 1, Color.RED);

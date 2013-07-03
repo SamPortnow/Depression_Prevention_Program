@@ -4,14 +4,11 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class NegativeThoughtDestroyer extends TextView
 {
-	DestroyerGame mDestroyer;
 	Handler h;
 	int FRAME_RATE = 30;
 	int height;
@@ -21,7 +18,6 @@ public class NegativeThoughtDestroyer extends TextView
 	public NegativeThoughtDestroyer(Context context) 
 	{	
 		super(context);
-		mDestroyer = (DestroyerGame) context; 
 		init();
 	}	
 	
@@ -35,11 +31,13 @@ public class NegativeThoughtDestroyer extends TextView
     	setTextSize(15);
     	setTextColor(Color.BLACK);
     	setDrawingCacheEnabled(true);
-    	width = mDestroyer.width/3;
-    	height = mDestroyer.height/4;
+    	DestroyerGame mDestroy = (DestroyerGame) this.getContext();
+    	DestroyerGameView gameView = (DestroyerGameView) mDestroy.findViewById(R.id.anim_view);
+    	width = gameView.width/3;
+    	height = gameView.height/4;
     	layout(0, 0, width, height);
-    	Typeface sans = Typeface.create("sans-serif-condensed", Typeface.BOLD);
-     	setTypeface(sans);
+		Typeface typeFace=Typeface.createFromAsset(this.getContext().getAssets(),"fonts/Humor-Sans.ttf");
+		setTypeface(typeFace);
 	}
 	
 	

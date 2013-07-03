@@ -29,7 +29,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Region;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -48,7 +47,6 @@ public class ExplodeView extends View{
     private static final int STATUS_EXPLODED=2;
     private int mStatus=STATUS_NORMAL;
     private Camera mCamera;
-    DestroyerGame mDestroyer;
     
     @SuppressLint("ValidFragment")
 	private static class BitmapFragment{
@@ -104,24 +102,23 @@ public class ExplodeView extends View{
     }
     public ExplodeView(Context context) {
         this(context, null);
-        mDestroyer = (DestroyerGame) context;
     }
 
     public ExplodeView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-    	mDestroyer = (DestroyerGame) context;
 
     }
 
     public ExplodeView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        mDestroyer = (DestroyerGame) context;
         init(context);
     }
 
     private void init(Context context) {
         Random rnd=new Random(SystemClock.uptimeMillis());
         Bitmap original= BitmapFactory.decodeResource(context.getResources(), R.drawable.graycloud);
+        DestroyerGame mDestroyGame = (DestroyerGame) this.getContext();
+        DestroyerGameView mDestroyer = (DestroyerGameView) mDestroyGame.findViewById(R.id.anim_view);
         original = Bitmap.createScaledBitmap(original, mDestroyer.width/3, mDestroyer.height/4, true);
         final int w=mDestroyer.width/3;
         final int h=mDestroyer.height/4;
@@ -191,7 +188,9 @@ public class ExplodeView extends View{
                     if(delayedTime>=mAnimDuration) 
                     	{
                     	mStatus=STATUS_NORMAL;
-                    	mDestroyer.stopExplode();
+                    	Context mContext = this.getContext();
+                    	DestroyerGame mDestroy = (DestroyerGame) mContext;
+                    	mDestroy.stopExplode();
                     	}
                 }
                 backed.drawColor(0, PorterDuff.Mode.CLEAR);

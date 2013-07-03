@@ -1,16 +1,16 @@
 package com.example.bato;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+@SuppressLint("ViewConstructor")
 public class PositiveThought extends TextView
 {
 	CaptureActivity mCapture;
@@ -28,10 +28,8 @@ public class PositiveThought extends TextView
     	this.setGravity(Gravity.CENTER);
     	this.setTextSize(15);
     	this.setTextColor(Color.RED);
-    	this.setTypeface(Typeface.DEFAULT_BOLD);
-    	this.setShadowLayer(5, 2, 2, Color.YELLOW);
-    	Typeface sans = Typeface.create("sans-serif-condensed", Typeface.BOLD);
-    	this.setTypeface(sans);
+		Typeface typeFace=Typeface.createFromAsset(this.getContext().getAssets(),"fonts/Action_Man.ttf");
+		setTypeface(typeFace);
     	this.setDrawingCacheEnabled(true);
     	this.setBackgroundResource(R.drawable.whitecloud);
 	    this.setFocusableInTouchMode(true);

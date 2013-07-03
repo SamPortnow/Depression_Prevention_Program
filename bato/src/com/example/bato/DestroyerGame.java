@@ -6,27 +6,26 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.DragEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnDragListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -35,90 +34,156 @@ import android.widget.TextView;
 
 public class DestroyerGame extends Activity
 {
-	PositiveThoughtMissile [] positive = new PositiveThoughtMissile[2];
-	Context mContext;
-	Bitmap cloud;
-	public DestroyerGameView mDestroyerShooter;
-    int width;
-    int height;
-    Canvas canvas;
-    RelativeLayout layout;
-    Animation in;
-    Animation out;
     HashMap<String, int[]> mThoughtInfo = new HashMap<String, int[]>();
     ArrayList<String> mPositives = new ArrayList<String>();
-    LinearLayout mPosHolder;
-    ImageView cannon;
-    ImageView rCannon;
-    float slope;
-    RelativeLayout.LayoutParams params;
-    AnimationSet set;
-    AlphaAnimation fade;
-    TextView score;
-    Score mScore;
-    ScaleArrayAdapter arrayAdapter;
-    int count;
-    Typeface sans;
+	Score mScore;
+	int count;
     NegativeThoughtDestroyer mNeg;
     String mNegThought;
     ArrayList <LaserBeamDestroyer> mLaserBeam = new ArrayList<LaserBeamDestroyer>();
     ArrayList <PositiveThoughtDestroyer> mPositive = new ArrayList<PositiveThoughtDestroyer>();
-    PositiveThoughtDestroyer mPositiveThought;
-    LaserBeamDestroyer mLaserBeamDraw;
-    float x;
-    float y;
-    ExplodeView mExplosion;
+     ExplodeView mExplosion;
     ArrayList <PositiveThoughtDestroyer> mStationPositive = new ArrayList<PositiveThoughtDestroyer>();
-    ListView listView;
-    int tracker;
     int mStop;
-    //I need a new one every time! not just when the screen reloads! Also, I destroy with the correct thought!!
+	PositiveThoughtDestroyer [] mPosCannon = new PositiveThoughtDestroyer[1];
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
 	    super.onCreate(savedInstanceState);
 	    this.getActionBar().hide();
-   	 	sans = Typeface.create("sans-serif-condensed", Typeface.BOLD);
-	    mContext = this;
+	    Context mContext = this;
 	    setContentView(R.layout.activity_destroyer_shooter);
 	    //I will hold the thoughts here
-	    mPosHolder = new LinearLayout(mContext);
+	    LinearLayout mPosHolder = new LinearLayout(mContext);
 	    mPosHolder.setOrientation(LinearLayout.HORIZONTAL);
 	    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 	    mPosHolder.setLayoutParams(params);
 	    //the score, just the text
-	    score = (TextView) findViewById(R.id.score);
+	    TextView score = (TextView) findViewById(R.id.score);
 	    score.setText("SCORE");
-	    //get the listview 
-	    listView = (ListView) findViewById(R.id.listview);
-	    //where most of the animations "happen"
-	    mDestroyerShooter = (DestroyerGameView) findViewById(R.id.anim_view);
+		Typeface typeFace=Typeface.createFromAsset(mContext.getAssets(),"fonts/Humor-Sans.ttf");
+		score.setTypeface(typeFace);
+
+
 	    //get the thoughts
 	    getTheThoughts();
 	    //the part that updates
-	    mScore = (Score) findViewById(R.id.score_view);
 	    //holds everything!
-	    layout = (RelativeLayout) findViewById(R.id.game_view);
 	    
 	    //the cannon
-	    cannon = (ImageView) findViewById(R.id.cannon);
+	    final ImageView cannon = (ImageView) findViewById(R.id.cannon);
 	    //the red cannon. make sure to set it to invisible first
-	    rCannon = (ImageView) findViewById(R.id.rcannon);
+	    final ImageView rCannon = (ImageView) findViewById(R.id.rcannon);
 	    rCannon.setVisibility(View.INVISIBLE);
 	    
-	    //instructions go here! 
 		SharedPreferences preferences = this.getSharedPreferences(this.getPackageName(), Context.MODE_PRIVATE);
-		if (preferences.getString("shooter instructions", null) == null)
-		{
-			
-		AlertDialog.Builder builder = new Builder(mContext);
-		builder.setTitle("Instructions");
-		builder.setMessage("Pick the correct positive thought and shoot down the negative thought!");
-		builder.setPositiveButton(android.R.string.ok, null);
-		builder.create().show();				
-		preferences.edit().putString("shooter instructions", "Yes").commit();
-		}
+		if (preferences.getString("destroyer instructions", null) == null)
+				{
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				final Context context = this;
+	        	LayoutInflater inflation = LayoutInflater.from(this); 
+				LinearLayout lLayout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
+				TextView instructions = (TextView) lLayout.findViewById(R.id.instructions);
+				Typeface Face=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+		        instructions.setTypeface(Face);
+		        instructions.setTextColor(Color.BLUE);
+		        instructions.setText("Here, you can destroy your negative thoughts");
+		        builder.setView(lLayout);
+				builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
+				{
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) 
+					{
+						AlertDialog.Builder builder = new AlertDialog.Builder(context);
+			        	LayoutInflater inflation = LayoutInflater.from(context); 
+						LinearLayout lLayout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
+						TextView instructions = (TextView) lLayout.findViewById(R.id.instructions);
+						Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+				        instructions.setTypeface(typeFace);
+				        instructions.setTextColor(Color.BLUE);
+				        instructions.setText("A list of the all the thoughts you came up with to challenge your negative thoughts will display on the left.");
+						builder.setView(lLayout);
+						builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
+						{
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) 
+							{
+								AlertDialog.Builder builder = new AlertDialog.Builder(context);
+					        	LayoutInflater inflation = LayoutInflater.from(context); 
+								LinearLayout lLayout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
+								TextView instructions = (TextView) lLayout.findViewById(R.id.instructions);
+								Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+						        instructions.setTypeface(typeFace);
+						        instructions.setTextColor(Color.BLUE);
+						        instructions.setText("Your task is to drag a thought into the cannon and tap the screen where you want the positive thought to go. " +
+						        		"If it hits the negative thought, great job! You destroyed it. If it doesn't, no worries," +
+						        		" try again. The game is over when the screen is filled with positive thoughts!");
+						        builder.setView(lLayout);
+								builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
+								{
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) 
+									{
+										AlertDialog.Builder builder = new AlertDialog.Builder(context);
+							        	LayoutInflater inflation = LayoutInflater.from(context); 
+										LinearLayout lLayout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
+										TextView instructions = (TextView) lLayout.findViewById(R.id.instructions);
+										Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+								        instructions.setTypeface(typeFace);
+								        instructions.setTextColor(Color.BLUE);
+								        instructions.setText("Try to remember which thoughts you believe, and which ones " +
+								        		"make you feel good. You'll get extra points for those thoughts!");
+								        builder.setView(lLayout);
+								        builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
+								        {
+
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) 
+											{
+												final Dialog sketchDialog = new Dialog(context);
+												sketchDialog.setTitle("An Example, Click to Play!");
+												sketchDialog.setContentView(R.layout.custom_destroyer_dialog);
+												ImageView mSketch = (ImageView) sketchDialog.findViewById(R.id.sketch_destroyer);
+												mSketch.setOnClickListener(new OnClickListener()
+												{
+
+													@Override
+													public void onClick(
+															View arg0) 
+													{
+														sketchDialog.dismiss();
+													}
+													
+												});
+												sketchDialog.show();	
+											}
+								        	
+								        });
+								        builder.create().show();
+									}
+								});
+						        builder.create().show();
+							}
+							
+						});
+						builder.create().show();				
+						
+					}
+					
+				});
+				builder.create().show();
+				
+				// preferences.edit().putString("capture instructions", "Yes").commit();
+				// change this after the presentation
+				}
 	    //set up the on drag listener for the cannon
 		cannon.setOnDragListener(new OnDragListener()
 		{
@@ -130,18 +195,18 @@ public class DestroyerGame extends Activity
 				{
 					
 				case DragEvent.ACTION_DRAG_ENTERED:
-					cannon.setVisibility(View.INVISIBLE);
-					rCannon.setVisibility(View.VISIBLE);
+					findViewById(R.id.cannon).setVisibility(View.INVISIBLE);
+					findViewById(R.id.rcannon).setVisibility(View.VISIBLE);
 					break;
 				case DragEvent.ACTION_DROP:
 						View view = (View) arg1.getLocalState();
 						TextView positive = (TextView) view.findViewById(android.R.id.text1);
-						//createPositive(positive.getText().toString());
+						createPositive(positive.getText().toString(), arg0.getContext());
 						break;
 						
 				case DragEvent.ACTION_DRAG_EXITED:
-					cannon.setVisibility(View.VISIBLE);
-					rCannon.setVisibility(View.INVISIBLE);
+					findViewById(R.id.cannon).setVisibility(View.VISIBLE);
+					findViewById(R.id.rcannon).setVisibility(View.INVISIBLE);
 				
 				}
 				
@@ -155,16 +220,19 @@ public class DestroyerGame extends Activity
 	@Override
 	 public void onWindowFocusChanged(boolean hasFocus) {
 	    super.onWindowFocusChanged(hasFocus);
-	    width = mDestroyerShooter.width;
-	    height = mDestroyerShooter.height;
-	    mExplosion = new ExplodeView(mContext);
+	    final DestroyerGameView mDestroyerShooter = (DestroyerGameView) findViewById(R.id.anim_view);
+		final int width = mDestroyerShooter.width;
+	    final int height = mDestroyerShooter.height;
+	    //initalize our exploding view!
+	    mExplosion = new ExplodeView(this);
+
 	    mDestroyerShooter.setOnTouchListener(new OnTouchListener()
 	    {
 
 			@Override
 			public boolean onTouch(View arg0, MotionEvent event) {
 				int action = event.getActionMasked();
-				if (rCannon.getVisibility() == View.VISIBLE)
+				if (findViewById(R.id.rcannon).getVisibility() == View.VISIBLE)
 				{
 				if (action == MotionEvent.ACTION_DOWN)
 				{
@@ -175,8 +243,8 @@ public class DestroyerGame extends Activity
 			       //going to 0, so just height divided by frame rate
 			       mDestroyerShooter.mMoveByY = height/30;
 			       mDestroyerShooter.mDestroy = true;
-				   rCannon.setVisibility(View.INVISIBLE);
-				   cannon.setVisibility(View.VISIBLE);
+				   findViewById(R.id.rcannon).setVisibility(View.INVISIBLE);
+				   findViewById(R.id.cannon).setVisibility(View.VISIBLE);
 				   
 			       
 			}
@@ -195,24 +263,29 @@ public class DestroyerGame extends Activity
 		getTheThoughts();
 		MoveTheThoughts();
 }
-	public void createPositive(String positive_string)
+	public void createPositive(String positive_string, Context mContext)
 	{
-		mPositive.get(0).setText(positive_string);
+		PositiveThoughtDestroyer mPos = new PositiveThoughtDestroyer(mContext, 0);
+		mPos.setText(positive_string);
+		mPosCannon[0] = mPos;
+		
 	}
 
 	protected void clear(Context context)
 	{
-		cannon.setVisibility(View.VISIBLE);
+		findViewById(R.id.cannon).setVisibility(View.VISIBLE);
 	}
 	
-	protected void update(Context context)
+	protected void update(int score_update)
 	{
-		mScore.fin += count;
+		Score mScore = (Score) findViewById(R.id.score_view);
+		mScore.fin += score_update;
 	}
 	 
 	 public void game_over()
 	 {
-			AlertDialog.Builder builder = new Builder(mContext);
+			AlertDialog.Builder builder = new Builder(this);
+			final Context mContext = this;
 			builder.setTitle("Great Job!");
 			builder.setPositiveButton("Play Again", new DialogInterface.OnClickListener()
     		{
@@ -220,7 +293,7 @@ public class DestroyerGame extends Activity
 				@Override
 				public void onClick(DialogInterface dialog, int which) 
 				{
-					Intent i = new Intent(mContext, DestroyerShooterView.class);				
+					Intent i = new Intent(mContext, DestroyerGame.class);				
     				mContext.startActivity(i);	
 				}
 				
@@ -244,6 +317,7 @@ public class DestroyerGame extends Activity
 	public void clearTheThoughts()
 	{
 		count+=1;
+	    DestroyerGameView mDestroyerShooter = (DestroyerGameView) findViewById(R.id.anim_view);
 		switch (count)
 		{
 			case 1: 
@@ -275,22 +349,22 @@ public class DestroyerGame extends Activity
 				break;
 		}
 		mPositives.clear();
-		mPositive.clear();
 		mThoughtInfo.clear();
 		mLaserBeam.clear();
-		listView.setAdapter(null);
+		ListView lView = (ListView)findViewById(R.id.listview);
+		lView.setAdapter(null);
 	}
 	 
  	public void getTheThoughts()
  	{
-	    CalendarDbAdapter mDbHelper=new CalendarDbAdapter(mContext);
+	    CalendarDbAdapter mDbHelper=new CalendarDbAdapter(this);
 	    mDbHelper.open();
 	    Cursor cursor = mDbHelper.fetchNeg();
+	    mNegThought = null;
 	    if (cursor.moveToFirst())
 	    {	
 	    	mNegThought=cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_NEGATIVE_THOUGHT));
 	    }
-	    
 	    cursor.close();
 	    Cursor cursorChallenging = mDbHelper.fetchChallenging(mNegThought);
 	    	while (cursorChallenging.moveToNext())
@@ -322,38 +396,52 @@ public class DestroyerGame extends Activity
  		}
  		for (int i = 0; i <  mStop; i++)
  		{
- 			mPositiveThought = new PositiveThoughtDestroyer(mContext, i);
- 			mPositiveThought.setText("You're DUMB");
+ 			PositiveThoughtDestroyer mPositiveThought = new PositiveThoughtDestroyer(this, i);
+ 			mPositiveThought.setText(mPositives.get(i).toString());
  			mPositive.add(mPositiveThought);
- 			mLaserBeamDraw = new LaserBeamDestroyer(mContext, i);
+ 			LaserBeamDestroyer mLaserBeamDraw = new LaserBeamDestroyer(this, i);
  			mLaserBeam.add(mLaserBeamDraw);
- 			layout.addView(mLaserBeamDraw);
+ 			RelativeLayout rLayout = (RelativeLayout) findViewById(R.id.game_view);
+ 			rLayout.addView(mLaserBeamDraw);
  		}
 		//the thought that will go back and forth
-		mNeg = new NegativeThoughtDestroyer(mContext);
+		mNeg = new NegativeThoughtDestroyer(this);
 		mNeg.setText(mNegThought);
+	    DestroyerGameView mDestroyerShooter = (DestroyerGameView) findViewById(R.id.anim_view);
 		mDestroyerShooter.mMovePos = true;
  	}
  	
 	public void explode()
 	{
-
-		RelativeLayout.LayoutParams mExplosionParams = new RelativeLayout.LayoutParams(width/3, height/4);
+	    DestroyerGameView mDestroyerShooter = (DestroyerGameView) findViewById(R.id.anim_view);
+		RelativeLayout.LayoutParams mExplosionParams = new RelativeLayout.LayoutParams(mDestroyerShooter.width/3, mDestroyerShooter.height/4);
 		mDestroyerShooter.mMoveNeg = false;
-		mExplosionParams.leftMargin = mDestroyerShooter.mNegX + listView.getWidth();
-		mExplosionParams.topMargin = mPositive.get(0).yPos;
-		layout.addView(mExplosion, mExplosionParams);
-		mExplosion.explodeIt( mDestroyerShooter.mNegX,mPositive.get(0).yPos);
+		ListView list = (ListView) findViewById(R.id.listview);
+		mExplosionParams.leftMargin = mDestroyerShooter.mNegX + list.getWidth();
+		mExplosionParams.topMargin = 0;
+		RelativeLayout rLayout = (RelativeLayout) findViewById(R.id.game_view);
+		rLayout.addView(mExplosion, mExplosionParams);
+		mExplosion.explodeIt( mDestroyerShooter.mNegX,0);
 		
 	}
 	
 	public void stopExplode()
 	{
-		layout.removeView(mExplosion);
+		RelativeLayout rLayout = (RelativeLayout) findViewById(R.id.game_view);
+		rLayout.removeView(mExplosion);
 		//remove the explosion, clear the thoughts, get some new ones, and start moving!!
-		mStationPositive.add(mPositive.get(0));
+	    DestroyerGameView mDestroyerShooter = (DestroyerGameView) findViewById(R.id.anim_view);
 		mDestroyerShooter.mDrawPos=true;
-		
+		mStationPositive.add(mPosCannon[0]);
+		int mHelp_mBelieve [] = mThoughtInfo.get(mPosCannon[0].getText().toString());
+		if (mHelp_mBelieve[0] > 3 && mHelp_mBelieve[1] > 3)
+		{
+			update(50);
+		}
+		else
+		{
+			update(25);
+		}
 		clearTheThoughts();
 		getTheThoughts();
 		MoveTheThoughts();
@@ -363,12 +451,14 @@ public class DestroyerGame extends Activity
 	public void populateListView()
 	{
 		//have to set the explosion back to false
+	    DestroyerGameView mDestroyerShooter = (DestroyerGameView) findViewById(R.id.anim_view);
 		mDestroyerShooter.explode = false;
 		for (int i = 0; i < mStop; i++)
 		{
 			mLaserBeam.get(i).setVisibility(View.INVISIBLE);
 		}
-		arrayAdapter = 	new ScaleArrayAdapter(this, R.layout.positives, android.R.id.text1, mPositives);
+		ScaleArrayAdapter arrayAdapter = 	new ScaleArrayAdapter(this, R.layout.positives, android.R.id.text1, mPositives);
+	    ListView listView = (ListView) findViewById(R.id.listview);
 	    listView.setAdapter(arrayAdapter);
 	    AlphaAnimation mGo = new AlphaAnimation(0.0f, 1.0f);
 		mGo.setDuration(500);
@@ -384,7 +474,8 @@ public class DestroyerGame extends Activity
 				        {
 				    		for (int i = 0; i < mStop; i++ )
 				    	    {
-				    			layout.removeView(mLaserBeam.get(i));
+				    			RelativeLayout rLayout = (RelativeLayout) findViewById(R.id.game_view);
+				    			rLayout.removeView(mLaserBeam.get(i));
 				    	    }
 				        }
 				   });
@@ -403,7 +494,7 @@ public class DestroyerGame extends Activity
 			}
 			
 		});
-		listView.startAnimation(mGo);
+		findViewById(R.id.listview).startAnimation(mGo);
 	}
 	 
  
