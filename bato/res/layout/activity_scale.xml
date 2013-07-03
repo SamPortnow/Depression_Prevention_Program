@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:text="@string/help"
        />
-    <com.meetme.android.horizontallistview.HorizontalListView
+<!--     <com.meetme.android.horizontallistview.HorizontalListView
     xmlns:widget="http://schemas.android.com/apk/res-auto"
     android:id="@+id/listview"
     android:drawSelectorOnTop="false"
@@ -25,7 +25,7 @@
 	android:layout_alignParentBottom="true"
     android:layout_alignParentLeft = "true"
 	android:background="@drawable/back"
-	></com.meetme.android.horizontallistview.HorizontalListView>
+	></com.meetme.android.horizontallistview.HorizontalListView> -->
    	
            <Button
         android:id="@+id/scale_it"
