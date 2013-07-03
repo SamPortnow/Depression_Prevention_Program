@@ -65,6 +65,9 @@ public class ScalesSummaryFragment extends Fragment
 		
 		cursor.close();
 		adapter.close();
+		
+		// TODO: remove me
+		flag = true;
 
 		return flag;
 	}

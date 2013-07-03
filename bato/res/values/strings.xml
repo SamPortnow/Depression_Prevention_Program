@@ -17,8 +17,6 @@
 
     <string name="add_event_fragment_title">Add a new event&#x2026;</string>
     <string name="add_event_toast_created_event">New event created.</string>
-    <string name="add_event_user_activity_hint">What are you doing?</string>
-    <string name="add_event_user_thought_hint">What are you thinking?</string>
     <string name="image_smiley_content_description">Happy</string>
     <string name="image_sad_content_description">Sad</string>
     <string name="destroyer">write a positive thought to destroy the negative thought</string>
@@ -38,18 +36,14 @@
     would you say to him/her?</string>
     <string name="skip"> SKIP IT!</string>
     <string name="help">Help</string>
-    <string name="title_feeling">How are you feeling?</string>
-    <string name="pos_or_neg">Is this a negative thought?</string>
     <string name="plus">+</string>
     <string name="not">Not at all</string>
     <string name="alot">Completely</string>
-    <string name="good">Great</string>
-    <string name="bad">Terrible</string>
+
     <string name="title_help">How would this thought make you feel?</string>  
 
 	<string name="title_believe">How much do you believe this thought </string>
-	<string name="radio_pos">Yes</string>
-	<string name="radio_neg">No</string>
+
 	<string name="Mind_reading_title">Mind reading</string>
 	<string name="Fortunetelling_title">Fortunetelling</string>
 	<string name="Catastrophizing_title">Catastrophizing</string>
@@ -74,6 +68,57 @@
 	<string name="Unfair_comparisons">You compare yourself to others doing better than you."I did well on the test, but Joe got the better grade."</string>
 	<string name="train_instructions">See if the negative thought you entered corresponds to any of these common types of negative thinking. If it does, drag and drop it in to the correct train, so it can be sent of the Tip the Scales Game, and later the Destroyer Game, where you will destroy the negative thought!</string>
 	
+	<!-- activity_main -->
+	<string-array name="main_fragment_titles">
+	    <item>Personal Scientist Points</item>
+	    <item>Nab the Negative</item>
+	    <item>Command the Cannon</item>
+	</string-array>
+	
+	<!-- activity_add_event -->
+	<string name="add_event_create_success">Added a new event</string>
+	<string name="add_event_cancel_task">Cancel</string>
+	<string name="add_event_next_fragment">&#x21e8;</string>	
+	<string name="add_event_user_activity_hint">What are you doing?</string>
+	<string name="add_event_user_feeling_hint">How are you feeling?</string>
+    <string name="add_event_user_feeling_terrible">Terrible</string>
+  	<string name="add_event_user_feeling_great">Great</string>
+	<string name="add_event_user_thought_hint">What are you thinking?</string>
+	<string name="add_event_user_thought_is_negative">Is this a negative thought?</string>
+	<string name="add_event_user_thought_radio_positive">Yes</string>
+	<string name="add_event_user_thought_radio_negative">No</string>
+	<string name="add_event_user_category_hint">Categorize this thought.</string>
+	
+	<string-array name="add_event_user_category_titles">
+	    <item>Mind reading</item>
+	    <item>Fourtune-telling</item>
+	    <item>Catastrophizing</item>
+	    <item>Labeling</item>
+	    <item>Discounting positives</item>
+	    <item>Dark glasses</item>
+	    <item>Black-and-white thinking</item>
+	    <item>Over-generalizing</item>
+	    <item>Personalizing</item>
+	    <item>Shoulds</item>
+	    <item>Unfair comparisons</item>
+	</string-array>
+	
+	<string name="add_event_user_category_instruction">See if the negative thought you entered corresponds to any of these common types of negative thinking.</string>
+	
+	<string-array name="add_event_user_category_descriptions">
+	    <item>You assume what others think about you.</item>
+	    <item>You predict the future will be negative.</item>
+	    <item>You believe that if something bad happens it will be awful and unbearable.</item>
+	    <item>You put negative labels on yourself and others.</item>
+	    <item>You only think about the bad side of things.</item>
+	    <item>You claim that the positive things you do are not important.</item>
+	    <item>You think about things in black-and-white terms; e.g., good or bad, all or none.</item>
+	    <item>You make conclusions about how things are based on one event.</item>
+	    <item>You blame yourself for negative events.</item>
+	    <item>You view things in term of how they "should" be, not how they are.</item>
+	    <item>You compare yourself to others doing better than you.</item>
+	</string-array>
+	
 	<!-- fragment_points_sumamry -->
 	<string name="points_summary_badge_description">Add to Diary</string>
 	<string name="points_summary_value_prefix">You have earned&#8230;</string>
@@ -94,4 +139,8 @@
 	<string name="cannon_summary_high_score_prefix">Your high score for this game is&#8230;</string>
 	<string name="cannon_summary_see_more">(view complete list of high scores)</string>
 	<string name="cannon_summary_high_scores_dialog_title">Command the Cannon High Scores</string>
+	
+	<!-- fragment_mood_graph -->
+	<string name="mood_graph_previous_day">&#x21e6;</string>
+	<string name="mood_graph_next_day">&#x21e8;</string>
 </resources>

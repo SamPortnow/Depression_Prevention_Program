@@ -65,7 +65,7 @@
             android:id="@+id/not_help"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/bad"
+            android:text="@string/add_event_user_feeling_terrible"
             android:textSize="14sp" >
         </TextView>
 
@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:text="@string/good"
+            android:text="@string/add_event_user_feeling_great"
             android:textSize="14sp" >
         </TextView>
     </LinearLayout>

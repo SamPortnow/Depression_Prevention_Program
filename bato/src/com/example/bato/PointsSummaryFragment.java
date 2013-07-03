@@ -1,6 +1,7 @@
 package com.example.bato;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,8 +22,8 @@ public class PointsSummaryFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-	    		AddEventFragment fragment = new AddEventFragment();
-	    		fragment.show(getFragmentManager(), "add_event_fragment");
+				Intent intent = new Intent(getActivity(), AddEventActivity.class);				
+				startActivity(intent);	
 			}
 		});
 		
