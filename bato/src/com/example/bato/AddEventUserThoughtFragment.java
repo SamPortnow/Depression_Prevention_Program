@@ -1,6 +1,9 @@
 package com.example.bato;
 
+import java.util.HashSet;
+
 import android.app.Fragment;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
@@ -8,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,16 +39,17 @@ public class AddEventUserThoughtFragment extends Fragment
 	    
 		CalendarDbAdapter calendarDbAdapter = new CalendarDbAdapter(getActivity()).open();
 		Cursor cursor = calendarDbAdapter.fetchThoughts();
-		int index = cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT);
+		int index = cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT);	
 		
-		String[] thoughts = new String[cursor.getCount()];
+		HashSet<String> thoughts = new HashSet<String>(cursor.getCount());
 		
 		while (cursor.moveToNext() == true)
-			thoughts[cursor.getPosition()] = cursor.getString(index);
+			thoughts.add(cursor.getString(index));
 		
 		cursor.close();
 		
-		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, thoughts);
+		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
+		mHistoryAdapter.addAll(thoughts);
 		
 		mHistoryListView = (ListView) view.findViewById(R.id.user_thought_history);
 		mHistoryListView.setAdapter(mHistoryAdapter);
@@ -99,7 +104,26 @@ public class AddEventUserThoughtFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-				//getFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddEventUserFeelingFragment()).commit();
+			    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+			    
+				Bundle eventBundle = getArguments();
+				eventBundle.putString("user_thought", mThoughtEditText.getText().toString());
+				
+				if (mIsNegativeRadioGroup.getCheckedRadioButtonId() == R.id.radio_positive)
+				{
+					Fragment fragment = new AddEventUserCategoryFragment();
+					fragment.setArguments(eventBundle);
+					
+					getFragmentManager()
+						.beginTransaction()
+						.replace(R.id.fragment_container, fragment)
+						.commit();
+				}
+				else
+				{
+					((AddEventActivity) getActivity()).createNewEvent();
+				}
 			}
 		});
 	    

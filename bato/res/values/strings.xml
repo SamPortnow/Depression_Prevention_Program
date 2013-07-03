@@ -76,6 +76,7 @@
 	</string-array>
 	
 	<!-- activity_add_event -->
+	<string name="add_event_create_success">Added a new event</string>
 	<string name="add_event_cancel_task">Cancel</string>
 	<string name="add_event_next_fragment">&#x21e8;</string>	
 	<string name="add_event_user_activity_hint">What are you doing?</string>
@@ -86,6 +87,37 @@
 	<string name="add_event_user_thought_is_negative">Is this a negative thought?</string>
 	<string name="add_event_user_thought_radio_positive">Yes</string>
 	<string name="add_event_user_thought_radio_negative">No</string>
+	<string name="add_event_user_category_hint">Categorize this thought.</string>
+	
+	<string-array name="add_event_user_category_titles">
+	    <item>Mind reading</item>
+	    <item>Fourtune-telling</item>
+	    <item>Catastrophizing</item>
+	    <item>Labeling</item>
+	    <item>Discounting positives</item>
+	    <item>Dark glasses</item>
+	    <item>Black-and-white thinking</item>
+	    <item>Over-generalizing</item>
+	    <item>Personalizing</item>
+	    <item>Shoulds</item>
+	    <item>Unfair comparisons</item>
+	</string-array>
+	
+	<string name="add_event_user_category_instruction">See if the negative thought you entered corresponds to any of these common types of negative thinking.</string>
+	
+	<string-array name="add_event_user_category_descriptions">
+	    <item>You assume what others think about you.</item>
+	    <item>You predict the future will be negative.</item>
+	    <item>You believe that if something bad happens it will be awful and unbearable.</item>
+	    <item>You put negative labels on yourself and others.</item>
+	    <item>You only think about the bad side of things.</item>
+	    <item>You claim that the positive things you do are not important.</item>
+	    <item>You think about things in black-and-white terms; e.g., good or bad, all or none.</item>
+	    <item>You make conclusions about how things are based on one event.</item>
+	    <item>You blame yourself for negative events.</item>
+	    <item>You view things in term of how they "should" be, not how they are.</item>
+	    <item>You compare yourself to others doing better than you.</item>
+	</string-array>
 	
 	<!-- fragment_points_sumamry -->
 	<string name="points_summary_badge_description">Add to Diary</string>

@@ -1,6 +1,9 @@
 package com.example.bato;
 
+import java.util.HashSet;
+
 import android.app.Fragment;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
@@ -8,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -34,14 +38,15 @@ public class AddEventUserActivityFragment extends Fragment
 		Cursor cursor = calendarDbAdapter.fetchActivities();
 		int index = cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_ACTIVITY);
 		
-		String[] activities = new String[cursor.getCount()];
+		HashSet<String> activities = new HashSet<String>(cursor.getCount());
 		
 		while (cursor.moveToNext() == true)
-			activities[cursor.getPosition()] = cursor.getString(index);
+			activities.add(cursor.getString(index));
 		
 		cursor.close();
 		
-		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, activities);
+		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
+		mHistoryAdapter.addAll(activities);
 		
 		mHistoryListView = (ListView) view.findViewById(R.id.user_activity_history);
 		mHistoryListView.setAdapter(mHistoryAdapter);
@@ -86,10 +91,19 @@ public class AddEventUserActivityFragment extends Fragment
 		{
 			@Override
 			public void onClick(View v)
-			{
+			{			    
+			    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+				
+				Bundle eventBundle = getArguments();
+				eventBundle.putString("user_activity", mActivityEditText.getText().toString());
+				
+				Fragment fragment = new AddEventUserFeelingFragment();
+				fragment.setArguments(eventBundle);
+				
 				getFragmentManager()
 					.beginTransaction()
-					.replace(R.id.fragment_container, new AddEventUserFeelingFragment())
+					.replace(R.id.fragment_container, fragment)
 					.commit();
 			}
 		});
