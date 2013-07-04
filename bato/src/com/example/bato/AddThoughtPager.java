@@ -114,8 +114,6 @@ public class AddThoughtPager extends Activity
 	{
 		CalendarDbAdapter mCalHelper = new CalendarDbAdapter(mContext);
 		mCalHelper.open();
-		Log.e("thought is", "" + thought);
-		Log.e("type is", "" + mType);
 		mCalHelper.createType(thought, mType);
 		mCalHelper.close();
 	}

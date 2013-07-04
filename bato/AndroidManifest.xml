@@ -26,7 +26,8 @@
             </intent-filter>
         </activity>
         
-        <activity android:name="com.example.bato.AddEventActivity" />
+        <activity android:name=
+            "com.example.bato.AddEventActivity" />
         
         <activity android:name="com.example.bato.MoodGraphActivity" />
         <activity
@@ -38,7 +39,7 @@
         <service android:name="com.example.bato.Post" />
         <service android:name="com.example.bato.PostGame" />
 
-        <activity android:name=".AddThoughtPager" />
+        <activity android:name="com.example.bato.AddThoughtPager" />
         <activity android:name="com.example.bato.CaptureActivity" />
         <activity android:name="com.example.bato.DestroyerGame" />
     </application>
