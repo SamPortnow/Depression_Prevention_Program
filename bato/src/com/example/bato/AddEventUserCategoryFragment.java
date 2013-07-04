@@ -28,7 +28,7 @@ public class AddEventUserCategoryFragment extends Fragment
 
 	    View view = inflater.inflate(R.layout.fragment_add_event_user_category, null);
 	    
-	    String[] categoryTitles = getResources().getStringArray(R.array.add_event_user_category_titles);
+	    //String[] categoryTitles = getResources().getStringArray(R.array.add_event_user_category_titles);
 	    mCategoryDescriptions = getResources().getStringArray(R.array.add_event_user_category_descriptions);
 	    
 	    mCategoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_single_choice, mCategoryDescriptions);
