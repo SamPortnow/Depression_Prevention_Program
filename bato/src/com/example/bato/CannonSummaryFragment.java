@@ -27,8 +27,8 @@ public class CannonSummaryFragment extends Fragment
 		
 		View view = getView();		
 		
-		if (isUnlocked() == true)
-		{
+//		if (isUnlocked() == true)
+//		{
 			view.findViewById(R.id.cannon_summary_container).setVisibility(View.VISIBLE);
 			view.findViewById(R.id.cannon_summary_locked_container).setVisibility(View.GONE);
 			
@@ -61,12 +61,12 @@ public class CannonSummaryFragment extends Fragment
 					builder.create().show();
 				}
 			});
-		}
-		else
-		{
-			view.findViewById(R.id.cannon_summary_locked_container).setVisibility(View.VISIBLE);
-			view.findViewById(R.id.cannon_summary_container).setVisibility(View.GONE);
-		}
+		//}
+//		else
+//		{
+//			view.findViewById(R.id.cannon_summary_locked_container).setVisibility(View.VISIBLE);
+//			view.findViewById(R.id.cannon_summary_container).setVisibility(View.GONE);
+		//}
 	}
 	
 	private boolean isUnlocked()

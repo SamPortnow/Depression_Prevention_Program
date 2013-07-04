@@ -124,7 +124,6 @@ public class CalendarDbAdapter {
     public long createChallenging(String mNegativeThought, String mChallengingThought, int belief, int helpful)
     {
         ContentValues initialValues = new ContentValues();
-        Log.e("I am here", "poo" + mChallengingThought);
         initialValues.put(COLUMN_NAME_NEGATIVE_THOUGHT, mNegativeThought);
         initialValues.put(COLUMN_NAME_COUNTER_THOUGHT, mChallengingThought);
         initialValues.put(COLUMN_NAME_COUNTER_THOUGHT_BELIEVE, belief);
@@ -262,6 +261,14 @@ public class CalendarDbAdapter {
     {
     
         return mCalendarDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_THOUGHT}, COLUMN_NAME_THOUGHT_TAG+" =?", new String[] {"Yes"}, null, null, null);
+
+    }
+    
+    public Cursor fetchAllChallenging()
+    {
+    	return mCalendarDb.query(DATABASE_TABLE3, new String[] {
+    			KEY_ROWID, COLUMN_NAME_COUNTER_THOUGHT}, 
+    			null, null, null, null, null);
 
     }
     

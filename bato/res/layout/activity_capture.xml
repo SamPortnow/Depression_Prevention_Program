@@ -43,6 +43,7 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:text="@string/Mind_reading_title"
+					android:gravity="center"
                     android:textSize="18sp" >
                 </TextView>
 
@@ -51,7 +52,13 @@
                     android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:text="@string/Mind_reading"
-                    android:textSize="16sp" >
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:paddingLeft="40dp"
+                    android:padding="40dp" 
+                    android:textColor="#D5FFE8"
+                    android:gravity="center"
+                    android:background="@drawable/obj_traincar" >
                 </TextView>
             </LinearLayout>
 
@@ -65,6 +72,7 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:text="@string/Fortunetelling_title"
+					android:gravity="center"
                     android:textSize="18sp" >
                 </TextView>
 
@@ -73,6 +81,12 @@
                     android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:text="@string/Fortunetelling"
+				    android:gravity="center"
+				    android:textStyle="bold"
+                    android:paddingLeft="40dp"
+                    android:padding="40dp" 
+                    android:textColor="#D5FFE8"				    
+                    android:background="@drawable/obj_traincar"
                     android:textSize="16sp" >
                 </TextView>
             </LinearLayout>
@@ -86,6 +100,7 @@
                     android:id="@+id/Catastrophizing_title"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
+					android:gravity="center"
                     android:text="@string/Catastrophizing_title"
                     android:textSize="18sp" >
                 </TextView>
@@ -95,6 +110,12 @@
                     android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:text="@string/Catastrophizing"
+				    android:gravity="center"
+				    android:textStyle="bold"
+				    android:paddingLeft="40dp"
+                    android:padding="40dp" 
+                    android:textColor="#D5FFE8"	
+                    android:background="@drawable/obj_traincar"
                     android:textSize="16sp" >
                 </TextView>
             </LinearLayout>
@@ -109,6 +130,7 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:text="@string/Labeling_title"
+					android:gravity="center"
                     android:textSize="18sp" >
                 </TextView>
 
@@ -117,6 +139,12 @@
                     android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:text="@string/Labeling"
+				    android:gravity="center"
+				    android:textStyle="bold"
+				    android:paddingLeft="40dp"
+                    android:padding="40dp" 
+                    android:textColor="#D5FFE8"	
+                    android:background="@drawable/obj_traincar"
                     android:textSize="16sp" >
                 </TextView>
             </LinearLayout>
@@ -131,6 +159,7 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:text="@string/Discounting_positives_title"
+					android:gravity="center"                    
                     android:textSize="18sp" >
                 </TextView>
 
@@ -139,6 +168,12 @@
                     android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:text="@string/Discounting_positives"
+ 				    android:gravity="center"
+ 				    android:textStyle="bold"
+ 				    android:paddingLeft="40dp"
+                    android:padding="40dp" 
+                    android:textColor="#D5FFE8"	
+                    android:background="@drawable/obj_traincar"                   
                     android:textSize="16sp" >
                 </TextView>
             </LinearLayout>
@@ -151,6 +186,7 @@
                 <TextView
                     android:id="@+id/dark_glasses_title"
                     android:layout_width="300dp"
+ 					android:gravity="center"                   
                     android:layout_height="wrap_content"
                     android:text="@string/Dark_glasses_title"
                     android:textSize="18sp" >
@@ -161,6 +197,12 @@
                     android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:text="@string/Dark_glasses"
+ 				    android:gravity="center"
+ 				    android:textStyle="bold"
+ 				    android:paddingLeft="40dp"
+                    android:padding="40dp" 
+                    android:textColor="#D5FFE8"	
+                    android:background="@drawable/obj_traincar"                   
                     android:textSize="16sp" >
                 </TextView>
             </LinearLayout>
@@ -173,6 +215,7 @@
                 <TextView
                     android:id="@+id/black_and_white_thinking_title"
                     android:layout_width="300dp"
+  					android:gravity="center"                  
                     android:layout_height="wrap_content"
                     android:text="@string/Black_and_white_thinking_title"
                     android:textSize="18sp" >
@@ -183,6 +226,12 @@
                     android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:text="@string/Black_and_white_thinking"
+ 				    android:gravity="center"
+ 				    android:textStyle="bold"
+ 				    android:paddingLeft="40dp"
+                    android:padding="40dp" 
+                    android:textColor="#D5FFE8"
+                    android:background="@drawable/obj_traincar"                   
                     android:textSize="16sp" >
                 </TextView>
             </LinearLayout>
@@ -196,6 +245,7 @@
                     android:id="@+id/overgeneralizing_title"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
+ 					android:gravity="center"                   
                     android:text="@string/Overgeneralizing_title"
                     android:textSize="18sp" >
                 </TextView>
@@ -205,6 +255,12 @@
                     android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:text="@string/Overgeneralizing"
+ 				    android:gravity="center"
+ 				    android:textStyle="bold"
+ 				    android:paddingLeft="40dp"
+                    android:padding="40dp" 
+                    android:textColor="#D5FFE8"	
+                    android:background="@drawable/obj_traincar"                   
                     android:textSize="16sp" >
                 </TextView>
             </LinearLayout>
@@ -218,6 +274,7 @@
                     android:id="@+id/personalizing_title"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
+  					android:gravity="center"                  
                     android:text="@string/Personalizing_title"
                     android:textSize="18sp" >
                 </TextView>
@@ -227,6 +284,12 @@
                     android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:text="@string/Personalizing"
+ 				    android:gravity="center"
+ 				    android:textStyle="bold"
+ 				    android:paddingLeft="40dp"
+                    android:padding="40dp" 
+                    android:textColor="#D5FFE8"
+                    android:background="@drawable/obj_traincar"                   
                     android:textSize="16sp" >
                 </TextView>
             </LinearLayout>
@@ -240,6 +303,8 @@
                     android:id="@+id/shoulds_title"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
+ 					android:gravity="center"
+ 					android:textStyle="bold"                   
                     android:text="@string/Shoulds_title"
                     android:textSize="18sp" >
                 </TextView>
@@ -249,6 +314,12 @@
                     android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:text="@string/Shoulds"
+					android:gravity="center"
+ 					android:textStyle="bold" 
+                    android:paddingLeft="40dp"
+                    android:padding="40dp" 
+                    android:textColor="#D5FFE8"	
+                    android:background="@drawable/obj_traincar"    
                     android:textSize="16sp" >
                 </TextView>
             </LinearLayout>
@@ -263,6 +334,7 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:text="@string/Unfair_comparisons_title"
+  					android:gravity="center"
                     android:textSize="18sp" >
                 </TextView>
 
@@ -271,6 +343,12 @@
                     android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:text="@string/Unfair_comparisons"
+  					android:textStyle="bold" 
+                    android:paddingLeft="40dp"
+                    android:padding="40dp"           
+					android:textColor="#D5FFE8"
+                    android:background="@drawable/obj_traincar"                           
+   					android:gravity="center"                 
                     android:textSize="16sp" >
                 </TextView>
             </LinearLayout>

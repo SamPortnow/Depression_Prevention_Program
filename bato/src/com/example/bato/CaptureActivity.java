@@ -3,6 +3,7 @@ package com.example.bato;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -20,6 +21,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
@@ -96,10 +99,25 @@ public class CaptureActivity extends Activity
 	    //layout inflater
 	    final LayoutInflater inflater = LayoutInflater.from(this);
 	    populatePositiveWords(mContext);
+	    
+	    //Cursor cursor = mCalHelper.
 	    //set content view
 	    setContentView(R.layout.activity_capture);
+	    CalendarDbAdapter mCalHelper = new CalendarDbAdapter(mContext);
+	    mCalHelper.open();
+	    Cursor cursor = mCalHelper.fetchAllChallenging();
+	    ArrayList <String> mChallengingThoughts = new ArrayList<String>();
+	    while (cursor.moveToNext())
+	    {
+	    	String mThought = cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_COUNTER_THOUGHT));
+	    	mChallengingThoughts.add(mThought);
+	    }
+	    cursor.close();
+	    mCalHelper.close();
 	    //the autocompletetextview for creating challenging thoughts
 	    mChallengingThought = (AutoCompleteTextView) findViewById(R.id.thoughts);
+	    ArrayAdapter<String> adapter = new ArrayAdapter<String> (this, android.R.layout.simple_dropdown_item_1line, mChallengingThoughts);
+	    mChallengingThought.setAdapter(adapter);
 	    //the relativelayout that will contain the "dancing" cloud
 	    container = (RelativeLayout) findViewById(R.id.container);
 	    //the scroll that contains the train that will jump into the view
@@ -239,7 +257,7 @@ public class CaptureActivity extends Activity
 						public void onAnimationEnd(Animation arg0) 
 						{
 							AlertDialog.Builder build_believe = new AlertDialog.Builder(mText);	
-							View view =  inflater.inflate(R.layout.believe_dialog, null);
+							final View view =  inflater.inflate(R.layout.believe_dialog, null);
 							build_believe.setView(view);
 							build_believe.setTitle("Rate your thought");
 							build_believe.setPositiveButton("OK", new DialogInterface.OnClickListener()
@@ -251,7 +269,6 @@ public class CaptureActivity extends Activity
 								{
 									CalendarDbAdapter mCalHelper = new CalendarDbAdapter(CaptureActivity.this.getApplicationContext());
 									mCalHelper.open();
-									View view =  inflater.inflate(R.layout.believe_dialog, null);
 									int belief = ((SeekBar) view.findViewById(R.id.believe)).getProgress();
 									int helpful = ((SeekBar) view.findViewById(R.id.help)).getProgress();
 									mCalHelper.createChallenging(mNeg.getText().toString(), 

@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -119,9 +120,9 @@ public class DestroyerGame extends Activity
 								Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
 						        instructions.setTypeface(typeFace);
 						        instructions.setTextColor(Color.BLUE);
-						        instructions.setText("Your task is to drag a thought into the cannon and tap the screen where you want the positive thought to go. " +
+						        instructions.setText("Your task is to drag a challenging thought into the cannon and tap the screen where you want the challenging thought to go. " +
 						        		"If it hits the negative thought, great job! You destroyed it. If it doesn't, no worries," +
-						        		" try again. The game is over when the screen is filled with positive thoughts!");
+						        		" try again. The game is over when the screen is filled with challenging thoughts!");
 						        builder.setView(lLayout);
 								builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
 								{
