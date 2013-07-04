@@ -31,7 +31,7 @@ public class AddEventUserCategoryFragment extends Fragment
 	    String[] categoryTitles = getResources().getStringArray(R.array.add_event_user_category_titles);
 	    mCategoryDescriptions = getResources().getStringArray(R.array.add_event_user_category_descriptions);
 	    
-	    mCategoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_single_choice, categoryTitles);
+	    mCategoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_single_choice, mCategoryDescriptions);
 	    
 	    mCategoryListView = (ListView) view.findViewById(R.id.user_category_choices);
 	    mCategoryListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);

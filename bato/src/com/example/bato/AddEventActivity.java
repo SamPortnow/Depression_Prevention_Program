@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -82,7 +83,7 @@ public class AddEventActivity extends Activity
 			
 			if (userCategory != null)
 				calendarDbAdapter.createType(userThought, userCategory);
-			
+						
 			calendarDbAdapter.close();
 			
 			Toast.makeText(this, R.string.add_event_create_success, Toast.LENGTH_SHORT).show();
