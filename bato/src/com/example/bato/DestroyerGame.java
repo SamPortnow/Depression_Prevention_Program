@@ -63,7 +63,7 @@ public class DestroyerGame extends Activity
 	    //the score, just the text
 	    TextView score = (TextView) findViewById(R.id.score);
 	    score.setText("SCORE");
-		Typeface typeFace=Typeface.createFromAsset(mContext.getAssets(),"fonts/Humor-Sans.ttf");
+		Typeface typeFace=Typeface.createFromAsset(mContext.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 		score.setTypeface(typeFace);
 
 
@@ -86,7 +86,7 @@ public class DestroyerGame extends Activity
 	        	LayoutInflater inflation = LayoutInflater.from(this); 
 				LinearLayout lLayout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
 				TextView instructions = (TextView) lLayout.findViewById(R.id.instructions);
-				Typeface Face=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+				Typeface Face=Typeface.createFromAsset(getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 		        instructions.setTypeface(Face);
 		        instructions.setTextColor(Color.BLUE);
 		        instructions.setText("Here, you can destroy your negative thoughts");
@@ -101,7 +101,7 @@ public class DestroyerGame extends Activity
 			        	LayoutInflater inflation = LayoutInflater.from(context); 
 						LinearLayout lLayout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
 						TextView instructions = (TextView) lLayout.findViewById(R.id.instructions);
-						Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+						Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 				        instructions.setTypeface(typeFace);
 				        instructions.setTextColor(Color.BLUE);
 				        instructions.setText("A list of the all the thoughts you came up with to challenge your negative thoughts will display on the left.");
@@ -117,7 +117,7 @@ public class DestroyerGame extends Activity
 					        	LayoutInflater inflation = LayoutInflater.from(context); 
 								LinearLayout lLayout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
 								TextView instructions = (TextView) lLayout.findViewById(R.id.instructions);
-								Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+								Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 						        instructions.setTypeface(typeFace);
 						        instructions.setTextColor(Color.BLUE);
 						        instructions.setText("Your task is to drag a challenging thought into the cannon and tap the screen where you want the challenging thought to go. " +
@@ -135,7 +135,7 @@ public class DestroyerGame extends Activity
 							        	LayoutInflater inflation = LayoutInflater.from(context); 
 										LinearLayout lLayout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
 										TextView instructions = (TextView) lLayout.findViewById(R.id.instructions);
-										Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+										Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 								        instructions.setTypeface(typeFace);
 								        instructions.setTextColor(Color.BLUE);
 								        instructions.setText("Try to remember which thoughts you believe, and which ones " +

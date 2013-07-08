@@ -110,7 +110,15 @@ public class CaptureActivity extends Activity
 	    while (cursor.moveToNext())
 	    {
 	    	String mThought = cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_COUNTER_THOUGHT));
-	    	mChallengingThoughts.add(mThought);
+	    	if (! mChallengingThoughts.contains(mThought))
+	    	{
+	    		Log.e("it is", "" + mThought);
+	    		mChallengingThoughts.add(mThought);
+	    	}
+	    	else
+	    	{
+	    		Log.e("well here is", "" +mThought);
+	    	}
 	    }
 	    cursor.close();
 	    mCalHelper.close();
@@ -242,7 +250,7 @@ public class CaptureActivity extends Activity
 					final String mChallenging = mChallengingThought.getText().toString();
 					mPos[mPosCounter] = new PositiveThought(arg0.getContext(), null, inputLine);
 					mLaserBeam[mPosCounter] = new LaserBeam(arg0.getContext(), mPosCounter);
-					Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Action_Man.ttf");
+					Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 					mPos[mPosCounter].setTypeface(typeFace);
 					mPos[mPosCounter].setText(inputLine);
 					AlphaAnimation mGoAddLaser = new AlphaAnimation(0.0f, 1.0f);
@@ -418,7 +426,7 @@ public class CaptureActivity extends Activity
 	        	LayoutInflater inflation = LayoutInflater.from(this); 
 				LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
 				TextView instructions = (TextView) layout.findViewById(R.id.instructions);
-				Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+				Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 		        instructions.setTypeface(typeFace);
 		        instructions.setTextColor(Color.BLUE);
 		        instructions.setText("Not all of the negative thoughts that we have are true. For example...");
@@ -433,7 +441,7 @@ public class CaptureActivity extends Activity
 			        	LayoutInflater inflation = LayoutInflater.from(context); 
 						LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
 						TextView instructions = (TextView) layout.findViewById(R.id.instructions);
-						Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+						Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 				        instructions.setTypeface(typeFace);
 				        instructions.setTextColor(Color.BLUE);
 				        instructions.setText("You may think, 'I am stupid', even though there's evidence against it. " +
@@ -450,7 +458,7 @@ public class CaptureActivity extends Activity
 					        	LayoutInflater inflation = LayoutInflater.from(context); 
 								LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
 								TextView instructions = (TextView) layout.findViewById(R.id.instructions);
-								Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+								Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 						        instructions.setTypeface(typeFace);
 						        instructions.setTextColor(Color.BLUE);
 						        instructions.setText("But sometimes, coming up with the evidence against those negative thoughts is hard. " +
@@ -467,7 +475,7 @@ public class CaptureActivity extends Activity
 							        	LayoutInflater inflation = LayoutInflater.from(context); 
 										LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
 										TextView instructions = (TextView) layout.findViewById(R.id.instructions);
-										Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Humor-Sans.ttf");
+										Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 								        instructions.setTypeface(typeFace);
 								        instructions.setTextColor(Color.BLUE);
 								        instructions.setText("To start, click on the type of thought you want to challenge. " +

@@ -32,7 +32,7 @@ public class Score extends View
         fin = 0;
         size = getResources().getDimensionPixelSize(R.dimen.myFontSize);
     	score.setAntiAlias(true);
-		Typeface typeFace=Typeface.createFromAsset(mContext.getAssets(),"fonts/Humor-Sans.ttf");
+		Typeface typeFace=Typeface.createFromAsset(mContext.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
     	score.setTypeface(typeFace);
     	score.setTextSize(size);
 	    score.setColor(Color.CYAN);

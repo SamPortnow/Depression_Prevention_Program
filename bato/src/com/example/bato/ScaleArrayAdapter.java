@@ -32,7 +32,7 @@ public class ScaleArrayAdapter extends ArrayAdapter<String> implements OnTouchLi
     {
         View v = super.getView(position, convertView, parent);
         TextView textView = (TextView) v.findViewById(android.R.id.text1);
-		Typeface typeFace=Typeface.createFromAsset(this.getContext().getAssets(),"fonts/Action_Man.ttf");
+		Typeface typeFace=Typeface.createFromAsset(this.getContext().getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 		textView.setTypeface(typeFace);
 		index = position;
         v.setOnTouchListener(this);

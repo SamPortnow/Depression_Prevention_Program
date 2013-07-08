@@ -36,7 +36,7 @@ public class NegativeThoughtDestroyer extends TextView
     	width = gameView.width/3;
     	height = gameView.height/4;
     	layout(0, 0, width, height);
-		Typeface typeFace=Typeface.createFromAsset(this.getContext().getAssets(),"fonts/Humor-Sans.ttf");
+		Typeface typeFace=Typeface.createFromAsset(this.getContext().getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 		setTypeface(typeFace);
 	}
 	

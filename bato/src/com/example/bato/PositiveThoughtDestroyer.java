@@ -37,7 +37,7 @@ public class PositiveThoughtDestroyer extends TextView
     	setGravity(Gravity.CENTER);
     	setTextSize(15);
     	setTextColor(Color.RED);
-		Typeface typeFace=Typeface.createFromAsset(this.getContext().getAssets(),"fonts/Action_Man.ttf");
+		Typeface typeFace=Typeface.createFromAsset(this.getContext().getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 		setTypeface(typeFace);
     	setDrawingCacheEnabled(true);
     	DestroyerGame mDestroy = (DestroyerGame) this.getContext();

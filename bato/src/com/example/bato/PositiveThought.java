@@ -28,7 +28,7 @@ public class PositiveThought extends TextView
     	this.setGravity(Gravity.CENTER);
     	this.setTextSize(15);
     	this.setTextColor(Color.RED);
-		Typeface typeFace=Typeface.createFromAsset(this.getContext().getAssets(),"fonts/Action_Man.ttf");
+		Typeface typeFace=Typeface.createFromAsset(this.getContext().getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 		setTypeface(typeFace);
     	this.setDrawingCacheEnabled(true);
     	this.setBackgroundResource(R.drawable.whitecloud);

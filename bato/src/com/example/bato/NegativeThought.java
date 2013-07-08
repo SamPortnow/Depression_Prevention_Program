@@ -41,7 +41,7 @@ public class NegativeThought extends TextView
     	width = container.getWidth()/3;
     	height = container.getHeight()/4;
     	layout(0, 0, width, height);
-		Typeface typeFace=Typeface.createFromAsset(this.getContext().getAssets(),"fonts/Humor-Sans.ttf");
+		Typeface typeFace=Typeface.createFromAsset(this.getContext().getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 		setTypeface(typeFace);
 	}
 	
