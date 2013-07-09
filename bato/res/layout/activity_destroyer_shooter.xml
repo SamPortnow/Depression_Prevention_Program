@@ -15,49 +15,47 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="right"
             android:background="@android:color/holo_blue_light"
+            android:gravity="right"
             android:textIsSelectable="true" >
         </TextView>
 
-        <com.example.bato.Score
+        <com.samportnow.bato.Score
             android:id="@+id/score_view"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/holo_blue_light"
-            android:gravity="center" >
-        </com.example.bato.Score>
+            android:gravity="center" />
     </LinearLayout>
 
     <ListView
         android:id="@+id/listview"
         android:layout_width="75dp"
         android:layout_height="wrap_content"
-        android:dividerHeight="30dp"
         android:background="@drawable/back"
+        android:dividerHeight="30dp"
         android:drawSelectorOnTop="false"
         android:scrollbars="vertical"
         android:textColor="#ffffff" >
     </ListView>
 
-    <com.example.bato.DestroyerGameView
+    <com.samportnow.bato.DestroyerGameView
         android:id="@+id/anim_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/score_stuff"
-        android:layout_toRightOf="@id/listview" >
-    </com.example.bato.DestroyerGameView>
+        android:layout_toRightOf="@id/listview" />
 
     <ImageView
         android:id="@+id/cannon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:background="@drawable/cannon"
         android:contentDescription="@string/destroyer_shooter_cannon_content_description"
         android:gravity="center"
-		android:layout_centerHorizontal="true"
         android:padding="5dip"
         android:text="@string/destroy"
         android:textColor="@android:color/white"
