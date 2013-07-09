@@ -1,5 +1,7 @@
 package com.samportnow.bato;
 
+import com.samportnow.bato.capture.BattleField;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;

@@ -1,4 +1,4 @@
-package com.samportnow.bato;
+package com.samportnow.bato.capture;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.samportnow.bato.R;
 
 public class NegativeThought extends TextView
 {

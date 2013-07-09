@@ -1,6 +1,5 @@
-package com.samportnow.bato;
+package com.samportnow.bato.capture;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,8 +7,8 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.View;
 
+import com.samportnow.bato.R;
 
-@SuppressLint("ViewConstructor")
 public class LaserBeam extends View
 {
 	Paint mLaserPaint;
@@ -39,9 +38,15 @@ public class LaserBeam extends View
 	int yOfCenter;
 	float offset;
 	
-	public LaserBeam(Context context, int mPosition)
+	public LaserBeam(Context context)
 	{
 		super(context);
+	}
+	
+	public LaserBeam(Context context, int mPosition)
+	{
+		this(context);
+		
 		Position = mPosition;
 		mCapture = (CaptureActivity) context;
 		mLaserPaint = new Paint();

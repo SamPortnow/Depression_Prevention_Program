@@ -1,4 +1,4 @@
-package com.samportnow.bato;
+package com.samportnow.bato.capture;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,9 +42,14 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.samportnow.bato.CalendarDbAdapter;
+import com.samportnow.bato.MainActivity;
+import com.samportnow.bato.R;
+
 public class CaptureActivity extends Activity
 {
-
+	private static final int THOUGHTS_CREATION_LIMIT = 4;
+	
 	private static Set<String> mNegativeWords;
 	HorizontalScrollView train;
 	RelativeLayout container;
@@ -243,11 +248,9 @@ public class CaptureActivity extends Activity
 			
 		final Button mCreateThought = (Button) findViewById(R.id.scale_it);
 
-		// disable the button after 4 thoughts
-		if (mPosCounter == 4)
-		{
-			mCreateThought.setClickable(false);
-		}
+		if (mPosCounter == THOUGHTS_CREATION_LIMIT)
+			mCreateThought.setEnabled(false);
+			
 		// set an onclicklistener for the create button
 		// make sure that there are no neg words, negating statements
 		mCreateThought.setOnClickListener(new OnClickListener()
@@ -297,7 +300,8 @@ public class CaptureActivity extends Activity
 
 				else
 				{
-					mCreateThought.setClickable(false);
+					mCreateThought.setEnabled(false);
+					
 					final String mChallenging = mChallengingThought.getText().toString();
 					mPos[mPosCounter] = new PositiveThought(arg0.getContext(), null, inputLine);
 					mLaserBeam[mPosCounter] = new LaserBeam(arg0.getContext(), mPosCounter);
@@ -317,6 +321,7 @@ public class CaptureActivity extends Activity
 							final View view = inflater.inflate(R.layout.believe_dialog, null);
 							build_believe.setView(view);
 							build_believe.setTitle("Rate your thought");
+							build_believe.setCancelable(false);
 							build_believe.setPositiveButton("OK", new DialogInterface.OnClickListener()
 							{
 
@@ -364,9 +369,10 @@ public class CaptureActivity extends Activity
 										mBattle.yVelocity -= 2;
 
 									}
-									mCreateThought.setClickable(true);
+									mCreateThought.setEnabled(true);
+									
 									mPosCounter += 1;
-									if (mPosCounter == 4)
+									if (mPosCounter >= THOUGHTS_CREATION_LIMIT)
 									{
 										// mPosHolder.startAnimation(mGameOver);
 										mBattle.xVelocity = 5;

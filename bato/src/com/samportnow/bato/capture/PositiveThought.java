@@ -1,4 +1,4 @@
-package com.samportnow.bato;
+package com.samportnow.bato.capture;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.samportnow.bato.R;
 
 @SuppressLint("ViewConstructor")
 public class PositiveThought extends TextView

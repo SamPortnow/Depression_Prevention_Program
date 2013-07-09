@@ -1,4 +1,4 @@
-package com.samportnow.bato;
+package com.samportnow.bato.capture;
 
 import android.content.Context;
 import android.graphics.Canvas;
