@@ -16,7 +16,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
