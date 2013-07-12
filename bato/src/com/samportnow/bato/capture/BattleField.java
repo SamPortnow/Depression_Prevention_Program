@@ -4,9 +4,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.SurfaceView;
 
-public class BattleField extends View
+public class BattleField extends SurfaceView
 {
 	int x;
 	int y;
@@ -60,6 +60,8 @@ public class BattleField extends View
 
         			if (! mGameOver)
         			{
+        				// need to change this. im in an if statement here. this
+        				// obviously makes NO sense
         				if (boundLess && (x > xLessBound))
         				{
         					boundLess = false;

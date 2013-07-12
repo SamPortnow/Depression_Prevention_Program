@@ -3,6 +3,7 @@ package com.samportnow.bato.capture;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -33,6 +34,8 @@ public class PositiveThought extends TextView
     	this.setBackgroundResource(R.drawable.whitecloud);
 	    this.setFocusableInTouchMode(true);
 	    this.setVisibility(View.INVISIBLE);
+        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
+        setTypeface(typeFace); 
     	RelativeLayout container = (RelativeLayout) mCapture.findViewById(R.id.container);
     	width = container.getWidth()/4;
     	height = container.getHeight()/4;

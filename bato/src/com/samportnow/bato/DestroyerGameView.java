@@ -8,9 +8,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.SurfaceView;
 
-public class DestroyerGameView extends View
+public class DestroyerGameView extends SurfaceView
 {
 	Context mContext; 
 	DestroyerGame mDestroyer;

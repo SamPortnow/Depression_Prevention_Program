@@ -20,6 +20,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -341,15 +342,15 @@ public class CaptureActivity extends Activity
 									mGo.setDuration(2000);
 									mLaserBeam[mPosCounter].startAnimation(mGo);
 									mBattle.xLessBound += mBattle.container_width / 12;
-									if (mBattle.x < mBattle.xLessBound)
+									mBattle.xGreatBound -= mBattle.container_width / 12;
+									if (mBattle.x <= mBattle.xLessBound)
 									{
 										mBattle.boundLess = true;
 									}
-									if (mBattle.x > mBattle.xGreatBound)
+									if (mBattle.x >= mBattle.xGreatBound)
 									{
 										mBattle.boundGreat = true;
 									}
-									mBattle.xGreatBound -= mBattle.container_width / 12;
 
 									if (mBattle.xVelocity < 0)
 									{
@@ -432,6 +433,8 @@ public class CaptureActivity extends Activity
 			LayoutInflater inflation = LayoutInflater.from(this);
 			LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
 			TextView instructions = (TextView) layout.findViewById(R.id.instructions);
+	        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
+	        instructions.setTypeface(typeFace);
 			instructions.setTextColor(Color.BLUE);
 			instructions.setText("Not all of the negative thoughts that we have are true. For example...");
 			builder.setView(layout);
@@ -443,8 +446,10 @@ public class CaptureActivity extends Activity
 				{
 					AlertDialog.Builder builder = new AlertDialog.Builder(context);
 					LayoutInflater inflation = LayoutInflater.from(context);
-					LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
+					LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null); 
 					TextView instructions = (TextView) layout.findViewById(R.id.instructions);
+			        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
+			        instructions.setTypeface(typeFace);
 					instructions.setTextColor(Color.BLUE);
 					instructions.setText("You may think, 'I am stupid', even though there's evidence against it. " + "Like the time you got a good grade on a test. Or the time you did well on an interview.");
 					builder.setView(layout);
@@ -458,6 +463,8 @@ public class CaptureActivity extends Activity
 							LayoutInflater inflation = LayoutInflater.from(context);
 							LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
 							TextView instructions = (TextView) layout.findViewById(R.id.instructions);
+					        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
+					        instructions.setTypeface(typeFace);
 							instructions.setTextColor(Color.BLUE);
 							instructions.setText("But sometimes, coming up with the evidence against those negative thoughts is hard. " + "With this game, you will learn to challenge the truthiness of your negative thoughts.");
 							builder.setView(layout);
@@ -471,6 +478,8 @@ public class CaptureActivity extends Activity
 									LayoutInflater inflation = LayoutInflater.from(context);
 									LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
 									TextView instructions = (TextView) layout.findViewById(R.id.instructions);
+							        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
+							        instructions.setTypeface(typeFace);
 									instructions.setTextColor(Color.BLUE);
 									instructions.setText("To start, click on the type of thought you want to challenge. " + "When you come up with enough thoughts that challenge the truthiness of the negative thought, " + "your challenging thoughts will take the negative thought to the 'Destroyer Game' where YOU will get rid of them!");
 									builder.setView(layout);

@@ -2,6 +2,7 @@ package com.samportnow.bato;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.view.Gravity;
 import android.widget.TextView;
@@ -17,11 +18,11 @@ public class NegativeThoughtDestroyer extends TextView
 	public NegativeThoughtDestroyer(Context context) 
 	{	
 		super(context);
-		init();
+		init(context);
 	}	
 	
 	
-	public void init()
+	public void init(Context context)
 	{
 		//set our drawing variables to be the same as the starting points. so we start drawing from there
 		//set the background and text size
@@ -29,6 +30,8 @@ public class NegativeThoughtDestroyer extends TextView
     	setGravity(Gravity.CENTER);
     	setTextSize(15);
     	setTextColor(Color.BLACK);
+        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
+        setTypeface(typeFace);
     	setDrawingCacheEnabled(true);
     	DestroyerGame mDestroy = (DestroyerGame) this.getContext();
     	DestroyerGameView gameView = (DestroyerGameView) mDestroy.findViewById(R.id.anim_view);

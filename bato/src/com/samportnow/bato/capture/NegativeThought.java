@@ -2,6 +2,7 @@ package com.samportnow.bato.capture;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
@@ -24,11 +25,11 @@ public class NegativeThought extends TextView
 	{	
 		super(context);
 		mCapture = (CaptureActivity) context; 
-		init();
+		init(context);
 	}	
 	
 	
-	public void init()
+	public void init(Context context)
 	{
 		//set our drawing variables to be the same as the starting points. so we start drawing from there
 		//set the background and text size
@@ -37,7 +38,8 @@ public class NegativeThought extends TextView
     	setTextSize(15);
     	setTextColor(Color.BLACK);
     	setDrawingCacheEnabled(true);
-    	
+        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
+        setTypeface(typeFace); 
     	RelativeLayout container = (RelativeLayout) mCapture.findViewById(R.id.container);
     	width = container.getWidth()/3;
     	height = container.getHeight()/4;
