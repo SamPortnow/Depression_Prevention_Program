@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.bato"
+    package="com.samportnow.bato"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.bato.MainActivity"
+            android:name="com.samportnow.bato.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,23 +25,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <activity android:name=
-            "com.example.bato.AddEventActivity" />
-        
-        <activity android:name="com.example.bato.MoodGraphActivity" />
-        <activity
-            android:name="com.example.bato.DestroyerShooterView"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" >
-        </activity>
+        <activity android:name="com.samportnow.bato.AddEventActivity" />
+        <activity android:name="com.samportnow.bato.MoodGraphActivity" />
 
-        <service android:name="com.example.bato.Post" />
-        <service android:name="com.example.bato.PostGame" />
+        <service android:name="com.samportnow.bato.Post" />
+        <service android:name="com.samportnow.bato.PostGame" />
 
-        <activity android:name="com.example.bato.AddThoughtPager" />
-        <activity android:name="com.example.bato.CaptureActivity" />
-        <activity android:name="com.example.bato.DestroyerGame" />
+        <activity android:name="com.samportnow.bato.capture.CaptureActivity" />
+        <activity android:name="com.samportnow.bato.DestroyerGame" />
     </application>
 
 </manifest>
