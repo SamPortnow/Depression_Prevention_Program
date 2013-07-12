@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 public class AddEventUserCategoryFragment extends Fragment
 {
+	private String[] mCategoryTitles = null;
 	private String[] mCategoryDescriptions = null;
 	private ArrayAdapter<String> mCategoryAdapter = null;
 	
@@ -28,10 +29,10 @@ public class AddEventUserCategoryFragment extends Fragment
 
 	    View view = inflater.inflate(R.layout.fragment_add_event_user_category, null);
 	    
-	    String[] categoryTitles = getResources().getStringArray(R.array.add_event_user_category_titles);
+	    mCategoryTitles = getResources().getStringArray(R.array.add_event_user_category_titles);
 	    mCategoryDescriptions = getResources().getStringArray(R.array.add_event_user_category_descriptions);
 	    
-	    mCategoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_single_choice, categoryTitles);
+	    mCategoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_single_choice, mCategoryTitles);
 	    
 	    mCategoryListView = (ListView) view.findViewById(R.id.user_category_choices);
 	    mCategoryListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -61,7 +62,7 @@ public class AddEventUserCategoryFragment extends Fragment
 				if (position != ListView.INVALID_POSITION)
 				{
 					Bundle eventBundle = getArguments();
-					eventBundle.putString("user_category", mCategoryDescriptions[position]);
+					eventBundle.putString("user_category", mCategoryTitles[position]);
 				}
 				
 				((AddEventActivity) getActivity()).createNewEvent();
