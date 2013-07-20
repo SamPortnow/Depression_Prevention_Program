@@ -1,5 +1,7 @@
 package com.samportnow.bato;
 
+import com.samportnow.bato.addthought.AddEventActivity;
+
 import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
