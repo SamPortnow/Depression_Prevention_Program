@@ -32,7 +32,7 @@
         <service android:name="com.samportnow.bato.PostGame" />
 
         <activity android:name="com.samportnow.bato.capture.CaptureActivity" />
-        <activity android:name="com.samportnow.bato.DestroyerGame" />
+        <activity android:name="com.samportnow.bato.destroyer.DestroyerGameActivity" />
     </application>
 
 </manifest>

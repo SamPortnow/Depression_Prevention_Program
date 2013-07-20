@@ -7,10 +7,12 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.samportnow.bato.destroyer.DestroyerGameActivity;
 
 public class CannonSummaryFragment extends Fragment
 {
@@ -39,7 +41,7 @@ public class CannonSummaryFragment extends Fragment
 				@Override
 				public void onClick(View v)
 				{
-					Intent intent = new Intent(getActivity(), DestroyerGame.class);
+					Intent intent = new Intent(getActivity(), DestroyerGameActivity.class);
 					startActivity(intent);
 				}
 			});
