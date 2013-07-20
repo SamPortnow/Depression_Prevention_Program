@@ -33,7 +33,6 @@ import android.widget.TextView;
 
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
-import com.samportnow.bato.ScaleArrayAdapter;
 import com.samportnow.bato.database.CalendarDbAdapter;
 
 public class DestroyerGameActivity extends Activity
