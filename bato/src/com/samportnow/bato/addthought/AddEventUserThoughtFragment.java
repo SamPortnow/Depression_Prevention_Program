@@ -21,8 +21,8 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-import com.samportnow.bato.CalendarDbAdapter;
 import com.samportnow.bato.R;
+import com.samportnow.bato.database.CalendarDbAdapter;
 
 public class AddEventUserThoughtFragment extends Fragment
 {

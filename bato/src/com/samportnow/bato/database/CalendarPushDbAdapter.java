@@ -1,4 +1,5 @@
-package com.samportnow.bato;
+package com.samportnow.bato.database;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

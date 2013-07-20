@@ -42,9 +42,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.samportnow.bato.CalendarDbAdapter;
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
+import com.samportnow.bato.database.CalendarDbAdapter;
 
 public class CaptureActivity extends Activity
 {

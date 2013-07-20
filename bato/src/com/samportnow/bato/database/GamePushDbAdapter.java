@@ -1,4 +1,5 @@
-package com.samportnow.bato;
+package com.samportnow.bato.database;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -14,22 +15,22 @@ import android.util.Log;
  * Modified to include ALL activities and values. Will be returned later to the user 
  * so they can rank activities that they WANT to do. User must rank the activities; however. 
  */
-public class UserNameDbAdapter {
+public class GamePushDbAdapter {
 	//FIRST STEP CREATE THE VARS YOU NEED FOR THE DATABASE
-    private static final String DATABASE_NAME = "UserName_data"; //my database name
-    private static final String DATABASE_TABLE = "UserName"; //this particular table is the activities table. I might make a separate table for a ranking system. We will see. 
+    private static final String DATABASE_NAME = "game_push_data"; //my database name
+    private static final String DATABASE_TABLE = "game_push"; //this particular table is the activities table. I might make a separate table for a ranking system. We will see. 
     private static final int DATABASE_VERSION = 2;
-    public static final String COLUMN_NAME_USERNAME="UserName";
+    public static final String COLUMN_NAME_DATABASE="Database";
     public static final String KEY_ROWID = "_id"; //all my vars are now declared 
 
-    private static final String TAG = "UserNameDbAdapter";
-    private DatabaseHelper mUserNameDbHelper;
-    private SQLiteDatabase mUserNameDb;
+    private static final String TAG = "GamePushDbAdapter";
+    private DatabaseHelper mGamePushDbHelper;
+    private SQLiteDatabase mGamePushDb;
     
     private static final String DATABASE_CREATE =  //create the database! you already know!! // modified android code of text . I want to allow for null text! 
-        "create table UserName  (_id integer primary key autoincrement, UserName text)";
+        "create table game_push  (_id integer primary key autoincrement, Database integer)";
     
-    private final Context mUserCtx; //declare a context. activity extends from context. it's a basic part of android app. need to research this more. 
+    private final Context mGamePushCtx; //declare a context. activity extends from context. it's a basic part of android app. need to research this more. 
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -58,8 +59,8 @@ public class UserNameDbAdapter {
      * 
      * @param ctx the Context within which to work
      */
-    public UserNameDbAdapter(Context ctx) {  //ActivitiyDbAdapter? Look into this one sahn. 
-        this.mUserCtx = ctx;
+    public GamePushDbAdapter(Context ctx) {  //ActivitiyDbAdapter? Look into this one sahn. 
+        this.mGamePushCtx = ctx;
     }
 
     /**
@@ -71,14 +72,14 @@ public class UserNameDbAdapter {
      *         initialization call)
      * @throws SQLException if the database could be neither opened or created
      */
-    public UserNameDbAdapter open() throws SQLException {
-        mUserNameDbHelper = new DatabaseHelper(mUserCtx);
-        mUserNameDb = mUserNameDbHelper.getWritableDatabase();
+    public GamePushDbAdapter open() throws SQLException {
+        mGamePushDbHelper = new DatabaseHelper(mGamePushCtx);
+        mGamePushDb = mGamePushDbHelper.getWritableDatabase();
         return this;
     }
 
     public void close() {
-        mUserNameDbHelper.close();
+        mGamePushDbHelper.close();
     }
 
     
@@ -97,11 +98,11 @@ public class UserNameDbAdapter {
     
     //now do a create, update, and fetch functions!!!
     
-    public long createUserName(String UserName)
+    public long createPush(int count)
     {
         ContentValues initialValues = new ContentValues();
-        initialValues.put(COLUMN_NAME_USERNAME, UserName);
-        return mUserNameDb.insert(DATABASE_TABLE, null, initialValues);
+        initialValues.put(COLUMN_NAME_DATABASE, count);
+        return mGamePushDb.insert(DATABASE_TABLE, null, initialValues);
     }
     
  
@@ -115,9 +116,9 @@ public class UserNameDbAdapter {
     }
 	*/
 
-    public Cursor fetchUserName()
+    public Cursor fetchPush()
     {
-    	return mUserNameDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, COLUMN_NAME_USERNAME}, null , null, null, null, null); 
+    	return mGamePushDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, "MAX(+"+COLUMN_NAME_DATABASE+")"}, null , null, null, null, null); 
 
     }
 

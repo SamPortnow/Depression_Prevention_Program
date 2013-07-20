@@ -14,6 +14,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.samportnow.bato.database.GameDbAdapter;
+import com.samportnow.bato.database.GamePushDbAdapter;
+
 import android.app.IntentService;
 import android.content.Intent;
 import android.database.Cursor;

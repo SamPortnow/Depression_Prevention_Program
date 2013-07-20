@@ -13,6 +13,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.samportnow.bato.database.CalendarDbAdapter;
+import com.samportnow.bato.database.CalendarPushDbAdapter;
+
 import android.app.IntentService;
 import android.content.Intent;
 import android.database.Cursor;

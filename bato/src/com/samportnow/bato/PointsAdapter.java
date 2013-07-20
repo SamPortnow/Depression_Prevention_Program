@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import com.samportnow.bato.database.CalendarDbAdapter;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.view.LayoutInflater;

@@ -1,6 +1,7 @@
 package com.samportnow.bato;
 
 import com.samportnow.bato.addthought.AddEventActivity;
+import com.samportnow.bato.database.CalendarDbAdapter;
 
 import android.app.Fragment;
 import android.content.Intent;

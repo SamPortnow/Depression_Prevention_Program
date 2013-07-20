@@ -1,4 +1,4 @@
-package com.samportnow.bato;
+package com.samportnow.bato.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
 
 public class ScaleDbAdapter {
 	//FIRST STEP CREATE THE VARS YOU NEED FOR THE DATABASE

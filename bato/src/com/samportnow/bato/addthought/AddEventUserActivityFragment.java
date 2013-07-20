@@ -19,8 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.samportnow.bato.CalendarDbAdapter;
 import com.samportnow.bato.R;
+import com.samportnow.bato.database.CalendarDbAdapter;
 
 public class AddEventUserActivityFragment extends Fragment
 {

@@ -11,9 +11,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.samportnow.bato.CalendarDbAdapter;
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
+import com.samportnow.bato.database.CalendarDbAdapter;
 
 public class AddEventActivity extends Activity
 {

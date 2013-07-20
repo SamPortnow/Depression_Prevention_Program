@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.samportnow.bato.database.GameDbAdapter;
+import com.samportnow.bato.database.ScaleDbAdapter;
 import com.samportnow.bato.destroyer.DestroyerGameActivity;
 
 public class CannonSummaryFragment extends Fragment
