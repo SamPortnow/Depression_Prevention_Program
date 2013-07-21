@@ -10,7 +10,6 @@ import android.view.View.DragShadowBuilder;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 public class ScaleArrayAdapter extends ArrayAdapter<String> implements OnTouchListener
 {
@@ -28,7 +27,6 @@ public class ScaleArrayAdapter extends ArrayAdapter<String> implements OnTouchLi
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
 		View v = super.getView(position, convertView, parent);
-		TextView textView = (TextView) v.findViewById(android.R.id.text1);
 		index = position;
 		v.setOnTouchListener(this);
 		return v;
