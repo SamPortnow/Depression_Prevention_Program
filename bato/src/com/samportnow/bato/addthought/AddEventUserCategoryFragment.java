@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.haarman.listviewanimations.swinginadapters.prepared.SwingRightInAnimationAdapter;
 import com.samportnow.bato.R;
 
 public class AddEventUserCategoryFragment extends Fragment
@@ -34,11 +35,15 @@ public class AddEventUserCategoryFragment extends Fragment
 		mCategoryTitles = getResources().getStringArray(R.array.add_event_user_category_titles);
 		mCategoryDescriptions = getResources().getStringArray(R.array.add_event_user_category_descriptions);
 
-		mCategoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_single_choice, mCategoryTitles);
+		mCategoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_single_choice, mCategoryTitles);		
 
 		mCategoryListView = (ListView) view.findViewById(R.id.user_category_choices);
 		mCategoryListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		mCategoryListView.setAdapter(mCategoryAdapter);
+		
+		SwingRightInAnimationAdapter animationAdapter = new SwingRightInAnimationAdapter(mCategoryAdapter);
+		animationAdapter.setAbsListView(mCategoryListView);		
+		
+		mCategoryListView.setAdapter(animationAdapter);
 		mCategoryListView.setOnItemClickListener(new OnItemClickListener()
 		{
 			@Override

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.haarman.listviewanimations.swinginadapters.prepared.SwingRightInAnimationAdapter;
 import com.samportnow.bato.R;
 import com.samportnow.bato.database.CalendarDbAdapter;
 
@@ -52,6 +53,10 @@ public class AddEventUserActivityFragment extends Fragment
 		mHistoryAdapter.addAll(activities);
 
 		mHistoryListView = (ListView) view.findViewById(R.id.user_activity_history);
+		
+		SwingRightInAnimationAdapter animationAdapter = new SwingRightInAnimationAdapter(mHistoryAdapter);
+		animationAdapter.setAbsListView(mHistoryListView);		
+		
 		mHistoryListView.setAdapter(mHistoryAdapter);
 		mHistoryListView.setOnItemClickListener(new OnItemClickListener()
 		{

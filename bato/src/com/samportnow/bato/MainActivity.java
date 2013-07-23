@@ -1,8 +1,5 @@
 package com.samportnow.bato;
 
-import com.samportnow.bato.addthought.AddEventActivity;
-import com.samportnow.bato.database.UserNameDbAdapter;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -14,6 +11,9 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.samportnow.bato.addthought.AddEventActivity;
+import com.samportnow.bato.database.UserNameDbAdapter;
 
 public class MainActivity extends Activity
 {

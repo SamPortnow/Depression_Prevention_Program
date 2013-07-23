@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+import com.haarman.listviewanimations.swinginadapters.prepared.SwingRightInAnimationAdapter;
 import com.samportnow.bato.R;
 import com.samportnow.bato.database.CalendarDbAdapter;
 
@@ -55,6 +56,10 @@ public class AddEventUserThoughtFragment extends Fragment
 		mHistoryAdapter.addAll(thoughts);
 
 		mHistoryListView = (ListView) view.findViewById(R.id.user_thought_history);
+		
+		SwingRightInAnimationAdapter animationAdapter = new SwingRightInAnimationAdapter(mHistoryAdapter);
+		animationAdapter.setAbsListView(mHistoryListView);		
+		
 		mHistoryListView.setAdapter(mHistoryAdapter);
 		mHistoryListView.setOnItemClickListener(new OnItemClickListener()
 		{
