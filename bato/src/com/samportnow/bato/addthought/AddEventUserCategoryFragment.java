@@ -69,6 +69,7 @@ public class AddEventUserCategoryFragment extends Fragment
 				if (position != ListView.INVALID_POSITION)
 				{
 					Bundle eventBundle = getArguments();
+					eventBundle.putInt("negative_type", position);
 					eventBundle.putString("user_category", mCategoryTitles[position]);
 				}
 

@@ -14,9 +14,11 @@ import android.widget.Toast;
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
 import com.samportnow.bato.database.CalendarDbAdapter;
+import com.samportnow.bato.database.ThoughtsDataSource;
 
 public class AddEventActivity extends Activity
 {
+	private ThoughtsDataSource mDataSource = null;
 	private Bundle mEventBundle = new Bundle();
 
 	@Override
@@ -25,11 +27,29 @@ public class AddEventActivity extends Activity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_add_event);
+		
+		mDataSource = new ThoughtsDataSource(this);
 
 		Fragment fragment = new AddEventUserActivityFragment();
 		fragment.setArguments(mEventBundle);
 
 		getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+	}
+	
+	@Override
+	public void onResume()
+	{
+		mDataSource.open();
+		
+		super.onResume();
+	}
+	
+	@Override
+	public void onPause()
+	{
+		mDataSource.close();
+		
+		super.onPause();
 	}
 
 	@Override
@@ -59,32 +79,37 @@ public class AddEventActivity extends Activity
 
 	public void createNewEvent()
 	{
-		String userActivity = mEventBundle.getString("user_activity");
-		int userFeeling = mEventBundle.getInt("user_feeling", -1);
-		String userThought = mEventBundle.getString("user_thought");
+		String activity = mEventBundle.getString("user_activity");
+		int feeling = mEventBundle.getInt("user_feeling", -1);
+		String thought = mEventBundle.getString("user_thought");
 
-		boolean isValid = (userActivity != null) && (userFeeling >= 0) && (userThought != null);
+		boolean isValid = (activity != null) && (feeling >= 0) && (thought != null);
 
 		if (isValid)
 		{
-			String userCategory = mEventBundle.getString("user_category");
-			String thoughtTag = userCategory != null ? "Yes" : "No";
-
-			Calendar calendar = Calendar.getInstance();
-
-			int eventYear = calendar.get(Calendar.YEAR);
-			int eventDayofYear = calendar.get(Calendar.DAY_OF_YEAR);
-			int eventMinuteOfDay = (calendar.get(Calendar.HOUR_OF_DAY) * 60) + calendar.get(Calendar.MINUTE);
-
-			CalendarDbAdapter calendarDbAdapter = new CalendarDbAdapter(this);
-			calendarDbAdapter.open();
-
-			calendarDbAdapter.createCalendar(eventYear, eventDayofYear, eventMinuteOfDay, userActivity, userFeeling, userThought, thoughtTag);
-
-			if (userCategory != null)
-				calendarDbAdapter.createType(userThought, userCategory);
-
-			calendarDbAdapter.close();
+			long created = Calendar.getInstance().getTimeInMillis();
+			int negativeType = mEventBundle.getInt("negative_type", -1);
+			
+			mDataSource.createThought(created, activity, feeling, thought, negativeType);
+			
+//			String userCategory = mEventBundle.getString("user_category");
+//			String thoughtTag = userCategory != null ? "Yes" : "No";
+//
+//			Calendar calendar = Calendar.getInstance();
+//
+//			int eventYear = calendar.get(Calendar.YEAR);
+//			int eventDayofYear = calendar.get(Calendar.DAY_OF_YEAR);
+//			int eventMinuteOfDay = (calendar.get(Calendar.HOUR_OF_DAY) * 60) + calendar.get(Calendar.MINUTE);
+//
+//			CalendarDbAdapter calendarDbAdapter = new CalendarDbAdapter(this);
+//			calendarDbAdapter.open();
+//
+//			calendarDbAdapter.createCalendar(eventYear, eventDayofYear, eventMinuteOfDay, userActivity, userFeeling, userThought, thoughtTag);
+//
+//			if (userCategory != null)
+//				calendarDbAdapter.createType(userThought, userCategory);
+//
+//			calendarDbAdapter.close();
 
 			Toast.makeText(this, R.string.add_event_create_success, Toast.LENGTH_SHORT).show();
 		}
