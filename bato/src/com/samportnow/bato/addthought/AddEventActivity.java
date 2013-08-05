@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
-import com.samportnow.bato.database.CalendarDbAdapter;
 import com.samportnow.bato.database.ThoughtsDataSource;
 
 public class AddEventActivity extends Activity
@@ -91,25 +90,6 @@ public class AddEventActivity extends Activity
 			int negativeType = mEventBundle.getInt("negative_type", -1);
 			
 			mDataSource.createThought(created, activity, feeling, thought, negativeType);
-			
-//			String userCategory = mEventBundle.getString("user_category");
-//			String thoughtTag = userCategory != null ? "Yes" : "No";
-//
-//			Calendar calendar = Calendar.getInstance();
-//
-//			int eventYear = calendar.get(Calendar.YEAR);
-//			int eventDayofYear = calendar.get(Calendar.DAY_OF_YEAR);
-//			int eventMinuteOfDay = (calendar.get(Calendar.HOUR_OF_DAY) * 60) + calendar.get(Calendar.MINUTE);
-//
-//			CalendarDbAdapter calendarDbAdapter = new CalendarDbAdapter(this);
-//			calendarDbAdapter.open();
-//
-//			calendarDbAdapter.createCalendar(eventYear, eventDayofYear, eventMinuteOfDay, userActivity, userFeeling, userThought, thoughtTag);
-//
-//			if (userCategory != null)
-//				calendarDbAdapter.createType(userThought, userCategory);
-//
-//			calendarDbAdapter.close();
 
 			Toast.makeText(this, R.string.add_event_create_success, Toast.LENGTH_SHORT).show();
 		}

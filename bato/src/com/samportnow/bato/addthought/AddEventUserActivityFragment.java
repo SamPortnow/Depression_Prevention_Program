@@ -22,6 +22,7 @@ import android.widget.ListView;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingRightInAnimationAdapter;
 import com.samportnow.bato.R;
 import com.samportnow.bato.database.CalendarDbAdapter;
+import com.samportnow.bato.database.ThoughtsDataSource;
 
 public class AddEventUserActivityFragment extends Fragment
 {
@@ -37,20 +38,14 @@ public class AddEventUserActivityFragment extends Fragment
 		super.onCreate(savedInstanceState);
 
 		View view = inflater.inflate(R.layout.fragment_add_event_user_activity, null);
-
-		CalendarDbAdapter calendarDbAdapter = new CalendarDbAdapter(getActivity()).open();
-		Cursor cursor = calendarDbAdapter.fetchActivities();
-		int index = cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_ACTIVITY);
-
-		HashSet<String> activities = new HashSet<String>(cursor.getCount());
-
-		while (cursor.moveToNext() == true)
-			activities.add(cursor.getString(index));
-
-		cursor.close();
+		
+		ThoughtsDataSource dataSource = new ThoughtsDataSource(getActivity());
+		dataSource.open();
 
 		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
-		mHistoryAdapter.addAll(activities);
+		mHistoryAdapter.addAll(dataSource.getActivities());
+		
+		dataSource.close();
 
 		mHistoryListView = (ListView) view.findViewById(R.id.user_activity_history);
 		

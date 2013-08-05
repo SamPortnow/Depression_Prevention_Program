@@ -1,7 +1,11 @@
 package com.samportnow.bato.database;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -36,5 +40,24 @@ public class ThoughtsDataSource
 		values.put(ThoughtsSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE, negativeType);
 		
 		return mDatabase.insert(ThoughtsSQLiteOpenHelper.TABLE_THOUGHTS, null, values);
+	}
+	
+	public List<String> getActivities()
+	{
+		Cursor cursor = 
+			mDatabase.query(
+				true,
+				ThoughtsSQLiteOpenHelper.TABLE_THOUGHTS,
+				new String[] { ThoughtsSQLiteOpenHelper.COLUMN_ACTIVITY },
+				null, null, null, null,
+				ThoughtsSQLiteOpenHelper.COLUMN_ACTIVITY + " ASC",
+				null, null);
+		
+		ArrayList<String> activities = new ArrayList<String>(cursor.getCount());
+		
+		while (cursor.moveToNext())
+			activities.add(cursor.getString(0));
+		
+		return activities;
 	}
 }
