@@ -38,8 +38,9 @@ public class DestroyerGameView extends SurfaceView
     int mMovePosY;
     int mDrawStationX;
     int mDrawStationY;
-    int mMoveStationX;
-    int mMoveStationVelocity = 2;
+    int mMoveStationX[] = new int[2];
+    int mMoveStationVelocity[] = new int[2];
+    int count;
     ArrayList <PositiveThoughtDestroyer> mPositive = new ArrayList<PositiveThoughtDestroyer>();
     PositiveThoughtDestroyer mPosCannon;
     HashMap<PositiveThoughtDestroyer, int[]> mThoughtInfo = new HashMap<PositiveThoughtDestroyer, int[]>();
@@ -49,6 +50,8 @@ public class DestroyerGameView extends SurfaceView
 	public DestroyerGameView(Context context, AttributeSet attrs) 
 	{
 		super(context, attrs);
+		mMoveStationVelocity[0] = -2;
+		mMoveStationVelocity[1] = 2;
         mContext = this.getContext();
 		mDestroyer = (DestroyerGame) context;
         h = new Handler();
@@ -91,7 +94,7 @@ public class DestroyerGameView extends SurfaceView
 			for (int i = 1; i < mDestroyer.mStationPositive.size() + 1; i++)
 			{
 				canvas.drawBitmap(mDestroyer.mStationPositive.get(i-1).getDrawingCache(), 
-						mDrawStationX + mMoveStationX, mDrawStationY,  null);
+						mDrawStationX + mMoveStationX[i%2], mDrawStationY,  null);
 				mDrawStationX += width/3;
 		    	if (i % 3 == 0)
 		 		{
@@ -101,11 +104,19 @@ public class DestroyerGameView extends SurfaceView
 
 			}
 			
-			if (mMoveStationX < -width/12 || mMoveStationX > width/12)
+			if (mMoveStationX[0] < -width || mMoveStationX[0] > width)
 			{
-				mMoveStationVelocity = mMoveStationVelocity * -1;
-			}			
-				mMoveStationX += mMoveStationVelocity;
+				mMoveStationVelocity[0] = mMoveStationVelocity[0] * -1;
+			}
+			
+			if (mMoveStationX[1] < -width || mMoveStationX[1] > width)
+			{
+				mMoveStationVelocity[1] = mMoveStationVelocity[1] * -1;
+			}
+				
+			mMoveStationX[1] += mMoveStationVelocity[1];
+				
+			mMoveStationX[0] += mMoveStationVelocity[0];
 			
 	    	mDrawStationX = 0;
 	    	mDrawStationY = 0;

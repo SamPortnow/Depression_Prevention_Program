@@ -20,7 +20,7 @@
             android:textIsSelectable="true" >
         </TextView>
 
-        <com.samportnow.bato.Score
+        <com.samportnow.bato.destroyer.Score
             android:id="@+id/score_view"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -40,7 +40,7 @@
         android:textColor="#ffffff" >
     </ListView>
 
-    <com.samportnow.bato.DestroyerGameView
+    <com.samportnow.bato.destroyer.DestroyerGameView
         android:id="@+id/anim_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

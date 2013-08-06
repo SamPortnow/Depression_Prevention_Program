@@ -434,6 +434,7 @@ public class DestroyerGame extends Activity
 		//remove the explosion, clear the thoughts, get some new ones, and start moving!!
 	    DestroyerGameView mDestroyerShooter = (DestroyerGameView) findViewById(R.id.anim_view);
 		mDestroyerShooter.mDrawPos=true;
+		mDestroyerShooter.count += 1;
 		mStationPositive.add(mPosCannon[0]);
 		int mHelp_mBelieve [] = mThoughtInfo.get(mPosCannon[0].getText().toString());
 		if (mHelp_mBelieve[0] > 3 && mHelp_mBelieve[1] > 3)
