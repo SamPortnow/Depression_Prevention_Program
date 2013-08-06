@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import com.samportnow.bato.dbs.CalendarDbAdapter;
+
 public class PointsAdapter extends CursorAdapter
 {
 

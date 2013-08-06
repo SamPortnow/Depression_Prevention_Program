@@ -1,5 +1,7 @@
 package com.samportnow.bato.capture;
 
+import com.samportnow.bato.R;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
@@ -10,7 +12,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.samportnow.bato.R;
 
 @SuppressLint("ViewConstructor")
 public class PositiveThought extends TextView

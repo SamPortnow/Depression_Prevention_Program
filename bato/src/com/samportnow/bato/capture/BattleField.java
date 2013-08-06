@@ -20,8 +20,9 @@ public class BattleField extends SurfaceView
     CaptureActivity mCapture;
     boolean mSetBounds;
     boolean mGameOver;
-    int xLessBound;
-    int xGreatBound;
+    boolean mSetX=true;
+    int xLessBound[] = new int[2];
+    int xGreatBound[] = new int[2];
     boolean boundLess;
     boolean boundGreat;
     
@@ -42,8 +43,8 @@ public class BattleField extends SurfaceView
 	     container_height = yNew;
 		 x = container_width/2;
 		 y = container_height;
-		 xLessBound = 0;
-		 xGreatBound = container_width - container_width/3;
+		 xLessBound[0] = 0;
+		 xGreatBound[0] = container_width - container_width/3;
 	}
 	
 	@Override
@@ -54,32 +55,23 @@ public class BattleField extends SurfaceView
         {
         	x += xVelocity;
         	y -= yVelocity;
-        	//reverse if you're out of bounds
-        	if (x > xGreatBound || (x < xLessBound))
+        	if (!mSetX && x < xGreatBound[1] && x > xLessBound[1])
+        	{
+        		xGreatBound[0] = xGreatBound[1];
+        		xLessBound[0] = xLessBound[1];
+        		mSetX = true;
+        	}
+        	if ((x > xGreatBound[0] || x < xLessBound[0]))
         		{
 
         			if (! mGameOver)
         			{
-        				// need to change this. im in an if statement here. this
-        				// obviously makes NO sense
-        				if (boundLess && (x > xLessBound))
-        				{
-        					boundLess = false;
-        				}
-        				
-        				if (boundGreat && (x < xGreatBound))
-        				{
-        					boundGreat = false;
-        				}
-        				
-        				if (! boundLess && ! boundGreat)
-        				{
-        					xVelocity = xVelocity*-1;
-        				}
+   
+        				xVelocity = xVelocity*-1;
         				
         			}
         			
-        			else
+        			else if (mGameOver)
         			{
         				if (x < 0)
         				{

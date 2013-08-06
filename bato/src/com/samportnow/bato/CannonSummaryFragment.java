@@ -7,10 +7,14 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.samportnow.bato.dbs.GameDbAdapter;
+import com.samportnow.bato.dbs.ScaleDbAdapter;
+import com.samportnow.bato.destroyer.DestroyerGame;
 
 public class CannonSummaryFragment extends Fragment
 {

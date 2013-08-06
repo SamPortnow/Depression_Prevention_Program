@@ -18,6 +18,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.IBinder;
 
+import com.samportnow.bato.dbs.CalendarDbAdapter;
+import com.samportnow.bato.dbs.CalendarPushDbAdapter;
+
 public class Post extends IntentService
 {
 	CalendarDbAdapter mCalHelper;

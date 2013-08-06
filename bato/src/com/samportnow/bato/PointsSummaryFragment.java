@@ -10,6 +10,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.samportnow.bato.addevent.AddEventActivity;
+import com.samportnow.bato.dbs.CalendarDbAdapter;
+
 public class PointsSummaryFragment extends Fragment
 {
 	@Override

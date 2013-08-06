@@ -12,6 +12,9 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.samportnow.bato.addevent.AddEventActivity;
+import com.samportnow.bato.moodgraph.MoodGraphActivity;
+
 public class MainActivity extends Activity
 {
     UserNameDbAdapter UserNameDbHelper;
@@ -38,6 +41,9 @@ public class MainActivity extends Activity
 					
 				case 2:
 					return new CannonSummaryFragment();
+					
+				case 3:
+					return new CopingFragment();
 			}
 			
 			return null;
@@ -46,7 +52,7 @@ public class MainActivity extends Activity
 		@Override
 		public int getCount()
 		{
-			return 3;
+			return 4;
 		}    	
 		
 		@Override

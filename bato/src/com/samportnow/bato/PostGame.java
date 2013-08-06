@@ -19,6 +19,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.IBinder;
 
+import com.samportnow.bato.dbs.GameDbAdapter;
+import com.samportnow.bato.dbs.GamePushDbAdapter;
+
 public class PostGame extends IntentService
 {
 	GameDbAdapter mScoresHelper;

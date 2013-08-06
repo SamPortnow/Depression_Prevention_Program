@@ -1,17 +1,19 @@
 package com.samportnow.bato;
 
-import com.samportnow.bato.capture.CaptureActivity;
-
 import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.samportnow.bato.capture.CaptureActivity;
+import com.samportnow.bato.dbs.CalendarDbAdapter;
+import com.samportnow.bato.dbs.ScaleDbAdapter;
 
 public class ScalesSummaryFragment extends Fragment
 {

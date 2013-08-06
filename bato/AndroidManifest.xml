@@ -25,14 +25,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.samportnow.bato.AddEventActivity" />
-        <activity android:name="com.samportnow.bato.MoodGraphActivity" />
+        <activity android:name="com.samportnow.bato.addevent.AddEventActivity" />
+        <activity android:name="com.samportnow.bato.moodgraph.MoodGraphActivity" />
 
         <service android:name="com.samportnow.bato.Post" />
         <service android:name="com.samportnow.bato.PostGame" />
 
         <activity android:name="com.samportnow.bato.capture.CaptureActivity" />
-        <activity android:name="com.samportnow.bato.DestroyerGame" />
-    </application>
+        <activity android:name="com.samportnow.bato.destroyer.DestroyerGame" />
+        
+        <activity android:name="com.samportnow.bato.coping.blowfish.Blowfish" />
+        <activity android:name="com.samportnow.bato.coping.rollingball.Rolling" />
+        
+        </application>
 
 </manifest>

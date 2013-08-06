@@ -43,9 +43,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.samportnow.bato.CalendarDbAdapter;
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
+import com.samportnow.bato.dbs.CalendarDbAdapter;
 
 public class CaptureActivity extends Activity
 {
@@ -341,16 +341,9 @@ public class CaptureActivity extends Activity
 									mGo.setFillAfter(true);
 									mGo.setDuration(2000);
 									mLaserBeam[mPosCounter].startAnimation(mGo);
-									mBattle.xLessBound += mBattle.container_width / 12;
-									mBattle.xGreatBound -= mBattle.container_width / 12;
-									if (mBattle.x <= mBattle.xLessBound)
-									{
-										mBattle.boundLess = true;
-									}
-									if (mBattle.x >= mBattle.xGreatBound)
-									{
-										mBattle.boundGreat = true;
-									}
+									mBattle.xLessBound[1] += mBattle.container_width / 12;
+									mBattle.xGreatBound[1] -= mBattle.container_width / 12;
+									mBattle.mSetX=false;
 
 									if (mBattle.xVelocity < 0)
 									{

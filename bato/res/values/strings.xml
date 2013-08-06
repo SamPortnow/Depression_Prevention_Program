@@ -39,7 +39,13 @@
     <string name="plus">+</string>
     <string name="not">Not at all</string>
     <string name="alot">Completely</string>
-
+    
+    <string name="breathing"> Slow Breathing </string>
+	<string name="rolling_ball"> Rolling Ball </string>
+	<string name="watch_thought"> Watch your thoughts float by </string>
+	<string name="play">Play</string>
+	<string name="learn">Learn More</string>
+	
     <string name="title_help">How would this thought make you feel?</string>  
 
 	<string name="title_believe">How much do you believe this thought </string>
@@ -73,6 +79,7 @@
 	    <item>Personal Scientist Points</item>
 	    <item>Nab the Negative</item>
 	    <item>Command the Cannon</item>
+	    <item>Coping Exercises</item>
 	</string-array>
 	
 	<!-- activity_add_event -->
