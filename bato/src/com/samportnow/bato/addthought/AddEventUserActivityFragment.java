@@ -1,10 +1,7 @@
 package com.samportnow.bato.addthought;
 
-import java.util.HashSet;
-
 import android.app.Fragment;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,7 +18,6 @@ import android.widget.ListView;
 
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingRightInAnimationAdapter;
 import com.samportnow.bato.R;
-import com.samportnow.bato.database.CalendarDbAdapter;
 import com.samportnow.bato.database.ThoughtsDataSource;
 
 public class AddEventUserActivityFragment extends Fragment

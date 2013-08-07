@@ -17,7 +17,6 @@ import com.samportnow.bato.database.ThoughtsDataSource;
 
 public class AddEventActivity extends Activity
 {
-	private ThoughtsDataSource mDataSource = null;
 	private Bundle mEventBundle = new Bundle();
 
 	@Override
@@ -26,29 +25,11 @@ public class AddEventActivity extends Activity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_add_event);
-		
-		mDataSource = new ThoughtsDataSource(this);
 
 		Fragment fragment = new AddEventUserActivityFragment();
 		fragment.setArguments(mEventBundle);
 
 		getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-	}
-	
-	@Override
-	public void onResume()
-	{
-		mDataSource.open();
-		
-		super.onResume();
-	}
-	
-	@Override
-	public void onPause()
-	{
-		mDataSource.close();
-		
-		super.onPause();
 	}
 
 	@Override
@@ -89,7 +70,11 @@ public class AddEventActivity extends Activity
 			long created = Calendar.getInstance().getTimeInMillis();
 			int negativeType = mEventBundle.getInt("negative_type", -1);
 			
-			mDataSource.createThought(created, activity, feeling, thought, negativeType);
+			ThoughtsDataSource dataSource = new ThoughtsDataSource(this);
+			dataSource.open();
+			
+			dataSource.createThought(created, activity, feeling, thought, negativeType);
+			dataSource.close();
 
 			Toast.makeText(this, R.string.add_event_create_success, Toast.LENGTH_SHORT).show();
 		}

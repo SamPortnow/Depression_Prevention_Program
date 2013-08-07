@@ -60,4 +60,23 @@ public class ThoughtsDataSource
 		
 		return activities;
 	}
+	
+	public List<String> getThoughts()
+	{
+		Cursor cursor = 
+			mDatabase.query(
+				true,
+				ThoughtsSQLiteOpenHelper.TABLE_THOUGHTS,
+				new String[] { ThoughtsSQLiteOpenHelper.COLUMN_THOUGHT },
+				null, null, null, null,
+				ThoughtsSQLiteOpenHelper.COLUMN_THOUGHT + " ASC",
+				null, null);
+		
+		ArrayList<String> thoughts = new ArrayList<String>(cursor.getCount());
+		
+		while (cursor.moveToNext())
+			thoughts.add(cursor.getString(0));
+		
+		return thoughts;
+	}
 }

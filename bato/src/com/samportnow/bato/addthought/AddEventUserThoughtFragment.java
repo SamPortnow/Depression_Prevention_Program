@@ -1,10 +1,7 @@
 package com.samportnow.bato.addthought;
 
-import java.util.HashSet;
-
 import android.app.Fragment;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,7 +20,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingRightInAnimationAdapter;
 import com.samportnow.bato.R;
-import com.samportnow.bato.database.CalendarDbAdapter;
+import com.samportnow.bato.database.ThoughtsDataSource;
 
 public class AddEventUserThoughtFragment extends Fragment
 {
@@ -40,20 +37,14 @@ public class AddEventUserThoughtFragment extends Fragment
 		super.onCreate(savedInstanceState);
 
 		View view = inflater.inflate(R.layout.fragment_add_event_user_thought, null);
-
-		CalendarDbAdapter calendarDbAdapter = new CalendarDbAdapter(getActivity()).open();
-		Cursor cursor = calendarDbAdapter.fetchThoughts();
-		int index = cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT);
-
-		HashSet<String> thoughts = new HashSet<String>(cursor.getCount());
-
-		while (cursor.moveToNext() == true)
-			thoughts.add(cursor.getString(index));
-
-		cursor.close();
+		
+		ThoughtsDataSource dataSource = new ThoughtsDataSource(getActivity());
+		dataSource.open();
 
 		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
-		mHistoryAdapter.addAll(thoughts);
+		mHistoryAdapter.addAll(dataSource.getThoughts());
+		
+		dataSource.close();
 
 		mHistoryListView = (ListView) view.findViewById(R.id.user_thought_history);
 		
