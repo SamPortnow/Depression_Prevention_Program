@@ -38,8 +38,7 @@ public class AddEventUserThoughtFragment extends Fragment
 
 		View view = inflater.inflate(R.layout.fragment_add_event_user_thought, null);
 		
-		ThoughtsDataSource dataSource = new ThoughtsDataSource(getActivity());
-		dataSource.open();
+		ThoughtsDataSource dataSource = new ThoughtsDataSource(getActivity()).open();
 
 		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
 		mHistoryAdapter.addAll(dataSource.getThoughts());

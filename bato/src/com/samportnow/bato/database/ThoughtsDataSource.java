@@ -19,9 +19,11 @@ public class ThoughtsDataSource
 		mHelper = new ThoughtsSQLiteOpenHelper(context);
 	}
 	
-	public void open() throws SQLException
+	public ThoughtsDataSource open() throws SQLException
 	{
 		mDatabase = mHelper.getWritableDatabase();
+		
+		return this;
 	}
 	
 	public void close()
@@ -51,7 +53,7 @@ public class ThoughtsDataSource
 				new String[] { ThoughtsSQLiteOpenHelper.COLUMN_ACTIVITY },
 				null, null, null, null,
 				ThoughtsSQLiteOpenHelper.COLUMN_ACTIVITY + " ASC",
-				null, null);
+				null);
 		
 		ArrayList<String> activities = new ArrayList<String>(cursor.getCount());
 		
@@ -70,7 +72,7 @@ public class ThoughtsDataSource
 				new String[] { ThoughtsSQLiteOpenHelper.COLUMN_THOUGHT },
 				null, null, null, null,
 				ThoughtsSQLiteOpenHelper.COLUMN_THOUGHT + " ASC",
-				null, null);
+				null);
 		
 		ArrayList<String> thoughts = new ArrayList<String>(cursor.getCount());
 		
