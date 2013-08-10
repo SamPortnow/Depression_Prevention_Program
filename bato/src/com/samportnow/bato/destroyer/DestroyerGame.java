@@ -390,7 +390,7 @@ public class DestroyerGame extends Activity
  	{
  		if (mThoughtInfo.size() > 4)
  		{
- 			mStop = 5;
+ 			mStop = 4;
  		}
  		else
  		{
@@ -416,7 +416,7 @@ public class DestroyerGame extends Activity
 	public void explode()
 	{
 	    DestroyerGameView mDestroyerShooter = (DestroyerGameView) findViewById(R.id.anim_view);
-		RelativeLayout.LayoutParams mExplosionParams = new RelativeLayout.LayoutParams(mDestroyerShooter.width/3, mDestroyerShooter.height/4);
+		RelativeLayout.LayoutParams mExplosionParams = new RelativeLayout.LayoutParams(mDestroyerShooter.width/2, mDestroyerShooter.height/2);
 		mDestroyerShooter.mMoveNeg = false;
 		ListView list = (ListView) findViewById(R.id.listview);
 		mExplosionParams.leftMargin = mDestroyerShooter.mNegX + list.getWidth();

@@ -44,7 +44,7 @@ public class PositiveThoughtDestroyer extends TextView
     	setDrawingCacheEnabled(true);
     	DestroyerGame mDestroy = (DestroyerGame) this.getContext();
     	DestroyerGameView gameView = (DestroyerGameView) mDestroy.findViewById(R.id.anim_view);
-    	width = gameView.getWidth()/3;
+    	width = gameView.getWidth()/2;
     	height = gameView.getHeight()/3;
     	yPos = height * mCount;
     	xPos = gameView.width;

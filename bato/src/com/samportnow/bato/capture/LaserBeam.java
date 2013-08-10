@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.View;
 
 import com.samportnow.bato.R;
@@ -55,7 +56,7 @@ public class LaserBeam extends View
 		mLaserPaint.setColor(Color.parseColor("#FFFF99"));
 		mLaserPaint.setAlpha(150);
 		mBattle = (BattleField) mCapture.findViewById(R.id.battle_field);
-		yOfCenter = mCapture.mBattle.container_height + mCapture.mNeg.getHeight()/2;
+		yOfCenter = mCapture.mBattle.getHeight() - mCapture.mPos[0].getHeight();
 		xOfCenter = (mCapture.mPos[mPosition].width * mPosition) + mCapture.mNeg.getWidth()/2;
 		offset = offSet(xOfCenter, yOfCenter);
 		oval = new RectF();
@@ -87,10 +88,8 @@ public class LaserBeam extends View
 
 	}
 	
-	@Override 
-	public void onDraw(Canvas canvas)
+	public void draw_it(Canvas canvas)
 	{
-		super.onDraw(canvas);
 		float radius = radius(mBattle.x, mBattle.y);
 		float startAngle = startAngle(mBattle.x, mBattle.y);
 		float endAngle = endAngle(mBattle.x, mBattle.y);

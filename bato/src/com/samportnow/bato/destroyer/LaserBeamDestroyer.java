@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.View;
 
 import com.samportnow.bato.R;
@@ -97,15 +98,13 @@ public class LaserBeamDestroyer extends View
 	}
 	
 	
-	@Override 
-	public void onDraw(Canvas canvas)
+	public void draw_it(Canvas canvas)
 	{
-		super.onDraw(canvas);
 		xOfCenter = mDestroyerView.mNegX;
 		float radius = radius(mDestroyerView.mPosX, mDestroyerView.mNegX);
-		float startAngle = startAngle(mDestroyerView.mPosX, mDestroyerView.mNegX);
-		float endAngle = endAngle(mDestroyerView.mPosX, mDestroyerView.mNegX);
-		oval.set(xOfCenter - radius, yOfCenter - radius, xOfCenter + radius, yOfCenter + radius);
+		float startAngle = startAngle(mDestroyerView.mPosX - mDestroyerView.mPosX/2, mDestroyerView.mNegX);
+		float endAngle = endAngle(mDestroyerView.mPosX - mDestroyerView.mPosX/2, mDestroyerView.mNegX);
+		oval.set(xOfCenter - radius - radius/2, yOfCenter - radius, xOfCenter + radius, yOfCenter + radius);
 		canvas.drawArc(oval, -45f -(7.5f * Position), startAngle-endAngle, true, mLaserPaint);
 
 	}

@@ -12,14 +12,7 @@
         android:background="@android:color/holo_blue_light"
         android:layout_above="@+id/edit_container" />
 
-    <LinearLayout
-        android:id="@+id/pos_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/edit_container"
-        android:orientation="horizontal"
-        android:padding="5dp" >
-    </LinearLayout>
+
 
     <HorizontalScrollView
         android:id="@+id/scroller"

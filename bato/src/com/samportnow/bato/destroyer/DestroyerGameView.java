@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceView;
 
 public class DestroyerGameView extends SurfaceView
@@ -26,7 +27,7 @@ public class DestroyerGameView extends SurfaceView
     float alpha=1.0f;
     boolean mMovePos;
     boolean mMoveNeg;
-    int xVelocity = 5;
+    int xVelocity = 15;
     boolean mDestroy;
     boolean explode;
     boolean mDrawPos;
@@ -41,6 +42,7 @@ public class DestroyerGameView extends SurfaceView
     int mMoveStationX[] = new int[2];
     int mMoveStationVelocity[] = new int[2];
     int count;
+    float mScale;
     ArrayList <PositiveThoughtDestroyer> mPositive = new ArrayList<PositiveThoughtDestroyer>();
     PositiveThoughtDestroyer mPosCannon;
     HashMap<PositiveThoughtDestroyer, int[]> mThoughtInfo = new HashMap<PositiveThoughtDestroyer, int[]>();
@@ -124,9 +126,12 @@ public class DestroyerGameView extends SurfaceView
 		}
 		if (mMovePos)
 		{
+			canvas.drawBitmap(mDestroyer.mNeg.getDrawingCache(), mNegX, 0, null);
+
 			for (int i = 0; i < mPositive.size(); i++)
 			{
 				canvas.drawBitmap(mPositive.get(i).getDrawingCache(), mPosX, mPositive.get(i).yPos, null);
+				mDestroyer.mLaserBeam.get(i).draw_it(canvas);
 				if (mPosX < 0)
 				{
 					//if it gets to 0, populate the listview and stop drawing the positive thought
@@ -137,9 +142,8 @@ public class DestroyerGameView extends SurfaceView
 					mMoveNeg = true;
 				}
 			}
-			mPosX -= 5;
-			canvas.drawBitmap(mDestroyer.mNeg.getDrawingCache(), mNegX, 0, null);
-			mNegX -=5;
+			mPosX -= 15;
+			mNegX -=15;
 		}
 		if (mMoveNeg)
 		{
@@ -169,10 +173,27 @@ public class DestroyerGameView extends SurfaceView
 	    		    mNegX = (int) (width + (width/1.5));
 	    		    mPosY = 0;
 	    		}
+	    		mScale = 0;
 	    		explode = true;
 	    		mDestroy=false;
 	    	}
-			canvas.drawBitmap(mDestroyer.mPosCannon[0].getDrawingCache(), mMoveX, mMoveY,  null);
+    		if(mMoveY < -mDestroyer.mNeg.height)
+    		{
+    			mScale = 0;
+    		}
+			if (mScale < 1.0f)
+			{
+				canvas.save();
+				canvas.scale(mScale, mScale, mMoveX, mMoveY);
+				canvas.drawBitmap(mDestroyer.mPosCannon[0].getDrawingCache(), mMoveX, mMoveY,  null);
+				canvas.restore();
+				mScale += .05;
+			}
+			else
+			{
+				canvas.drawBitmap(mDestroyer.mPosCannon[0].getDrawingCache(), mMoveX, mMoveY,  null);
+				
+			}
 			mMoveX += mMoveByX;
 			mMoveY -= mMoveByY;
 		}

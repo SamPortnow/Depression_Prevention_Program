@@ -5,6 +5,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.opengl.GLSurfaceView.Renderer;
+import android.util.Log;
 
 /**
  * This is a port of the {@link http://nehe.gamedev.net} OpenGL 
@@ -38,6 +39,9 @@ public class MyRenderer implements Renderer {
 	private Ball ball;
 	private float mTransY;
 	private float mAngle;
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
 	/** Square instance */
 	
 	/**
@@ -79,8 +83,11 @@ public class MyRenderer implements Renderer {
 		 */
 		
 		gl.glTranslatef(0.0f, 0.0f, -2.5f);
-		path.draw(gl);	
-		gl.glTranslatef(0.0f, 0.0f, 0.0f);
+		path.draw(gl);
+//		Log.e("x is", ""+x);
+//		Log.e("y is", ""+y);
+		Log.e("z is", "" +z);
+		gl.glTranslatef(x, -z, 0);
 		gl.glRotatef(mAngle, 1, 0, 0);
 		ball.draw(gl);
         mAngle-=2.0;
