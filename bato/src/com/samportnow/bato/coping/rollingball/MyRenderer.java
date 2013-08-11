@@ -84,10 +84,7 @@ public class MyRenderer implements Renderer {
 		
 		gl.glTranslatef(0.0f, 0.0f, -2.5f);
 		path.draw(gl);
-//		Log.e("x is", ""+x);
-//		Log.e("y is", ""+y);
-		Log.e("z is", "" +z);
-		gl.glTranslatef(x, -z, 0);
+		gl.glTranslatef(x, 0, 0);
 		gl.glRotatef(mAngle, 1, 0, 0);
 		ball.draw(gl);
         mAngle-=2.0;
