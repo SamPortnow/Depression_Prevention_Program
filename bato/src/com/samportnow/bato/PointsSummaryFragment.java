@@ -2,7 +2,6 @@ package com.samportnow.bato;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.samportnow.bato.addthought.AddEventActivity;
-import com.samportnow.bato.database.CalendarDbAdapter;
+import com.samportnow.bato.database.ThoughtsDataSource;
 
 public class PointsSummaryFragment extends Fragment
 {
@@ -43,26 +42,10 @@ public class PointsSummaryFragment extends Fragment
 	
 	private int getPoints()
 	{
-		CalendarDbAdapter adapter = new CalendarDbAdapter(getActivity()).open();
-		Cursor cursor = adapter.fetchAll();
-
-		int points = (cursor.getCount() * 25);
-
-		while (cursor.moveToNext())
-		{
-			if (cursor.getInt(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_FEELING)) < 5)
-				continue;
-
-			Cursor subCursor = adapter.fetchActivity(cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_ACTIVITY)));
-
-			if (subCursor.getCount() > 1)
-				points += 50;
-
-			subCursor.close();
-		}
-
-		cursor.close();
-		adapter.close();
+		ThoughtsDataSource dataSource = new ThoughtsDataSource(getActivity()).open();
+		
+		int points = dataSource.getPoints();
+		dataSource.close();
 
 		return points;
 	}

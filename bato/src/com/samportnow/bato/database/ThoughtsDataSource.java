@@ -60,6 +60,8 @@ public class ThoughtsDataSource
 		while (cursor.moveToNext())
 			activities.add(cursor.getString(0));
 		
+		cursor.close();
+		
 		return activities;
 	}
 	
@@ -79,6 +81,45 @@ public class ThoughtsDataSource
 		while (cursor.moveToNext())
 			thoughts.add(cursor.getString(0));
 		
+		cursor.close();
+		
 		return thoughts;
+	}
+	
+	public int getPoints()
+	{		
+		Cursor cursor = 
+			mDatabase.query(
+				false,
+				ThoughtsSQLiteOpenHelper.TABLE_THOUGHTS,
+				new String[] { ThoughtsSQLiteOpenHelper.COLUMN_ACTIVITY },
+				null, null, null, null, null, null);
+		
+		String tableThoughts = ThoughtsSQLiteOpenHelper.TABLE_THOUGHTS;
+		String columnActivity = ThoughtsSQLiteOpenHelper.COLUMN_ACTIVITY;
+		String columnFeeling = ThoughtsSQLiteOpenHelper.COLUMN_FEELING;
+	
+		String rawSql =
+			" SELECT " + tableThoughts + "." + columnActivity +
+			" FROM " + tableThoughts +
+			" LEFT OUTER JOIN" +
+			" (" +
+			"   SELECT " + columnActivity+ ", COUNT(*) AS count" +
+			"   FROM " + tableThoughts +
+			"   GROUP BY LOWER(" + columnActivity + ")" +
+			" ) AS T1" +
+			" ON LOWER(" + tableThoughts + "." + columnActivity + ") = LOWER(T1." + columnActivity + ")" +
+			" WHERE " + columnFeeling + " >= 5" +
+			"   AND T1.count > 1";
+			
+		Cursor rawCursor = mDatabase.rawQuery(rawSql, null);
+		
+		int points = cursor.getCount();
+		int bonusPoints = rawCursor.getCount();	
+		
+		cursor.close();
+		rawCursor.close();
+				
+		return (points * 25 + (bonusPoints * 50));
 	}
 }
