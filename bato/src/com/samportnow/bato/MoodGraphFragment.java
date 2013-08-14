@@ -1,30 +1,19 @@
 package com.samportnow.bato;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.PointStyle;
-import org.achartengine.model.SeriesSelection;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYValueSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
-import com.samportnow.bato.database.CalendarDbAdapter;
-
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.Fragment;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -32,175 +21,115 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.samportnow.bato.database.ThoughtsDataSource;
+import com.samportnow.bato.database.dao.ThoughtDao;
 
 public class MoodGraphFragment extends Fragment
 {
-	Context mContext;
-	private CalendarDbAdapter mDbHelper;
-	long Day;
-	long Year;
-	double Hour;
-	int adapter_minutes;
-	ArrayList<Float> minutes = new ArrayList<Float>();
-	ArrayList<Integer> mood = new ArrayList<Integer>();
-	Calendar cal = Calendar.getInstance();
-	long Add;
-	GraphicalView chartView;
-	LinearLayout layout;
-	Map<Float, Integer> mMap;
-	TextView thoughts;
-	TextView event;
-	View events;
-	double mapping;
-	TextView mDate;
+	private Calendar mChartCalendar;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		super.onCreateView(inflater, container, savedInstanceState);
-		mContext = this.getActivity();
-		mDbHelper = new CalendarDbAdapter(mContext);
-		mDbHelper.open();
 		View view = inflater.inflate(R.layout.activity_graph, container, false);
-		Button next = (Button) view.findViewById(R.id.next);
-		Button previous = (Button) view.findViewById(R.id.previous);
-		mDate = (TextView) view.findViewById(R.id.date);
-		Day = cal.get(Calendar.DAY_OF_YEAR);
-		Year = cal.get(Calendar.YEAR);
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.YEAR, (int) Year);
-		cal.set(Calendar.DAY_OF_YEAR, (int) Day);
-		Date date = cal.getTime();
-		String sDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US).format(date);
-		mDate.setText(sDate);
-		layout = (LinearLayout) view.findViewById(R.id.graph);
+		
+		mChartCalendar = Calendar.getInstance();
+		
+		long ms = mChartCalendar.getTimeInMillis();
+		mChartCalendar.setTimeInMillis(ms - (ms % 86400000));
 
-		next.setOnClickListener(new OnClickListener()
-		{
-
-			@Override
-			public void onClick(View arg0)
-			{
-				Day++;
-				if (Day > 365)
+		view.findViewById(R.id.next)
+			.setOnClickListener(
+				new OnClickListener()
 				{
-					Day = 0;
-					Year++;
-				}
-				Calendar cal = Calendar.getInstance();
-				cal.set(Calendar.YEAR, (int) Year);
-				cal.set(Calendar.DAY_OF_YEAR, (int) Day);
-				Date date = cal.getTime();
-				String sDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US).format(date);
-				mDate.setText(sDate);
-				layout.removeView(chartView);
-				chartView = generate(Day, Year);
-				layout.addView(chartView);
-
-			}
-		});
-		previous.setOnClickListener(new OnClickListener()
-		{
-
-			public void onClick(View arg0)
-			{
-				Day--;
-				if (Day < 0)
+					@Override
+					public void onClick(View view)
+					{						
+						mChartCalendar.add(Calendar.DAY_OF_YEAR, 1);
+						refreshChart();
+		
+					}
+				});
+		
+		view.findViewById(R.id.previous)
+			.setOnClickListener(
+				new OnClickListener()
 				{
-					Day = 0;
-					Year--;
-				}
-				Calendar cal = Calendar.getInstance();
-				cal.set(Calendar.YEAR, (int) Year);
-				cal.set(Calendar.DAY_OF_YEAR, (int) Day);
-				Date date = cal.getTime();
-				String sDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US).format(date);
-				mDate.setText(sDate);
-				layout.removeView(chartView);
-				chartView = generate(Day, Year);
-				layout.addView(chartView);
-			}
-
-		});
-		chartView = generate(Day, Year);
-		layout.addView(chartView);
+					@Override
+					public void onClick(View arg0)
+					{
+						mChartCalendar.add(Calendar.DAY_OF_YEAR, -1);
+						refreshChart();
+					}
+				});
 
 		return view;
-
 	}
-
+	
 	@Override
-	public void onDestroy()
+	public void onActivityCreated(Bundle savedInstanceState)
 	{
-		super.onDestroy();
-		mDbHelper.close();
+		super.onActivityCreated(savedInstanceState);
+		
+		refreshChart();
+	}
+	
+	private void refreshChart()
+	{	
+		String dateLabel = new SimpleDateFormat("MM/dd/yyyy", Locale.US).format(mChartCalendar.getTime());		
+		((TextView) getView().findViewById(R.id.date)).setText(dateLabel);
+	
+		LinearLayout graphLayout = (LinearLayout) getView().findViewById(R.id.graph);
+		
+		graphLayout.removeAllViews();
+		graphLayout.addView(generateChartView());
 	}
 
-	public GraphicalView generate(final long Day, final long Year)
+	private GraphicalView generateChartView()
 	{
-		Cursor calendar = mDbHelper.fetchDay(Year, Day);
-		mMap = new HashMap<Float, Integer>();
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.YEAR, (int) Year);
-		cal.set(Calendar.DAY_OF_YEAR, (int) Day);
-		minutes.clear();
-		mood.clear();
-		while (calendar.moveToNext())
-		{
-			Hour = (float) ((float) (calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_MINUTES))) / 60);
-			mMap.put((float) Hour, calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_MINUTES)));
-			minutes.add((float) Hour);
-			mood.add(calendar.getInt(calendar.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_FEELING)) + 1);
-		}
-
-		if (!calendar.moveToFirst())
-		{
-			Toast.makeText(mContext, "No events this day!", Toast.LENGTH_SHORT).show();
-		}
-
-		else
-		{
-			SharedPreferences prefs = getActivity().getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
-			if (prefs.getBoolean("Graph", true) == true)
-			{
-				AlertDialog.Builder builder = new Builder(getActivity());
-				builder.setTitle("Note");
-				builder.setMessage("Click each point to see how what you were doing and what you were thinking are related to how you were feeling");
-				builder.setPositiveButton(android.R.string.ok, null);
-				builder.create();
-				builder.show();
-				prefs.edit().putBoolean("Graph", false).commit();
-			}
-
-		}
-
+		long startTimestamp = mChartCalendar.getTimeInMillis();
+		long endTimestamp = startTimestamp + 86400000;
+		
+		ThoughtsDataSource dataSource = new ThoughtsDataSource(getActivity()).open();
+		List<ThoughtDao> thoughts = dataSource.getThoughtsBetween(startTimestamp, endTimestamp);
+		
+		dataSource.close();
+		
 		XYValueSeries series = new XYValueSeries("Mood by Time");
-		if (minutes.size() > 0)
-		{
-			for (int i = 0; i < minutes.size(); i++)
-			{
-				series.add(minutes.get(i), mood.get(i));
-			}
-		}
+		
+		for (ThoughtDao thought : thoughts)
+			series.add((thought.getCreated() % 86400000) / 3600000, thought.getFeeling());
+		
+		// TODO: for onClick() use SeriesSelection::getPointIndex().
+
+//		if (!calendar.moveToFirst())
+//		{
+//			Toast.makeText(getActivity(), "No events this day!", Toast.LENGTH_SHORT).show();
+//		}
+//
+//		else
+//		{
+//			SharedPreferences prefs = getActivity().getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
+//			if (prefs.getBoolean("Graph", true) == true)
+//			{
+//				AlertDialog.Builder builder = new Builder(getActivity());
+//				builder.setTitle("Note");
+//				builder.setMessage("Click each point to see how what you were doing and what you were thinking are related to how you were feeling");
+//				builder.setPositiveButton(android.R.string.ok, null);
+//				builder.create();
+//				builder.show();
+//				prefs.edit().putBoolean("Graph", false).commit();
+//			}
+//
+//		}
 
 		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
 		dataset.addSeries(series);
-		XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer(); // Holds
-																				// a
-																				// collection
-																				// of
-																				// XYSeriesRenderer
-																				// and
-																				// customizes
-																				// the
-																				// graph
-		XYSeriesRenderer renderer = new XYSeriesRenderer();// This will be used
-															// to customize line
-															// 1
+		XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer();
+		XYSeriesRenderer renderer = new XYSeriesRenderer();
 		mRenderer.addSeriesRenderer(renderer);
 		double[] limits = new double[] { 1, 24, 0, 7 };
 		mRenderer.setPanLimits(limits);
@@ -284,44 +213,45 @@ public class MoodGraphFragment extends Fragment
 		// Customization time for line 2!
 
 		final GraphicalView chartView;
-		chartView = ChartFactory.getLineChartView(mContext, dataset, mRenderer);
-		chartView.setOnClickListener(new View.OnClickListener()
-		{
-
-			@Override
-			public void onClick(View arg0)
-			{
-				SeriesSelection seriesSelection = chartView.getCurrentSeriesAndPoint();
-				if (seriesSelection != null)
-				{
-
-					mapping = seriesSelection.getXValue();
-					if (mMap.get((float) mapping) != null)
-					{
-						adapter_minutes = mMap.get((float) mapping);
-						Cursor fetchThoughtActivity = mDbHelper.fetchCalendar(Year, Day, adapter_minutes);
-						if (fetchThoughtActivity.moveToFirst())
-						{
-							String thought = fetchThoughtActivity.getString(fetchThoughtActivity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT));
-							String activity = fetchThoughtActivity.getString(fetchThoughtActivity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_ACTIVITY));
-							AlertDialog.Builder builder = new Builder(mContext);
-							events = getActivity().getLayoutInflater().inflate(R.layout.dialog_mood, null);
-							builder.setView(events);
-							builder.setTitle("Thought, Activity, and Mood");
-							thoughts = (TextView) events.findViewById(R.id.thought);
-							event = (TextView) events.findViewById(R.id.activity);
-							thoughts.setText(thought);
-							event.setText(activity);
-							builder.setPositiveButton(android.R.string.ok, null);
-							builder.create();
-							builder.show();
-						}
-
-					}
-				}
-			}
-
-		});
+		chartView = ChartFactory.getLineChartView(getActivity(), dataset, mRenderer);
+		
+//		chartView.setOnClickListener(new View.OnClickListener()
+//		{
+//
+//			@Override
+//			public void onClick(View arg0)
+//			{
+//				SeriesSelection seriesSelection = chartView.getCurrentSeriesAndPoint();
+//				if (seriesSelection != null)
+//				{
+//
+//					mapping = seriesSelection.getXValue();
+//					if (mMap.get((float) mapping) != null)
+//					{
+//						adapter_minutes = mMap.get((float) mapping);
+//						Cursor fetchThoughtActivity = mDbHelper.fetchCalendar(Year, Day, adapter_minutes);
+//						if (fetchThoughtActivity.moveToFirst())
+//						{
+//							String thought = fetchThoughtActivity.getString(fetchThoughtActivity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT));
+//							String activity = fetchThoughtActivity.getString(fetchThoughtActivity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_ACTIVITY));
+//							AlertDialog.Builder builder = new Builder(getActivity());
+//							events = getActivity().getLayoutInflater().inflate(R.layout.dialog_mood, null);
+//							builder.setView(events);
+//							builder.setTitle("Thought, Activity, and Mood");
+//							thoughts = (TextView) events.findViewById(R.id.thought);
+//							event = (TextView) events.findViewById(R.id.activity);
+//							thoughts.setText(thought);
+//							event.setText(activity);
+//							builder.setPositiveButton(android.R.string.ok, null);
+//							builder.create();
+//							builder.show();
+//						}
+//
+//					}
+//				}
+//			}
+//
+//		});
 		return chartView;
 	}
 
