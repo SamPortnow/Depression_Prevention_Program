@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import com.samportnow.bato.addthought.AddEventActivity;
 import com.samportnow.bato.database.UserNameDbAdapter;
+import com.samportnow.bato.graphs.MoodGraphActivity;
 
 public class MainActivity extends Activity
 {
@@ -87,7 +88,7 @@ public class MainActivity extends Activity
         MainFragmentPagerAdapter pagerAdapter = new MainFragmentPagerAdapter(getFragmentManager());
         
         ViewPager viewPager = (ViewPager) findViewById(R.id.fragment_view_pager);        
-        viewPager.setAdapter(pagerAdapter);                
+        viewPager.setAdapter(pagerAdapter);
     }
 
     @Override

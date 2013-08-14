@@ -1,4 +1,4 @@
-package com.samportnow.bato;
+package com.samportnow.bato.graphs;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.samportnow.bato.R;
 import com.samportnow.bato.database.ThoughtsDataSource;
 import com.samportnow.bato.database.dao.ThoughtDao;
 
@@ -34,7 +35,7 @@ public class MoodGraphFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		View view = inflater.inflate(R.layout.activity_graph, container, false);
+		View view = inflater.inflate(R.layout.fragment_mood_graph, container, false);
 		
 		mChartCalendar = Calendar.getInstance();
 		
@@ -88,7 +89,7 @@ public class MoodGraphFragment extends Fragment
 		graphLayout.addView(generateChartView());
 	}
 
-	private GraphicalView generateChartView()
+	private View generateChartView()
 	{
 		long startTimestamp = mChartCalendar.getTimeInMillis();
 		long endTimestamp = startTimestamp + 86400000;
@@ -97,6 +98,9 @@ public class MoodGraphFragment extends Fragment
 		List<ThoughtDao> thoughts = dataSource.getThoughtsBetween(startTimestamp, endTimestamp);
 		
 		dataSource.close();
+		
+		if (thoughts.isEmpty())
+			return getActivity().getLayoutInflater().inflate(R.layout.block_no_thoughts, (ViewGroup) getView(), false);
 		
 		XYValueSeries series = new XYValueSeries("Mood by Time");
 		

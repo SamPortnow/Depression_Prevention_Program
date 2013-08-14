@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.samportnow.bato.addthought.AddEventActivity" />
-        <activity android:name="com.samportnow.bato.MoodGraphActivity" />
+        <activity android:name="com.samportnow.bato.graphs.MoodGraphActivity" />
 
         <service android:name="com.samportnow.bato.Post" />
         <service android:name="com.samportnow.bato.PostGame" />

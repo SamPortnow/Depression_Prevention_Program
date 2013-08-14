@@ -143,4 +143,6 @@
 	<!-- fragment_mood_graph -->
 	<string name="mood_graph_previous_day">&#x21e6;</string>
 	<string name="mood_graph_next_day">&#x21e8;</string>
+	
+	<string name="block_no_thoughts_text">No thoughts recorded this day.</string>
 </resources>
