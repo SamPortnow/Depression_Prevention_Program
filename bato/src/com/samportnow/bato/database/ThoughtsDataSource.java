@@ -38,13 +38,15 @@ public class ThoughtsDataSource
 		values.put(ThoughtsSQLiteOpenHelper.COLUMN_CREATED, created);
 		values.put(ThoughtsSQLiteOpenHelper.COLUMN_ACTIVITY, activity);
 		values.put(ThoughtsSQLiteOpenHelper.COLUMN_FEELING, feeling);
-		values.put(ThoughtsSQLiteOpenHelper.COLUMN_THOUGHT, thought);
+		values.put(ThoughtsSQLiteOpenHelper.COLUMN_CONTENT, thought);
 		values.put(ThoughtsSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE, negativeType);
 		
 		return mDatabase.insert(ThoughtsSQLiteOpenHelper.TABLE_THOUGHTS, null, values);
 	}
 	
-	public List<String> getActivities()
+	
+	
+	public List<String> getAllThoughtActivity()
 	{
 		Cursor cursor = 
 			mDatabase.query(
@@ -65,15 +67,15 @@ public class ThoughtsDataSource
 		return activities;
 	}
 	
-	public List<String> getThoughts()
+	public List<String> getAllThoughtContent()
 	{
 		Cursor cursor = 
 			mDatabase.query(
 				true,
 				ThoughtsSQLiteOpenHelper.TABLE_THOUGHTS,
-				new String[] { ThoughtsSQLiteOpenHelper.COLUMN_THOUGHT },
+				new String[] { ThoughtsSQLiteOpenHelper.COLUMN_CONTENT },
 				null, null, null, null,
-				ThoughtsSQLiteOpenHelper.COLUMN_THOUGHT + " ASC",
+				ThoughtsSQLiteOpenHelper.COLUMN_CONTENT + " ASC",
 				null);
 		
 		ArrayList<String> thoughts = new ArrayList<String>(cursor.getCount());

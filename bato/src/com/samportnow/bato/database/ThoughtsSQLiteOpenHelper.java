@@ -15,7 +15,7 @@ public class ThoughtsSQLiteOpenHelper extends SQLiteOpenHelper
 	public static final String COLUMN_CREATED = "created";
 	public static final String COLUMN_ACTIVITY = "activity";
 	public static final String COLUMN_FEELING = "feeling";
-	public static final String COLUMN_THOUGHT = "thought";
+	public static final String COLUMN_CONTENT = "content";
 	public static final String COLUMN_NEGATIVE_TYPE = "negative_type";
 	
 	private static final String DATABASE_CREATE =
@@ -25,7 +25,7 @@ public class ThoughtsSQLiteOpenHelper extends SQLiteOpenHelper
 		"   " + COLUMN_CREATED + " INTEGER NOT NULL, " +
 		"   " + COLUMN_ACTIVITY + " TEXT NOT NULL, " +
 		"   " + COLUMN_FEELING + " INTEGER NOT NULL, " +
-		"   " + COLUMN_THOUGHT + " TEXT NOT NULL, " +
+		"   " + COLUMN_CONTENT + " TEXT NOT NULL, " +
 		"   " + COLUMN_NEGATIVE_TYPE + " INTEGER" +
 		" )";
 	
