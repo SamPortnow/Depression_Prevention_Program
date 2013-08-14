@@ -118,71 +118,72 @@ public class MoodGraphFragment extends Fragment
 			series.add(xValue, thought.getFeeling());
 		}
 		
-		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
-		dataset.addSeries(series);
-		XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer();
-		XYSeriesRenderer renderer = new XYSeriesRenderer();
-		mRenderer.addSeriesRenderer(renderer);
-		double[] limits = new double[] { 1, 24, 0, 7 };
-		mRenderer.setPanLimits(limits);
-		mRenderer.setPanEnabled(true, false);
+		XYMultipleSeriesDataset seriesDataset = new XYMultipleSeriesDataset();
+		seriesDataset.addSeries(series);
+		
+		XYMultipleSeriesRenderer multipleSeriesRenderer = new XYMultipleSeriesRenderer();
+		XYSeriesRenderer seriesRenderer = new XYSeriesRenderer();
+		
+		multipleSeriesRenderer.addSeriesRenderer(seriesRenderer);
 		
 		for (int i = 0; i <= 24; i++)
 		{
 			if (i % 3 == 0)
-				mRenderer.addXTextLabel(i, "" + i);
+				multipleSeriesRenderer.addXTextLabel(i, "" + i);
 		}
 		
-		mRenderer.setXAxisMin(-2);
-		mRenderer.setXAxisMax(26);
+		multipleSeriesRenderer.setXAxisMin(-2);
+		multipleSeriesRenderer.setXAxisMax(26);
 		
-		mRenderer.addYTextLabel(0, "Terrible");
-		mRenderer.addYTextLabel(3, "Neutral");
-		mRenderer.addYTextLabel(6, "Fantastic");
+		multipleSeriesRenderer.addYTextLabel(0, "Terrible");
+		multipleSeriesRenderer.addYTextLabel(3, "Neutral");
+		multipleSeriesRenderer.addYTextLabel(6, "Fantastic");
 		
-		mRenderer.setYAxisMin(0);
-		mRenderer.setYAxisMax(6);	
+		multipleSeriesRenderer.setYAxisMin(-0.5);
+		multipleSeriesRenderer.setYAxisMax(6.5);	
 
-		mRenderer.setXLabels(0);
-		mRenderer.setYLabels(0);
+		multipleSeriesRenderer.setXLabels(0);
+		multipleSeriesRenderer.setYLabels(0);
+		
+		multipleSeriesRenderer.setPanEnabled(true, true);
 		
 		// TODO: move me somewhere better.
 		DisplayMetrics metrics = new DisplayMetrics();
 		getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);		
 
-		mRenderer.setLabelsTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14, metrics));
+		multipleSeriesRenderer.setLabelsTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14, metrics));
 		
-		mRenderer.setXLabelsAngle(45);
-		mRenderer.setYLabelsAngle(310);
+		multipleSeriesRenderer.setXLabelsAngle(45);
+		multipleSeriesRenderer.setYLabelsAngle(310);
 		
-		mRenderer.setXLabelsColor(Color.BLACK);
-		mRenderer.setYLabelsColor(0, Color.BLACK);
+		multipleSeriesRenderer.setXLabelsColor(Color.BLACK);
+		multipleSeriesRenderer.setYLabelsColor(0, Color.BLACK);
 		
-		mRenderer.setMarginsColor(Color.argb(0x00, 0x01, 0x01, 0x01));		
-		mRenderer.setAxesColor(Color.BLACK);		
-		mRenderer.setGridColor(Color.LTGRAY);		
+		multipleSeriesRenderer.setMarginsColor(Color.argb(0x00, 0x01, 0x01, 0x01));		
+		multipleSeriesRenderer.setAxesColor(Color.BLACK);		
+		multipleSeriesRenderer.setGridColor(Color.LTGRAY);		
 		
-		mRenderer.setPointSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, metrics));
-		mRenderer.setSelectableBuffer(25);
-		mRenderer.setClickEnabled(true);
+		multipleSeriesRenderer.setPointSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, metrics));
+		multipleSeriesRenderer.setSelectableBuffer(25);
+		multipleSeriesRenderer.setClickEnabled(true);
 		
-		mRenderer.setTextTypeface(Typeface.SANS_SERIF);
+		multipleSeriesRenderer.setTextTypeface(Typeface.SANS_SERIF);
 
-		mRenderer.setShowGrid(true);
-		mRenderer.setShowCustomTextGrid(true);		
-		mRenderer.setShowLegend(false);
+		multipleSeriesRenderer.setShowGrid(true);
+		multipleSeriesRenderer.setShowCustomTextGrid(true);		
+		multipleSeriesRenderer.setShowLegend(false);
 		
 		int margin30 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, metrics);
 		int margin10 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, metrics);
 		
-		mRenderer.setMargins(new int[] {margin30, margin30, margin10, margin10});
+		multipleSeriesRenderer.setMargins(new int[] {margin30, margin30, margin10, margin10});
 
-		renderer.setColor(Color.GRAY);
-		renderer.setLineWidth(3);
-		renderer.setPointStyle(PointStyle.CIRCLE);
-		renderer.setFillPoints(true);
+		seriesRenderer.setColor(Color.GRAY);
+		seriesRenderer.setLineWidth(3);
+		seriesRenderer.setPointStyle(PointStyle.CIRCLE);
+		seriesRenderer.setFillPoints(true);
 
-		final View view = ChartFactory.getLineChartView(getActivity(), dataset, mRenderer);
+		final View view = ChartFactory.getLineChartView(getActivity(), seriesDataset, multipleSeriesRenderer);
 		
 		view.setOnClickListener(
 			new View.OnClickListener()
