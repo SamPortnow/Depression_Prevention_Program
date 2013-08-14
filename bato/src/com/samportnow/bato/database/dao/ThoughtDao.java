@@ -6,7 +6,7 @@ public class ThoughtDao
 	private long mCreated;
 	private String mActivity;
 	private int mFeeling;
-	private String mThought;
+	private String mContent;
 	private int mNegativeType;
 	
 	public long getId()
@@ -49,14 +49,14 @@ public class ThoughtDao
 		mFeeling = feeling;
 	}
 	
-	public String getThought()
+	public String getContent()
 	{
-		return mThought;
+		return mContent;
 	}
 	
-	public void setThought(String thought)
+	public void setContent(String content)
 	{
-		mThought = thought;
+		mContent = content;
 	}
 	
 	public int getNegativeType()
