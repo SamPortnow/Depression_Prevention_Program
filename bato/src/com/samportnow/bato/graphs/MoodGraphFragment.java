@@ -2,7 +2,6 @@ package com.samportnow.bato.graphs;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,6 +19,8 @@ import android.app.Fragment;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -145,7 +146,11 @@ public class MoodGraphFragment extends Fragment
 		mRenderer.setXLabels(0);
 		mRenderer.setYLabels(0);
 		
-		mRenderer.setLabelsTextSize(18);
+		// TODO: move me somewhere better.
+		DisplayMetrics metrics = new DisplayMetrics();
+		getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);		
+
+		mRenderer.setLabelsTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14, metrics));
 		
 		mRenderer.setXLabelsAngle(45);
 		mRenderer.setYLabelsAngle(310);
@@ -157,7 +162,7 @@ public class MoodGraphFragment extends Fragment
 		mRenderer.setAxesColor(Color.BLACK);		
 		mRenderer.setGridColor(Color.LTGRAY);		
 		
-		mRenderer.setPointSize(25);
+		mRenderer.setPointSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, metrics));
 		mRenderer.setSelectableBuffer(25);
 		mRenderer.setClickEnabled(true);
 		
@@ -167,7 +172,10 @@ public class MoodGraphFragment extends Fragment
 		mRenderer.setShowCustomTextGrid(true);		
 		mRenderer.setShowLegend(false);
 		
-		mRenderer.setMargins(new int[] {30, 30, 10, 10});
+		int margin30 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, metrics);
+		int margin10 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, metrics);
+		
+		mRenderer.setMargins(new int[] {margin30, margin30, margin10, margin10});
 
 		renderer.setColor(Color.GRAY);
 		renderer.setLineWidth(3);
@@ -189,13 +197,14 @@ public class MoodGraphFragment extends Fragment
 					
 					ThoughtDao thought = mThoughts.get(selection.getPointIndex());
 					
+					// TODO: make me a prettier layout.
 					View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_mood, null);
 					
 					Calendar calendar = Calendar.getInstance();
-					calendar.setTimeInMillis(thought.getCreated());
+					calendar.setTimeInMillis(thought.getCreated());								
 					
-					((TextView) view.findViewById(R.id.activity)).setText("Base:" + thought.getCreated() + "/X:"+selection.getXValue());
-					((TextView) view.findViewById(R.id.thought)).setText("Y:" + calendar.get(Calendar.HOUR_OF_DAY));
+					((TextView) view.findViewById(R.id.activity)).setText(thought.getActivity());
+					((TextView) view.findViewById(R.id.thought)).setText(thought.getFeeling());
 					
 					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 					
