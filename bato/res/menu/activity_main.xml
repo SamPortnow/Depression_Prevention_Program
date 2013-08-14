@@ -1,13 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menu_add_event"
+        android:id="@+id/menu_add_thought"
         android:showAsAction="ifRoom"
-        android:title="@string/menu_add_event"/>
+        android:title="@string/menu_add_thought"/>
     <item
-        android:id="@+id/menu_daily_mood"
+        android:id="@+id/menu_mood_graphs"
         android:showAsAction="ifRoom"
-        android:title="@string/menu_daily_mood"/>
+        android:title="@string/menu_mood_graphs"/>
     <item
         android:id="@+id/menu_settings"
         android:showAsAction="never"

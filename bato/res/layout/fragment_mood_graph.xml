@@ -14,7 +14,7 @@
             android:id="@+id/previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/previous" />
+            android:text="@string/graph_previous_day" />
 
         <TextView
             android:id="@+id/date"
@@ -28,7 +28,7 @@
             android:id="@+id/next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/next" />
+            android:text="@string/graph_next_day" />
     </LinearLayout>
 
     <View

@@ -198,7 +198,7 @@ public class MoodGraphFragment extends Fragment
 					ThoughtDao thought = mThoughts.get(selection.getPointIndex());
 					
 					// TODO: make me a prettier layout.
-					View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_mood, null);
+					View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_thought_detail, null);
 					
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTimeInMillis(thought.getCreated());								

@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">BATO</string>
+    
+    <!-- fragment_welcome -->
     <string name="welcome_title">Welcome!</string>
     <string name="welcome_text_thank_you">Thank you for participating in the BATO study!</string>
     <string name="welcome_text_aim_app">The aim of this app is to help people build the skills that researchers find helpful in feeling good.</string>
@@ -11,21 +13,11 @@
     <string name="welcome_text_replace_negative">The ability to challenge negative thoughts</string>
     <string name="welcome_text_build_skills">You will build these skills through a daily diary, daily mood graphs, the "Nab the Negative" and  the "Destroyer Game".</string>
     <string name="welcome_username_hint">Enter a username.</string>
-    <string name="menu_add_event">Add Event</string>
-    <string name="menu_daily_mood">Mood Graphs</string>
-    <string name="menu_settings">Settings</string>
 
-    <string name="add_event_fragment_title">Add a new event&#x2026;</string>
-    <string name="add_event_toast_created_event">New event created.</string>
-    <string name="image_smiley_content_description">Happy</string>
-    <string name="image_sad_content_description">Sad</string>
     <string name="destroyer">write a positive thought to destroy the negative thought</string>
     <string name="destroy">FIRE!</string>
     <string name="destroyer_shooter_cannon_content_description">Cannon</string>
-    <string name="next">Next</string>
-    <string name="previous">Prev</string>
-    <string name="activity">You were doing</string>
-    <string name="thought">You were thinking</string>
+
     <string name="thought_it"> Create a thought that challenges
         the truth of this negative thought. </string>
     <string name="scale_it">  Create! </string>
@@ -69,6 +61,10 @@
 	<string name="train_instructions">See if the negative thought you entered corresponds to any of these common types of negative thinking. If it does, drag and drop it in to the correct train, so it can be sent of the Tip the Scales Game, and later the Destroyer Game, where you will destroy the negative thought!</string>
 	
 	<!-- activity_main -->
+	<string name="menu_add_thought">Add Thought</string>
+    <string name="menu_mood_graphs">Mood Graphs</string>
+    <string name="menu_settings">Settings</string>
+	
 	<string-array name="main_fragment_titles">
 	    <item>Personal Scientist Points</item>
 	    <item>Nab the Negative</item>
@@ -119,7 +115,7 @@
 	    <item>You compare yourself to others doing better than you.</item>
 	</string-array>
 	
-	<!-- fragment_points_sumamry -->
+	<!-- fragment_points_summary -->
 	<string name="points_summary_badge_description">Add to Diary</string>
 	<string name="points_summary_value_prefix">You have earned&#8230;</string>
 	<string name="points_summary_value_postfix">personal scientist points.</string>
@@ -141,8 +137,11 @@
 	<string name="cannon_summary_high_scores_dialog_title">Command the Cannon High Scores</string>
 	
 	<!-- fragment_mood_graph -->
-	<string name="mood_graph_previous_day">&#x21e6;</string>
-	<string name="mood_graph_next_day">&#x21e8;</string>
+	<string name="graph_previous_day">&#x21e6;</string>
+	<string name="graph_next_day">&#x21e8;</string>
+	
+	<string name="thought_detail_activity_label">You were doing&#8230;</string>
+    <string name="thought_detail_content_label">You were thinking&#8230;</string>
 	
 	<string name="block_no_thoughts_text">No thoughts recorded this day.</string>
 </resources>

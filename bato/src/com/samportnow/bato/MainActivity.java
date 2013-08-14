@@ -102,13 +102,13 @@ public class MainActivity extends Activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-    	if (item.getItemId() == R.id.menu_add_event)
+    	if (item.getItemId() == R.id.menu_add_thought)
     	{
 			Intent intent = new Intent(this, AddEventActivity.class);				
 			startActivity(intent);	
     	}
     	
-    	if (item.getItemId() == R.id.menu_daily_mood)
+    	if (item.getItemId() == R.id.menu_mood_graphs)
     	{
     		Intent intent = new Intent(this, MoodGraphActivity.class);
     		startActivity(intent);
