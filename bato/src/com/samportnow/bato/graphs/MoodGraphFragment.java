@@ -2,17 +2,20 @@ package com.samportnow.bato.graphs;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.PointStyle;
+import org.achartengine.model.SeriesSelection;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYValueSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -31,6 +34,7 @@ import com.samportnow.bato.database.dao.ThoughtDao;
 public class MoodGraphFragment extends Fragment
 {
 	private Calendar mChartCalendar;
+	private List<ThoughtDao> mThoughts;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -95,41 +99,24 @@ public class MoodGraphFragment extends Fragment
 		long endTimestamp = startTimestamp + 86400000;
 		
 		ThoughtsDataSource dataSource = new ThoughtsDataSource(getActivity()).open();
-		List<ThoughtDao> thoughts = dataSource.getThoughtsBetween(startTimestamp, endTimestamp);
+		mThoughts = dataSource.getThoughtsBetween(startTimestamp, endTimestamp);
 		
 		dataSource.close();
 		
-		if (thoughts.isEmpty())
-			return getActivity().getLayoutInflater().inflate(R.layout.block_no_thoughts, (ViewGroup) getView(), false);
+		if (mThoughts.isEmpty())
+			return getActivity().getLayoutInflater().inflate(R.layout.block_no_thoughts, (ViewGroup) getView(), false);						
 		
+		Calendar calendar = Calendar.getInstance();
 		XYValueSeries series = new XYValueSeries("Mood by Time");
 		
-		for (ThoughtDao thought : thoughts)
-			series.add((thought.getCreated() % 86400000) / 3600000, thought.getFeeling());
+		for (ThoughtDao thought : mThoughts)
+		{
+			calendar.setTimeInMillis(thought.getCreated());
+			double xValue = calendar.get(Calendar.HOUR_OF_DAY) + ((double) calendar.get(Calendar.MINUTE) / 60);
+			
+			series.add(xValue, thought.getFeeling());
+		}
 		
-		// TODO: for onClick() use SeriesSelection::getPointIndex().
-
-//		if (!calendar.moveToFirst())
-//		{
-//			Toast.makeText(getActivity(), "No events this day!", Toast.LENGTH_SHORT).show();
-//		}
-//
-//		else
-//		{
-//			SharedPreferences prefs = getActivity().getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
-//			if (prefs.getBoolean("Graph", true) == true)
-//			{
-//				AlertDialog.Builder builder = new Builder(getActivity());
-//				builder.setTitle("Note");
-//				builder.setMessage("Click each point to see how what you were doing and what you were thinking are related to how you were feeling");
-//				builder.setPositiveButton(android.R.string.ok, null);
-//				builder.create();
-//				builder.show();
-//				prefs.edit().putBoolean("Graph", false).commit();
-//			}
-//
-//		}
-
 		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
 		dataset.addSeries(series);
 		XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer();
@@ -138,125 +125,88 @@ public class MoodGraphFragment extends Fragment
 		double[] limits = new double[] { 1, 24, 0, 7 };
 		mRenderer.setPanLimits(limits);
 		mRenderer.setPanEnabled(true, false);
-
-		for (int i = 1; i < 26; i++)
+		
+		for (int i = 0; i <= 24; i++)
 		{
-			if (i == 1)
-			{
-				mRenderer.addXTextLabel(i, "12 AM");
-
-			}
-			if (i == 4 || i == 7 || i == 10)
-			{
-				mRenderer.addXTextLabel(i, "" + ((i - 1) + " AM"));
-			}
-
-			if (i == 13)
-			{
-				mRenderer.addXTextLabel(i, "" + (12 + " PM"));
-			}
-
-			if (i == 16 || i == 19 || i == 22)
-			{
-				mRenderer.addXTextLabel(i, "" + ((i - 13) + " PM"));
-			}
-
-			if (i == 25)
-			{
-				mRenderer.addXTextLabel(i, 12 + "AM");
-			}
-
+			if (i % 3 == 0)
+				mRenderer.addXTextLabel(i, "" + i);
 		}
-
-		for (int i = 1; i < 8; i++)
-		{
-			if (i == 1)
-			{
-				mRenderer.addYTextLabel(i, "Terrible");
-			}
-
-			if (i == 4)
-			{
-				mRenderer.addYTextLabel(i, "Neutral");
-			}
-
-			if (i == 7)
-			{
-				mRenderer.addYTextLabel(i, "Fantastic");
-			}
-
-		}
+		
+		mRenderer.setXAxisMin(-2);
+		mRenderer.setXAxisMax(26);
+		
+		mRenderer.addYTextLabel(0, "Terrible");
+		mRenderer.addYTextLabel(3, "Neutral");
+		mRenderer.addYTextLabel(6, "Fantastic");
+		
+		mRenderer.setYAxisMin(0);
+		mRenderer.setYAxisMax(6);	
 
 		mRenderer.setXLabels(0);
 		mRenderer.setYLabels(0);
-		mRenderer.setLabelsTextSize(10);
+		
+		mRenderer.setLabelsTextSize(18);
+		
+		mRenderer.setXLabelsAngle(45);
 		mRenderer.setYLabelsAngle(310);
-		mRenderer.setAxesColor(Color.CYAN);
-		mRenderer.setXLabelsColor(Color.parseColor("#0099cc"));
-		mRenderer.setYLabelsColor(0, Color.parseColor("#0099cc"));
-		mRenderer.setYAxisMax(8);
-		mRenderer.setYAxisMin(0);
-		mRenderer.setXAxisMin(0);
-		mRenderer.setXAxisMax(26);
+		
+		mRenderer.setXLabelsColor(Color.BLACK);
+		mRenderer.setYLabelsColor(0, Color.BLACK);
+		
+		mRenderer.setMarginsColor(Color.argb(0x00, 0x01, 0x01, 0x01));		
+		mRenderer.setAxesColor(Color.BLACK);		
+		mRenderer.setGridColor(Color.LTGRAY);		
+		
 		mRenderer.setPointSize(25);
 		mRenderer.setSelectableBuffer(25);
 		mRenderer.setClickEnabled(true);
-		mRenderer.setXLabelsAngle(45);
-		mRenderer.setLabelsTextSize(18);
-		mRenderer.setXLabelsPadding(30);
-		mRenderer.setTextTypeface(Typeface.DEFAULT_BOLD);
-		mRenderer.setChartTitleTextSize(20);
+		
+		mRenderer.setTextTypeface(Typeface.SANS_SERIF);
+
 		mRenderer.setShowGrid(true);
-		mRenderer.setLegendTextSize(20);
-		// Customization time for line 1!
+		mRenderer.setShowCustomTextGrid(true);		
+		mRenderer.setShowLegend(false);
+		
+		mRenderer.setMargins(new int[] {30, 30, 10, 10});
+
 		renderer.setColor(Color.GRAY);
 		renderer.setLineWidth(3);
 		renderer.setPointStyle(PointStyle.CIRCLE);
 		renderer.setFillPoints(true);
 
-		// Customization time for line 2!
-
-		final GraphicalView chartView;
-		chartView = ChartFactory.getLineChartView(getActivity(), dataset, mRenderer);
+		final View view = ChartFactory.getLineChartView(getActivity(), dataset, mRenderer);
 		
-//		chartView.setOnClickListener(new View.OnClickListener()
-//		{
-//
-//			@Override
-//			public void onClick(View arg0)
-//			{
-//				SeriesSelection seriesSelection = chartView.getCurrentSeriesAndPoint();
-//				if (seriesSelection != null)
-//				{
-//
-//					mapping = seriesSelection.getXValue();
-//					if (mMap.get((float) mapping) != null)
-//					{
-//						adapter_minutes = mMap.get((float) mapping);
-//						Cursor fetchThoughtActivity = mDbHelper.fetchCalendar(Year, Day, adapter_minutes);
-//						if (fetchThoughtActivity.moveToFirst())
-//						{
-//							String thought = fetchThoughtActivity.getString(fetchThoughtActivity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_THOUGHT));
-//							String activity = fetchThoughtActivity.getString(fetchThoughtActivity.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_ACTIVITY));
-//							AlertDialog.Builder builder = new Builder(getActivity());
-//							events = getActivity().getLayoutInflater().inflate(R.layout.dialog_mood, null);
-//							builder.setView(events);
-//							builder.setTitle("Thought, Activity, and Mood");
-//							thoughts = (TextView) events.findViewById(R.id.thought);
-//							event = (TextView) events.findViewById(R.id.activity);
-//							thoughts.setText(thought);
-//							event.setText(activity);
-//							builder.setPositiveButton(android.R.string.ok, null);
-//							builder.create();
-//							builder.show();
-//						}
-//
-//					}
-//				}
-//			}
-//
-//		});
-		return chartView;
+		view.setOnClickListener(
+			new View.OnClickListener()
+			{				
+				@Override
+				public void onClick(View v)
+				{
+					SeriesSelection selection = ((GraphicalView) view).getCurrentSeriesAndPoint();
+					
+					if (selection == null)
+						return;
+					
+					ThoughtDao thought = mThoughts.get(selection.getPointIndex());
+					
+					View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_mood, null);
+					
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTimeInMillis(thought.getCreated());
+					
+					((TextView) view.findViewById(R.id.activity)).setText("Base:" + thought.getCreated() + "/X:"+selection.getXValue());
+					((TextView) view.findViewById(R.id.thought)).setText("Y:" + calendar.get(Calendar.HOUR_OF_DAY));
+					
+					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+					
+					builder.setView(view);
+					builder.setPositiveButton(android.R.string.ok, null);
+					
+					builder.create().show();
+				}
+			});
+		
+		return view;
 	}
 
 }
