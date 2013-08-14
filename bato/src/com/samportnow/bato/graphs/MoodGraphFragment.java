@@ -204,7 +204,7 @@ public class MoodGraphFragment extends Fragment
 					calendar.setTimeInMillis(thought.getCreated());								
 					
 					((TextView) view.findViewById(R.id.activity)).setText(thought.getActivity());
-					((TextView) view.findViewById(R.id.thought)).setText(thought.getFeeling());
+					((TextView) view.findViewById(R.id.thought)).setText(thought.getContent());
 					
 					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 					
