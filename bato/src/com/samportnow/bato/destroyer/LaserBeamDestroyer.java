@@ -10,6 +10,10 @@ import android.view.View;
 
 import com.samportnow.bato.R;
 import com.samportnow.bato.capture.BattleField;
+<<<<<<< HEAD:bato/src/com/samportnow/bato/destroyer/LaserBeamDestroyer.java
+=======
+
+>>>>>>> refactor_and_coping:bato/src/com/samportnow/bato/destroyer/LaserBeamDestroyer.java
 
 @SuppressLint("ViewConstructor")
 public class LaserBeamDestroyer extends View

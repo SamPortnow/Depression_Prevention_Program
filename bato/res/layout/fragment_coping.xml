@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_horizontal"
+            android:paddingBottom="8dp"
+            android:text="@string/breathing"
+            android:textSize="20sp"
+            />
+          
+          <LinearLayout
+           android:layout_width="match_parent"
+    	   android:layout_height="wrap_content"
+      	   android:orientation="horizontal"
+      	   android:gravity="center_horizontal"
+      	   android:background="@drawable/border_bottom_dashed" >
+      	   
+          <Button
+            android:id="@+id/breathing_learn"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@android:color/holo_red_light"
+            android:paddingBottom="8dp"
+            android:text="@string/learn"
+            android:textSize="20sp"                  
+            />
+          
+          <Button
+            android:id="@+id/breathing_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@android:color/holo_blue_light"
+            android:paddingBottom="8dp"
+            android:text="@string/play"
+            android:textSize="20sp"                  
+            />
+              
+          </LinearLayout>
+          
+          <TextView
+            
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_horizontal"
+            android:paddingBottom="8dp"
+            android:text="@string/rolling_ball"
+            android:textSize="20sp" />
+          
+              <LinearLayout
+           android:layout_width="match_parent"
+    	   android:layout_height="wrap_content"
+      	   android:orientation="horizontal"
+      	   android:gravity="center_horizontal"
+      	   android:background="@drawable/border_bottom_dashed" >
+      	   
+          <Button
+            android:id="@+id/rolling_learn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingBottom="8dp"
+            android:text="@string/learn"
+            android:textSize="20sp"   
+            android:textColor="@android:color/holo_red_light"               
+            />
+          
+          <Button
+            android:id="@+id/rolling_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingBottom="8dp"
+            android:text="@string/play"
+            android:textSize="20sp"
+            android:textColor="@android:color/holo_blue_light"                  
+            />
+              
+          </LinearLayout>
+          
+         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_horizontal"
+            android:paddingBottom="8dp"
+            android:text="@string/watch_thought"
+            android:textSize="20sp" />
+                   <LinearLayout
+           android:layout_width="match_parent"
+    	   android:layout_height="wrap_content"
+      	   android:orientation="horizontal"
+      	   android:gravity="center_horizontal"
+      	   android:background="@drawable/border_bottom_dashed" >
+      	   
+          <Button
+            android:id="@+id/float_learn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@android:color/holo_red_light"
+            android:paddingBottom="8dp"
+            android:text="@string/learn"
+            android:textSize="20sp"                  
+            />
+          
+          <Button
+            android:id="@+id/float_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_blue_light"
+            android:background="?android:attr/selectableItemBackground"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingBottom="8dp"
+            android:text="@string/play"
+            android:textSize="20sp"                  
+            />
+              
+          </LinearLayout>
+          
+            
+
+</LinearLayout>

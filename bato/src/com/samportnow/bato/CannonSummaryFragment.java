@@ -12,9 +12,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+<<<<<<< HEAD
 import com.samportnow.bato.database.GameDbAdapter;
 import com.samportnow.bato.database.ScaleDbAdapter;
 import com.samportnow.bato.destroyer.DestroyerGameActivity;
+=======
+import com.samportnow.bato.dbs.GameDbAdapter;
+import com.samportnow.bato.dbs.ScaleDbAdapter;
+import com.samportnow.bato.destroyer.DestroyerGame;
+>>>>>>> refactor_and_coping
 
 public class CannonSummaryFragment extends Fragment
 {
@@ -31,8 +37,8 @@ public class CannonSummaryFragment extends Fragment
 
 		View view = getView();
 
-		if (isUnlocked() == true)
-		{
+//		if (isUnlocked() == true)
+//		{
 			view.findViewById(R.id.cannon_summary_container).setVisibility(View.VISIBLE);
 			view.findViewById(R.id.cannon_summary_locked_container).setVisibility(View.GONE);
 
@@ -66,12 +72,12 @@ public class CannonSummaryFragment extends Fragment
 				}
 			});
 		}
-		else
-		{
-			view.findViewById(R.id.cannon_summary_locked_container).setVisibility(View.VISIBLE);
-			view.findViewById(R.id.cannon_summary_container).setVisibility(View.GONE);
-		}
-	}
+//		else
+//		{
+//			view.findViewById(R.id.cannon_summary_locked_container).setVisibility(View.VISIBLE);
+//			view.findViewById(R.id.cannon_summary_container).setVisibility(View.GONE);
+//		}
+	
 
 	private boolean isUnlocked()
 	{

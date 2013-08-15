@@ -13,7 +13,7 @@ import com.samportnow.bato.R;
 public class Score extends View
 {
 	Context mContext;
-	DestroyerGameActivity mDestroyer;
+	DestroyerGame mDestroyer;
 	Handler h;
 	int size;
 	int width;
@@ -23,53 +23,57 @@ public class Score extends View
 	TextPaint score = new TextPaint();
 	boolean update;
 	int fin;
-
-	public Score(Context context, AttributeSet attrs)
+	
+	public Score(Context context, AttributeSet attrs) 
 	{
 		super(context, attrs);
-		mContext = this.getContext();
-		mDestroyer = (DestroyerGameActivity) context;
-		h = new Handler();
-		fin = 0;
-		size = getResources().getDimensionPixelSize(R.dimen.myFontSize);
-		score.setAntiAlias(true);
-		score.setTextSize(size);
-		score.setColor(Color.CYAN);
-		score.setShadowLayer(1, 1, 1, Color.RED);
-
+        mContext = this.getContext();
+		mDestroyer = (DestroyerGame) context;
+        h = new Handler();
+        fin = 0;
+        size = getResources().getDimensionPixelSize(R.dimen.myFontSize);
+    	score.setAntiAlias(true);
+    	score.setTextSize(size);
+	    score.setColor(Color.CYAN);
+	    score.setShadowLayer(1, 1, 1, Color.RED);
+        
 	}
-
-	private Runnable r = new Runnable()
+	
+	private Runnable r= new Runnable() 
 	{
 
 		@Override
-		public void run()
-		{
+		public void run() {
 			invalidate();
-
-		}
-
-	};
-
-	@Override
-	protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld)
-	{
-		super.onSizeChanged(xNew, yNew, xOld, yOld);
-		width = xNew;
-		height = yNew;
+			
 	}
 
+	};
+	
+	
 	@Override
-	protected void onDraw(Canvas canvas)
+	 protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld)
 	{
+	     super.onSizeChanged(xNew, yNew, xOld, yOld);
+	     width = xNew;
+	     height = yNew;
+	}
+	
+	@Override
+	protected void onDraw (Canvas canvas)
+    {		
 		super.onDraw(canvas);
 		canvas.drawText("" + count, 0, height, score);
 		if (count != fin)
 		{
 			count += 1;
-
+		
 		}
-		h.postDelayed(r, FRAME_RATE);
-	}
+	    h.postDelayed(r, FRAME_RATE);
+    }
+	
 
+	
+	
+	
 }
