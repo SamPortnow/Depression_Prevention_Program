@@ -25,28 +25,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
+
         <activity android:name="com.samportnow.bato.addthought.AddEventActivity" />
         <activity android:name="com.samportnow.bato.graphs.MoodGraphActivity" />
-=======
-        <activity android:name="com.samportnow.bato.addevent.AddEventActivity" />
-        <activity android:name="com.samportnow.bato.moodgraph.MoodGraphActivity" />
->>>>>>> refactor_and_coping
 
         <service android:name="com.samportnow.bato.Post" />
         <service android:name="com.samportnow.bato.PostGame" />
 
         <activity android:name="com.samportnow.bato.capture.CaptureActivity" />
-<<<<<<< HEAD
-        <activity android:name="com.samportnow.bato.destroyer.DestroyerGameActivity" />
-    </application>
-=======
+
         <activity android:name="com.samportnow.bato.destroyer.DestroyerGame" />
         
         <activity android:name="com.samportnow.bato.coping.blowfish.Blowfish" />
         <activity android:name="com.samportnow.bato.coping.rollingball.Rolling" />
         
         </application>
->>>>>>> refactor_and_coping
 
 </manifest>
