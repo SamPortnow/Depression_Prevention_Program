@@ -45,16 +45,12 @@ import android.widget.Toast;
 
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
-<<<<<<< HEAD
-import com.samportnow.bato.database.CalendarDbAdapter;
-=======
 import com.samportnow.bato.dbs.CalendarDbAdapter;
->>>>>>> refactor_and_coping
 
 public class CaptureActivity extends Activity
 {
 	private static final int THOUGHTS_CREATION_LIMIT = 4;
-	
+
 	private static Set<String> mNegativeWords;
 	HorizontalScrollView train;
 	RelativeLayout container;
@@ -64,16 +60,14 @@ public class CaptureActivity extends Activity
 	int width;
 	BattleField mBattle;
 	int mPosCounter;
-	LinearLayout mPosHolder;
 	AutoCompleteTextView mChallengingThought;
 	AlphaAnimation mGone;
 	private String[] inputTokens;
 	private Pattern four_letter_words = Pattern.compile("not|cant|cnt|can't");
-	EndGame mEndGame;
-	
+	boolean laser_created;
 	private String[] mCategoryTitles = null;
 	private List<TextView> mCategoryDescriptionTextViews = null; 
-			
+
 	public static boolean populatePositiveWords(Context context)
 	{
 		mNegativeWords = new HashSet<String>();
@@ -104,10 +98,10 @@ public class CaptureActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
+
 		mCategoryTitles = getResources().getStringArray(R.array.add_event_user_category_titles);
 		mCategoryDescriptionTextViews = new ArrayList<TextView>(11);
-		
+
 		this.getActionBar().hide();
 		Context mContext = this;
 		// layout inflater
@@ -156,10 +150,6 @@ public class CaptureActivity extends Activity
 		// at the begining
 		// setup the animation for the train coming in
 		TranslateAnimation mSlide = new TranslateAnimation(width, 0, 0, 0);
-		// game over translate animation
-		TranslateAnimation mGameOver = new TranslateAnimation(0, width, 0, 0);
-		mGameOver.setFillAfter(true);
-		mGameOver.setDuration(2000);
 		mSlide.setDuration(100);
 		mSlide.setFillAfter(true);
 		train.setAnimation(mSlide);
@@ -194,9 +184,8 @@ public class CaptureActivity extends Activity
 		mGone.setAnimationListener(remove);
 		mGone.setDuration(2000);
 		mGone.setFillAfter(true);
-		// layout that will contain the positive thoughts
-		mPosHolder = (LinearLayout) findViewById(R.id.pos_container);
-		
+
+
 		OnClickListener startGameListener = new OnClickListener()
 		{
 			@Override
@@ -204,10 +193,10 @@ public class CaptureActivity extends Activity
 			{
 				int position = mCategoryDescriptionTextViews.indexOf(v);
 				String categoryTitle = mCategoryTitles[position];				
-				
+
 				CalendarDbAdapter calendarDbAdapter = new CalendarDbAdapter(v.getContext()).open();				
 				Cursor cursor = calendarDbAdapter.fetchNegsByType(categoryTitle);
-				
+
 				if (cursor.moveToFirst())
 				{
 					String mNegThought = cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_NEGATIVE_THOUGHT));
@@ -229,13 +218,13 @@ public class CaptureActivity extends Activity
 				{
 					Toast.makeText(v.getContext(), "No negative thoughts in this train", Toast.LENGTH_SHORT).show();
 				}
-				
+
 				cursor.close();
 				calendarDbAdapter.close();
 			}
 
 		};
-		
+
 		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.mind_reading));
 		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.fortune_telling));
 		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.catastrophizing));
@@ -247,15 +236,15 @@ public class CaptureActivity extends Activity
 		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.personalizing));
 		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.shoulds));
 		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.unfair_comparisons));
-		
+
 		for (TextView textView : mCategoryDescriptionTextViews)
 			textView.setOnClickListener(startGameListener);
-			
+
 		final Button mCreateThought = (Button) findViewById(R.id.scale_it);
 
 		if (mPosCounter == THOUGHTS_CREATION_LIMIT)
 			mCreateThought.setEnabled(false);
-			
+
 		// set an onclicklistener for the create button
 		// make sure that there are no neg words, negating statements
 		mCreateThought.setOnClickListener(new OnClickListener()
@@ -306,118 +295,76 @@ public class CaptureActivity extends Activity
 				else
 				{
 					mCreateThought.setEnabled(false);
-					
+
 					final String mChallenging = mChallengingThought.getText().toString();
 					mPos[mPosCounter] = new PositiveThought(arg0.getContext(), null, inputLine);
 					mLaserBeam[mPosCounter] = new LaserBeam(arg0.getContext(), mPosCounter);
 					mPos[mPosCounter].setText(inputLine);
-					AlphaAnimation mGoAddLaser = new AlphaAnimation(0.0f, 1.0f);
-					mGoAddLaser.setFillAfter(true);
-					mGoAddLaser.setDuration(2000);
-					mPosHolder.addView(mPos[mPosCounter]);
+					laser_created = true;
 					final Context mText = arg0.getContext();
-					mGoAddLaser.setAnimationListener(new AnimationListener()
+					AlertDialog.Builder build_believe = new AlertDialog.Builder(mText);
+					final View view = inflater.inflate(R.layout.believe_dialog, null);
+					build_believe.setView(view);
+					build_believe.setTitle("Rate your thought");
+					build_believe.setCancelable(false);
+					build_believe.setPositiveButton("OK", new DialogInterface.OnClickListener()
 					{
 
 						@Override
-						public void onAnimationEnd(Animation arg0)
+						public void onClick(DialogInterface dialog, int which)
 						{
-							AlertDialog.Builder build_believe = new AlertDialog.Builder(mText);
-							final View view = inflater.inflate(R.layout.believe_dialog, null);
-							build_believe.setView(view);
-							build_believe.setTitle("Rate your thought");
-							build_believe.setCancelable(false);
-							build_believe.setPositiveButton("OK", new DialogInterface.OnClickListener()
+							CalendarDbAdapter mCalHelper = new CalendarDbAdapter(CaptureActivity.this.getApplicationContext());
+							mCalHelper.open();
+							int belief = ((SeekBar) view.findViewById(R.id.believe)).getProgress();
+							int helpful = ((SeekBar) view.findViewById(R.id.help)).getProgress();
+							mCalHelper.createChallenging(mNeg.getText().toString(), mChallenging, belief, helpful);
+							mCalHelper.close();
+							mBattle.xLessBound[1] += mBattle.container_width / 12;
+							mBattle.xGreatBound[1] -= mBattle.container_width / 12;
+							mBattle.mSetX=true;
+
+							if (mBattle.xVelocity < 0)
 							{
+								mBattle.xVelocity += 2;
+							}
+							else
+							{
+								mBattle.xVelocity -= 2;
 
-								@Override
-								public void onClick(DialogInterface dialog, int which)
+							}
+							if (mBattle.yVelocity < 0)
+							{
+								mBattle.yVelocity += 2;
+							}
+							else
+							{
+								mBattle.yVelocity -= 2;
+
+							}
+							if (mPosCounter >= THOUGHTS_CREATION_LIMIT)
+							{
+								mBattle.xVelocity = 5;
+								for (int i = 0; i < 4; i++)
 								{
-									CalendarDbAdapter mCalHelper = new CalendarDbAdapter(CaptureActivity.this.getApplicationContext());
-									mCalHelper.open();
-									int belief = ((SeekBar) view.findViewById(R.id.believe)).getProgress();
-									int helpful = ((SeekBar) view.findViewById(R.id.help)).getProgress();
-									mCalHelper.createChallenging(mNeg.getText().toString(), mChallenging, belief, helpful);
-									mCalHelper.close();
-									container.addView(mLaserBeam[mPosCounter]);
-									AlphaAnimation mGo = new AlphaAnimation(0.0f, 1.0f);
-									mGo.setDuration(2000);
-									mGo.setFillAfter(true);
-									mGo.setDuration(2000);
-									mLaserBeam[mPosCounter].startAnimation(mGo);
-									mBattle.xLessBound[1] += mBattle.container_width / 12;
-									mBattle.xGreatBound[1] -= mBattle.container_width / 12;
-									mBattle.mSetX=false;
-
-									if (mBattle.xVelocity < 0)
-									{
-										mBattle.xVelocity += 2;
-									}
-									else
-									{
-										mBattle.xVelocity -= 2;
-
-									}
-									if (mBattle.yVelocity < 0)
-									{
-										mBattle.yVelocity += 2;
-									}
-									else
-									{
-										mBattle.yVelocity -= 2;
-
-									}
-									mCreateThought.setEnabled(true);
-									
-									mPosCounter += 1;
-									if (mPosCounter >= THOUGHTS_CREATION_LIMIT)
-									{
-										// mPosHolder.startAnimation(mGameOver);
-										mBattle.xVelocity = 5;
-										for (int i = 0; i < 4; i++)
-										{
-											mPosHolder.removeView(mPos[i]);
-											mLaserBeam[i].mGameOver = true;
-										}
-										mEndGame = new EndGame(mText);
-										mPosHolder.addView(mEndGame);
-										mBattle.mGameOver = true;
-									}
-									else
-									{
-										Toast.makeText(mText, "Great job! Come up with another thought!", Toast.LENGTH_SHORT).show();
-
-									}
+									mLaserBeam[i].mGameOver = true;
 								}
+								mBattle.mGameOver = true;
+							}
+							else
+							{
+								Toast.makeText(mText, "Great job! Come up with another thought!", Toast.LENGTH_SHORT).show();
 
-							});
-							build_believe.create().show();
-						}
-
-						@Override
-						public void onAnimationRepeat(Animation arg0)
-						{
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void onAnimationStart(Animation arg0)
-						{
-							// TODO Auto-generated method stub
-
+							}
 						}
 
 					});
-					AlphaAnimation mGo = new AlphaAnimation(0.0f, 1.0f);
-					mGo.setDuration(2000);
-					mGo.setFillAfter(true);
-					mGo.setDuration(2000);
-					mPos[mPosCounter].startAnimation(mGoAddLaser);
+					build_believe.create().show();
+					Log.e("where is my", "thought");
+					mCreateThought.setEnabled(true);
 					mChallengingThought.setText(null);
 					InputMethodManager imm = (InputMethodManager) CaptureActivity.this.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(mChallengingThought.getWindowToken(), 0);
-
+					mPosCounter += 1;
 				}
 			}
 		});
@@ -527,7 +474,6 @@ public class CaptureActivity extends Activity
 
 	public void endGame()
 	{
-		mPosHolder.removeView(mEndGame);
 		final Context mContext = this;
 		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 		builder.setTitle("Great Job!");

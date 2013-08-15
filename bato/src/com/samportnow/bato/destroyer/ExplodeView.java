@@ -39,8 +39,8 @@ public class ExplodeView extends View{
     private ArrayList<BitmapFragment> fragments;
     private Bitmap mBackedBitmap;
     private Canvas mBackedCanvas;
-    private static final int SLICES_WIDTH=10;
-    private static final int SLICES_HEIGHT=11;
+    private static final int SLICES_WIDTH=25;
+    private static final int SLICES_HEIGHT=25;
     Interpolator anim;
     private int mAnimDuration=2000;
     private long mStartTime;
@@ -121,9 +121,9 @@ public class ExplodeView extends View{
         Bitmap original= BitmapFactory.decodeResource(context.getResources(), R.drawable.graycloud);
         DestroyerGame mDestroyGame = (DestroyerGame) this.getContext();
         DestroyerGameView mDestroyer = (DestroyerGameView) mDestroyGame.findViewById(R.id.anim_view);
-        original = Bitmap.createScaledBitmap(original, mDestroyer.width/3, mDestroyer.height/4, true);
-        final int w=mDestroyer.width/3;
-        final int h=mDestroyer.height/4;
+        original = Bitmap.createScaledBitmap(original, mDestroyer.width, mDestroyer.height, true);
+        final int w=mDestroyer.width/2;
+        final int h=mDestroyer.height/2;
         final int sliceW=w/SLICES_WIDTH;
         final int sliceH=h/SLICES_HEIGHT;
         mBackedBitmap=Bitmap.createBitmap(sliceW, sliceH, Bitmap.Config.ARGB_8888);

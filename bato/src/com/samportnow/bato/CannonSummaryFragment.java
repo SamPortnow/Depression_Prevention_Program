@@ -12,15 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-<<<<<<< HEAD
-import com.samportnow.bato.database.GameDbAdapter;
-import com.samportnow.bato.database.ScaleDbAdapter;
-import com.samportnow.bato.destroyer.DestroyerGameActivity;
-=======
 import com.samportnow.bato.dbs.GameDbAdapter;
 import com.samportnow.bato.dbs.ScaleDbAdapter;
 import com.samportnow.bato.destroyer.DestroyerGame;
->>>>>>> refactor_and_coping
 
 public class CannonSummaryFragment extends Fragment
 {
@@ -49,7 +43,7 @@ public class CannonSummaryFragment extends Fragment
 				@Override
 				public void onClick(View v)
 				{
-					Intent intent = new Intent(getActivity(), DestroyerGameActivity.class);
+					Intent intent = new Intent(getActivity(), DestroyerGame.class);
 					startActivity(intent);
 				}
 			});

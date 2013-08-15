@@ -1,12 +1,5 @@
 package com.samportnow.bato;
 
-<<<<<<< HEAD
-import com.samportnow.bato.capture.CaptureActivity;
-import com.samportnow.bato.database.CalendarDbAdapter;
-import com.samportnow.bato.database.ScaleDbAdapter;
-
-=======
->>>>>>> refactor_and_coping
 import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;

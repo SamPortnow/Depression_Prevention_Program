@@ -37,16 +37,16 @@ public class LaserBeam extends View
 	int xOfCenter;
 	int yOfCenter;
 	float offset;
-	
+
 	public LaserBeam(Context context)
 	{
 		super(context);
 	}
-	
+
 	public LaserBeam(Context context, int mPosition)
 	{
 		this(context);
-		
+
 		Position = mPosition;
 		mCapture = (CaptureActivity) context;
 		mLaserPaint = new Paint();
@@ -55,42 +55,40 @@ public class LaserBeam extends View
 		mLaserPaint.setColor(Color.parseColor("#FFFF99"));
 		mLaserPaint.setAlpha(150);
 		mBattle = (BattleField) mCapture.findViewById(R.id.battle_field);
-		yOfCenter = mCapture.mBattle.container_height + mCapture.mNeg.getHeight()/2;
+		yOfCenter = mCapture.mBattle.getHeight() - mCapture.mPos[0].getHeight();
 		xOfCenter = (mCapture.mPos[mPosition].width * mPosition) + mCapture.mNeg.getWidth()/2;
 		offset = offSet(xOfCenter, yOfCenter);
 		oval = new RectF();
 
 	}
-	
-	
+
+
 	public float radius(int x, int y)
 	{
 		double A2 = Math.pow(((x + mCapture.mNeg.width/2) - xOfCenter),2);
 		double B2 = Math.pow((yOfCenter - y),2);
 		return (float) Math.sqrt(A2+B2);
 	}
-	
+
 	public float startAngle(int x, int y)
 	{
 		return (float)(Math.atan2(x - xOfCenter, yOfCenter -y) * 180/Math.PI + 360 ) % 360;
 	}
-	
+
 	public float endAngle(int x, int y)
 	{
 		return (float)((Math.atan2((x + mCapture.mNeg.width)-xOfCenter, yOfCenter - y) * 180/Math.PI + 360 ) % 360)- 30;
-	
+
 	}
-	
+
 	public float offSet(int x, int y)
 	{
 		return (float)(Math.atan2(-xOfCenter, yOfCenter) * 180/Math.PI + 360 ) % 360;
 
 	}
-	
-	@Override 
-	public void onDraw(Canvas canvas)
+
+	public void draw_it(Canvas canvas)
 	{
-		super.onDraw(canvas);
 		float radius = radius(mBattle.x, mBattle.y);
 		float startAngle = startAngle(mBattle.x, mBattle.y);
 		float endAngle = endAngle(mBattle.x, mBattle.y);

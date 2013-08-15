@@ -12,14 +12,9 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-<<<<<<< HEAD
 import com.samportnow.bato.addthought.AddEventActivity;
 import com.samportnow.bato.database.UserNameDbAdapter;
 import com.samportnow.bato.graphs.MoodGraphActivity;
-=======
-import com.samportnow.bato.addevent.AddEventActivity;
-import com.samportnow.bato.moodgraph.MoodGraphActivity;
->>>>>>> refactor_and_coping
 
 public class MainActivity extends Activity
 {

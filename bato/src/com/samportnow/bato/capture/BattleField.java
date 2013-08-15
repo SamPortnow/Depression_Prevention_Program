@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceView;
 
 public class BattleField extends SurfaceView
@@ -20,7 +21,7 @@ public class BattleField extends SurfaceView
     CaptureActivity mCapture;
     boolean mSetBounds;
     boolean mGameOver;
-    boolean mSetX=true;
+    boolean mSetX;
     int xLessBound[] = new int[2];
     int xGreatBound[] = new int[2];
     boolean boundLess;
@@ -34,7 +35,7 @@ public class BattleField extends SurfaceView
 		mCapture = (CaptureActivity) context;
 
 	}
-	
+
 	@Override 
 	 protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld)
 	{
@@ -45,8 +46,10 @@ public class BattleField extends SurfaceView
 		 y = container_height;
 		 xLessBound[0] = 0;
 		 xGreatBound[0] = container_width - container_width/3;
+		 xLessBound[1] = 0;
+		 xGreatBound[1] = container_width - container_width/3;
 	}
-	
+
 	@Override
 	public void onDraw(Canvas canvas)
 	{
@@ -55,11 +58,12 @@ public class BattleField extends SurfaceView
         {
         	x += xVelocity;
         	y -= yVelocity;
-        	if (!mSetX && x < xGreatBound[1] && x > xLessBound[1])
+        	if (mSetX && x < xGreatBound[1] && x > xLessBound[1])
         	{
         		xGreatBound[0] = xGreatBound[1];
         		xLessBound[0] = xLessBound[1];
-        		mSetX = true;
+        		Log.e("switch", "hey hey");
+        		mSetX = false;
         	}
         	if ((x > xGreatBound[0] || x < xLessBound[0]))
         		{
@@ -90,17 +94,23 @@ public class BattleField extends SurfaceView
         			yVelocity = yVelocity*-1;
 
      			}
-        //here is where the drawing hpapens
         canvas.drawBitmap(mCapture.mNeg.getDrawingCache(), x, y, null);
+        if (mCapture.laser_created)
+        {
+        	for (int i=0; i < mCapture.mPosCounter; i++)
+        	{
+        		mCapture.mPos[i].draw_it(canvas, this.getHeight() - mCapture.mPos[i].getHeight(), mCapture.mPos[i].getWidth()*i, i);
+        		mCapture.mLaserBeam[i].draw_it(canvas);
+        	}
         }
 	    try 
 	    {  
 	      Thread.sleep(30);  
-	         
-	    } catch (InterruptedException e) { }
-	       
-	       invalidate();		
-	}
 
+	    } catch (InterruptedException e) { }
+
+	       invalidate();		
+        }
+	}
 
 }
