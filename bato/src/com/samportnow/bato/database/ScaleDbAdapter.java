@@ -1,4 +1,4 @@
-package com.samportnow.bato.dbs;
+package com.samportnow.bato.database;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.haarman.listviewanimations.swinginadapters.prepared.SwingRightInAnimationAdapter;
 import com.samportnow.bato.R;
 
 public class AddEventUserCategoryFragment extends Fragment
@@ -19,27 +20,31 @@ public class AddEventUserCategoryFragment extends Fragment
 	private String[] mCategoryTitles = null;
 	private String[] mCategoryDescriptions = null;
 	private ArrayAdapter<String> mCategoryAdapter = null;
-	
+
 	private ListView mCategoryListView = null;
 	private TextView mDescriptionTextView = null;
 	private Button mNextButton = null;	
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-	    super.onCreate(savedInstanceState);	   
+		super.onCreate(savedInstanceState);	   
 
-	    View view = inflater.inflate(R.layout.fragment_add_event_user_category, null);
-	    
-	    mCategoryTitles = getResources().getStringArray(R.array.add_event_user_category_titles);
-	    mCategoryDescriptions = getResources().getStringArray(R.array.add_event_user_category_descriptions);
-	    
-	    mCategoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_single_choice, mCategoryTitles);
-	    
-	    mCategoryListView = (ListView) view.findViewById(R.id.user_category_choices);
-	    mCategoryListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-	    mCategoryListView.setAdapter(mCategoryAdapter);
-	    mCategoryListView.setOnItemClickListener(new OnItemClickListener()
+		View view = inflater.inflate(R.layout.fragment_add_event_user_category, null);
+
+		mCategoryTitles = getResources().getStringArray(R.array.add_event_user_category_titles);
+		mCategoryDescriptions = getResources().getStringArray(R.array.add_event_user_category_descriptions);
+
+		mCategoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_single_choice, mCategoryTitles);	
+
+		mCategoryListView = (ListView) view.findViewById(R.id.user_category_choices);
+		mCategoryListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+		SwingRightInAnimationAdapter animationAdapter = new SwingRightInAnimationAdapter(mCategoryAdapter);
+		animationAdapter.setAbsListView(mCategoryListView);	
+
+		mCategoryListView.setAdapter(animationAdapter);
+		mCategoryListView.setOnItemClickListener(new OnItemClickListener()
 		{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -49,28 +54,28 @@ public class AddEventUserCategoryFragment extends Fragment
 			}
 		});
 
-	    mDescriptionTextView = (TextView) view.findViewById(R.id.user_category_description);
-	    mDescriptionTextView.setText(R.string.add_event_user_category_instruction);	  
-	    
-	    mNextButton = (Button) view.findViewById(R.id.next_fragment);
-	    mNextButton.setEnabled(false);
+		mDescriptionTextView = (TextView) view.findViewById(R.id.user_category_description);
+		mDescriptionTextView.setText(R.string.add_event_user_category_instruction);	  
+
+		mNextButton = (Button) view.findViewById(R.id.next_fragment);
+		mNextButton.setEnabled(false);
 		mNextButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
 				int position = mCategoryListView.getCheckedItemPosition();
-				
+
 				if (position != ListView.INVALID_POSITION)
 				{
 					Bundle eventBundle = getArguments();
 					eventBundle.putString("user_category", mCategoryTitles[position]);
 				}
-				
+
 				((AddEventActivity) getActivity()).createNewEvent();
 			}
 		});
-	    
-	    return view;
+
+		return view;
 	}
 }

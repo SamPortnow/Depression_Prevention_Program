@@ -1,4 +1,5 @@
-package com.samportnow.bato.dbs;
+package com.samportnow.bato.database;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -14,22 +15,22 @@ import android.util.Log;
  * Modified to include ALL activities and values. Will be returned later to the user 
  * so they can rank activities that they WANT to do. User must rank the activities; however. 
  */
-public class GamePushDbAdapter {
+public class CalendarPushDbAdapter {
 	//FIRST STEP CREATE THE VARS YOU NEED FOR THE DATABASE
-    private static final String DATABASE_NAME = "game_push_data"; //my database name
-    private static final String DATABASE_TABLE = "game_push"; //this particular table is the activities table. I might make a separate table for a ranking system. We will see. 
+    private static final String DATABASE_NAME = "calendar_push_data"; //my database name
+    private static final String DATABASE_TABLE = "calendar_push"; //this particular table is the activities table. I might make a separate table for a ranking system. We will see. 
     private static final int DATABASE_VERSION = 2;
     public static final String COLUMN_NAME_DATABASE="Database";
     public static final String KEY_ROWID = "_id"; //all my vars are now declared 
 
-    private static final String TAG = "GamePushDbAdapter";
-    private DatabaseHelper mGamePushDbHelper;
-    private SQLiteDatabase mGamePushDb;
+    private static final String TAG = "CalendarPushDbAdapter";
+    private DatabaseHelper mCalendarPushDbHelper;
+    private SQLiteDatabase mCalendarPushDb;
     
     private static final String DATABASE_CREATE =  //create the database! you already know!! // modified android code of text . I want to allow for null text! 
-        "create table game_push  (_id integer primary key autoincrement, Database integer)";
+        "create table calendar_push  (_id integer primary key autoincrement, Database integer)";
     
-    private final Context mGamePushCtx; //declare a context. activity extends from context. it's a basic part of android app. need to research this more. 
+    private final Context mCalendarPushCtx; //declare a context. activity extends from context. it's a basic part of android app. need to research this more. 
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -58,8 +59,8 @@ public class GamePushDbAdapter {
      * 
      * @param ctx the Context within which to work
      */
-    public GamePushDbAdapter(Context ctx) {  //ActivitiyDbAdapter? Look into this one sahn. 
-        this.mGamePushCtx = ctx;
+    public CalendarPushDbAdapter(Context ctx) {  //ActivitiyDbAdapter? Look into this one sahn. 
+        this.mCalendarPushCtx = ctx;
     }
 
     /**
@@ -71,14 +72,14 @@ public class GamePushDbAdapter {
      *         initialization call)
      * @throws SQLException if the database could be neither opened or created
      */
-    public GamePushDbAdapter open() throws SQLException {
-        mGamePushDbHelper = new DatabaseHelper(mGamePushCtx);
-        mGamePushDb = mGamePushDbHelper.getWritableDatabase();
+    public CalendarPushDbAdapter open() throws SQLException {
+        mCalendarPushDbHelper = new DatabaseHelper(mCalendarPushCtx);
+        mCalendarPushDb = mCalendarPushDbHelper.getWritableDatabase();
         return this;
     }
 
     public void close() {
-        mGamePushDbHelper.close();
+        mCalendarPushDbHelper.close();
     }
 
     
@@ -101,7 +102,7 @@ public class GamePushDbAdapter {
     {
         ContentValues initialValues = new ContentValues();
         initialValues.put(COLUMN_NAME_DATABASE, count);
-        return mGamePushDb.insert(DATABASE_TABLE, null, initialValues);
+        return mCalendarPushDb.insert(DATABASE_TABLE, null, initialValues);
     }
     
  
@@ -110,14 +111,14 @@ public class GamePushDbAdapter {
     {
     	String day=String.valueOf(Day);
     	String shour=String.valueOf(hour);
-        return mGamePushDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_HOUR+" = ?", new String[] {day,shour}, null, null, null);
+        return mCalendarPushDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_HOUR+" = ?", new String[] {day,shour}, null, null, null);
         
     }
 	*/
 
     public Cursor fetchPush()
     {
-    	return mGamePushDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, "MAX(+"+COLUMN_NAME_DATABASE+")"}, null , null, null, null, null); 
+    	return mCalendarPushDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, "MAX(+"+COLUMN_NAME_DATABASE+")"}, null , null, null, null, null); 
 
     }
 
