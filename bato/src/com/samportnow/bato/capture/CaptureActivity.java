@@ -49,7 +49,7 @@ import com.samportnow.bato.database.CalendarDbAdapter;
 
 public class CaptureActivity extends Activity
 {
-	private static final int THOUGHTS_CREATION_LIMIT = 4;
+	private static final int THOUGHTS_CREATION_LIMIT = 3;
 
 	private static Set<String> mNegativeWords;
 	HorizontalScrollView train;
@@ -344,7 +344,7 @@ public class CaptureActivity extends Activity
 							if (mPosCounter >= THOUGHTS_CREATION_LIMIT)
 							{
 								mBattle.xVelocity = 5;
-								for (int i = 0; i < 4; i++)
+								for (int i = 0; i < 3; i++)
 								{
 									mLaserBeam[i].mGameOver = true;
 								}
@@ -359,7 +359,6 @@ public class CaptureActivity extends Activity
 
 					});
 					build_believe.create().show();
-					Log.e("where is my", "thought");
 					mCreateThought.setEnabled(true);
 					mChallengingThought.setText(null);
 					InputMethodManager imm = (InputMethodManager) CaptureActivity.this.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
