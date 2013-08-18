@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.samportnow.bato.capture.CaptureActivity;
-import com.samportnow.bato.dbs.CalendarDbAdapter;
-import com.samportnow.bato.dbs.ScaleDbAdapter;
+import com.samportnow.bato.database.CalendarDbAdapter;
+import com.samportnow.bato.database.ScaleDbAdapter;
 
 public class ScalesSummaryFragment extends Fragment
 {

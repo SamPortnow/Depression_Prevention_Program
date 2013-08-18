@@ -1,4 +1,4 @@
-package com.samportnow.bato.dbs;
+package com.samportnow.bato.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,26 +8,29 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class GameDbAdapter
-{
+/**
+ * Simple notes database access helper class. Defines the basic CRUD operations
+ * for the notepad example, and gives the ability to list all notes as well as
+ * retrieve or modify a specific note.
+ * Modified to include ALL activities and values. Will be returned later to the user 
+ * so they can rank activities that they WANT to do. User must rank the activities; however. 
+ */
+public class CalendarPushDbAdapter {
 	//FIRST STEP CREATE THE VARS YOU NEED FOR THE DATABASE
-    private static final String DATABASE_NAME = "game_data"; //my database name
-    private static final String DATABASE_TABLE = "game"; //this particular table is the activities table. I might make a separate table for a ranking system. We will see. 
+    private static final String DATABASE_NAME = "calendar_push_data"; //my database name
+    private static final String DATABASE_TABLE = "calendar_push"; //this particular table is the activities table. I might make a separate table for a ranking system. We will see. 
     private static final int DATABASE_VERSION = 2;
-    public static final String COLUMN_NAME_SCORE = "Score";
-    public static final String COLUMN_NAME_PUSHED = "Pushed";
+    public static final String COLUMN_NAME_DATABASE="Database";
     public static final String KEY_ROWID = "_id"; //all my vars are now declared 
 
-    private static final String TAG = "GameDbAdapter";
-    private DatabaseHelper mGameDbHelper;
-    private SQLiteDatabase mGameDb;
+    private static final String TAG = "CalendarPushDbAdapter";
+    private DatabaseHelper mCalendarPushDbHelper;
+    private SQLiteDatabase mCalendarPushDb;
     
     private static final String DATABASE_CREATE =  //create the database! you already know!! // modified android code of text . I want to allow for null text! 
-	        "create table game (_id integer primary key autoincrement, " +
-	        "Score int, pushed text)";
- 
+        "create table calendar_push  (_id integer primary key autoincrement, Database integer)";
     
-    private final Context mGameCtx; //declare a context. activity extends from context. it's a basic part of android app. need to research this more. 
+    private final Context mCalendarPushCtx; //declare a context. activity extends from context. it's a basic part of android app. need to research this more. 
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -45,7 +48,7 @@ public class GameDbAdapter
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { //if the db gets upgraded. android docs say that the memory from the db is wiped. I need a workaround here!! 
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS activities");
+            db.execSQL("DROP TABLE IF EXISTS calendar_push");
             onCreate(db);
         }
     }
@@ -56,8 +59,8 @@ public class GameDbAdapter
      * 
      * @param ctx the Context within which to work
      */
-    public GameDbAdapter(Context ctx) {  //ActivitiyDbAdapter? Look into this one sahn. 
-        this.mGameCtx = ctx;
+    public CalendarPushDbAdapter(Context ctx) {  //ActivitiyDbAdapter? Look into this one sahn. 
+        this.mCalendarPushCtx = ctx;
     }
 
     /**
@@ -69,16 +72,20 @@ public class GameDbAdapter
      *         initialization call)
      * @throws SQLException if the database could be neither opened or created
      */
-    public GameDbAdapter open() throws SQLException {
-        mGameDbHelper = new DatabaseHelper(mGameCtx);
-        mGameDb = mGameDbHelper.getWritableDatabase();
+    public CalendarPushDbAdapter open() throws SQLException {
+        mCalendarPushDbHelper = new DatabaseHelper(mCalendarPushCtx);
+        mCalendarPushDb = mCalendarPushDbHelper.getWritableDatabase();
         return this;
     }
 
     public void close() {
-        mGameDbHelper.close();
+        mCalendarPushDbHelper.close();
     }
 
+    
+
+    
+ 
     /**
      * Create a new note using the title and body provided. If the note is
      * successfully created return the new rowId for that note, otherwise return
@@ -91,34 +98,28 @@ public class GameDbAdapter
     
     //now do a create, update, and fetch functions!!!
     
-    public long createGame(int score) 
+    public long createPush(int count)
     {
         ContentValues initialValues = new ContentValues();
-        initialValues.put(COLUMN_NAME_SCORE, score);
-        return mGameDb.insert(DATABASE_TABLE, null, initialValues);
+        initialValues.put(COLUMN_NAME_DATABASE, count);
+        return mCalendarPushDb.insert(DATABASE_TABLE, null, initialValues);
     }
     
-    public boolean updatePush(long Id)
+ 
+    /*
+    public Cursor fetchWholeCalendar(long Day, long hour)
     {
-    	String filter = "_id=" + Id;
-    	ContentValues args = new ContentValues();
-    	args.put(COLUMN_NAME_PUSHED, "Yes");
-    	return mGameDb.update(DATABASE_TABLE, args, filter, null) > 0;	    	
+    	String day=String.valueOf(Day);
+    	String shour=String.valueOf(hour);
+        return mCalendarPushDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,COLUMN_NAME_ACTIVITY, COLUMN_NAME_FEELING, COLUMN_NAME_THOUGHT}, COLUMN_NAME_DAY+" = ? AND "+COLUMN_NAME_HOUR+" = ?", new String[] {day,shour}, null, null, null);
+        
     }
-    
-    public Cursor fetchScores()
+	*/
+
+    public Cursor fetchPush()
     {
-        return mGameDb.query(DATABASE_TABLE, new String[] {KEY_ROWID,
-        		COLUMN_NAME_SCORE}, null, null, null, null, COLUMN_NAME_SCORE + " DESC");
+    	return mCalendarPushDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, "MAX(+"+COLUMN_NAME_DATABASE+")"}, null , null, null, null, null); 
 
     }
-   
-    
 
 }
-
-
-
-
-
-

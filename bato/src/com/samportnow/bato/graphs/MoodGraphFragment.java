@@ -44,6 +44,7 @@ public class MoodGraphFragment extends Fragment
 		
 		mChartCalendar = Calendar.getInstance();
 		
+		// TODO: GMT and TimeZone are not working properly.
 		long ms = mChartCalendar.getTimeInMillis();
 		mChartCalendar.setTimeInMillis(ms - (ms % 86400000));
 
