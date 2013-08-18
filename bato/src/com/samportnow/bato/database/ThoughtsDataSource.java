@@ -67,6 +67,7 @@ public class ThoughtsDataSource
 		return getThoughts(selection);
 	}
 	
+	
 	public List<ThoughtDao> getThoughtsBetween(Long startTimestamp, Long endTimestamp)
 	{
 		String selection =

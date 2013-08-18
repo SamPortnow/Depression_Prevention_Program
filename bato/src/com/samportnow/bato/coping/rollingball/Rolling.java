@@ -21,7 +21,7 @@ public class Rolling extends Activity implements SensorEventListener {
 		super.onCreate(savedInstanceState);
 		glSurface = new GLSurfaceView(this);
 		glSurface.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-		glSurface.setRenderer(new MyRenderer());
+		glSurface.setRenderer(new MyRenderer(this));
 		setContentView(glSurface);
         sensorManager=(SensorManager) getSystemService(SENSOR_SERVICE);
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
