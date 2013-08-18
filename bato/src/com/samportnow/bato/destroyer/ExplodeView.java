@@ -121,9 +121,9 @@ public class ExplodeView extends View{
         Bitmap original= BitmapFactory.decodeResource(context.getResources(), R.drawable.graycloud);
         DestroyerGame mDestroyGame = (DestroyerGame) this.getContext();
         DestroyerGameView mDestroyer = (DestroyerGameView) mDestroyGame.findViewById(R.id.anim_view);
-        original = Bitmap.createScaledBitmap(original, mDestroyer.width, mDestroyer.height, true);
-        final int w=mDestroyer.width/2;
-        final int h=mDestroyer.height/2;
+        original = Bitmap.createScaledBitmap(original, mDestroyer.getWidth(), mDestroyer.getHeight(), true);
+        final int w=mDestroyer.width;
+        final int h=mDestroyer.height;
         final int sliceW=w/SLICES_WIDTH;
         final int sliceH=h/SLICES_HEIGHT;
         mBackedBitmap=Bitmap.createBitmap(sliceW, sliceH, Bitmap.Config.ARGB_8888);

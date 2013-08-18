@@ -415,9 +415,8 @@ public class DestroyerGame extends Activity
  	
 	public void explode()
 	{
-	    DestroyerGameView mDestroyerShooter = (DestroyerGameView) findViewById(R.id.anim_view);
+		DestroyerGameView mDestroyerShooter = (DestroyerGameView) findViewById(R.id.anim_view);
 		RelativeLayout.LayoutParams mExplosionParams = new RelativeLayout.LayoutParams(mDestroyerShooter.width/3, mDestroyerShooter.height/4);
-		mDestroyerShooter.mMoveNeg = false;
 		ListView list = (ListView) findViewById(R.id.listview);
 		mExplosionParams.leftMargin = mDestroyerShooter.mNegX + list.getWidth();
 		mExplosionParams.topMargin = 0;

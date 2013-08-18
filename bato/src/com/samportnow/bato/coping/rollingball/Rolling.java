@@ -12,6 +12,8 @@ import android.os.Bundle;
 public class Rolling extends Activity implements SensorEventListener {
 	
 	private SensorManager sensorManager;
+	private MyRenderer MyRenderer;
+	float xVal[] = new float[2];
 	double ax, ay, az;
 	
 	GLSurfaceView glSurface;
@@ -21,7 +23,8 @@ public class Rolling extends Activity implements SensorEventListener {
 		super.onCreate(savedInstanceState);
 		glSurface = new GLSurfaceView(this);
 		glSurface.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-		glSurface.setRenderer(new MyRenderer(this));
+		MyRenderer = new MyRenderer(this);
+		glSurface.setRenderer(MyRenderer);
 		setContentView(glSurface);
         sensorManager=(SensorManager) getSystemService(SENSOR_SERVICE);
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
@@ -34,10 +37,25 @@ public class Rolling extends Activity implements SensorEventListener {
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType()==Sensor.TYPE_ACCELEROMETER){
-            ax=event.values[0];
-                    ay=event.values[1];
-                    az=event.values[2];		
-        	}
+        if (event.sensor.getType()==Sensor.TYPE_ACCELEROMETER)
+        {
+            xVal[0] = event.values[0];
+            float delta = xVal[0] - xVal[1];
+            xVal[1] = xVal[0];
+            if (Math.abs(delta) > .02f)
+            {
+            if (!(MyRenderer.x < -.5) && !(MyRenderer.x > .5))
+            	{
+            		if (xVal[0] < 1)
+            		{
+            			MyRenderer.x += .010;
+            		}
+            		else
+            		{
+            			MyRenderer.x -= .010;
+            		}
+            	}
+            }
+        }
 	}
 }

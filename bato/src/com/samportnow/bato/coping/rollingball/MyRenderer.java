@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class MyRenderer implements Renderer {
 	
-	public float x;
+	float x;
 	private Path path;
 	private Ball ball;
 	private Ring ring[] = new Ring[3];

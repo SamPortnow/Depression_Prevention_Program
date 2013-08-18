@@ -159,12 +159,13 @@ public class DestroyerGameView extends SurfaceView
 		{
 			//logic for destroying thoughts goes here
 			//if fits within the bounds and greater than 0
-			if ( mMoveX >= mNegX - mDestroyer.mNeg.width/2 && mMoveX <= mNegX + mDestroyer.mNeg.width && mMoveY > 0 && mMoveY < 
+			if ( mMoveX >= mNegX - mDestroyer.mNeg.width/2 && mMoveX <= mNegX + mDestroyer.mNeg.width/2 && mMoveY > 0 && mMoveY < 
 	    	mDestroyer.mNeg.height/2)
 	    	{
-	 	    		//stay in here if there's a hit
+	 	    	//stay in here if there's a hit
 	    		if (! explode)
 	    		{
+	    			mMoveNeg = false;
 	    			//here are all of our reset methods
 	    			mDestroyer.explode();
 	    			//reset our variables
