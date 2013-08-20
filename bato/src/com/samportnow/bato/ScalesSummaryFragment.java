@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.samportnow.bato.capture.CaptureActivity;
+import com.samportnow.bato.capture.CaptureSelectActivity;
 import com.samportnow.bato.database.CalendarDbAdapter;
 import com.samportnow.bato.database.ScaleDbAdapter;
 
@@ -42,7 +43,7 @@ public class ScalesSummaryFragment extends Fragment
 				@Override
 				public void onClick(View view)
 				{
-					Intent intent = new Intent(getActivity(), CaptureActivity.class);
+					Intent intent = new Intent(getActivity(), CaptureSelectActivity.class);
 					startActivity(intent);
 				}
 			});
