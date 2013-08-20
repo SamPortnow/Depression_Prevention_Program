@@ -99,8 +99,6 @@ public class LaserBeam extends View
 			endAngle-=360;
 		}
 		canvas.drawArc(oval, -90 + (360-offset) + startAngle, endAngle, true, mLaserPaint);
-//		canvas.drawLine(mStartX, mStartY, mBattle.x + mCapture.mNeg.width/2, 
-//				mBattle.y + mCapture.mNeg.height/2, mLaserPaint);
 		if (mGameOver)
 		{
 			xOfCenter += 15;

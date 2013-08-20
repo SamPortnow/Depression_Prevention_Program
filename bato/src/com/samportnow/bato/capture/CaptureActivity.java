@@ -430,6 +430,7 @@ public class CaptureActivity extends Activity
 			public void onClick(DialogInterface dialog, int which)
 			{
 				{
+					dialog.dismiss();
 					finish();
 					Intent i = new Intent(mContext, MainActivity.class);
 					mContext.startActivity(i);

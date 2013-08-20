@@ -67,7 +67,7 @@ public class PositiveThought extends TextView
 	{
 		if (mCapture.mBattle.mGameOver)
 		{
-			if (mCapture.mLaserBeam[count].xOfCenter > mCapture.mBattle.getWidth() && ! calledEndGame)
+			if (mCapture.mLaserBeam[0].xOfCenter > mCapture.mBattle.getWidth() && calledEndGame == false)
 			{
 				mCapture.endGame();
 				calledEndGame = true;
