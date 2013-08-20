@@ -25,6 +25,7 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -49,7 +50,9 @@ public class CaptureActivity extends Activity
 	private static final int THOUGHTS_CREATION_LIMIT = 3;
 
 	private static Set<String> mNegativeWords;
-	HorizontalScrollView train;
+	
+	private HorizontalScrollView mTrainHsv;
+	
 	RelativeLayout container;
 	NegativeThought mNeg;
 	PositiveThought[] mPos = new PositiveThought[4];
@@ -62,8 +65,11 @@ public class CaptureActivity extends Activity
 	private String[] inputTokens;
 	private Pattern four_letter_words = Pattern.compile("not|cant|cnt|can't");
 	boolean laser_created;
+	
 	private String[] mCategoryTitles = null;
-	private List<TextView> mCategoryDescriptionTextViews = null; 
+	private String[] mCategoryDescriptions = null;
+	
+	//private List<View.OnClickListener> mTraincarListeners = null;
 
 	public static boolean populatePositiveWords(Context context)
 	{
@@ -95,147 +101,179 @@ public class CaptureActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
+		setContentView(R.layout.activity_capture);
 
 		mCategoryTitles = getResources().getStringArray(R.array.add_event_user_category_titles);
-		mCategoryDescriptionTextViews = new ArrayList<TextView>(11);
-
-		this.getActionBar().hide();
-		Context mContext = this;
-		// layout inflater
-		final LayoutInflater inflater = LayoutInflater.from(this);
-		populatePositiveWords(mContext);
-
-		// Cursor cursor = mCalHelper.
-		// set content view
-		setContentView(R.layout.activity_capture);
-		CalendarDbAdapter mCalHelper = new CalendarDbAdapter(mContext);
-		mCalHelper.open();
-		Cursor cursor = mCalHelper.fetchAllChallenging();
-		ArrayList<String> mChallengingThoughts = new ArrayList<String>();
-		while (cursor.moveToNext())
-		{
-			String mThought = cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_COUNTER_THOUGHT));
-			if (!mChallengingThoughts.contains(mThought))
-			{
-				Log.e("it is", "" + mThought);
-				mChallengingThoughts.add(mThought);
-			}
-			else
-			{
-				Log.e("well here is", "" + mThought);
-			}
+		mCategoryDescriptions = getResources().getStringArray(R.array.add_event_user_category_descriptions);
+		
+		final List<View.OnClickListener> traincarListeners = new ArrayList<View.OnClickListener>(mCategoryTitles.length);
+		
+		for (int i = 0; i < mCategoryTitles.length; i++)		
+		{		
+			ViewGroup trainVg = (ViewGroup) findViewById(R.id.train);
+			View view = getLayoutInflater().inflate(R.layout.block_traincar, trainVg, false);
+			
+			((TextView) view.findViewById(R.id.traincar_title)).setText(mCategoryTitles[i]);
+			((TextView) view.findViewById(R.id.traincar_description)).setText(mCategoryDescriptions[i]);
+			
+			View.OnClickListener listener = new View.OnClickListener()
+			{				
+				@Override
+				public void onClick(View v)
+				{
+					int index = traincarListeners.indexOf(this);
+					
+					Toast.makeText(v.getContext(), mCategoryTitles[index] + " selected!", Toast.LENGTH_SHORT).show();				
+				}
+			};
+			
+			view.setOnClickListener(listener);
+			traincarListeners.add(listener);
+			
+			trainVg.addView(view);
 		}
-		cursor.close();
-		mCalHelper.close();
-		// the autocompletetextview for creating challenging thoughts
-		mChallengingThought = (AutoCompleteTextView) findViewById(R.id.thoughts);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mChallengingThoughts);
-		mChallengingThought.setAdapter(adapter);
-		// the relativelayout that will contain the "dancing" cloud
-		container = (RelativeLayout) findViewById(R.id.container);
-		// the scroll that contains the train that will jump into the view
-		// width of the view
-		Display display = this.getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		// need width to animate the train. it needs to moved off the screen
-		width = size.x;
-		train = (HorizontalScrollView) findViewById(R.id.scroller);
-		// the battle field!
-		mBattle = (BattleField) findViewById(R.id.battle_field);
-		// the layout that contains the edit text and button, set to invisible
-		// at the begining
-		// setup the animation for the train coming in
-		TranslateAnimation mSlide = new TranslateAnimation(width, 0, 0, 0);
-		mSlide.setDuration(100);
-		mSlide.setFillAfter(true);
-		train.setAnimation(mSlide);
-		train.startAnimation(mSlide);
-		// the animation listener that will remove the train
-		AnimationListener remove = new AnimationListener()
-		{
+		
+//		mCategoryDescriptionTextViews = new ArrayList<TextView>(11);
+//
+//		Context mContext = this;
+//		// layout inflater
+//		final LayoutInflater inflater = LayoutInflater.from(this);
+//		populatePositiveWords(mContext);
+//
+//		// Cursor cursor = mCalHelper.
+//		// set content view
+//
+//		CalendarDbAdapter mCalHelper = new CalendarDbAdapter(mContext);
+//		mCalHelper.open();
+//		Cursor cursor = mCalHelper.fetchAllChallenging();
+//		ArrayList<String> mChallengingThoughts = new ArrayList<String>();
+//		while (cursor.moveToNext())
+//		{
+//			String mThought = cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_COUNTER_THOUGHT));
+//			if (!mChallengingThoughts.contains(mThought))
+//			{
+//				Log.e("it is", "" + mThought);
+//				mChallengingThoughts.add(mThought);
+//			}
+//			else
+//			{
+//				Log.e("well here is", "" + mThought);
+//			}
+//		}
+//		cursor.close();
+//		mCalHelper.close();
+//		// the autocompletetextview for creating challenging thoughts
+//		mChallengingThought = (AutoCompleteTextView) findViewById(R.id.thoughts);
+//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mChallengingThoughts);
+//		mChallengingThought.setAdapter(adapter);
+//		// the relativelayout that will contain the "dancing" cloud
+//		container = (RelativeLayout) findViewById(R.id.container);
+//		// the scroll that contains the train that will jump into the view
+//		// width of the view
+//		Display display = this.getWindowManager().getDefaultDisplay();
+//		Point size = new Point();
+//		display.getSize(size);
+//		// need width to animate the train. it needs to moved off the screen
+//		width = size.x;
+//		mTrainHsv = (HorizontalScrollView) findViewById(R.id.scroller);
+//		// the battle field!
+//		mBattle = (BattleField) findViewById(R.id.battle_field);	
 
-			@Override
-			public void onAnimationEnd(Animation arg0)
-			{
-				container.removeView(train);
-			}
+		
+//		// the layout that contains the edit text and button, set to invisible
+//		// at the begining
+//		// setup the animation for the train coming in
+//		TranslateAnimation mSlide = new TranslateAnimation(width, 0, 0, 0);
+//		mSlide.setDuration(100);
+//		mSlide.setFillAfter(true);
+//		mTrainHsv.setAnimation(mSlide);
+//		mTrainHsv.startAnimation(mSlide);
+//		// the animation listener that will remove the train
+//		AnimationListener remove = new AnimationListener()
+//		{
+//
+//			@Override
+//			public void onAnimationEnd(Animation arg0)
+//			{
+//				container.removeView(mTrainHsv);
+//			}
+//
+//			@Override
+//			public void onAnimationRepeat(Animation arg0)
+//			{
+//				// TODO Auto-generated method stub
+//
+//			}
+//
+//			@Override
+//			public void onAnimationStart(Animation arg0)
+//			{
+//				// TODO Auto-generated method stub
+//
+//			}
+//
+//		};		
+//		
+//		// set up the other animations
+//		mGone = new AlphaAnimation(1.0f, 0.0f);
+//		mGone.setAnimationListener(remove);
+//		mGone.setDuration(2000);
+//		mGone.setFillAfter(true);
+		
+//		OnClickListener startGameListener = new OnClickListener()
+//		{
+//			@Override
+//			public void onClick(View v)
+//			{
+//				int position = mCategoryDescriptionTextViews.indexOf(v);
+//				String categoryTitle = mCategoryTitles[position];				
+//
+//				CalendarDbAdapter calendarDbAdapter = new CalendarDbAdapter(v.getContext()).open();				
+//				Cursor cursor = calendarDbAdapter.fetchNegsByType(categoryTitle);
+//
+//				if (cursor.moveToFirst())
+//				{
+//					String mNegThought = cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_NEGATIVE_THOUGHT));
+//					// the thought that will dance on the screen
+//					mNeg = new NegativeThought(v.getContext());
+//					mNeg.setText(mNegThought);
+//
+//					mTrainHsv.startAnimation(mGone);
+//					AlphaAnimation mGo = new AlphaAnimation(0.0f, 1.0f);
+//					mGo.setDuration(2000);
+//					mGo.setFillAfter(true);
+//					mGo.setDuration(2000);
+//					LinearLayout mEditTextContainer = (LinearLayout) findViewById(R.id.edit_container);
+//					mEditTextContainer.setVisibility(View.VISIBLE);
+//					mEditTextContainer.startAnimation(mGo);
+//					// should set button clickable here
+//				}
+//				else
+//				{
+//					Toast.makeText(v.getContext(), "No negative thoughts in this train", Toast.LENGTH_SHORT).show();
+//				}
+//
+//				cursor.close();
+//				calendarDbAdapter.close();
+//			}
+//
+//		};
 
-			@Override
-			public void onAnimationRepeat(Animation arg0)
-			{
-				// TODO Auto-generated method stub
+//		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.mind_reading));
+//		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.fortune_telling));
+//		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.catastrophizing));
+//		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.labeling));
+//		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.dark_glass));
+//		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.discounting_positives));
+//		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.black_and_white_thinking));
+//		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.overgeneralizing));
+//		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.personalizing));
+//		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.shoulds));
+//		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.unfair_comparisons));
 
-			}
-
-			@Override
-			public void onAnimationStart(Animation arg0)
-			{
-				// TODO Auto-generated method stub
-
-			}
-
-		};
-		// set up the other animations
-		mGone = new AlphaAnimation(1.0f, 0.0f);
-		mGone.setAnimationListener(remove);
-		mGone.setDuration(2000);
-		mGone.setFillAfter(true);
-
-
-		OnClickListener startGameListener = new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				int position = mCategoryDescriptionTextViews.indexOf(v);
-				String categoryTitle = mCategoryTitles[position];				
-
-				CalendarDbAdapter calendarDbAdapter = new CalendarDbAdapter(v.getContext()).open();				
-				Cursor cursor = calendarDbAdapter.fetchNegsByType(categoryTitle);
-
-				if (cursor.moveToFirst())
-				{
-					String mNegThought = cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_NEGATIVE_THOUGHT));
-					// the thought that will dance on the screen
-					mNeg = new NegativeThought(v.getContext());
-					mNeg.setText(mNegThought);
-
-					train.startAnimation(mGone);
-					AlphaAnimation mGo = new AlphaAnimation(0.0f, 1.0f);
-					mGo.setDuration(2000);
-					mGo.setFillAfter(true);
-					mGo.setDuration(2000);
-					LinearLayout mEditTextContainer = (LinearLayout) findViewById(R.id.edit_container);
-					mEditTextContainer.setVisibility(View.VISIBLE);
-					mEditTextContainer.startAnimation(mGo);
-					// should set button clickable here
-				}
-				else
-				{
-					Toast.makeText(v.getContext(), "No negative thoughts in this train", Toast.LENGTH_SHORT).show();
-				}
-
-				cursor.close();
-				calendarDbAdapter.close();
-			}
-
-		};
-
-		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.mind_reading));
-		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.fortune_telling));
-		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.catastrophizing));
-		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.labeling));
-		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.dark_glass));
-		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.discounting_positives));
-		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.black_and_white_thinking));
-		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.overgeneralizing));
-		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.personalizing));
-		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.shoulds));
-		mCategoryDescriptionTextViews.add((TextView) findViewById(R.id.unfair_comparisons));
-
-		for (TextView textView : mCategoryDescriptionTextViews)
-			textView.setOnClickListener(startGameListener);
+//		for (TextView textView : mCategoryDescriptionTextViews)
+//			textView.setOnClickListener(startGameListener);
 
 		final Button mCreateThought = (Button) findViewById(R.id.scale_it);
 
@@ -300,7 +338,7 @@ public class CaptureActivity extends Activity
 					laser_created = true;
 					final Context mText = arg0.getContext();
 					AlertDialog.Builder build_believe = new AlertDialog.Builder(mText);
-					final View view = inflater.inflate(R.layout.believe_dialog, null);
+					final View view = getLayoutInflater().inflate(R.layout.believe_dialog, null);
 					build_believe.setView(view);
 					build_believe.setTitle("Rate your thought");
 					build_believe.setCancelable(false);
