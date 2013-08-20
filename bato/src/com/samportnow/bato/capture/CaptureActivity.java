@@ -12,15 +12,13 @@ import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -36,7 +34,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -371,98 +368,10 @@ public class CaptureActivity extends Activity
 		SharedPreferences preferences = this.getSharedPreferences(this.getPackageName(), Context.MODE_PRIVATE);
 		if (preferences.getString("capture instructions", null) == null)
 		{
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			final Context context = this;
-			LayoutInflater inflation = LayoutInflater.from(this);
-			LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
-			TextView instructions = (TextView) layout.findViewById(R.id.instructions);
-	        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
-	        instructions.setTypeface(typeFace);
-			instructions.setTextColor(Color.BLUE);
-			instructions.setText("Not all of the negative thoughts that we have are true. For example...");
-			builder.setView(layout);
-			builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
-			{
-
-				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
-					AlertDialog.Builder builder = new AlertDialog.Builder(context);
-					LayoutInflater inflation = LayoutInflater.from(context);
-					LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null); 
-					TextView instructions = (TextView) layout.findViewById(R.id.instructions);
-			        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
-			        instructions.setTypeface(typeFace);
-					instructions.setTextColor(Color.BLUE);
-					instructions.setText("You may think, 'I am stupid', even though there's evidence against it. " + "Like the time you got a good grade on a test. Or the time you did well on an interview.");
-					builder.setView(layout);
-					builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
-					{
-
-						@Override
-						public void onClick(DialogInterface dialog, int which)
-						{
-							AlertDialog.Builder builder = new AlertDialog.Builder(context);
-							LayoutInflater inflation = LayoutInflater.from(context);
-							LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
-							TextView instructions = (TextView) layout.findViewById(R.id.instructions);
-					        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
-					        instructions.setTypeface(typeFace);
-							instructions.setTextColor(Color.BLUE);
-							instructions.setText("But sometimes, coming up with the evidence against those negative thoughts is hard. " + "With this game, you will learn to challenge the truthiness of your negative thoughts.");
-							builder.setView(layout);
-							builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
-							{
-
-								@Override
-								public void onClick(DialogInterface dialog, int which)
-								{
-									AlertDialog.Builder builder = new AlertDialog.Builder(context);
-									LayoutInflater inflation = LayoutInflater.from(context);
-									LinearLayout layout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
-									TextView instructions = (TextView) layout.findViewById(R.id.instructions);
-							        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
-							        instructions.setTypeface(typeFace);
-									instructions.setTextColor(Color.BLUE);
-									instructions.setText("To start, click on the type of thought you want to challenge. " + "When you come up with enough thoughts that challenge the truthiness of the negative thought, " + "your challenging thoughts will take the negative thought to the 'Destroyer Game' where YOU will get rid of them!");
-									builder.setView(layout);
-									builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
-									{
-
-										@Override
-										public void onClick(DialogInterface dialog, int which)
-										{
-											final Dialog sketchDialog = new Dialog(context);
-											sketchDialog.setTitle("An Example, Click to Play!");
-											sketchDialog.setContentView(R.layout.custom_dialog);
-											ImageView mSketch = (ImageView) sketchDialog.findViewById(R.id.sketch);
-											mSketch.setOnClickListener(new OnClickListener()
-											{
-
-												@Override
-												public void onClick(View arg0)
-												{
-													sketchDialog.dismiss();
-												}
-
-											});
-											sketchDialog.show();
-										}
-
-									});
-									builder.create().show();
-								}
-							});
-							builder.create().show();
-						}
-
-					});
-					builder.create().show();
-
-				}
-
-			});
-			builder.create().show();
+			CaptureTutorialFragment tutorialFragment = new CaptureTutorialFragment();
+			
+			tutorialFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+			tutorialFragment.show(getFragmentManager(), null);			
 
 			// preferences.edit().putString("capture instructions",
 			// "Yes").commit();
