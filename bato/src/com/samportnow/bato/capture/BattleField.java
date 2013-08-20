@@ -62,7 +62,6 @@ public class BattleField extends SurfaceView
         	{
         		xGreatBound[0] = xGreatBound[1];
         		xLessBound[0] = xLessBound[1];
-        		Log.e("switch", "hey hey");
         		mSetX = false;
         	}
         	if ((x > xGreatBound[0] || x < xLessBound[0]))
