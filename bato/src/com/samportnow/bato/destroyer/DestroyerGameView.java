@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceView;
 
 public class DestroyerGameView extends SurfaceView
@@ -30,6 +31,7 @@ public class DestroyerGameView extends SurfaceView
     boolean mDestroy;
     boolean explode;
     boolean mDrawPos;
+    boolean explodeIt;
     int mMoveX;
     int mMoveY;
     int mMoveByX;
@@ -154,6 +156,10 @@ public class DestroyerGameView extends SurfaceView
 			canvas.drawBitmap(mDestroyer.mNeg.getDrawingCache(), mNegX, 0, null);
 			mNegX -= xVelocity;
 		}
+		if (explodeIt)
+		{
+			mDestroyer.mExplosion.explode(canvas);
+		}
 
 		if (mDestroy)
 		{
@@ -165,9 +171,14 @@ public class DestroyerGameView extends SurfaceView
 	 	    	//stay in here if there's a hit
 	    		if (! explode)
 	    		{
+	    			
 	    			mMoveNeg = false;
+	    			mDestroyer.mExplosion.mStop = false;
+	    			mDestroyer.mExplosion.reset();
+	    			mDestroyer.mExplosion.setXPos(mNegX);
+	    			mDestroyer.mExplosion.setStartTime();
+	    			explodeIt = true;
 	    			//here are all of our reset methods
-	    			mDestroyer.explode();
 	    			//reset our variables
 	    		    mPosX = width;
 	    		    mNegX = (int) (width + (width/1.5));
