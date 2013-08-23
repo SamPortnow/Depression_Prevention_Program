@@ -152,6 +152,9 @@
 	
 	<string name="block_no_thoughts_text">No thoughts recorded this day.</string>
 	
+	<!-- activity_capture -->
+	<string name="capture_game_begin_label">Nab this negative thought!</string>
+	
 	<!-- fragment_capture_tutorial -->
 	<string name="capture_tutorial_sketch_description">Capture Tutorial sketch.</string>
 	

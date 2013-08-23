@@ -32,6 +32,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.samportnow.bato.MainActivity;
@@ -56,8 +57,6 @@ public class CaptureActivity extends Activity
 	private String[] inputTokens;
 	private Pattern four_letter_words = Pattern.compile("not|cant|cnt|can't");
 	boolean laser_created;
-	
-	//private List<View.OnClickListener> mTraincarListeners = null;
 
 	public static boolean populatePositiveWords(Context context)
 	{
@@ -119,7 +118,7 @@ public class CaptureActivity extends Activity
 //		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mChallengingThoughts);
 //		
 //		// The AutoCompleteTextView for creating challenging thoughts
-//		mChallengingThought = (AutoCompleteTextView) findViewById(R.id.thoughts);
+		mChallengingThought = (AutoCompleteTextView) findViewById(R.id.thoughts);
 //		mChallengingThought.setAdapter(adapter);	
 		
 		// the battle field!
@@ -252,14 +251,25 @@ public class CaptureActivity extends Activity
 				}
 			}
 		});
-
+		
 		ThoughtsDataSource dataSource = new ThoughtsDataSource(CaptureActivity.this).open();
-		ThoughtDao thought = dataSource.getAllThoughts().get(0);
+		final ThoughtDao thought = dataSource.getAllThoughts().get(0);
 		
-		dataSource.close();			
+		dataSource.close();
 		
-		mNeg = new NegativeThought(CaptureActivity.this);
-		mNeg.setText(thought.getContent());
+		((TextView) findViewById(R.id.capture_game_begin_thought_content)).setText(thought.getContent());
+		
+		findViewById(R.id.capture_game_begin_overlay).setOnClickListener(new View.OnClickListener()
+		{			
+			@Override
+			public void onClick(View v)
+			{			
+				v.setVisibility(View.GONE);
+				
+				mNeg = new NegativeThought(CaptureActivity.this);
+				mNeg.setText(thought.getContent());
+			}
+		});
 	}
 
 	public void endGame()

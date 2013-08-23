@@ -40,8 +40,8 @@ public class NegativeThought extends TextView
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(), "fonts/BlackBoysOnMopeds.ttf");
 		setTypeface(typeFace);
 		RelativeLayout container = (RelativeLayout) mCapture.findViewById(R.id.container);
-		width = 150;//container.getWidth() / 3;
-		height = 150; //container.getHeight() / 4;
+		width = container.getWidth() / 3;
+		height = container.getHeight() / 4;
 		layout(0, 0, width, height);
 	}	
 }

@@ -1,53 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:widget="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
-    style="@android:style/Theme.Holo.Light.NoActionBar"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.samportnow.bato.capture.BattleField
-        android:id="@+id/battle_field"
+    <RelativeLayout
+        android:id="@+id/container"
+        style="@android:style/Theme.Holo.Light.NoActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <com.samportnow.bato.capture.BattleField
+            android:id="@+id/battle_field"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/edit_container"
+            android:background="@android:color/holo_blue_light" />
+
+        <LinearLayout
+            android:id="@+id/pos_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/edit_container"
+            android:orientation="horizontal"
+            android:padding="5dp" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/edit_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal" >
+
+            <AutoCompleteTextView
+                android:id="@+id/thoughts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/thought_it"
+                android:maxLength="140"
+                android:padding="15dip" />
+
+            <Button
+                android:id="@+id/scale_it"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:gravity="center"
+                android:padding="15dip"
+                android:text="@string/scale_it"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/capture_game_begin_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/edit_container"
-        android:background="@android:color/holo_blue_light" />
+        android:background="#3f000000"
+        android:gravity="center"
+        android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/pos_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/edit_container"
-        android:orientation="horizontal"
-        android:padding="5dp" >
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/edit_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal" >
-
-        <AutoCompleteTextView
-            android:id="@+id/thoughts"
+        <TextView
+            android:id="@+id/capture_game_begin_thought_content"
+            style="?android:attr/textAppearanceLargeInverse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/thought_it"
-            android:maxLength="140"
-            android:padding="15dip" />
+            android:padding="8dp" />
 
-        <Button
-            android:id="@+id/scale_it"
+        <TextView
+            style="?android:attr/textAppearanceLargeInverse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:gravity="center"
-            android:padding="15dip"
-            android:text="@string/scale_it"
-            android:textColor="@android:color/white"
-            android:textStyle="bold" />
+            android:text="@string/capture_game_begin_label"
+            android:padding="8dp" />
     </LinearLayout>
 
-</RelativeLayout>
+</FrameLayout>
