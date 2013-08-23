@@ -49,6 +49,8 @@ public class CaptureActivity extends Activity
 	private AutoCompleteTextView mCreateChallengingTv;
 	private String[] inputTokens;
 	private Pattern four_letter_words = Pattern.compile("not|cant|cnt|can't");	
+	
+	private ThoughtDao mThought = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -64,10 +66,12 @@ public class CaptureActivity extends Activity
 		
 		dataSource.close();
 		
+		mThought = thoughts.get((int) (Math.random() * thoughts.size()));
+		
 		// TODO: define default negative thought; store into strings.xml
 		final String thoughtContent =
-			(thoughts.size() > 0)
-				? thoughts.get((int) (Math.random() * thoughts.size())).getContent()
+			(mThought != null)
+				?  mThought.getContent()
 				: "Default negative thought here."; 
 		
 		((TextView) findViewById(R.id.capture_game_begin_thought_content)).setText("\"" + thoughtContent + "\"");
