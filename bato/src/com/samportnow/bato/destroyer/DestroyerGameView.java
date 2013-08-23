@@ -44,6 +44,7 @@ public class DestroyerGameView extends SurfaceView
     int mMoveStationVelocity[] = new int[2];
     int count;
     float mScale;
+    boolean mGameOver;
     ArrayList <PositiveThoughtDestroyer> mPositive = new ArrayList<PositiveThoughtDestroyer>();
     PositiveThoughtDestroyer mPosCannon;
     HashMap<PositiveThoughtDestroyer, int[]> mThoughtInfo = new HashMap<PositiveThoughtDestroyer, int[]>();
@@ -89,125 +90,127 @@ public class DestroyerGameView extends SurfaceView
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
-
-
-
-		if (mDrawPos)
+		if (! mGameOver)
 		{
-			for (int i = 1; i < mDestroyer.mStationPositive.size() + 1; i++)
+
+
+			if (mDrawPos)
 			{
-				canvas.drawBitmap(mDestroyer.mStationPositive.get(i-1).getDrawingCache(), 
-						mDrawStationX + mMoveStationX[i%2], mDrawStationY,  null);
-				mDrawStationX += width/3;
-		    	if (i % 3 == 0)
-		 		{
-		    		 mDrawStationY += height/4;
-		 			 mDrawStationX = 0;
-		 		}
-
-			}
-
-			if (mMoveStationX[0] < -width || mMoveStationX[0] > width)
-			{
-				mMoveStationVelocity[0] = mMoveStationVelocity[0] * -1;
-			}
-
-			if (mMoveStationX[1] < -width || mMoveStationX[1] > width)
-			{
-				mMoveStationVelocity[1] = mMoveStationVelocity[1] * -1;
-			}
-
-			mMoveStationX[1] += mMoveStationVelocity[1];
-
-			mMoveStationX[0] += mMoveStationVelocity[0];
-
-	    	mDrawStationX = 0;
-	    	mDrawStationY = 0;
-
-		}
-		if (mMovePos)
-		{
-			canvas.drawBitmap(mDestroyer.mNeg.getDrawingCache(), mNegX, 0, null);
-
-			for (int i = 0; i < mPositive.size(); i++)
-			{
-				canvas.drawBitmap(mPositive.get(i).getDrawingCache(), mPosX, mPositive.get(i).yPos, null);
-				mDestroyer.mLaserBeam.get(i).draw_it(canvas);
-				if (mPosX < 0)
+				for (int i = 1; i < mDestroyer.mStationPositive.size() + 1; i++)
 				{
-					//if it gets to 0, populate the listview and stop drawing the positive thought
-					//set mNeg to true so the negative thought can start moving
-					mDestroyer.mPositive.clear();
-					mDestroyer.populateListView();
-					mMovePos = false;
-					mMoveNeg = true;
+					canvas.drawBitmap(mDestroyer.mStationPositive.get(i-1).getDrawingCache(), 
+							mDrawStationX + mMoveStationX[i%2], mDrawStationY,  null);
+					mDrawStationX += width/3;
+			    	if (i % 3 == 0)
+			 		{
+			    		 mDrawStationY += height/4;
+			 			 mDrawStationX = 0;
+			 		}
+	
 				}
+	
+				if (mMoveStationX[0] < -width || mMoveStationX[0] > width)
+				{
+					mMoveStationVelocity[0] = mMoveStationVelocity[0] * -1;
+				}
+	
+				if (mMoveStationX[1] < -width || mMoveStationX[1] > width)
+				{
+					mMoveStationVelocity[1] = mMoveStationVelocity[1] * -1;
+				}
+	
+				mMoveStationX[1] += mMoveStationVelocity[1];
+	
+				mMoveStationX[0] += mMoveStationVelocity[0];
+	
+		    	mDrawStationX = 0;
+		    	mDrawStationY = 0;
+	
 			}
-			mPosX -= 15;
-			mNegX -=15;
-		}
-		if (mMoveNeg)
-		{
-			//moving the negative thought. it moves back and forth on the screen 
-			if (mNegX < 0 || mNegX > width - mDestroyer.mNeg.getWidth())
+			if (mMovePos)
 			{
-				xVelocity = xVelocity *-1;
+				canvas.drawBitmap(mDestroyer.mNeg.getDrawingCache(), mNegX, 0, null);
+	
+				for (int i = 0; i < mPositive.size(); i++)
+				{
+					canvas.drawBitmap(mPositive.get(i).getDrawingCache(), mPosX, mPositive.get(i).yPos, null);
+					mDestroyer.mLaserBeam.get(i).draw_it(canvas);
+					if (mPosX < 0)
+					{
+						//if it gets to 0, populate the listview and stop drawing the positive thought
+						//set mNeg to true so the negative thought can start moving
+						mDestroyer.mPositive.clear();
+						mDestroyer.populateListView();
+						mMovePos = false;
+						mMoveNeg = true;
+					}
+				}
+				mPosX -= 15;
+				mNegX -=15;
 			}
-			canvas.drawBitmap(mDestroyer.mNeg.getDrawingCache(), mNegX, 0, null);
-			mNegX -= xVelocity;
-		}
-		if (explodeIt)
-		{
-			mDestroyer.mExplosion.explode(canvas);
-		}
-
-		if (mDestroy)
-		{
-			//logic for destroying thoughts goes here
-			//if fits within the bounds and greater than 0
-			if ( mMoveX >= mNegX - mDestroyer.mNeg.width/2 && mMoveX <= mNegX + mDestroyer.mNeg.width/2 && mMoveY > 0 && mMoveY < 
-	    	mDestroyer.mNeg.height/2)
-	    	{
-	 	    	//stay in here if there's a hit
-	    		if (! explode)
+			if (mMoveNeg)
+			{
+				//moving the negative thought. it moves back and forth on the screen 
+				if (mNegX < 0 || mNegX > width - mDestroyer.mNeg.getWidth())
+				{
+					xVelocity = xVelocity *-1;
+				}
+				canvas.drawBitmap(mDestroyer.mNeg.getDrawingCache(), mNegX, 0, null);
+				mNegX -= xVelocity;
+			}
+			if (explodeIt)
+			{
+				mDestroyer.mExplosion.explode(canvas);
+			}
+	
+			if (mDestroy)
+			{
+				//logic for destroying thoughts goes here
+				//if fits within the bounds and greater than 0
+				if ( mMoveX >= mNegX - mDestroyer.mNeg.width/2 && mMoveX <= mNegX + mDestroyer.mNeg.width/2 && mMoveY > 0 && mMoveY < 
+		    	mDestroyer.mNeg.height/2)
+		    	{
+		 	    	//stay in here if there's a hit
+		    		if (! explode)
+		    		{
+		    			
+		    			mMoveNeg = false;
+		    			mDestroyer.mExplosion.mStop = false;
+		    			mDestroyer.mExplosion.reset();
+		    			mDestroyer.mExplosion.setXPos(mNegX);
+		    			mDestroyer.mExplosion.setStartTime();
+		    			explodeIt = true;
+		    			//here are all of our reset methods
+		    			//reset our variables
+		    		    mPosX = width;
+		    		    mNegX = (int) (width + (width/1.5));
+		    		    mPosY = 0;
+		    		}
+		    		mScale = 0;
+		    		explode = true;
+		    		mDestroy=false;
+		    	}
+	    		if(mMoveY < -mDestroyer.mNeg.height)
 	    		{
-	    			
-	    			mMoveNeg = false;
-	    			mDestroyer.mExplosion.mStop = false;
-	    			mDestroyer.mExplosion.reset();
-	    			mDestroyer.mExplosion.setXPos(mNegX);
-	    			mDestroyer.mExplosion.setStartTime();
-	    			explodeIt = true;
-	    			//here are all of our reset methods
-	    			//reset our variables
-	    		    mPosX = width;
-	    		    mNegX = (int) (width + (width/1.5));
-	    		    mPosY = 0;
+	    			mScale = 0;
 	    		}
-	    		mScale = 0;
-	    		explode = true;
-	    		mDestroy=false;
-	    	}
-    		if(mMoveY < -mDestroyer.mNeg.height)
-    		{
-    			mScale = 0;
-    		}
-			if (mScale < 1.0f)
-			{
-				canvas.save();
-				canvas.scale(mScale, mScale, mMoveX, mMoveY);
-				canvas.drawBitmap(mDestroyer.mPosCannon[0].getDrawingCache(), mMoveX, mMoveY,  null);
-				canvas.restore();
-				mScale += .05;
+				if (mScale < 1.0f)
+				{
+					canvas.save();
+					canvas.scale(mScale, mScale, mMoveX, mMoveY);
+					canvas.drawBitmap(mDestroyer.mPosCannon[0].getDrawingCache(), mMoveX, mMoveY,  null);
+					canvas.restore();
+					mScale += .05;
+				}
+				else
+				{
+					canvas.drawBitmap(mDestroyer.mPosCannon[0].getDrawingCache(), mMoveX, mMoveY,  null);
+	
+				}
+				mMoveX += mMoveByX;
+				mMoveY -= mMoveByY;
 			}
-			else
-			{
-				canvas.drawBitmap(mDestroyer.mPosCannon[0].getDrawingCache(), mMoveX, mMoveY,  null);
-
-			}
-			mMoveX += mMoveByX;
-			mMoveY -= mMoveByY;
+			h.postDelayed(r, FRAME_RATE);
 		}
-		h.postDelayed(r, FRAME_RATE);
 	}
 }

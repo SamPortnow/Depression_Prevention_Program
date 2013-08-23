@@ -117,12 +117,7 @@ public class CaptureActivity extends Activity
 			String mThought = cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_COUNTER_THOUGHT));
 			if (!mChallengingThoughts.contains(mThought))
 			{
-				Log.e("it is", "" + mThought);
 				mChallengingThoughts.add(mThought);
-			}
-			else
-			{
-				Log.e("well here is", "" + mThought);
 			}
 		}
 		cursor.close();

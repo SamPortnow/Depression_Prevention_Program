@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.Context;
@@ -34,6 +35,7 @@ import android.widget.TextView;
 
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
+import com.samportnow.bato.capture.CaptureTutorialFragment;
 import com.samportnow.bato.database.CalendarDbAdapter;
 import com.samportnow.bato.database.ScaleArrayAdapter;
 
@@ -83,106 +85,11 @@ public class DestroyerGame extends Activity
 		SharedPreferences preferences = this.getSharedPreferences(this.getPackageName(), Context.MODE_PRIVATE);
 		if (preferences.getString("destroyer instructions", null) == null)
 				{
-				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				final Context context = this;
-	        	LayoutInflater inflation = LayoutInflater.from(this); 
-				LinearLayout lLayout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
-				TextView instructions = (TextView) lLayout.findViewById(R.id.instructions);
-		        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
-		        instructions.setTypeface(typeFace);
-		        instructions.setTextColor(Color.BLUE);
-		        instructions.setText("Here, you can destroy your negative thoughts");
-		        builder.setView(lLayout);
-				builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
-				{
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) 
-					{
-						AlertDialog.Builder builder = new AlertDialog.Builder(context);
-			        	LayoutInflater inflation = LayoutInflater.from(context); 
-						LinearLayout lLayout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
-						TextView instructions = (TextView) lLayout.findViewById(R.id.instructions);
-				        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
-				        instructions.setTypeface(typeFace);
-				        instructions.setTextColor(Color.BLUE);
-				        instructions.setText("A list of the all your challenger thoughts will display on the left.");
-						builder.setView(lLayout);
-						builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
-						{
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) 
-							{
-								AlertDialog.Builder builder = new AlertDialog.Builder(context);
-					        	LayoutInflater inflation = LayoutInflater.from(context); 
-								LinearLayout lLayout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
-								TextView instructions = (TextView) lLayout.findViewById(R.id.instructions);
-						        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
-						        instructions.setTypeface(typeFace);
-						        instructions.setTextColor(Color.BLUE);
-						        instructions.setText("Your task is to drag a challenger thought into the cannon and tap the screen where you want the challenging thought to go. " +
-						        		"If it hits the negative thought, great job! You destroyed it. If it doesn't, no worries," +
-						        		" try again. The game is over when the screen is filled with challenging thoughts!");
-						        builder.setView(lLayout);
-								builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
-								{
-
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) 
-									{
-										AlertDialog.Builder builder = new AlertDialog.Builder(context);
-							        	LayoutInflater inflation = LayoutInflater.from(context); 
-										LinearLayout lLayout = (LinearLayout) inflation.inflate(R.layout.custom_xml, null);
-										TextView instructions = (TextView) lLayout.findViewById(R.id.instructions);
-								        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
-								        instructions.setTypeface(typeFace);
-								        instructions.setTextColor(Color.BLUE);
-								        instructions.setText("Try to remember which thoughts you believe, and which ones " +
-								        		"make you feel good. You'll get extra points for those thoughts!");
-								        builder.setView(lLayout);
-								        builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
-								        {
-
-											@Override
-											public void onClick(
-													DialogInterface dialog,
-													int which) 
-											{
-												final Dialog sketchDialog = new Dialog(context);
-												sketchDialog.setTitle("An Example, Click to Play!");
-												sketchDialog.setContentView(R.layout.custom_destroyer_dialog);
-												ImageView mSketch = (ImageView) sketchDialog.findViewById(R.id.sketch_destroyer);
-												mSketch.setOnClickListener(new OnClickListener()
-												{
-
-													@Override
-													public void onClick(
-															View arg0) 
-													{
-														sketchDialog.dismiss();
-													}
-													
-												});
-												sketchDialog.show();	
-											}
-								        	
-								        });
-								        builder.create().show();
-									}
-								});
-						        builder.create().show();
-							}
-							
-						});
-						builder.create().show();				
-						
-					}
+					DestroyerGameTutorialFragment tutorialFragment = new DestroyerGameTutorialFragment();
 					
-				});
-				builder.create().show();
+					tutorialFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+					tutorialFragment.show(getFragmentManager(), null);			
+
 				
 				// preferences.edit().putString("capture instructions", "Yes").commit();
 				// change this after the presentation
@@ -434,6 +341,7 @@ public class DestroyerGame extends Activity
 		explosions++;
 		if (explosions > 8)
 		{
+			mDestroyerShooter.mGameOver = true;
 			game_over();
 		}
 		else
