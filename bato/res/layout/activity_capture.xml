@@ -3,41 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/container"
         style="@android:style/Theme.Holo.Light.NoActionBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
         <com.samportnow.bato.capture.BattleField
             android:id="@+id/battle_field"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/edit_container"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:background="@android:color/holo_blue_light" />
 
         <LinearLayout
-            android:id="@+id/pos_container"
+            android:id="@+id/create_thought_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/edit_container"
             android:orientation="horizontal"
-            android:padding="5dp" >
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/edit_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal" >
+            android:visibility="gone" >
 
             <AutoCompleteTextView
                 android:id="@+id/thoughts"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="@string/thought_it"
+                android:hint="@string/capture_game_create_thought_hint"
                 android:maxLength="140"
                 android:padding="15dip" />
 
@@ -48,11 +40,11 @@
                 android:layout_weight="0"
                 android:gravity="center"
                 android:padding="15dip"
-                android:text="@string/scale_it"
+                android:text="@string/capture_game_create_button_label"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/capture_game_begin_overlay"
@@ -67,14 +59,16 @@
             style="?android:attr/textAppearanceLargeInverse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:textStyle="italic" />
 
         <TextView
             style="?android:attr/textAppearanceLargeInverse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:text="@string/capture_game_begin_label"
-            android:padding="8dp" />
+            android:textStyle="bold" />
     </LinearLayout>
 
 </FrameLayout>

@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.samportnow.bato.capture.CaptureActivity;
 import com.samportnow.bato.capture.CaptureSelectActivity;
 import com.samportnow.bato.database.CalendarDbAdapter;
 import com.samportnow.bato.database.ScaleDbAdapter;
@@ -23,23 +22,23 @@ public class ScalesSummaryFragment extends Fragment
 	{
 		return inflater.inflate(R.layout.fragment_scales_summary, container, false);
 	}
-	
+
 	@Override
 	public void onResume()
 	{
 		super.onResume();
-		
-		View view = getView();		
-		
+
+		View view = getView();
+
 		if (isUnlocked() == true)
 		{
 			view.findViewById(R.id.scales_summary_container).setVisibility(View.VISIBLE);
 			view.findViewById(R.id.scales_summary_locked_container).setVisibility(View.GONE);
-			
+
 			ImageView badgeImageView = (ImageView) view.findViewById(R.id.scales_summary_badge);
-					
+
 			badgeImageView.setOnClickListener(new OnClickListener()
-			{			
+			{
 				@Override
 				public void onClick(View view)
 				{
@@ -47,7 +46,7 @@ public class ScalesSummaryFragment extends Fragment
 					startActivity(intent);
 				}
 			});
-			
+
 			int count = getPositiveThoughtsCount();
 			((TextView) view.findViewById(R.id.scales_summary_count)).setText(String.valueOf(count));
 		}
@@ -57,36 +56,36 @@ public class ScalesSummaryFragment extends Fragment
 			view.findViewById(R.id.scales_summary_container).setVisibility(View.GONE);
 		}
 	}
-	
+
 	private boolean isUnlocked()
 	{
 		CalendarDbAdapter adapter = new CalendarDbAdapter(getActivity()).open();
 		Cursor cursor = adapter.fetchNegs();
-		
+
 		boolean flag = false;
 
 		if (cursor.moveToFirst())
-			flag = true;	
-		
+			flag = true;
+
 		cursor.close();
 		adapter.close();
-		
+
 		// TODO: remove me
 		flag = true;
 
 		return flag;
 	}
-	
+
 	private int getPositiveThoughtsCount()
 	{
 		ScaleDbAdapter adapter = new ScaleDbAdapter(getActivity()).open();
 		Cursor cursor = adapter.fetchPositives();
-		
+
 		int count = cursor.getCount();
-		
+
 		cursor.close();
 		adapter.close();
-		
+
 		return count;
 	}
 }

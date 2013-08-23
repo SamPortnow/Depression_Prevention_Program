@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.view.Gravity;
-import android.widget.RelativeLayout;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.samportnow.bato.R;
@@ -39,7 +39,7 @@ public class NegativeThought extends TextView
 		setDrawingCacheEnabled(true);
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(), "fonts/BlackBoysOnMopeds.ttf");
 		setTypeface(typeFace);
-		RelativeLayout container = (RelativeLayout) mCapture.findViewById(R.id.container);
+		ViewGroup container = (ViewGroup) mCapture.findViewById(R.id.container);
 		width = container.getWidth() / 3;
 		height = container.getHeight() / 4;
 		layout(0, 0, width, height);

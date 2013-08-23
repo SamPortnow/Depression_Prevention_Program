@@ -1,7 +1,5 @@
 package com.samportnow.bato.capture;
 
-import com.samportnow.bato.R;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -10,8 +8,10 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.samportnow.bato.R;
 
 
 @SuppressLint("ViewConstructor")
@@ -35,12 +35,12 @@ public class PositiveThought extends TextView
     	this.setTextColor(Color.RED);
     	this.setDrawingCacheEnabled(true);
     	this.setBackgroundResource(R.drawable.whitecloud);
-	    this.setFocusableInTouchMode(true);
+		this.setFocusableInTouchMode(true);
 	    this.setVisibility(View.INVISIBLE);
 	    this.setAlpha(0.0f);
         Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
         setTypeface(typeFace); 
-    	RelativeLayout container = (RelativeLayout) mCapture.findViewById(R.id.container);
+    	ViewGroup container = (ViewGroup) mCapture.findViewById(R.id.container);
     	width = container.getWidth()/3;
     	height = container.getHeight()/4;
 	    this.layout(0, 0, width, height);

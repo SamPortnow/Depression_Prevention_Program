@@ -3,34 +3,25 @@ package com.samportnow.bato.capture;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,42 +38,17 @@ public class CaptureActivity extends Activity
 
 	private static Set<String> mNegativeWords;
 	
-	NegativeThought mNeg;
-	PositiveThought[] mPos = new PositiveThought[4];
+	NegativeThought mNegativeThought;
+	PositiveThought[] mPos = new PositiveThought[4];	
 	LaserBeam[] mLaserBeam = new LaserBeam[4];
 	BattleField mBattle;
+	
 	int mPosCounter;
-	AutoCompleteTextView mChallengingThought;
-	AlphaAnimation mGone;
-	private String[] inputTokens;
-	private Pattern four_letter_words = Pattern.compile("not|cant|cnt|can't");
 	boolean laser_created;
-
-	public static boolean populatePositiveWords(Context context)
-	{
-		mNegativeWords = new HashSet<String>();
-
-		try
-		{
-			BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open("negative_words.txt")));
-			String line = reader.readLine();
-
-			while (line != null)
-			{
-				mNegativeWords.add(line.toLowerCase(Locale.US));
-				line = reader.readLine();
-			}
-
-			reader.close();
-		}
-		catch (IOException exception)
-		{
-			return false;
-		}
-
-		return true;
-		// TODO list of negative words
-	}
+	
+	private AutoCompleteTextView mCreateChallengingTv;
+	private String[] inputTokens;
+	private Pattern four_letter_words = Pattern.compile("not|cant|cnt|can't");	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -90,6 +56,43 @@ public class CaptureActivity extends Activity
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_capture);		
+		
+		ThoughtsDataSource dataSource = new ThoughtsDataSource(CaptureActivity.this).open();
+		
+		int negativeType = getIntent().getIntExtra("negative_type", Integer.MAX_VALUE);
+		List<ThoughtDao> thoughts = dataSource.getNegativeThoughts(negativeType);				
+		
+		dataSource.close();
+		
+		// TODO: define default negative thought; store into strings.xml
+		final String thoughtContent =
+			(thoughts.size() > 0)
+				? thoughts.get((int) (Math.random() * thoughts.size())).getContent()
+				: "Default negative thought here."; 
+		
+		((TextView) findViewById(R.id.capture_game_begin_thought_content)).setText("\"" + thoughtContent + "\"");
+		
+		findViewById(R.id.capture_game_begin_overlay).setOnClickListener(new View.OnClickListener()
+		{			
+			@Override
+			public void onClick(View v)
+			{			
+				v.setVisibility(View.GONE);
+				
+				mNegativeThought = new NegativeThought(CaptureActivity.this);
+				mNegativeThought.setText(thoughtContent);
+				
+				AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
+				
+				animation.setDuration(2000);
+				animation.setFillAfter(true);
+				
+				LinearLayout container = (LinearLayout) findViewById(R.id.create_thought_container);
+				
+				container.setVisibility(View.VISIBLE);
+				container.startAnimation(animation);				
+			}
+		});		
 
 		// Game-related functionality below!
 		
@@ -118,7 +121,7 @@ public class CaptureActivity extends Activity
 //		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mChallengingThoughts);
 //		
 //		// The AutoCompleteTextView for creating challenging thoughts
-		mChallengingThought = (AutoCompleteTextView) findViewById(R.id.thoughts);
+		mCreateChallengingTv = (AutoCompleteTextView) findViewById(R.id.thoughts);
 //		mChallengingThought.setAdapter(adapter);	
 		
 		// the battle field!
@@ -137,7 +140,7 @@ public class CaptureActivity extends Activity
 			@Override
 			public void onClick(View arg0)
 			{
-				String inputLine = mChallengingThought.getText().toString();
+				String inputLine = mCreateChallengingTv.getText().toString();
 				inputTokens = inputLine.split(" ");
 
 				if (inputLine.isEmpty())
@@ -180,7 +183,7 @@ public class CaptureActivity extends Activity
 				{
 					mCreateThought.setEnabled(false);
 
-					final String mChallenging = mChallengingThought.getText().toString();
+					final String mChallenging = mCreateChallengingTv.getText().toString();
 					mPos[mPosCounter] = new PositiveThought(arg0.getContext(), null, inputLine);
 					mLaserBeam[mPosCounter] = new LaserBeam(arg0.getContext(), mPosCounter);
 					mPos[mPosCounter].setText(inputLine);
@@ -201,7 +204,7 @@ public class CaptureActivity extends Activity
 							mCalHelper.open();
 							int belief = ((SeekBar) view.findViewById(R.id.believe)).getProgress();
 							int helpful = ((SeekBar) view.findViewById(R.id.help)).getProgress();
-							mCalHelper.createChallenging(mNeg.getText().toString(), mChallenging, belief, helpful);
+							mCalHelper.createChallenging(mNegativeThought.getText().toString(), mChallenging, belief, helpful);
 							mCalHelper.close();
 							mBattle.xLessBound[1] += mBattle.container_width / 12;
 							mBattle.xGreatBound[1] -= mBattle.container_width / 12;
@@ -244,30 +247,11 @@ public class CaptureActivity extends Activity
 					});
 					build_believe.create().show();
 					mCreateThought.setEnabled(true);
-					mChallengingThought.setText(null);
+					mCreateChallengingTv.setText(null);
 					InputMethodManager imm = (InputMethodManager) CaptureActivity.this.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.hideSoftInputFromWindow(mChallengingThought.getWindowToken(), 0);
+					imm.hideSoftInputFromWindow(mCreateChallengingTv.getWindowToken(), 0);
 					mPosCounter += 1;
 				}
-			}
-		});
-		
-		ThoughtsDataSource dataSource = new ThoughtsDataSource(CaptureActivity.this).open();
-		final ThoughtDao thought = dataSource.getAllThoughts().get(0);
-		
-		dataSource.close();
-		
-		((TextView) findViewById(R.id.capture_game_begin_thought_content)).setText(thought.getContent());
-		
-		findViewById(R.id.capture_game_begin_overlay).setOnClickListener(new View.OnClickListener()
-		{			
-			@Override
-			public void onClick(View v)
-			{			
-				v.setVisibility(View.GONE);
-				
-				mNeg = new NegativeThought(CaptureActivity.this);
-				mNeg.setText(thought.getContent());
 			}
 		});
 	}
@@ -309,4 +293,29 @@ public class CaptureActivity extends Activity
 		builder.create().show();
 	}
 
+	public static boolean populatePositiveWords(Context context)
+	{
+		mNegativeWords = new HashSet<String>();
+
+		try
+		{
+			BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open("negative_words.txt")));
+			String line = reader.readLine();
+
+			while (line != null)
+			{
+				mNegativeWords.add(line.toLowerCase(Locale.US));
+				line = reader.readLine();
+			}
+
+			reader.close();
+		}
+		catch (IOException exception)
+		{
+			return false;
+		}
+
+		return true;
+		// TODO list of negative words
+	}	
 }

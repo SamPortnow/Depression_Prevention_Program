@@ -51,23 +51,6 @@ public class ThoughtsDataSource
 		return getThoughts(null);
 	}
 	
-	public List<ThoughtDao> getThoughtsBefore(Long timestamp)
-	{
-		String selection = 
-			ThoughtsSQLiteOpenHelper.COLUMN_CREATED + " <= " + timestamp;
-		
-		return getThoughts(selection);
-	}
-	
-	public List<ThoughtDao> getThoughtsAfter(Long timestamp)
-	{
-		String selection = 
-			ThoughtsSQLiteOpenHelper.COLUMN_CREATED + " >= " + timestamp;
-		
-		return getThoughts(selection);
-	}
-	
-	
 	public List<ThoughtDao> getThoughtsBetween(Long startTimestamp, Long endTimestamp)
 	{
 		String selection =
@@ -77,6 +60,15 @@ public class ThoughtsDataSource
 		
 		return getThoughts(selection);
 	}
+	
+	
+	public List<ThoughtDao> getNegativeThoughts(int negativeType)
+	{
+		String selection =
+			ThoughtsSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE + " = " + negativeType;
+		
+		return getThoughts(selection);
+	}	
 	
 	private List<ThoughtDao> getThoughts(String selection)
 	{

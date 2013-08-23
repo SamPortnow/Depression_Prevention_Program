@@ -17,10 +17,6 @@
     <string name="destroyer">write a positive thought to destroy the negative thought</string>
     <string name="destroy">FIRE!</string>
     <string name="destroyer_shooter_cannon_content_description">Cannon</string>
-
-    <string name="thought_it"> Create a thought that challenges
-        the truth of this negative thought. </string>
-    <string name="scale_it">  Create! </string>
     <string name="lawyer">  If you were trying to act as your own attorney whose job was to defend yourself, and
     whether or not you went to jail depended on the truth of this negative thought, 
     what would you say in your own defense? </string>
@@ -154,9 +150,14 @@
 	
 	<!-- activity_capture -->
 	<string name="capture_game_begin_label">Nab this negative thought!</string>
+	<string name="capture_game_create_thought_hint">Enter a challenging thought!</string>
+    <string name="capture_game_create_button_label">Nab!</string>
+    
+    <!-- activity_capture_select -->
+    <string name="capture_select_header_text">Select a category to challenge a negative thought from it.</string>
 	
 	<!-- fragment_capture_tutorial -->
-	<string name="capture_tutorial_sketch_description">Capture Tutorial sketch.</string>
+	<string name="capture_tutorial_sketch_description">Capture Tutorial sketch.</string>	
 	
 	<string-array name="capture_tutorial_instructions">
 	    <item>Not all of the negative thoughts that we have are true.</item>
@@ -170,4 +171,6 @@
 	    <item>&#8230;your challenging thoughts will take the negative thought to the \'Destroyer Game\'&#8230;</item>
 	    <item>&#8230;where YOU will get rid of them!</item>
 	</string-array>	
+	
+	<string name="menu_capture_tutorial_instructions">Instructions</string>
 </resources>

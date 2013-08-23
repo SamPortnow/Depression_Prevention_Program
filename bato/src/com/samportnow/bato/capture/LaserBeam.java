@@ -56,7 +56,7 @@ public class LaserBeam extends View
 		mLaserPaint.setAlpha(150);
 		mBattle = (BattleField) mCapture.findViewById(R.id.battle_field);
 		yOfCenter = mCapture.mBattle.getHeight() - mCapture.mPos[0].getHeight();
-		xOfCenter = (mCapture.mPos[mPosition].width * mPosition) + mCapture.mNeg.getWidth()/2;
+		xOfCenter = (mCapture.mPos[mPosition].width * mPosition) + mCapture.mNegativeThought.getWidth()/2;
 		offset = offSet(xOfCenter, yOfCenter);
 		oval = new RectF();
 
@@ -65,7 +65,7 @@ public class LaserBeam extends View
 
 	public float radius(int x, int y)
 	{
-		double A2 = Math.pow(((x + mCapture.mNeg.width/2) - xOfCenter),2);
+		double A2 = Math.pow(((x + mCapture.mNegativeThought.width/2) - xOfCenter),2);
 		double B2 = Math.pow((yOfCenter - y),2);
 		return (float) Math.sqrt(A2+B2);
 	}
@@ -77,7 +77,7 @@ public class LaserBeam extends View
 
 	public float endAngle(int x, int y)
 	{
-		return (float)((Math.atan2((x + mCapture.mNeg.width)-xOfCenter, yOfCenter - y) * 180/Math.PI + 360 ) % 360)- 30;
+		return (float)((Math.atan2((x + mCapture.mNegativeThought.width)-xOfCenter, yOfCenter - y) * 180/Math.PI + 360 ) % 360)- 30;
 
 	}
 
