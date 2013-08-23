@@ -35,26 +35,32 @@ public class CaptureSelectActivity extends Activity
 		mCategoryDescriptions = getResources().getStringArray(R.array.add_event_user_category_descriptions);
 
 		final List<View.OnClickListener> traincarListeners = new ArrayList<View.OnClickListener>(mCategoryTitles.length);
+		final int[] thoughtCounts = new int[mCategoryTitles.length];
 
 		BatoDataSource dataSource = new BatoDataSource(this).open();
 
 		for (int i = 0; i < mCategoryTitles.length; i++)
-		{
+		{			
 			ViewGroup trainVg = (ViewGroup) findViewById(R.id.train);
 			View view = getLayoutInflater().inflate(R.layout.block_traincar, trainVg, false);
 
 			((TextView) view.findViewById(R.id.traincar_title)).setText(mCategoryTitles[i]);
 			((TextView) view.findViewById(R.id.traincar_description)).setText(mCategoryDescriptions[i]);
 
+			thoughtCounts[i] = dataSource.getNegativeThoughts(i).size();
+			
 			// TODO: fetch using strings.xml
-			((TextView) view.findViewById(R.id.traincar_thought_count)).setText(dataSource.getNegativeThoughts(i).size() + " negative thoughts.");
+			((TextView) view.findViewById(R.id.traincar_thought_count)).setText(thoughtCounts[i] + " negative thoughts.");
 
 			View.OnClickListener listener = new View.OnClickListener()
 			{
 				@Override
 				public void onClick(View v)
-				{
+				{					
 					int index = traincarListeners.indexOf(this);
+					
+					if (thoughtCounts[index] < 1)
+						return;
 
 					Intent intent = new Intent(CaptureSelectActivity.this, CaptureActivity.class);
 					intent.putExtra("negative_type", index);

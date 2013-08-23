@@ -61,6 +61,13 @@ public class BatoDataSource
 		return getThoughts(selection);
 	}
 	
+	public List<ThoughtDao> getAllNegativeThoughts()
+	{
+		String selection =
+			BatoSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE + " != -1";
+		
+		return getThoughts(selection);
+	}
 	
 	public List<ThoughtDao> getNegativeThoughts(int negativeType)
 	{

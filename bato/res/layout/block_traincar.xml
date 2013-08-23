@@ -15,7 +15,6 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/Mind_reading_title"
         android:textStyle="bold" >
     </TextView>
 
@@ -32,7 +31,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="45dp"
-            android:text="@string/Mind_reading"
             android:textColor="@android:color/white"
             android:textStyle="bold" >
         </TextView>
