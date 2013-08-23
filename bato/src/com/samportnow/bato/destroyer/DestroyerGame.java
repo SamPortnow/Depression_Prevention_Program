@@ -105,7 +105,7 @@ public class DestroyerGame extends Activity
 				        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 				        instructions.setTypeface(typeFace);
 				        instructions.setTextColor(Color.BLUE);
-				        instructions.setText("A list of the all the thoughts you came up with to challenge your negative thoughts will display on the left.");
+				        instructions.setText("A list of the all your challenger thoughts will display on the left.");
 						builder.setView(lLayout);
 						builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
 						{
@@ -121,7 +121,7 @@ public class DestroyerGame extends Activity
 						        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 						        instructions.setTypeface(typeFace);
 						        instructions.setTextColor(Color.BLUE);
-						        instructions.setText("Your task is to drag a challenging thought into the cannon and tap the screen where you want the challenging thought to go. " +
+						        instructions.setText("Your task is to drag a challenger thought into the cannon and tap the screen where you want the challenging thought to go. " +
 						        		"If it hits the negative thought, great job! You destroyed it. If it doesn't, no worries," +
 						        		" try again. The game is over when the screen is filled with challenging thoughts!");
 						        builder.setView(lLayout);

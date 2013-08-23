@@ -22,6 +22,7 @@ public class Ring
 	private ByteBuffer indexBuffer;
 	private int[] textures = new int[1];
 	float xPos;
+	float xChange;
 	float yPos;
 	float scale;
 	float slope;
