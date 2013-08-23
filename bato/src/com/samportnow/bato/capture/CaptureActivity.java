@@ -28,8 +28,8 @@ import android.widget.Toast;
 
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
+import com.samportnow.bato.database.BatoDataSource;
 import com.samportnow.bato.database.CalendarDbAdapter;
-import com.samportnow.bato.database.ThoughtsDataSource;
 import com.samportnow.bato.database.dao.ThoughtDao;
 
 public class CaptureActivity extends Activity
@@ -57,7 +57,7 @@ public class CaptureActivity extends Activity
 		
 		setContentView(R.layout.activity_capture);		
 		
-		ThoughtsDataSource dataSource = new ThoughtsDataSource(CaptureActivity.this).open();
+		BatoDataSource dataSource = new BatoDataSource(CaptureActivity.this).open();
 		
 		int negativeType = getIntent().getIntExtra("negative_type", Integer.MAX_VALUE);
 		List<ThoughtDao> thoughts = dataSource.getNegativeThoughts(negativeType);				

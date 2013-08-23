@@ -20,7 +20,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingRightInAnimationAdapter;
 import com.samportnow.bato.R;
-import com.samportnow.bato.database.ThoughtsDataSource;
+import com.samportnow.bato.database.BatoDataSource;
 
 public class AddEventUserThoughtFragment extends Fragment
 {
@@ -38,7 +38,7 @@ public class AddEventUserThoughtFragment extends Fragment
 
 		View view = inflater.inflate(R.layout.fragment_add_event_user_thought, null);
 
-		ThoughtsDataSource dataSource = new ThoughtsDataSource(getActivity()).open();
+		BatoDataSource dataSource = new BatoDataSource(getActivity()).open();
 
 		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
 		mHistoryAdapter.addAll(dataSource.getAllThoughtContent());

@@ -18,7 +18,7 @@ import android.widget.ListView;
 
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingRightInAnimationAdapter;
 import com.samportnow.bato.R;
-import com.samportnow.bato.database.ThoughtsDataSource;
+import com.samportnow.bato.database.BatoDataSource;
 
 public class AddEventUserActivityFragment extends Fragment
 {		
@@ -35,7 +35,7 @@ public class AddEventUserActivityFragment extends Fragment
 
 		View view = inflater.inflate(R.layout.fragment_add_event_user_activity, null);
 
-		ThoughtsDataSource dataSource = new ThoughtsDataSource(getActivity()).open();
+		BatoDataSource dataSource = new BatoDataSource(getActivity()).open();
 
 		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
 		mHistoryAdapter.addAll(dataSource.getAllThoughtActivity());

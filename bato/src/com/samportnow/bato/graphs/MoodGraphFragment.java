@@ -29,7 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.samportnow.bato.R;
-import com.samportnow.bato.database.ThoughtsDataSource;
+import com.samportnow.bato.database.BatoDataSource;
 import com.samportnow.bato.database.dao.ThoughtDao;
 
 public class MoodGraphFragment extends Fragment
@@ -100,7 +100,7 @@ public class MoodGraphFragment extends Fragment
 		long startTimestamp = mChartCalendar.getTimeInMillis();
 		long endTimestamp = startTimestamp + 86400000;
 		
-		ThoughtsDataSource dataSource = new ThoughtsDataSource(getActivity()).open();
+		BatoDataSource dataSource = new BatoDataSource(getActivity()).open();
 		mThoughts = dataSource.getThoughtsBetween(startTimestamp, endTimestamp);
 		
 		dataSource.close();

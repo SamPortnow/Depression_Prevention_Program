@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
-import com.samportnow.bato.database.ThoughtsDataSource;
+import com.samportnow.bato.database.BatoDataSource;
 
 public class AddEventActivity extends Activity
 {
@@ -73,7 +73,7 @@ public class AddEventActivity extends Activity
 			long created = Calendar.getInstance().getTimeInMillis();
 			int negativeType = mEventBundle.getInt("negative_type", -1);
 
-			ThoughtsDataSource dataSource = new ThoughtsDataSource(this).open();
+			BatoDataSource dataSource = new BatoDataSource(this).open();
 			dataSource.createThought(created, activity, feeling, thought, negativeType);
 			
 			dataSource.close();

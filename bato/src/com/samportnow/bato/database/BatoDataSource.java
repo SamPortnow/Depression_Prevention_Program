@@ -11,17 +11,17 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.samportnow.bato.database.dao.ThoughtDao;
 
-public class ThoughtsDataSource
+public class BatoDataSource
 {
 	private SQLiteDatabase mDatabase;
-	private ThoughtsSQLiteOpenHelper mHelper;
+	private BatoSQLiteOpenHelper mHelper;
 	
-	public ThoughtsDataSource(Context context)
+	public BatoDataSource(Context context)
 	{
-		mHelper = new ThoughtsSQLiteOpenHelper(context);
+		mHelper = new BatoSQLiteOpenHelper(context);
 	}
 	
-	public ThoughtsDataSource open() throws SQLException
+	public BatoDataSource open() throws SQLException
 	{
 		mDatabase = mHelper.getWritableDatabase();
 		
@@ -37,13 +37,13 @@ public class ThoughtsDataSource
 	{
 		ContentValues values = new ContentValues();
 		
-		values.put(ThoughtsSQLiteOpenHelper.COLUMN_CREATED, created);
-		values.put(ThoughtsSQLiteOpenHelper.COLUMN_ACTIVITY, activity);
-		values.put(ThoughtsSQLiteOpenHelper.COLUMN_FEELING, feeling);
-		values.put(ThoughtsSQLiteOpenHelper.COLUMN_CONTENT, thought);
-		values.put(ThoughtsSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE, negativeType);
+		values.put(BatoSQLiteOpenHelper.COLUMN_CREATED, created);
+		values.put(BatoSQLiteOpenHelper.COLUMN_ACTIVITY, activity);
+		values.put(BatoSQLiteOpenHelper.COLUMN_FEELING, feeling);
+		values.put(BatoSQLiteOpenHelper.COLUMN_CONTENT, thought);
+		values.put(BatoSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE, negativeType);
 		
-		return mDatabase.insert(ThoughtsSQLiteOpenHelper.TABLE_THOUGHTS, null, values);
+		return mDatabase.insert(BatoSQLiteOpenHelper.TABLE_THOUGHTS, null, values);
 	}
 	
 	public List<ThoughtDao> getAllThoughts()
@@ -54,9 +54,9 @@ public class ThoughtsDataSource
 	public List<ThoughtDao> getThoughtsBetween(Long startTimestamp, Long endTimestamp)
 	{
 		String selection =
-			ThoughtsSQLiteOpenHelper.COLUMN_CREATED + " >= " + startTimestamp +
+			BatoSQLiteOpenHelper.COLUMN_CREATED + " >= " + startTimestamp +
 			" AND " +
-			ThoughtsSQLiteOpenHelper.COLUMN_CREATED + " <= " + endTimestamp;
+			BatoSQLiteOpenHelper.COLUMN_CREATED + " <= " + endTimestamp;
 		
 		return getThoughts(selection);
 	}
@@ -65,7 +65,7 @@ public class ThoughtsDataSource
 	public List<ThoughtDao> getNegativeThoughts(int negativeType)
 	{
 		String selection =
-			ThoughtsSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE + " = " + negativeType;
+			BatoSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE + " = " + negativeType;
 		
 		return getThoughts(selection);
 	}	
@@ -75,19 +75,19 @@ public class ThoughtsDataSource
 		Cursor cursor =
 			mDatabase.query(
 				false,
-				ThoughtsSQLiteOpenHelper.TABLE_THOUGHTS,
+				BatoSQLiteOpenHelper.TABLE_THOUGHTS,
 				new String[]
 				{
-					ThoughtsSQLiteOpenHelper.KEY_ROWID,
-					ThoughtsSQLiteOpenHelper.COLUMN_CREATED,
-					ThoughtsSQLiteOpenHelper.COLUMN_ACTIVITY,
-					ThoughtsSQLiteOpenHelper.COLUMN_FEELING,
-					ThoughtsSQLiteOpenHelper.COLUMN_CONTENT,
-					ThoughtsSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE
+					BatoSQLiteOpenHelper.KEY_ROWID,
+					BatoSQLiteOpenHelper.COLUMN_CREATED,
+					BatoSQLiteOpenHelper.COLUMN_ACTIVITY,
+					BatoSQLiteOpenHelper.COLUMN_FEELING,
+					BatoSQLiteOpenHelper.COLUMN_CONTENT,
+					BatoSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE
 				},
 				selection, null,
 				null, null,
-				ThoughtsSQLiteOpenHelper.COLUMN_CREATED + " ASC",
+				BatoSQLiteOpenHelper.COLUMN_CREATED + " ASC",
 				null);
 		
 		ArrayList<ThoughtDao> thoughts = new ArrayList<ThoughtDao>(cursor.getCount());
@@ -116,10 +116,10 @@ public class ThoughtsDataSource
 		Cursor cursor = 
 			mDatabase.query(
 				true,
-				ThoughtsSQLiteOpenHelper.TABLE_THOUGHTS,
-				new String[] { ThoughtsSQLiteOpenHelper.COLUMN_ACTIVITY },
+				BatoSQLiteOpenHelper.TABLE_THOUGHTS,
+				new String[] { BatoSQLiteOpenHelper.COLUMN_ACTIVITY },
 				null, null, null, null,
-				ThoughtsSQLiteOpenHelper.COLUMN_ACTIVITY + " ASC",
+				BatoSQLiteOpenHelper.COLUMN_ACTIVITY + " ASC",
 				null);
 		
 		ArrayList<String> activities = new ArrayList<String>(cursor.getCount());
@@ -137,10 +137,10 @@ public class ThoughtsDataSource
 		Cursor cursor = 
 			mDatabase.query(
 				true,
-				ThoughtsSQLiteOpenHelper.TABLE_THOUGHTS,
-				new String[] { ThoughtsSQLiteOpenHelper.COLUMN_CONTENT },
+				BatoSQLiteOpenHelper.TABLE_THOUGHTS,
+				new String[] { BatoSQLiteOpenHelper.COLUMN_CONTENT },
 				null, null, null, null,
-				ThoughtsSQLiteOpenHelper.COLUMN_CONTENT + " ASC",
+				BatoSQLiteOpenHelper.COLUMN_CONTENT + " ASC",
 				null);
 		
 		ArrayList<String> contents = new ArrayList<String>(cursor.getCount());
@@ -158,13 +158,13 @@ public class ThoughtsDataSource
 		Cursor cursor = 
 			mDatabase.query(
 				false,
-				ThoughtsSQLiteOpenHelper.TABLE_THOUGHTS,
-				new String[] { ThoughtsSQLiteOpenHelper.COLUMN_ACTIVITY },
+				BatoSQLiteOpenHelper.TABLE_THOUGHTS,
+				new String[] { BatoSQLiteOpenHelper.COLUMN_ACTIVITY },
 				null, null, null, null, null, null);
 		
-		String tableThoughts = ThoughtsSQLiteOpenHelper.TABLE_THOUGHTS;
-		String columnActivity = ThoughtsSQLiteOpenHelper.COLUMN_ACTIVITY;
-		String columnFeeling = ThoughtsSQLiteOpenHelper.COLUMN_FEELING;
+		String tableThoughts = BatoSQLiteOpenHelper.TABLE_THOUGHTS;
+		String columnActivity = BatoSQLiteOpenHelper.COLUMN_ACTIVITY;
+		String columnFeeling = BatoSQLiteOpenHelper.COLUMN_FEELING;
 	
 		String rawSql =
 			" SELECT " + tableThoughts + "." + columnActivity +

@@ -4,9 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class ThoughtsSQLiteOpenHelper extends SQLiteOpenHelper
+public class BatoSQLiteOpenHelper extends SQLiteOpenHelper
 {
-	private static final String DATABASE_NAME = "thoughts.db";
+	private static final String DATABASE_NAME = "bato.db";
 	private static final int DATABASE_VERSION = 1;
 	
 	public static final String KEY_ROWID = "_id";
@@ -29,7 +29,7 @@ public class ThoughtsSQLiteOpenHelper extends SQLiteOpenHelper
 		"   " + COLUMN_NEGATIVE_TYPE + " INTEGER" +
 		" )";
 	
-	public ThoughtsSQLiteOpenHelper(Context context)
+	public BatoSQLiteOpenHelper(Context context)
 	{
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}

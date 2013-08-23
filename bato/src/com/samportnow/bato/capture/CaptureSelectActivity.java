@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.samportnow.bato.R;
-import com.samportnow.bato.database.ThoughtsDataSource;
+import com.samportnow.bato.database.BatoDataSource;
 
 public class CaptureSelectActivity extends Activity
 {
@@ -36,7 +36,7 @@ public class CaptureSelectActivity extends Activity
 
 		final List<View.OnClickListener> traincarListeners = new ArrayList<View.OnClickListener>(mCategoryTitles.length);
 
-		ThoughtsDataSource dataSource = new ThoughtsDataSource(this).open();
+		BatoDataSource dataSource = new BatoDataSource(this).open();
 
 		for (int i = 0; i < mCategoryTitles.length; i++)
 		{
