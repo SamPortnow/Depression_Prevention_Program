@@ -70,6 +70,9 @@ public class AddEventUserCategoryFragment extends Fragment
 				{
 					Bundle eventBundle = getArguments();
 					eventBundle.putString("user_category", mCategoryTitles[position]);
+					// should this go here? so we know the negative type?
+					eventBundle.putInt("negative_type", position);
+
 				}
 
 				((AddEventActivity) getActivity()).createNewEvent();

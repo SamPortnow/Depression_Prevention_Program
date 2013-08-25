@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -72,7 +73,7 @@ public class AddEventActivity extends Activity
 		{
 			long created = Calendar.getInstance().getTimeInMillis();
 			int negativeType = mEventBundle.getInt("negative_type", -1);
-
+			Log.e("negative type is", "" + negativeType);
 			ThoughtsDataSource dataSource = new ThoughtsDataSource(this).open();
 			dataSource.createThought(created, activity, feeling, thought, negativeType);
 			

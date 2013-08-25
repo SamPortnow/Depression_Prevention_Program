@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.samportnow.bato.coping.blowfish.Blowfish;
+import com.samportnow.bato.coping.floating.FloatActivity;
 import com.samportnow.bato.coping.rollingball.Rolling;
 
 public class CopingFragment extends Fragment
@@ -58,8 +59,22 @@ public class CopingFragment extends Fragment
 			
 		});
 		
-	
-	}
-	
+		float_play.setOnClickListener(new OnClickListener()
+		{
+
+			@Override
+			public void onClick(View arg0) 
+			{
+				Intent intent = new Intent(getActivity(), FloatActivity.class);
+				startActivity(intent);	
+			}
+			
+		});
+		
+		}
+		
 	
 }
+	
+	
+

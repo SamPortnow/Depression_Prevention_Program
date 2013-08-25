@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Handler;
 import android.view.Gravity;
 import android.widget.TextView;
 
@@ -13,15 +12,11 @@ import com.samportnow.bato.R;
 @SuppressLint("ViewConstructor")
 public class PositiveThoughtDestroyer extends TextView
 {
-	DestroyerGame mDestroyer;
-	Handler h = new Handler();
-	int FRAME_RATE = 30;
 	int height;
 	int width;
 	int mCount;
 	int xPos;
 	int yPos;
-	int alpha;
 	
 	public PositiveThoughtDestroyer(Context context, int count) 
 	{	

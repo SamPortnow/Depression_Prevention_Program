@@ -39,6 +39,8 @@
         <activity android:name="com.samportnow.bato.coping.blowfish.Blowfish" />
         <activity android:name="com.samportnow.bato.coping.rollingball.Rolling" />
         
+        <activity android:name="com.samportnow.bato.coping.floating.FloatActivity"/>
+        
         </application>
 
 </manifest>

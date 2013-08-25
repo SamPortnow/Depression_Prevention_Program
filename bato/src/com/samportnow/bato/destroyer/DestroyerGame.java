@@ -7,21 +7,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.AlertDialog.Builder;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.DragEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnDragListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.AlphaAnimation;
@@ -35,7 +31,6 @@ import android.widget.TextView;
 
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
-import com.samportnow.bato.capture.CaptureTutorialFragment;
 import com.samportnow.bato.database.CalendarDbAdapter;
 import com.samportnow.bato.database.ScaleArrayAdapter;
 
@@ -203,6 +198,8 @@ public class DestroyerGame extends Activity
 				@Override
 				public void onClick(DialogInterface dialog, int which) 
 				{
+					dialog.dismiss();
+					finish();
 					Intent i = new Intent(mContext, DestroyerGame.class);				
     				mContext.startActivity(i);	
 				}
@@ -214,6 +211,7 @@ public class DestroyerGame extends Activity
 				@Override
 				public void onClick(DialogInterface dialog, int which) 
 				{
+					dialog.dismiss();
 					finish();
 					Intent i = new Intent(mContext, MainActivity.class);				
     				mContext.startActivity(i);	

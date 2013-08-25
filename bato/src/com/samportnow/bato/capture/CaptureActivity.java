@@ -20,7 +20,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -402,7 +401,8 @@ public class CaptureActivity extends Activity
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
-				Context mContext = CaptureActivity.this.getApplicationContext();
+				dialog.dismiss();
+				finish();
 				Intent i = new Intent(mContext, CaptureActivity.class);
 				mContext.startActivity(i);
 			}

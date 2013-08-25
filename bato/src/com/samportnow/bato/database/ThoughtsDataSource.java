@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.samportnow.bato.database.dao.ThoughtDao;
 
@@ -42,6 +43,7 @@ public class ThoughtsDataSource
 		values.put(ThoughtsSQLiteOpenHelper.COLUMN_FEELING, feeling);
 		values.put(ThoughtsSQLiteOpenHelper.COLUMN_CONTENT, thought);
 		values.put(ThoughtsSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE, negativeType);
+		Log.e("neg type is", "" + negativeType);
 		
 		return mDatabase.insert(ThoughtsSQLiteOpenHelper.TABLE_THOUGHTS, null, values);
 	}
@@ -78,6 +80,28 @@ public class ThoughtsDataSource
 		return getThoughts(selection);
 	}
 	
+	public String[] getThoughtAndType()
+	{
+		String [] thoughtAndType = new String[2];
+		Cursor cursor = mDatabase.query(
+				ThoughtsSQLiteOpenHelper.TABLE_THOUGHTS+" Order BY RANDOM() LIMIT 1", new String[]
+						{
+						ThoughtsSQLiteOpenHelper.KEY_ROWID,
+						ThoughtsSQLiteOpenHelper.COLUMN_CONTENT,
+						ThoughtsSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE
+						}, null, null, null, null, null, null
+					);
+		if (cursor.moveToFirst());
+		{
+			thoughtAndType[0] = cursor.getString(1);
+			thoughtAndType[1] = String.valueOf(cursor.getInt(2));
+			
+		}
+		Log.e("type type", "" + cursor.getInt(2));		
+		return thoughtAndType;
+		
+	}
+		
 	private List<ThoughtDao> getThoughts(String selection)
 	{
 		Cursor cursor =

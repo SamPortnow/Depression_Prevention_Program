@@ -20,7 +20,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.View;
 
 import com.samportnow.bato.R;
@@ -29,7 +28,6 @@ import com.samportnow.bato.R;
 public class ExplodeView extends View
 {
 	Bitmap explosionSheet; 
-	private static final int ROWS = 6;
 	private static final int COLUMNS = 8;
 	private Rect sourceRect;
 	private int FPS = 30;
