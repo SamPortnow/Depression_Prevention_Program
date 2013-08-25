@@ -83,10 +83,14 @@ public class MyRenderer implements Renderer {
         	gl.glTranslatef(ring[i].xPos, ring[i].yPos, 0.0f);
         	// scale it
         	gl.glScalef(ring[i].scale, ring[i].scale, 0.0f);
+        	//rotate it
+            gl.glRotatef(mAngle, 0, 1, 0);
+            //enable texture binding
     		gl.glEnable(GL10.GL_TEXTURE_2D);
         	ring[i].draw(gl);
         	// pop it
         	gl.glPopMatrix();
+    		ring[i].xPos += ring[i].xChange;
     		ring[i].yPos -= .02;
         	ring[i].scale += .001;
         	
@@ -152,11 +156,12 @@ public class MyRenderer implements Renderer {
 	}
 	
 	
-	public float generateSlope()
+	public float generateChangeInX()
 	{
 		Random rando = new Random();
-		float fl_rando = rando.nextFloat() * (2+2) + 2;
-		return fl_rando;
+		float xChange = (float) ((rando.nextFloat() * (0.01)) * (float) (Math.random() < 0.5 ? -1 : 1));
+		return xChange;
+//		return (float) (.02/slope);
 	}
 
 	public float generateRandomTime()
@@ -170,7 +175,7 @@ public class MyRenderer implements Renderer {
 		// generate the information
 		ring.scale = 0.1f;
 		ring.yPos = 1.0f;
-		ring.slope = generateSlope();
+		ring.xChange= generateChangeInX();
 		ring.xPos = 0.0f;
 	}
 }

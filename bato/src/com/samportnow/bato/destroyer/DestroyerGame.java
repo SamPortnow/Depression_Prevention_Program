@@ -50,6 +50,7 @@ public class DestroyerGame extends Activity
      ExplodeView mExplosion;
     ArrayList <PositiveThoughtDestroyer> mStationPositive = new ArrayList<PositiveThoughtDestroyer>();
     int mStop;
+    int explosions;
 	PositiveThoughtDestroyer [] mPosCannon = new PositiveThoughtDestroyer[1];
     
 	@Override
@@ -105,7 +106,7 @@ public class DestroyerGame extends Activity
 				        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 				        instructions.setTypeface(typeFace);
 				        instructions.setTextColor(Color.BLUE);
-				        instructions.setText("A list of the all the thoughts you came up with to challenge your negative thoughts will display on the left.");
+				        instructions.setText("A list of the all your challenger thoughts will display on the left.");
 						builder.setView(lLayout);
 						builder.setPositiveButton("Next", new android.content.DialogInterface.OnClickListener()
 						{
@@ -121,7 +122,7 @@ public class DestroyerGame extends Activity
 						        Typeface typeFace=Typeface.createFromAsset(context.getAssets(),"fonts/BlackBoysOnMopeds.ttf");
 						        instructions.setTypeface(typeFace);
 						        instructions.setTextColor(Color.BLUE);
-						        instructions.setText("Your task is to drag a challenging thought into the cannon and tap the screen where you want the challenging thought to go. " +
+						        instructions.setText("Your task is to drag a challenger thought into the cannon and tap the screen where you want the challenging thought to go. " +
 						        		"If it hits the negative thought, great job! You destroyed it. If it doesn't, no worries," +
 						        		" try again. The game is over when the screen is filled with challenging thoughts!");
 						        builder.setView(lLayout);
@@ -413,26 +414,12 @@ public class DestroyerGame extends Activity
 		mDestroyerShooter.mMovePos = true;
  	}
  	
-	public void explode()
-	{
-		DestroyerGameView mDestroyerShooter = (DestroyerGameView) findViewById(R.id.anim_view);
-		RelativeLayout.LayoutParams mExplosionParams = new RelativeLayout.LayoutParams(mDestroyerShooter.width/3, mDestroyerShooter.height/4);
-		ListView list = (ListView) findViewById(R.id.listview);
-		mExplosionParams.leftMargin = mDestroyerShooter.mNegX + list.getWidth();
-		mExplosionParams.topMargin = 0;
-		RelativeLayout rLayout = (RelativeLayout) findViewById(R.id.game_view);
-		rLayout.addView(mExplosion, mExplosionParams);
-		mExplosion.explodeIt( mDestroyerShooter.mNegX,0);
-		
-	}
-	
+
 	public void stopExplode()
 	{
-		RelativeLayout rLayout = (RelativeLayout) findViewById(R.id.game_view);
-		rLayout.removeView(mExplosion);
-		//remove the explosion, clear the thoughts, get some new ones, and start moving!!
 	    DestroyerGameView mDestroyerShooter = (DestroyerGameView) findViewById(R.id.anim_view);
-		mDestroyerShooter.mDrawPos=true;
+	    mDestroyerShooter.explodeIt = false;
+		mDestroyerShooter.mDrawPos = true;
 		mDestroyerShooter.count += 1;
 		mStationPositive.add(mPosCannon[0]);
 		int mHelp_mBelieve [] = mThoughtInfo.get(mPosCannon[0].getText().toString());
@@ -444,9 +431,17 @@ public class DestroyerGame extends Activity
 		{
 			update(25);
 		}
-		clearTheThoughts();
-		getTheThoughts();
-		MoveTheThoughts();
+		explosions++;
+		if (explosions > 8)
+		{
+			game_over();
+		}
+		else
+		{
+			clearTheThoughts();
+			getTheThoughts();
+			MoveTheThoughts();
+		}
 	}
 	
 	
