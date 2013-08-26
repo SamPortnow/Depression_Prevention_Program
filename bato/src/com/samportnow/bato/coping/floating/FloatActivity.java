@@ -6,11 +6,11 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 
 import com.samportnow.bato.R;
-import com.samportnow.bato.database.ThoughtsDataSource;
+import com.samportnow.bato.database.BatoDataSource;
+import com.samportnow.bato.database.dao.ThoughtDao;
 
 public class FloatActivity extends Activity
 {
@@ -41,11 +41,13 @@ public class FloatActivity extends Activity
 	public void reset(Thought mThought)
 	{
 		Random rand = new Random();
-		ThoughtsDataSource dataSource = new ThoughtsDataSource(this).open();
-		String [] thoughtAndType = dataSource.getThoughtAndType();
-		Log.e("thought type", "" + thoughtAndType[1]);
-		if (Integer.parseInt(thoughtAndType[1]) < 0
-				)
+		
+		BatoDataSource dataSource = new BatoDataSource(this).open();
+		ThoughtDao thought = dataSource.getRandomThought();
+		
+		dataSource.close();
+
+		if (thought.getNegativeType() < 0)
 		{
 			mThought.setBackgroundResource(R.drawable.whitecloud);
 			mThought.setTextColor(Color.RED);			
@@ -55,7 +57,8 @@ public class FloatActivity extends Activity
 			mThought.setBackgroundResource(R.drawable.graycloud);
 			mThought.setTextColor(Color.BLACK);
 		}
-		mThought.setText(thoughtAndType[0]);
+		
+		mThought.setText(thought.getContent());
 		int randomNum = rand.nextInt(3);
 		mThought.xPos = -width/2;
 		mThought.yPos = (height/4) * randomNum;

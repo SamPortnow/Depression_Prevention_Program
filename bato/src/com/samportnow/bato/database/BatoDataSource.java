@@ -13,6 +13,16 @@ import com.samportnow.bato.database.dao.ThoughtDao;
 
 public class BatoDataSource
 {
+	private static final String[] THOUGHTDAO_QUERY_COLUMNS = 
+	{
+		BatoSQLiteOpenHelper.KEY_ROWID,
+		BatoSQLiteOpenHelper.COLUMN_CREATED,
+		BatoSQLiteOpenHelper.COLUMN_ACTIVITY,
+		BatoSQLiteOpenHelper.COLUMN_FEELING,
+		BatoSQLiteOpenHelper.COLUMN_CONTENT,
+		BatoSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE
+	};
+	
 	private SQLiteDatabase mDatabase;
 	private BatoSQLiteOpenHelper mHelper;
 	
@@ -75,7 +85,7 @@ public class BatoDataSource
 			BatoSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE + " = " + negativeType;
 		
 		return getThoughts(selection);
-	}	
+	}
 	
 	private List<ThoughtDao> getThoughts(String selection)
 	{
@@ -83,15 +93,7 @@ public class BatoDataSource
 			mDatabase.query(
 				false,
 				BatoSQLiteOpenHelper.TABLE_THOUGHTS,
-				new String[]
-				{
-					BatoSQLiteOpenHelper.KEY_ROWID,
-					BatoSQLiteOpenHelper.COLUMN_CREATED,
-					BatoSQLiteOpenHelper.COLUMN_ACTIVITY,
-					BatoSQLiteOpenHelper.COLUMN_FEELING,
-					BatoSQLiteOpenHelper.COLUMN_CONTENT,
-					BatoSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE
-				},
+				THOUGHTDAO_QUERY_COLUMNS,
 				selection, null,
 				null, null,
 				BatoSQLiteOpenHelper.COLUMN_CREATED + " ASC",
@@ -101,21 +103,49 @@ public class BatoDataSource
 		
 		while (cursor.moveToNext())
 		{
-			ThoughtDao thought = new ThoughtDao();
-			
-			thought.setId(cursor.getLong(0));
-			thought.setCreated(cursor.getLong(1));
-			thought.setActivity(cursor.getString(2));
-			thought.setFeeling(cursor.getInt(3));
-			thought.setContent(cursor.getString(4));
-			thought.setNegativeType(cursor.getInt(5));
-			
+			ThoughtDao thought = createThoughtFromCursor(cursor);			
 			thoughts.add(thought);
 		}
 		
 		cursor.close();
 		
 		return thoughts;
+	}
+	
+	public ThoughtDao getRandomThought()
+	{
+		Cursor cursor =
+			mDatabase.query(
+				false,
+				BatoSQLiteOpenHelper.TABLE_THOUGHTS,
+				THOUGHTDAO_QUERY_COLUMNS,
+				null, null,
+				null, null,
+				"RANDOM()",
+				"1");
+		
+		ThoughtDao thought = null;
+		
+		if (cursor.moveToNext())
+			thought = createThoughtFromCursor(cursor);
+		
+		cursor.close();
+		
+		return thought;
+	}
+	
+	private ThoughtDao createThoughtFromCursor(Cursor cursor)
+	{
+		ThoughtDao thought = new ThoughtDao();
+		
+		thought.setId(cursor.getLong(0));
+		thought.setCreated(cursor.getLong(1));
+		thought.setActivity(cursor.getString(2));
+		thought.setFeeling(cursor.getInt(3));
+		thought.setContent(cursor.getString(4));
+		thought.setNegativeType(cursor.getInt(5));
+		
+		return thought;
 	}
 	
 	public List<String> getAllThoughtActivity()
