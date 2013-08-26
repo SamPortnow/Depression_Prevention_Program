@@ -13,7 +13,8 @@ public class Rolling extends Activity implements SensorEventListener {
 	
 	private SensorManager sensorManager;
 	private MyRenderer MyRenderer;
-	float xVal[] = new float[2];
+//	float xVal[] = new float[2];
+	float xVal;
 	double ax, ay, az;
 	
 	GLSurfaceView glSurface;
@@ -39,23 +40,18 @@ public class Rolling extends Activity implements SensorEventListener {
 	public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType()==Sensor.TYPE_ACCELEROMETER)
         {
-            xVal[0] = event.values[0];
-            float delta = xVal[0] - xVal[1];
-            xVal[1] = xVal[0];
-            if (Math.abs(delta) > .02f)
-            {
-            if (!(MyRenderer.x < -.5) && !(MyRenderer.x > .5))
-            	{
-            		if (xVal[0] < 1)
-            		{
-            			MyRenderer.x += .010;
-            		}
-            		else
-            		{
-            			MyRenderer.x -= .010;
-            		}
-            	}
-            }
+        	float kFilteringFactor = 0.1f;
+
+
+        	//acceleration.x,.y,.z is the input from the sensor
+
+        	//result.x,.y,.z is the filtered result
+
+        	//high-pass filter to eliminate gravity
+        	xVal = event.values[0] * kFilteringFactor + xVal * (1.0f - kFilteringFactor);
+        	MyRenderer.x = event.values[0] - xVal;
         }
 	}
+	
+
 }

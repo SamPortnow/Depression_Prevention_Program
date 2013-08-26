@@ -13,7 +13,7 @@ public class MyRenderer implements Renderer
 	private float startTime;
 	float xScale = .003f;
 	float yScale = .003f;
-	float mStart[] = {.25f, .25f};
+	float mStart[] = {.5f, .5f};
 	float rot;
 	Context context;
 	
@@ -26,7 +26,15 @@ public class MyRenderer implements Renderer
 	@Override
 	public void onDrawFrame(GL10 gl) 
 	{
-		if ((System.nanoTime() - startTime)/1000000000.0f > 5)
+		if ((System.nanoTime() - startTime) < 4000000000L)
+		{
+			if (mStart[0] + xScale > .5f)
+			{
+				mStart[0] += xScale;
+				mStart[1] += yScale;
+			}
+		}
+		if ((System.nanoTime() - startTime) > 5000000000L)
 		{
 			xScale = xScale * -1;
 			yScale = yScale * -1;
@@ -34,8 +42,6 @@ public class MyRenderer implements Renderer
 		}
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
-		mStart[0] += xScale;
-		mStart[1] += yScale;
 		gl.glTranslatef(0.0f, 0.0f, -6.0f);
 		gl.glScalef(mStart[0], mStart[1], 0.0f);
 		gl.glRotatef(270.0f, 0.0f, 0.0f, 1.0f);	//Rotate The Triangle On The Y axis ( NEW )

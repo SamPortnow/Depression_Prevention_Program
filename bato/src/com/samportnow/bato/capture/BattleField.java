@@ -34,6 +34,17 @@ public class BattleField extends SurfaceView
 		mCapture = (CaptureActivity) context;
 
 	}
+	
+	  private Runnable r= new Runnable() 
+	  {
+	
+	    @Override
+	    public void run() {
+	      invalidate();
+	
+	    }
+	
+	  };
 
 	@Override 
 	 protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld)
@@ -101,13 +112,8 @@ public class BattleField extends SurfaceView
         		mCapture.mLaserBeam[i].draw_it(canvas);
         	}
         }
-	    try 
-	    {  
-	      Thread.sleep(30);  
-
-	    } catch (InterruptedException e) { }
-
-	       invalidate();		
+        
+        h.postDelayed(r, FRAME_RATE);
         }
 	}
 

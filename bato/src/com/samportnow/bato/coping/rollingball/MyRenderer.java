@@ -18,7 +18,6 @@ public class MyRenderer implements Renderer {
 	private Ring ring[] = new Ring[3];
 	private float mAngle;
 	private Context context;
-	private float mStartTime;
 	int mNumberOnScreen;
 
 	public MyRenderer(Context ctx) {
@@ -57,7 +56,6 @@ public class MyRenderer implements Renderer {
 		
 		//Really Nice Perspective Calculations
 		gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST); 
-		mStartTime = System.nanoTime();
 		
 		
 	}
@@ -107,10 +105,12 @@ public class MyRenderer implements Renderer {
         	if (x >= ring[i].xPos-.1 && x <= ring[i].xPos+.1 && ring[i].yPos < 0.0f)
         	{
         		generateRingInfo(ring[i]);
+	
         	}
         	else if (ring[i].yPos < -1.5f)
         	{
         		generateRingInfo(ring[i]);
+
         	}
         		
         }
@@ -161,21 +161,16 @@ public class MyRenderer implements Renderer {
 		Random rando = new Random();
 		float xChange = (float) ((rando.nextFloat() * (0.01)) * (float) (Math.random() < 0.5 ? -1 : 1));
 		return xChange;
-//		return (float) (.02/slope);
 	}
 
-	public float generateRandomTime()
-	{
-		Random rando = new Random();
-		float fl_rando = (float) (rando.nextFloat() * (2.5-1.25) + 1.25);
-		return fl_rando;
-	}
 	public void generateRingInfo(Ring ring)
 	{
 		// generate the information
 		ring.scale = 0.1f;
 		ring.yPos = 1.0f;
-		ring.xChange= generateChangeInX();
+		Random rando = new Random();
+		float xChange = (float) ((rando.nextFloat() * (0.01)) * (float) (Math.random() < 0.5 ? -1 : 1));
+		ring.xChange= xChange;
 		ring.xPos = 0.0f;
 	}
 }

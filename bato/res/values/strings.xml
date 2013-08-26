@@ -101,8 +101,8 @@
 	<string name="points_summary_view_breakdown">(view detailed points breakdown)</string>
 	
 	<!-- fragment_capture_summary -->
-	<string name="capture_summary_badge_description">Play \'Tip the Scales\'</string>
-	<string name="capture_summary_locked_badge_description">\'Tip the Scales\' is locked.</string>
+	<string name="capture_summary_badge_description">Play \'Nab the Negative\'</string>
+	<string name="capture_summary_locked_badge_description">\'Nab the Negative\' is locked.</string>
 	<string name="capture_summary_locked_notice">To unlock this game, populate your diary with daily thoughts!</string>
 	<string name="capture_summary_count_prefix">You have generated&#8230;</string>
 	<string name="capture_summary_count_postfix">thoughts to challenge negative thoughts.</string>
@@ -110,7 +110,7 @@
 	<!-- fragment_cannon_summary -->
 	<string name="cannon_summary_badge_description">Play \'Command the Cannon\'</string>
 	<string name="cannon_summary_locked_badge_description">\'Command the Cannon\' is locked.</string>
-	<string name="cannon_summary_locked_notice">To unlock this game, play \'Tip the Scales\' to generate challenging thoughts!</string>
+	<string name="cannon_summary_locked_notice">To unlock this game, play \'Nab the Negative\' to generate challenging thoughts!</string>
 	<string name="cannon_summary_high_score_prefix">Your high score for this game is&#8230;</string>
 	<string name="cannon_summary_see_more">(view complete list of high scores)</string>
 	<string name="cannon_summary_high_scores_dialog_title">Command the Cannon High Scores</string>
