@@ -38,7 +38,7 @@ public class MainActivity extends Activity
 					return new PointsSummaryFragment();
 					
 				case 1:
-					return new ScalesSummaryFragment();
+					return new CaptureSummaryFragment();
 					
 				case 2:
 					return new CannonSummaryFragment();

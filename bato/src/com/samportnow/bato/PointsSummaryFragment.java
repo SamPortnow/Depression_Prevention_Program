@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.samportnow.bato.addthought.AddEventActivity;
-import com.samportnow.bato.database.ThoughtsDataSource;
+import com.samportnow.bato.database.BatoDataSource;
 
 public class PointsSummaryFragment extends Fragment
 {
@@ -42,7 +42,7 @@ public class PointsSummaryFragment extends Fragment
 	
 	private int getPoints()
 	{
-		ThoughtsDataSource dataSource = new ThoughtsDataSource(getActivity()).open();
+		BatoDataSource dataSource = new BatoDataSource(getActivity()).open();
 		
 		int points = dataSource.getPoints();
 		dataSource.close();
