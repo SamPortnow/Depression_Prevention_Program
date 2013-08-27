@@ -3,6 +3,7 @@ package com.samportnow.bato.capture;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -29,7 +30,6 @@ import android.widget.Toast;
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
 import com.samportnow.bato.database.BatoDataSource;
-import com.samportnow.bato.database.CalendarDbAdapter;
 import com.samportnow.bato.database.dao.ThoughtDao;
 
 public class CaptureActivity extends Activity
@@ -187,29 +187,35 @@ public class CaptureActivity extends Activity
 				{
 					mCreateThought.setEnabled(false);
 
-					final String mChallenging = mCreateChallengingTv.getText().toString();
 					mPos[mPosCounter] = new PositiveThought(arg0.getContext(), null, inputLine);
 					mLaserBeam[mPosCounter] = new LaserBeam(arg0.getContext(), mPosCounter);
 					mPos[mPosCounter].setText(inputLine);
 					laser_created = true;
-					final Context mText = arg0.getContext();
-					AlertDialog.Builder build_believe = new AlertDialog.Builder(mText);
-					final View view = getLayoutInflater().inflate(R.layout.believe_dialog, null);
-					build_believe.setView(view);
-					build_believe.setTitle("Rate your thought");
-					build_believe.setCancelable(false);
-					build_believe.setPositiveButton("OK", new DialogInterface.OnClickListener()
-					{
 
+					final AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
+					
+					final View view = getLayoutInflater().inflate(R.layout.believe_dialog, null);
+					builder.setView(view);
+					
+					builder.setTitle("Rate your thought");
+					builder.setCancelable(false);
+					
+					builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+					{
 						@Override
 						public void onClick(DialogInterface dialog, int which)
 						{
-							CalendarDbAdapter mCalHelper = new CalendarDbAdapter(CaptureActivity.this.getApplicationContext());
-							mCalHelper.open();
-							int belief = ((SeekBar) view.findViewById(R.id.believe)).getProgress();
-							int helpful = ((SeekBar) view.findViewById(R.id.help)).getProgress();
-							mCalHelper.createChallenging(mNegativeThought.getText().toString(), mChallenging, belief, helpful);
-							mCalHelper.close();
+							final long created = Calendar.getInstance().getTimeInMillis();
+							final String content = mCreateChallengingTv.getText().toString();
+							final int believe = ((SeekBar) view.findViewById(R.id.believe)).getProgress();
+							final int helpful = ((SeekBar) view.findViewById(R.id.help)).getProgress();
+							final long thoughtId = mThought.getId();
+							
+							BatoDataSource dataSource = new BatoDataSource(CaptureActivity.this).open();
+							
+							dataSource.createChallengingThought(created, content, believe, helpful, thoughtId);
+							dataSource.close();
+							
 							mBattle.xLessBound[1] += mBattle.container_width / 12;
 							mBattle.xGreatBound[1] -= mBattle.container_width / 12;
 							mBattle.mSetX=true;
@@ -243,13 +249,15 @@ public class CaptureActivity extends Activity
 							}
 							else
 							{
-								Toast.makeText(mText, "Great job! Come up with another thought!", Toast.LENGTH_SHORT).show();
+								Toast.makeText(CaptureActivity.this, "Great job! Come up with another thought!", Toast.LENGTH_SHORT).show();
 
 							}
 						}
 
 					});
-					build_believe.create().show();
+					
+					builder.create().show();
+					
 					mCreateThought.setEnabled(true);
 					mCreateChallengingTv.setText(null);
 					InputMethodManager imm = (InputMethodManager) CaptureActivity.this.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);

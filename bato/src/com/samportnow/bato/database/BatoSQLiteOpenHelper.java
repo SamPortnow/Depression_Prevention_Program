@@ -12,21 +12,39 @@ public class BatoSQLiteOpenHelper extends SQLiteOpenHelper
 	public static final String KEY_ROWID = "_id";
 	
 	public static final String TABLE_THOUGHTS = "thoughts";
+	public static final String TABLE_CHALLENGING = "challenging";
+	
 	public static final String COLUMN_CREATED = "created";
 	public static final String COLUMN_ACTIVITY = "activity";
 	public static final String COLUMN_FEELING = "feeling";
 	public static final String COLUMN_CONTENT = "content";
 	public static final String COLUMN_NEGATIVE_TYPE = "negative_type";
 	
-	private static final String DATABASE_CREATE =
+	public static final String COLUMN_BELIEVE = "believe";
+	public static final String COLUMN_HELPFUL = "helpful";
+	public static final String COLUMN_THOUGHT_ID = "thought_id";
+	
+	private static final String CREATE_TABLE_THOUGHTS =
 		" CREATE TABLE " + TABLE_THOUGHTS +
 		" (" +
-		"   " + KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		"   " + COLUMN_CREATED + " INTEGER NOT NULL, " +
-		"   " + COLUMN_ACTIVITY + " TEXT NOT NULL, " +
-		"   " + COLUMN_FEELING + " INTEGER NOT NULL, " +
-		"   " + COLUMN_CONTENT + " TEXT NOT NULL, " +
+		"   " + KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+		"   " + COLUMN_CREATED + " INTEGER NOT NULL," +
+		"   " + COLUMN_ACTIVITY + " TEXT NOT NULL," +
+		"   " + COLUMN_FEELING + " INTEGER NOT NULL," +
+		"   " + COLUMN_CONTENT + " TEXT NOT NULL," +
 		"   " + COLUMN_NEGATIVE_TYPE + " INTEGER" +
+		" )";
+	
+	private static final String CREATE_TABLE_CHALLENGING =
+		" CREATE TABLE " + TABLE_CHALLENGING + 
+		" (" +
+		"    " + KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+		"    " + COLUMN_CREATED + " INTEGER NOT NULL," +
+		"    " + COLUMN_CONTENT + " TEXT NOT NULL," +
+		"    " + COLUMN_BELIEVE + " INTEGER NOT NULL," +
+		"    " + COLUMN_HELPFUL + " INTEGER NOT NULL," +
+		"    " + COLUMN_THOUGHT_ID + " INTEGER NOT NULL," +
+		"    FOREIGN KEY(" + COLUMN_THOUGHT_ID + ") REFERENCES " + TABLE_THOUGHTS + "(" + KEY_ROWID + ")" +
 		" )";
 	
 	public BatoSQLiteOpenHelper(Context context)
@@ -37,7 +55,8 @@ public class BatoSQLiteOpenHelper extends SQLiteOpenHelper
 	@Override
 	public void onCreate(SQLiteDatabase db)
 	{
-		db.execSQL(DATABASE_CREATE);
+		db.execSQL(CREATE_TABLE_THOUGHTS);
+		db.execSQL(CREATE_TABLE_CHALLENGING);
 	}
 
 	@Override

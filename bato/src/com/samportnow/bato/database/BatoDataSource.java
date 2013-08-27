@@ -56,6 +56,19 @@ public class BatoDataSource
 		return mDatabase.insert(BatoSQLiteOpenHelper.TABLE_THOUGHTS, null, values);
 	}
 	
+	public long createChallengingThought(long created, String content, int believe, int helpful, long thoughtId)
+	{
+		ContentValues values = new ContentValues();
+		
+		values.put(BatoSQLiteOpenHelper.COLUMN_CREATED, created);
+		values.put(BatoSQLiteOpenHelper.COLUMN_CONTENT, content);
+		values.put(BatoSQLiteOpenHelper.COLUMN_BELIEVE, believe);
+		values.put(BatoSQLiteOpenHelper.COLUMN_HELPFUL, helpful);
+		values.put(BatoSQLiteOpenHelper.COLUMN_THOUGHT_ID, thoughtId);
+		
+		return mDatabase.insert(BatoSQLiteOpenHelper.TABLE_CHALLENGING, null, values);
+	}
+	
 	public List<ThoughtDao> getAllThoughts()
 	{
 		return getThoughts(null);
