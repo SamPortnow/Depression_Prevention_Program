@@ -1,5 +1,8 @@
 package com.samportnow.bato.coping.rollingball;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -7,7 +10,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.util.Log;
 
 
 public class Rolling extends Activity implements SensorEventListener {
@@ -15,10 +17,12 @@ public class Rolling extends Activity implements SensorEventListener {
 	private SensorManager sensorManager;
 	private MyRenderer MyRenderer;
 	double ax, ay, az;
-	static final float ALPHA = 0.2f;
+	static final float ALPHA = 0.8f;
 	protected float[] accelVals;
 	GLSurfaceView glSurface;
-	Sensor accelerometer; 
+	Sensor accelerometer;
+	List<Float> avgVals = new ArrayList<Float>(); 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,11 +53,18 @@ public class Rolling extends Activity implements SensorEventListener {
 	}
 	
 	@Override
-	public void onSensorChanged(SensorEvent event) {
-	    if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+	public void onSensorChanged(SensorEvent event) 
+	{
 	        accelVals = lowPass( event.values, accelVals );
-	    	Log.e("my renderer", "" + MyRenderer.x);
-	    	MyRenderer.x = accelVals[0];
+	        avgVals.remove(0);
+	        avgVals.add(accelVals[0]);
+	        float sum = 0;
+	        for (int i = 0; i < avgVals.size(); i++)
+	        {
+	        	sum+= avgVals.get(i);
+	        }
+	        sum = sum/5;
+	    	MyRenderer.x = sum;
 
 	    // use smoothed accelVals here; see this link for a simple compass example:
 	    // http://www.codingforandroid.com/2011/01/using-orientation-sensors-simple.html
