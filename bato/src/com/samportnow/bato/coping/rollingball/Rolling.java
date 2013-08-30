@@ -17,10 +17,11 @@ public class Rolling extends Activity implements SensorEventListener {
 	private SensorManager sensorManager;
 	private MyRenderer MyRenderer;
 	double ax, ay, az;
-	static final float ALPHA = 0.8f;
+	static final float ALPHA = 0.2f;
 	protected float[] accelVals;
 	GLSurfaceView glSurface;
 	Sensor accelerometer;
+	float sum;
 	List<Float> avgVals = new ArrayList<Float>(); 
 	
 	@Override
@@ -56,9 +57,12 @@ public class Rolling extends Activity implements SensorEventListener {
 	public void onSensorChanged(SensorEvent event) 
 	{
 	        accelVals = lowPass( event.values, accelVals );
-	        avgVals.remove(0);
 	        avgVals.add(accelVals[0]);
-	        float sum = 0;
+	        if (avgVals.size()> 3)
+	        {
+	        	avgVals.remove(0);
+	        }
+	        sum = 0;
 	        for (int i = 0; i < avgVals.size(); i++)
 	        {
 	        	sum+= avgVals.get(i);
