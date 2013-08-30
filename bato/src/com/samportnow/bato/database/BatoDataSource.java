@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.samportnow.bato.database.dao.ChallengingDao;
 import com.samportnow.bato.database.dao.ThoughtDao;
 
 public class BatoDataSource
@@ -21,6 +22,16 @@ public class BatoDataSource
 		BatoSQLiteOpenHelper.COLUMN_FEELING,
 		BatoSQLiteOpenHelper.COLUMN_CONTENT,
 		BatoSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE
+	};
+	
+	private static final String[] CHALLENGINGDAO_QUERY_COLUMNS =
+	{
+		BatoSQLiteOpenHelper.KEY_ROWID,
+		BatoSQLiteOpenHelper.COLUMN_CREATED,
+		BatoSQLiteOpenHelper.COLUMN_CONTENT,
+		BatoSQLiteOpenHelper.COLUMN_BELIEVE,
+		BatoSQLiteOpenHelper.COLUMN_HELPFUL,
+		BatoSQLiteOpenHelper.COLUMN_THOUGHT_ID
 	};
 	
 	private SQLiteDatabase mDatabase;
@@ -147,6 +158,49 @@ public class BatoDataSource
 		return thought;
 	}
 	
+	public ThoughtDao getThoughtById(long thoughtId)
+	{
+		String selection = 
+			BatoSQLiteOpenHelper.COLUMN_THOUGHT_ID + " = " + thoughtId;
+			
+		List<ThoughtDao> thoughts = getThoughts(selection);
+		
+		if (thoughts.size() < 1)
+			return null;
+		
+		return thoughts.get(0);
+	}
+	
+	public List<ChallengingDao> getAllChallengingThoughts()
+	{
+		return getChallengingThoughts(null);
+	}
+	
+	private List<ChallengingDao> getChallengingThoughts(String selection)
+	{
+		Cursor cursor =
+			mDatabase.query(
+				false,
+				BatoSQLiteOpenHelper.TABLE_CHALLENGING,
+				CHALLENGINGDAO_QUERY_COLUMNS,
+				selection, null,
+				null, null,
+				BatoSQLiteOpenHelper.COLUMN_CREATED + " ASC",
+				null);
+		
+		ArrayList<ChallengingDao> challenges = new ArrayList<ChallengingDao>(cursor.getCount());
+		
+		while (cursor.moveToNext())
+		{
+			ChallengingDao challenging = createChallengingThoughtFromCursor(cursor);			
+			challenges.add(challenging);
+		}
+		
+		cursor.close();
+		
+		return challenges;
+	}
+	
 	private ThoughtDao createThoughtFromCursor(Cursor cursor)
 	{
 		ThoughtDao thought = new ThoughtDao();
@@ -159,6 +213,20 @@ public class BatoDataSource
 		thought.setNegativeType(cursor.getInt(5));
 		
 		return thought;
+	}
+	
+	public ChallengingDao createChallengingThoughtFromCursor(Cursor cursor)
+	{
+		ChallengingDao challenging = new ChallengingDao();
+		
+		challenging.setId(cursor.getLong(0));
+		challenging.setCreated(cursor.getLong(1));
+		challenging.setContent(cursor.getString(2));
+		challenging.setBelieve(cursor.getInt(3));
+		challenging.setHelpful(cursor.getInt(4));
+		challenging.setThoughtId(cursor.getLong(5));
+		
+		return challenging;
 	}
 	
 	public List<String> getAllThoughtActivity()
@@ -188,6 +256,27 @@ public class BatoDataSource
 			mDatabase.query(
 				true,
 				BatoSQLiteOpenHelper.TABLE_THOUGHTS,
+				new String[] { BatoSQLiteOpenHelper.COLUMN_CONTENT },
+				null, null, null, null,
+				BatoSQLiteOpenHelper.COLUMN_CONTENT + " ASC",
+				null);
+		
+		ArrayList<String> contents = new ArrayList<String>(cursor.getCount());
+		
+		while (cursor.moveToNext())
+			contents.add(cursor.getString(0));
+		
+		cursor.close();
+		
+		return contents;
+	}
+	
+	public List<String> getAllChallengingThoughtContent()
+	{
+		Cursor cursor =
+			mDatabase.query(
+				true,
+				BatoSQLiteOpenHelper.TABLE_CHALLENGING,
 				new String[] { BatoSQLiteOpenHelper.COLUMN_CONTENT },
 				null, null, null, null,
 				BatoSQLiteOpenHelper.COLUMN_CONTENT + " ASC",

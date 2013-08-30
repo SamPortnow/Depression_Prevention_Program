@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -64,8 +65,6 @@ public class CaptureActivity extends Activity
 		int negativeType = getIntent().getIntExtra("negative_type", Integer.MAX_VALUE);
 		List<ThoughtDao> thoughts = dataSource.getNegativeThoughts(negativeType);				
 		
-		dataSource.close();
-		
 		mThought = thoughts.get((int) (Math.random() * thoughts.size()));
 		
 		// TODO: define default negative thought; store into strings.xml
@@ -101,32 +100,14 @@ public class CaptureActivity extends Activity
 		// Game-related functionality below!
 		
 		populatePositiveWords(this);
-
-//		CalendarDbAdapter mCalHelper = new CalendarDbAdapter(this);
-//		mCalHelper.open();
-//		Cursor cursor = mCalHelper.fetchAllChallenging();
-//		ArrayList<String> mChallengingThoughts = new ArrayList<String>();
-//		while (cursor.moveToNext())
-//		{
-//			String mThought = cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_COUNTER_THOUGHT));
-//			if (!mChallengingThoughts.contains(mThought))
-//			{
-//				Log.e("it is", "" + mThought);
-//				mChallengingThoughts.add(mThought);
-//			}
-//			else
-//			{
-//				Log.e("well here is", "" + mThought);
-//			}
-//		}
-//		cursor.close();
-//		mCalHelper.close();
 		
-//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mChallengingThoughts);
-//		
-//		// The AutoCompleteTextView for creating challenging thoughts
+		ArrayAdapter<String> historyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+		historyAdapter.addAll(dataSource.getAllChallengingThoughtContent());
+		
+		dataSource.close();
+
 		mCreateChallengingTv = (AutoCompleteTextView) findViewById(R.id.thoughts);
-//		mChallengingThought.setAdapter(adapter);	
+		mCreateChallengingTv.setAdapter(historyAdapter);	
 		
 		// the battle field!
 		mBattle = (BattleField) findViewById(R.id.battle_field);
@@ -144,7 +125,7 @@ public class CaptureActivity extends Activity
 			@Override
 			public void onClick(View arg0)
 			{
-				String inputLine = mCreateChallengingTv.getText().toString();
+				final String inputLine = mCreateChallengingTv.getText().toString();
 				inputTokens = inputLine.split(" ");
 
 				if (inputLine.isEmpty())
@@ -182,7 +163,6 @@ public class CaptureActivity extends Activity
 					Toast.makeText(arg0.getContext(), "Use positive words!", Toast.LENGTH_SHORT).show();
 					return;
 				}
-
 				else
 				{
 					mCreateThought.setEnabled(false);
@@ -206,7 +186,7 @@ public class CaptureActivity extends Activity
 						public void onClick(DialogInterface dialog, int which)
 						{
 							final long created = Calendar.getInstance().getTimeInMillis();
-							final String content = mCreateChallengingTv.getText().toString();
+							final String content = inputLine;
 							final int believe = ((SeekBar) view.findViewById(R.id.believe)).getProgress();
 							final int helpful = ((SeekBar) view.findViewById(R.id.help)).getProgress();
 							final long thoughtId = mThought.getId();
@@ -268,39 +248,24 @@ public class CaptureActivity extends Activity
 		});
 	}
 
+	// TODO: this is being called MULTIPLE times from PositiveThought::draw_it()!
 	public void endGame()
 	{
-		final Context mContext = this;
-		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		
 		builder.setTitle("Great Job!");
-		builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
-		{
-
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				{
-					dialog.dismiss();
-					finish();
-					Intent i = new Intent(mContext, MainActivity.class);
-					mContext.startActivity(i);
-				}
-
-			}
-
-		});
-
-		builder.setPositiveButton("Play again!", new DialogInterface.OnClickListener()
+		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
 		{
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
 				dialog.dismiss();
-				finish();
-				Intent i = new Intent(mContext, CaptureActivity.class);
-				mContext.startActivity(i);
+				
+				Intent intent = new Intent(CaptureActivity.this, MainActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+				
+				startActivity(intent);
 			}
-
 		});
 
 		builder.create().show();
