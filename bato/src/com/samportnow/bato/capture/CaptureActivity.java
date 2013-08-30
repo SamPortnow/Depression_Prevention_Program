@@ -3,6 +3,7 @@ package com.samportnow.bato.capture;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -29,7 +31,6 @@ import android.widget.Toast;
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
 import com.samportnow.bato.database.BatoDataSource;
-import com.samportnow.bato.database.CalendarDbAdapter;
 import com.samportnow.bato.database.dao.ThoughtDao;
 
 public class CaptureActivity extends Activity
@@ -63,8 +64,6 @@ public class CaptureActivity extends Activity
 		
 		int negativeType = getIntent().getIntExtra("negative_type", Integer.MAX_VALUE);
 		List<ThoughtDao> thoughts = dataSource.getNegativeThoughts(negativeType);				
-		
-		dataSource.close();
 		
 		mThought = thoughts.get((int) (Math.random() * thoughts.size()));
 		
@@ -101,32 +100,14 @@ public class CaptureActivity extends Activity
 		// Game-related functionality below!
 		
 		populatePositiveWords(this);
-
-//		CalendarDbAdapter mCalHelper = new CalendarDbAdapter(this);
-//		mCalHelper.open();
-//		Cursor cursor = mCalHelper.fetchAllChallenging();
-//		ArrayList<String> mChallengingThoughts = new ArrayList<String>();
-//		while (cursor.moveToNext())
-//		{
-//			String mThought = cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_COUNTER_THOUGHT));
-//			if (!mChallengingThoughts.contains(mThought))
-//			{
-//				Log.e("it is", "" + mThought);
-//				mChallengingThoughts.add(mThought);
-//			}
-//			else
-//			{
-//				Log.e("well here is", "" + mThought);
-//			}
-//		}
-//		cursor.close();
-//		mCalHelper.close();
 		
-//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mChallengingThoughts);
-//		
-//		// The AutoCompleteTextView for creating challenging thoughts
+		ArrayAdapter<String> historyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+		historyAdapter.addAll(dataSource.getAllChallengingThoughtContent());
+		
+		dataSource.close();
+
 		mCreateChallengingTv = (AutoCompleteTextView) findViewById(R.id.thoughts);
-//		mChallengingThought.setAdapter(adapter);	
+		mCreateChallengingTv.setAdapter(historyAdapter);	
 		
 		// the battle field!
 		mBattle = (BattleField) findViewById(R.id.battle_field);
@@ -144,7 +125,7 @@ public class CaptureActivity extends Activity
 			@Override
 			public void onClick(View arg0)
 			{
-				String inputLine = mCreateChallengingTv.getText().toString();
+				final String inputLine = mCreateChallengingTv.getText().toString();
 				inputTokens = inputLine.split(" ");
 
 				if (inputLine.isEmpty())
@@ -182,34 +163,39 @@ public class CaptureActivity extends Activity
 					Toast.makeText(arg0.getContext(), "Use positive words!", Toast.LENGTH_SHORT).show();
 					return;
 				}
-
 				else
 				{
 					mCreateThought.setEnabled(false);
 
-					final String mChallenging = mCreateChallengingTv.getText().toString();
 					mPos[mPosCounter] = new PositiveThought(arg0.getContext(), null, inputLine);
 					mLaserBeam[mPosCounter] = new LaserBeam(arg0.getContext(), mPosCounter);
 					mPos[mPosCounter].setText(inputLine);
 					laser_created = true;
-					final Context mText = arg0.getContext();
-					AlertDialog.Builder build_believe = new AlertDialog.Builder(mText);
-					final View view = getLayoutInflater().inflate(R.layout.believe_dialog, null);
-					build_believe.setView(view);
-					build_believe.setTitle("Rate your thought");
-					build_believe.setCancelable(false);
-					build_believe.setPositiveButton("OK", new DialogInterface.OnClickListener()
-					{
 
+					final AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
+					
+					final View view = getLayoutInflater().inflate(R.layout.believe_dialog, null);
+					builder.setView(view);
+					
+					builder.setTitle("Rate your thought");
+					builder.setCancelable(false);
+					
+					builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+					{
 						@Override
 						public void onClick(DialogInterface dialog, int which)
 						{
-							CalendarDbAdapter mCalHelper = new CalendarDbAdapter(CaptureActivity.this.getApplicationContext());
-							mCalHelper.open();
-							int belief = ((SeekBar) view.findViewById(R.id.believe)).getProgress();
-							int helpful = ((SeekBar) view.findViewById(R.id.help)).getProgress();
-							mCalHelper.createChallenging(mNegativeThought.getText().toString(), mChallenging, belief, helpful);
-							mCalHelper.close();
+							final long created = Calendar.getInstance().getTimeInMillis();
+							final String content = inputLine;
+							final int believe = ((SeekBar) view.findViewById(R.id.believe)).getProgress();
+							final int helpful = ((SeekBar) view.findViewById(R.id.help)).getProgress();
+							final long thoughtId = mThought.getId();
+							
+							BatoDataSource dataSource = new BatoDataSource(CaptureActivity.this).open();
+							
+							dataSource.createChallengingThought(created, content, believe, helpful, thoughtId);
+							dataSource.close();
+							
 							mBattle.xLessBound[1] += mBattle.container_width / 12;
 							mBattle.xGreatBound[1] -= mBattle.container_width / 12;
 							mBattle.mSetX=true;
@@ -243,13 +229,15 @@ public class CaptureActivity extends Activity
 							}
 							else
 							{
-								Toast.makeText(mText, "Great job! Come up with another thought!", Toast.LENGTH_SHORT).show();
+								Toast.makeText(CaptureActivity.this, "Great job! Come up with another thought!", Toast.LENGTH_SHORT).show();
 
 							}
 						}
 
 					});
-					build_believe.create().show();
+					
+					builder.create().show();
+					
 					mCreateThought.setEnabled(true);
 					mCreateChallengingTv.setText(null);
 					InputMethodManager imm = (InputMethodManager) CaptureActivity.this.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -260,39 +248,24 @@ public class CaptureActivity extends Activity
 		});
 	}
 
+	// TODO: this is being called MULTIPLE times from PositiveThought::draw_it()!
 	public void endGame()
 	{
-		final Context mContext = this;
-		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		
 		builder.setTitle("Great Job!");
-		builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
-		{
-
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				{
-					dialog.dismiss();
-					finish();
-					Intent i = new Intent(mContext, MainActivity.class);
-					mContext.startActivity(i);
-				}
-
-			}
-
-		});
-
-		builder.setPositiveButton("Play again!", new DialogInterface.OnClickListener()
+		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
 		{
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
 				dialog.dismiss();
-				finish();
-				Intent i = new Intent(mContext, CaptureActivity.class);
-				mContext.startActivity(i);
+				
+				Intent intent = new Intent(CaptureActivity.this, MainActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+				
+				startActivity(intent);
 			}
-
 		});
 
 		builder.create().show();
