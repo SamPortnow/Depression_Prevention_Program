@@ -2,16 +2,16 @@ package com.samportnow.bato.destroyer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.app.AlertDialog.Builder;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,8 +31,9 @@ import android.widget.TextView;
 
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
-import com.samportnow.bato.database.CalendarDbAdapter;
+import com.samportnow.bato.database.BatoDataSource;
 import com.samportnow.bato.database.ScaleArrayAdapter;
+import com.samportnow.bato.database.dao.ChallengingThoughtDao;
 
 public class DestroyerGame extends Activity
 {
@@ -265,32 +266,27 @@ public class DestroyerGame extends Activity
 	 
  	public void getTheThoughts()
  	{
-	    CalendarDbAdapter mDbHelper=new CalendarDbAdapter(this);
-	    mDbHelper.open();
-	    Cursor cursor = mDbHelper.fetchNeg();
-	    mNegThought = null;
-	    if (cursor.moveToFirst())
-	    {	
-	    	mNegThought=cursor.getString(cursor.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_NEGATIVE_THOUGHT));
-	    }
-	    cursor.close();
-	    Cursor cursorChallenging = mDbHelper.fetchChallenging(mNegThought);
-	    	while (cursorChallenging.moveToNext())
-	    	{
-	    		String positive_thought = cursorChallenging.getString(cursorChallenging.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_COUNTER_THOUGHT));
-	    		int helpful = cursorChallenging.getInt(cursorChallenging.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_COUNTER_THOUGHT_HELPFUL));
-	    		int believe = cursorChallenging.getInt(cursorChallenging.getColumnIndexOrThrow(CalendarDbAdapter.COLUMN_NAME_COUNTER_THOUGHT_HELPFUL));
-	    		if (! mThoughtInfo.containsKey(positive_thought))
-	    			{
-	    				mPositives.add(positive_thought);
-	    				mThoughtInfo.put(positive_thought, new int[] {helpful, believe});
-	    			}
-	    	}
-	    	cursor.close();
-	    	mDbHelper.close();
- 	
+ 		BatoDataSource dataSource = new BatoDataSource(this).open();
+ 		List<ChallengingThoughtDao> challengingThoughts = dataSource.getAllChallengingThoughts();
+ 		
+ 		dataSource.close();
+ 		
+ 		// FIXME: do not need to copy data; store the previous List as a member variable
+ 		// and reference from there.
+ 		for (ChallengingThoughtDao challengingThought : challengingThoughts)
+ 		{
+ 			String content = challengingThought.getContent();
+ 			
+ 			if (mThoughtInfo.containsKey(content) == true)
+ 				continue;
+ 			
+ 			mPositives.add(content);
+ 			mThoughtInfo.put(content, new int[] { challengingThought.getHelpful(), challengingThought.getBelieve() });
+ 		}
+ 		
+ 		// TODO: mNegThought needs to be fetched from thoughtContent.
+ 		mNegThought = "FIXMEPLS";
  	}
- 	
  	
  	public void MoveTheThoughts()
  	{

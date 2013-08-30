@@ -1,5 +1,7 @@
 package com.samportnow.bato;
 
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
@@ -12,8 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.samportnow.bato.database.BatoDataSource;
 import com.samportnow.bato.database.GameDbAdapter;
-import com.samportnow.bato.database.ScaleDbAdapter;
+import com.samportnow.bato.database.dao.ChallengingThoughtDao;
 import com.samportnow.bato.destroyer.DestroyerGame;
 
 public class CannonSummaryFragment extends Fragment
@@ -75,15 +78,12 @@ public class CannonSummaryFragment extends Fragment
 
 	private boolean isUnlocked()
 	{
-		ScaleDbAdapter adapter = new ScaleDbAdapter(getActivity()).open();
-		Cursor cursor = adapter.fetchPositives();
-
-		int count = cursor.getCount();
-
-		cursor.close();
-		adapter.close();
-
-		return (count > 0);
+		BatoDataSource dataSource = new BatoDataSource(getActivity()).open();
+		List<ChallengingThoughtDao> challenges = dataSource.getAllChallengingThoughts();
+		
+		dataSource.close();
+		
+		return (challenges.size() > 0);
 	}
 
 	private String[] getHighScores()

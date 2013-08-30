@@ -9,7 +9,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.samportnow.bato.database.dao.ChallengingDao;
+import com.samportnow.bato.database.dao.ChallengingThoughtDao;
 import com.samportnow.bato.database.dao.ThoughtDao;
 
 public class BatoDataSource
@@ -171,12 +171,12 @@ public class BatoDataSource
 		return thoughts.get(0);
 	}
 	
-	public List<ChallengingDao> getAllChallengingThoughts()
+	public List<ChallengingThoughtDao> getAllChallengingThoughts()
 	{
 		return getChallengingThoughts(null);
 	}
 	
-	private List<ChallengingDao> getChallengingThoughts(String selection)
+	private List<ChallengingThoughtDao> getChallengingThoughts(String selection)
 	{
 		Cursor cursor =
 			mDatabase.query(
@@ -188,11 +188,11 @@ public class BatoDataSource
 				BatoSQLiteOpenHelper.COLUMN_CREATED + " ASC",
 				null);
 		
-		ArrayList<ChallengingDao> challenges = new ArrayList<ChallengingDao>(cursor.getCount());
+		ArrayList<ChallengingThoughtDao> challenges = new ArrayList<ChallengingThoughtDao>(cursor.getCount());
 		
 		while (cursor.moveToNext())
 		{
-			ChallengingDao challenging = createChallengingThoughtFromCursor(cursor);			
+			ChallengingThoughtDao challenging = createChallengingThoughtFromCursor(cursor);			
 			challenges.add(challenging);
 		}
 		
@@ -215,9 +215,9 @@ public class BatoDataSource
 		return thought;
 	}
 	
-	public ChallengingDao createChallengingThoughtFromCursor(Cursor cursor)
+	public ChallengingThoughtDao createChallengingThoughtFromCursor(Cursor cursor)
 	{
-		ChallengingDao challenging = new ChallengingDao();
+		ChallengingThoughtDao challenging = new ChallengingThoughtDao();
 		
 		challenging.setId(cursor.getLong(0));
 		challenging.setCreated(cursor.getLong(1));
