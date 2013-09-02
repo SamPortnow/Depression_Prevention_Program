@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.samportnow.bato.BatoConstants;
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
 import com.samportnow.bato.database.BatoDataSource;
@@ -74,7 +75,15 @@ public class AddEventActivity extends Activity
 			int negativeType = mEventBundle.getInt("negative_type", -1);
 
 			BatoDataSource dataSource = new BatoDataSource(this).open();
+			
 			dataSource.createThought(created, activity, feeling, thought, negativeType);
+			dataSource.insertPointRecord(created, BatoConstants.POINT_TYPE_NEW_THOUGHT, 25);
+			
+			if (feeling >= 5)
+			{
+				if (dataSource.getRelatedThoughtsByActivity(activity).size() > 0)
+					dataSource.insertPointRecord(created, BatoConstants.POINT_TYPE_POSITIVE_THOUGHT_BONUS, 50);
+			}
 			
 			dataSource.close();
 

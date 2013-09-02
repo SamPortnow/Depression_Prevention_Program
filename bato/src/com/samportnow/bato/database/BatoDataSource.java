@@ -10,6 +10,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.samportnow.bato.database.dao.ChallengingThoughtDao;
+import com.samportnow.bato.database.dao.PointRecordDao;
 import com.samportnow.bato.database.dao.ThoughtDao;
 
 public class BatoDataSource
@@ -32,6 +33,14 @@ public class BatoDataSource
 		BatoSQLiteOpenHelper.COLUMN_BELIEVE,
 		BatoSQLiteOpenHelper.COLUMN_HELPFUL,
 		BatoSQLiteOpenHelper.COLUMN_THOUGHT_ID
+	};
+	
+	private static final String[] POINT_RECORD_DAO_QUERY_COLUMNS =
+	{
+		BatoSQLiteOpenHelper.KEY_ROWID,
+		BatoSQLiteOpenHelper.COLUMN_CREATED,
+		BatoSQLiteOpenHelper.COLUMN_TYPE,
+		BatoSQLiteOpenHelper.COLUMN_POINTS
 	};
 	
 	private SQLiteDatabase mDatabase;
@@ -82,7 +91,7 @@ public class BatoDataSource
 	
 	public List<ThoughtDao> getAllThoughts()
 	{
-		return getThoughts(null);
+		return getThoughts(null, null);
 	}
 	
 	public List<ThoughtDao> getThoughtsBetween(Long startTimestamp, Long endTimestamp)
@@ -92,7 +101,7 @@ public class BatoDataSource
 			" AND " +
 			BatoSQLiteOpenHelper.COLUMN_CREATED + " <= " + endTimestamp;
 		
-		return getThoughts(selection);
+		return getThoughts(selection, null);
 	}
 	
 	public List<ThoughtDao> getAllNegativeThoughts()
@@ -100,7 +109,7 @@ public class BatoDataSource
 		String selection =
 			BatoSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE + " != -1";
 		
-		return getThoughts(selection);
+		return getThoughts(selection, null);
 	}
 	
 	public List<ThoughtDao> getNegativeThoughts(int negativeType)
@@ -108,17 +117,17 @@ public class BatoDataSource
 		String selection =
 			BatoSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE + " = " + negativeType;
 		
-		return getThoughts(selection);
+		return getThoughts(selection, null);
 	}
 	
-	private List<ThoughtDao> getThoughts(String selection)
+	private List<ThoughtDao> getThoughts(String selection, String[] selectionArgs)
 	{
 		Cursor cursor =
 			mDatabase.query(
 				false,
 				BatoSQLiteOpenHelper.TABLE_THOUGHTS,
 				THOUGHTDAO_QUERY_COLUMNS,
-				selection, null,
+				selection, selectionArgs,
 				null, null,
 				BatoSQLiteOpenHelper.COLUMN_CREATED + " ASC",
 				null);
@@ -163,12 +172,20 @@ public class BatoDataSource
 		String selection = 
 			BatoSQLiteOpenHelper.COLUMN_THOUGHT_ID + " = " + thoughtId;
 			
-		List<ThoughtDao> thoughts = getThoughts(selection);
+		List<ThoughtDao> thoughts = getThoughts(selection, null);
 		
 		if (thoughts.size() < 1)
 			return null;
 		
 		return thoughts.get(0);
+	}
+	
+	public List<ThoughtDao> getRelatedThoughtsByActivity(String activity)
+	{
+		String selection =
+			"LOWER(" + BatoSQLiteOpenHelper.COLUMN_ACTIVITY + ") = LOWER(?)";
+		
+		return getThoughts(selection, new String[] { activity } );
 	}
 	
 	public List<ChallengingThoughtDao> getAllChallengingThoughts()
@@ -290,6 +307,56 @@ public class BatoDataSource
 		cursor.close();
 		
 		return contents;
+	}
+	
+	public long insertPointRecord(long created, int type, int points)
+	{
+		ContentValues values = new ContentValues();
+		
+		values.put(BatoSQLiteOpenHelper.COLUMN_CREATED, created);
+		values.put(BatoSQLiteOpenHelper.COLUMN_TYPE, type);
+		values.put(BatoSQLiteOpenHelper.COLUMN_POINTS, points);
+		
+		return mDatabase.insert(BatoSQLiteOpenHelper.TABLE_POINT_RECORDS, null, values);			
+	}
+	
+	private PointRecordDao createPointRecordDao(Cursor cursor)
+	{
+		PointRecordDao pointRecord = new PointRecordDao();
+		
+		pointRecord.setId(cursor.getLong(0));
+		pointRecord.setCreated(cursor.getLong(1));
+		pointRecord.setType(cursor.getInt(2));
+		pointRecord.setPoints(cursor.getInt(3));
+		
+		return pointRecord;
+	}
+	
+	private List<PointRecordDao> getPointRecords(String selection, String[] selectionArgs)
+	{
+		Cursor cursor =
+			mDatabase.query(
+				true,
+				BatoSQLiteOpenHelper.TABLE_POINT_RECORDS,
+				POINT_RECORD_DAO_QUERY_COLUMNS,
+				selection, selectionArgs,
+				null, null,
+				BatoSQLiteOpenHelper.COLUMN_CREATED + " DESC",
+				null);
+		
+		ArrayList<PointRecordDao> pointRecords = new ArrayList<PointRecordDao>(cursor.getCount());
+		
+		while (cursor.moveToNext())
+			pointRecords.add(createPointRecordDao(cursor));
+		
+		cursor.close();
+		
+		return pointRecords;		
+	}
+	
+	public List<PointRecordDao> getAllPointRecords()
+	{
+		return getPointRecords(null, null);
 	}
 	
 	public int getPoints()

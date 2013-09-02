@@ -13,6 +13,7 @@ public class BatoSQLiteOpenHelper extends SQLiteOpenHelper
 	
 	public static final String TABLE_THOUGHTS = "thoughts";
 	public static final String TABLE_CHALLENGING = "challenging";
+	public static final String TABLE_POINT_RECORDS = "point_records";
 	
 	public static final String COLUMN_CREATED = "created";
 	public static final String COLUMN_ACTIVITY = "activity";
@@ -23,6 +24,9 @@ public class BatoSQLiteOpenHelper extends SQLiteOpenHelper
 	public static final String COLUMN_BELIEVE = "believe";
 	public static final String COLUMN_HELPFUL = "helpful";
 	public static final String COLUMN_THOUGHT_ID = "thought_id";
+	
+	public static final String COLUMN_TYPE = "type";
+	public static final String COLUMN_POINTS = "points";
 	
 	private static final String CREATE_TABLE_THOUGHTS =
 		" CREATE TABLE " + TABLE_THOUGHTS +
@@ -47,6 +51,15 @@ public class BatoSQLiteOpenHelper extends SQLiteOpenHelper
 		"    FOREIGN KEY(" + COLUMN_THOUGHT_ID + ") REFERENCES " + TABLE_THOUGHTS + "(" + KEY_ROWID + ")" +
 		" )";
 	
+	private static final String CREATE_TABLE_POINT_RECORDS =
+		" CREATE TABLE " + TABLE_POINT_RECORDS +
+		" (" +
+		"    " + KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+		"    " + COLUMN_CREATED + " INTEGER NOT NULL," +
+		"    " + COLUMN_TYPE + " INTEGER NOT NULL, " +
+		"    " + COLUMN_POINTS + " INTEGER NOT NULL" +
+		" )";
+	
 	public BatoSQLiteOpenHelper(Context context)
 	{
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -57,6 +70,7 @@ public class BatoSQLiteOpenHelper extends SQLiteOpenHelper
 	{
 		db.execSQL(CREATE_TABLE_THOUGHTS);
 		db.execSQL(CREATE_TABLE_CHALLENGING);
+		db.execSQL(CREATE_TABLE_POINT_RECORDS);
 	}
 
 	@Override

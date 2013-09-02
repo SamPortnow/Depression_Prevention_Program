@@ -29,6 +29,16 @@ public class PointsSummaryFragment extends Fragment
 			}
 		});
 		
+		view.findViewById(R.id.points_summary_view_breakdown).setOnClickListener(new View.OnClickListener()
+		{			
+			@Override
+			public void onClick(View v)
+			{
+				PointsBreakdownFragment fragment = new PointsBreakdownFragment();				
+				fragment.show(getFragmentManager(), "points_breakdown_fragment");
+			}
+		});
+		
 		return view;
 	}
 	

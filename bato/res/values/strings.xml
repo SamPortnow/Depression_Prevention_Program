@@ -162,4 +162,13 @@
 	</string-array>
 
 	<string name="menu_capture_tutorial_instructions">Instructions</string>
+	
+	<!-- fragment_points_breakdown -->
+	<string name="points_breakdown_dialog_title">Points Breakdown</string>
+	
+	<string-array name="point_record_type_labels">
+	    <item>Undefined</item>
+	    <item>New thought added to diary.</item>
+	    <item>Positive feeling for thought bonus!</item>
+	</string-array>
 </resources>
