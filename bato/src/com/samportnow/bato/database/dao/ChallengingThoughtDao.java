@@ -1,6 +1,6 @@
 package com.samportnow.bato.database.dao;
 
-public class ChallengingDao
+public class ChallengingThoughtDao
 {
 	private long mId;
 	private long mCreated;
