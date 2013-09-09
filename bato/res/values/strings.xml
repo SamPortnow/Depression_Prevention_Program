@@ -62,7 +62,7 @@
 	<string name="add_event_user_thought_is_negative">Is this a negative thought?</string>
 	<string name="add_event_user_thought_radio_positive">Yes</string>
 	<string name="add_event_user_thought_radio_negative">No</string>
-	<string name="add_event_user_category_hint">Categorize this thought.</string>
+	<string name="add_event_user_category_hint">Categorize this thought. Or click to get a coping mechanism.</string>
 	
 	<string-array name="add_event_user_category_titles">
 	    <item>Mind reading</item>
@@ -79,6 +79,9 @@
 	</string-array>
 	
 	<string name="add_event_user_category_instruction">See if the negative thought you entered corresponds to any of these common types of negative thinking.</string>
+	    
+	<string name="submit">submit</string>
+	
 	
 	<string-array name="add_event_user_category_descriptions">
 	    <item>You assume what others think about you.</item>
@@ -94,6 +97,24 @@
 	    <item>You compare yourself to others doing better than you.</item>
 	</string-array>
 	
+	<!-- Coping screen  -->
+	<string name="add_event_user_coping_history_title">Your Coping Strategies</string>
+	<string name="add_event_user_coping_common_title">Common Coping Strategies</string>
+	<string name="go_to_coping">go to our coping activities</string>
+	<string name="add_coping">add a coping strategy</string>
+	
+	<string-array name="add_event_user_coping_strategies_titles">
+	    <item>Listen to music</item>
+	    <item>Take a walk</item>
+	    <item>Watch TV</item>
+	    <item>Call a friend</item>
+	    <item>Call family</item>
+	    <item>Read a book</item>
+	    <item>Knit</item>
+	    <item>Squeeze a stressball</item>
+	    <item>Exercise</item>
+	    <item>Clean</item>
+	</string-array>
 	<!-- fragment_points_summary -->
 	<string name="points_summary_badge_description">Add to Diary</string>
 	<string name="points_summary_value_prefix">You have earned&#8230;</string>
@@ -171,4 +192,6 @@
 	    <item>New thought added to diary.</item>
 	    <item>Positive feeling for thought bonus!</item>
 	</string-array>
+	
+	
 </resources>

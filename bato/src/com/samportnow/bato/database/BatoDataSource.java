@@ -10,6 +10,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.samportnow.bato.database.dao.ChallengingThoughtDao;
+import com.samportnow.bato.database.dao.CopingDao;
 import com.samportnow.bato.database.dao.PointRecordDao;
 import com.samportnow.bato.database.dao.ThoughtDao;
 
@@ -41,6 +42,13 @@ public class BatoDataSource
 		BatoSQLiteOpenHelper.COLUMN_CREATED,
 		BatoSQLiteOpenHelper.COLUMN_TYPE,
 		BatoSQLiteOpenHelper.COLUMN_POINTS
+	};
+	
+	
+	private static final String[] COPING_QUERY_COLUMNS = 
+	{
+		BatoSQLiteOpenHelper.KEY_ROWID,
+		BatoSQLiteOpenHelper.COLUMN_COPING,
 	};
 	
 	private SQLiteDatabase mDatabase;
@@ -87,6 +95,14 @@ public class BatoDataSource
 		values.put(BatoSQLiteOpenHelper.COLUMN_THOUGHT_ID, thoughtId);
 		
 		return mDatabase.insert(BatoSQLiteOpenHelper.TABLE_CHALLENGING, null, values);
+	}
+	
+	public long createCoping(String coping, long thoughtId)
+	{
+		ContentValues values = new ContentValues();
+		values.put(BatoSQLiteOpenHelper.COLUMN_THOUGHT_ID, thoughtId);
+		values.put(BatoSQLiteOpenHelper.COLUMN_COPING, coping);
+		return mDatabase.insert(BatoSQLiteOpenHelper.TABLE_COPING, null, values);
 	}
 	
 	public List<ThoughtDao> getAllThoughts()
@@ -193,6 +209,7 @@ public class BatoDataSource
 		return getChallengingThoughts(null);
 	}
 	
+	
 	private List<ChallengingThoughtDao> getChallengingThoughts(String selection)
 	{
 		Cursor cursor =
@@ -287,6 +304,27 @@ public class BatoDataSource
 		
 		return contents;
 	}
+	
+	public List<String> getAllCoping()
+	{
+		Cursor cursor = 
+			mDatabase.query(
+				true,
+				BatoSQLiteOpenHelper.TABLE_COPING,
+				new String[] { BatoSQLiteOpenHelper.COLUMN_COPING },
+				null, null, null, null,
+				BatoSQLiteOpenHelper.COLUMN_COPING + " ASC",
+				null);
+		
+		ArrayList<String> contents = new ArrayList<String>(cursor.getCount());
+		
+		while (cursor.moveToNext())
+			contents.add(cursor.getString(0));
+		
+		cursor.close();
+		
+		return contents;
+	}	
 	
 	public List<String> getAllChallengingThoughtContent()
 	{

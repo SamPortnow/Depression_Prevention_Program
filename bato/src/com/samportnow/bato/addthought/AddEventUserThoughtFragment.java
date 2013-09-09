@@ -120,7 +120,7 @@ public class AddEventUserThoughtFragment extends Fragment
 				}
 				else
 				{
-					((AddEventActivity) getActivity()).createNewEvent();
+					((AddEventActivity) getActivity()).createNewEvent(false);
 				}
 			}
 		});
