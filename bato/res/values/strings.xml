@@ -62,7 +62,7 @@
 	<string name="add_event_user_thought_is_negative">Is this a negative thought?</string>
 	<string name="add_event_user_thought_radio_positive">Yes</string>
 	<string name="add_event_user_thought_radio_negative">No</string>
-	<string name="add_event_user_category_hint">Categorize this thought. Or click to get a coping mechanism.</string>
+	<string name="add_event_user_category_hint">Categorize this thought.</string>
 	
 	<string-array name="add_event_user_category_titles">
 	    <item>Mind reading</item>
@@ -79,6 +79,9 @@
 	</string-array>
 	
 	<string name="add_event_user_category_instruction">See if the negative thought you entered corresponds to any of these common types of negative thinking.</string>
+	
+	<string name="add_thought_coping_strategy_title">Use a coping strategy?</string>
+	<string name="add_thought_coping_strategy_is_needed">Do you need a coping strategy?</string>
 	    
 	<string name="submit">submit</string>
 	
