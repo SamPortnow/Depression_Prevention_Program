@@ -82,10 +82,12 @@
 	
 	<string name="add_thought_coping_strategy_title">Use a coping strategy?</string>
 	<string name="add_thought_coping_strategy_is_needed">Do you need a coping strategy?</string>
-	    
-	<string name="submit">submit</string>
 	
-	
+	<string name="use_coping_strategy_dialog_title">Use a coping strategy?</string>
+	<string name="use_coping_strategy_dialog_message">Description goes here.</string>
+	<string name="use_coping_strategy_dialog_yes">Yes</string>
+	<string name="use_coping_strategy_dialog_no">No</string>
+
 	<string-array name="add_event_user_category_descriptions">
 	    <item>You assume what others think about you.</item>
 	    <item>You predict the future will be negative.</item>

@@ -124,7 +124,7 @@ public class AddEventUserCoping extends Fragment
 				Bundle eventBundle = getArguments();
 				eventBundle.putString("user_coping", create_coping.getText().toString());
 				
-				((AddEventActivity) getActivity()).createNewEvent(false);
+				((AddEventActivity) getActivity()).createNewEvent();
 
 			}
 			
@@ -137,7 +137,7 @@ public class AddEventUserCoping extends Fragment
 			@Override
 			public void onClick(View arg0) 
 			{
-				((AddEventActivity) getActivity()).createNewEvent(true);
+				((AddEventActivity) getActivity()).createNewEvent();
 
 			}
 			

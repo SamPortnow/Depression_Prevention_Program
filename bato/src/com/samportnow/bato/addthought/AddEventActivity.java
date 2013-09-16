@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.samportnow.bato.BatoConstants;
-import com.samportnow.bato.CopingFragment;
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
 import com.samportnow.bato.database.BatoDataSource;
@@ -62,7 +61,7 @@ public class AddEventActivity extends Activity
 		return true;
 	}
 
-	public void createNewEvent(boolean mToCoping)
+	public void createNewEvent()
 	{
 
 		String activity = mEventBundle.getString("user_activity");
@@ -95,22 +94,10 @@ public class AddEventActivity extends Activity
 
 			Toast.makeText(this, R.string.add_event_create_success, Toast.LENGTH_SHORT).show();
 		}
-		
-		if (! mToCoping)
-		{
-			Intent intent = new Intent(this, MainActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-		}
-		
-		else
-		{
-			Fragment fragment = new CopingFragment();
 
-			getFragmentManager()
-				.beginTransaction()
-				.replace(R.id.fragment_container, fragment)
-				.commit();
-		}
+		Intent intent = new Intent(this, MainActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		
+		startActivity(intent);
 	}
 }
