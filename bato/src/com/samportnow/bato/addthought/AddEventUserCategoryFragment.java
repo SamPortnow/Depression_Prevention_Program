@@ -92,6 +92,7 @@ public class AddEventUserCategoryFragment extends Fragment
 		
 		builder.setTitle(R.string.use_coping_strategy_dialog_title);
 		builder.setMessage(R.string.use_coping_strategy_dialog_message);
+		builder.setCancelable(false);
 		
 		builder.setNegativeButton(R.string.use_coping_strategy_dialog_no, new DialogInterface.OnClickListener()
 		{

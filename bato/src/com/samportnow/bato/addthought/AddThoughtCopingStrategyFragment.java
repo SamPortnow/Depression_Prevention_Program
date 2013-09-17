@@ -1,8 +1,6 @@
 package com.samportnow.bato.addthought;
 
-import java.util.Arrays;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -37,18 +35,17 @@ public class AddThoughtCopingStrategyFragment extends Fragment
 		super.onCreate(savedInstanceState);	   
 
 		View view = inflater.inflate(R.layout.fragment_add_thought_coping_strategy, null);			
+
+		BatoDataSource dataSource = new BatoDataSource(getActivity()).open();	
 		
-		BatoDataSource dataSource = new BatoDataSource(getActivity()).open();
+		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);				
+		mHistoryAdapter.addAll(dataSource.getAllThoughtCopingStrategy());
+		mHistoryAdapter.addAll(getResources().getStringArray(R.array.default_coping_strategies));
+		mHistoryAdapter.sort(String.CASE_INSENSITIVE_ORDER);
 		
-		Set<String> copingStrategies = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-		copingStrategies.addAll(dataSource.getAllThoughtCopingStrategy());
+		// TODO: remove duplicate entries (from using a default strategy).
 		
-		dataSource.close();	
-		
-		copingStrategies.addAll(Arrays.asList(getResources().getStringArray(R.array.default_coping_strategies)));	
-		
-		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
-		mHistoryAdapter.addAll(copingStrategies);
+		dataSource.close();
 		
 		mHistoryListView = (ListView) view.findViewById(R.id.thought_coping_strategy_history);
 
