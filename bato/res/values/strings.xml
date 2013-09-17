@@ -100,8 +100,9 @@
 	<string name="use_coping_strategy_dialog_no">No</string>
 	
 	<string name="add_thought_coping_strategy_hint">Enter a coping strategy.</string>
-		
-	<string-array name="default_coping_strategies">
+	<string name="add_thought_coping_strategy_show_common">Show common coping strategies.</string>
+	
+	<string-array name="common_coping_strategies">
 	    <item>Listen to music</item>
 	    <item>Take a walk</item>
 	    <item>Watch TV</item>

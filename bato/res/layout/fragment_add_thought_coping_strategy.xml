@@ -38,4 +38,16 @@
         android:layout_weight="1"
         android:padding="8dp" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <Button
+        android:id="@+id/show_default_coping_strategies"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_thought_coping_strategy_show_common" />
+
 </LinearLayout>

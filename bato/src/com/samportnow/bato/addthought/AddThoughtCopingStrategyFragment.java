@@ -1,9 +1,9 @@
 package com.samportnow.bato.addthought;
 
-import java.util.List;
-
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -40,10 +40,6 @@ public class AddThoughtCopingStrategyFragment extends Fragment
 		
 		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);				
 		mHistoryAdapter.addAll(dataSource.getAllThoughtCopingStrategy());
-		mHistoryAdapter.addAll(getResources().getStringArray(R.array.default_coping_strategies));
-		mHistoryAdapter.sort(String.CASE_INSENSITIVE_ORDER);
-		
-		// TODO: remove duplicate entries (from using a default strategy).
 		
 		dataSource.close();
 		
@@ -102,7 +98,30 @@ public class AddThoughtCopingStrategyFragment extends Fragment
 
 				((AddEventActivity) getActivity()).createNewEvent();
 			}
-		});		
+		});
+		
+		view.findViewById(R.id.show_default_coping_strategies).setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View v)
+			{
+				final String[] strategies = getResources().getStringArray(R.array.common_coping_strategies);
+				final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, strategies);
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				
+				builder.setNegativeButton(android.R.string.cancel, null);
+				builder.setAdapter(adapter, new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int which)
+					{
+						mCopingStrategyEditText.setText(adapter.getItem(which));
+						dialog.dismiss();
+					}
+				});
+				
+				builder.create().show();
+			}
+		});
 		
 		return view;
 	}
