@@ -70,7 +70,7 @@ public class AddEventUserCategoryFragment extends Fragment
 				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 				
 				Bundle eventBundle = getArguments();
-				Fragment fragment = new AddEventUserCoping();
+				Fragment fragment = new AddThoughtCopingStrategyFragment();
 				fragment.setArguments(eventBundle);
 
 				getFragmentManager()
@@ -96,7 +96,7 @@ public class AddEventUserCategoryFragment extends Fragment
 					eventBundle.putInt("negative_type", position);
 				}
 
-				((AddEventActivity) getActivity()).createNewEvent(false);
+				((AddEventActivity) getActivity()).createNewEvent();
 			}
 		});
 

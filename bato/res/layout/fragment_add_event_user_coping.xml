@@ -117,7 +117,7 @@
             android:id="@+id/submit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/submit"
+            android:text="@android:string/ok"
             android:layout_weight=".25" /> 
    </LinearLayout>
    

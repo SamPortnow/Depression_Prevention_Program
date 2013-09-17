@@ -10,7 +10,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.samportnow.bato.database.dao.ChallengingThoughtDao;
-import com.samportnow.bato.database.dao.CopingDao;
 import com.samportnow.bato.database.dao.PointRecordDao;
 import com.samportnow.bato.database.dao.ThoughtDao;
 
@@ -23,7 +22,8 @@ public class BatoDataSource
 		BatoSQLiteOpenHelper.COLUMN_ACTIVITY,
 		BatoSQLiteOpenHelper.COLUMN_FEELING,
 		BatoSQLiteOpenHelper.COLUMN_CONTENT,
-		BatoSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE
+		BatoSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE,
+		BatoSQLiteOpenHelper.COLUMN_COPING_STRATEGY
 	};
 	
 	private static final String[] CHALLENGINGDAO_QUERY_COLUMNS =
@@ -42,13 +42,6 @@ public class BatoDataSource
 		BatoSQLiteOpenHelper.COLUMN_CREATED,
 		BatoSQLiteOpenHelper.COLUMN_TYPE,
 		BatoSQLiteOpenHelper.COLUMN_POINTS
-	};
-	
-	
-	private static final String[] COPING_QUERY_COLUMNS = 
-	{
-		BatoSQLiteOpenHelper.KEY_ROWID,
-		BatoSQLiteOpenHelper.COLUMN_COPING,
 	};
 	
 	private SQLiteDatabase mDatabase;
@@ -71,7 +64,7 @@ public class BatoDataSource
 		mHelper.close();
 	}
 	
-	public long createThought(long created, String activity, int feeling, String thought, int negativeType)
+	public long createThought(long created, String activity, int feeling, String thought, int negativeType, String copingStrategy)
 	{
 		ContentValues values = new ContentValues();
 		
@@ -80,6 +73,9 @@ public class BatoDataSource
 		values.put(BatoSQLiteOpenHelper.COLUMN_FEELING, feeling);
 		values.put(BatoSQLiteOpenHelper.COLUMN_CONTENT, thought);
 		values.put(BatoSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE, negativeType);
+		
+		if (copingStrategy != null)
+			values.put(BatoSQLiteOpenHelper.COLUMN_COPING_STRATEGY, copingStrategy);
 		
 		return mDatabase.insert(BatoSQLiteOpenHelper.TABLE_THOUGHTS, null, values);
 	}
@@ -95,14 +91,6 @@ public class BatoDataSource
 		values.put(BatoSQLiteOpenHelper.COLUMN_THOUGHT_ID, thoughtId);
 		
 		return mDatabase.insert(BatoSQLiteOpenHelper.TABLE_CHALLENGING, null, values);
-	}
-	
-	public long createCoping(String coping, long thoughtId)
-	{
-		ContentValues values = new ContentValues();
-		values.put(BatoSQLiteOpenHelper.COLUMN_THOUGHT_ID, thoughtId);
-		values.put(BatoSQLiteOpenHelper.COLUMN_COPING, coping);
-		return mDatabase.insert(BatoSQLiteOpenHelper.TABLE_COPING, null, values);
 	}
 	
 	public List<ThoughtDao> getAllThoughts()
@@ -245,6 +233,7 @@ public class BatoDataSource
 		thought.setFeeling(cursor.getInt(3));
 		thought.setContent(cursor.getString(4));
 		thought.setNegativeType(cursor.getInt(5));
+		thought.setCopingStrategy(cursor.getString(6));
 		
 		return thought;
 	}
@@ -305,15 +294,15 @@ public class BatoDataSource
 		return contents;
 	}
 	
-	public List<String> getAllCoping()
+	public List<String> getAllThoughtCopingStrategy()
 	{
 		Cursor cursor = 
 			mDatabase.query(
 				true,
-				BatoSQLiteOpenHelper.TABLE_COPING,
-				new String[] { BatoSQLiteOpenHelper.COLUMN_COPING },
+				BatoSQLiteOpenHelper.TABLE_THOUGHTS,
+				new String[] { BatoSQLiteOpenHelper.COLUMN_COPING_STRATEGY },
 				null, null, null, null,
-				BatoSQLiteOpenHelper.COLUMN_COPING + " ASC",
+				BatoSQLiteOpenHelper.COLUMN_COPING_STRATEGY + " ASC",
 				null);
 		
 		ArrayList<String> contents = new ArrayList<String>(cursor.getCount());

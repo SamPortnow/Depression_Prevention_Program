@@ -10,15 +10,14 @@
         android:orientation="horizontal"
         android:padding="8dp" >
 
-        <TextView
+        <EditText
+            android:id="@+id/thought_coping_strategy"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="8dp"
-            android:text="@string/add_thought_coping_strategy_title"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:hint="@string/add_thought_coping_strategy_hint"
+            android:inputType="textNoSuggestions"
+            android:maxLength="60" />
 
         <Button
             android:id="@+id/next_fragment"
@@ -32,34 +31,11 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray" />
 
-    <TextView
+    <ListView
+        android:id="@+id/thought_coping_strategy_history"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="8dp"
-        android:text="@string/add_thought_coping_strategy_is_needed"
-        android:textSize="18sp" />
-
-    <RadioGroup
-        android:id="@+id/user_thought_is_negative"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingBottom="8dp" >
-
-        <RadioButton
-            android:id="@+id/radio_positive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="16dp"
-            android:text="@string/add_event_user_thought_radio_positive" />
-
-        <RadioButton
-            android:id="@+id/radio_negative"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/add_event_user_thought_radio_negative" />
-    </RadioGroup>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp" />
 
 </LinearLayout>

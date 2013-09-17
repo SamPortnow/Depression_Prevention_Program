@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.samportnow.bato.BatoConstants;
-import com.samportnow.bato.CopingFragment;
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
 import com.samportnow.bato.database.BatoDataSource;
@@ -62,13 +61,13 @@ public class AddEventActivity extends Activity
 		return true;
 	}
 
-	public void createNewEvent(boolean mToCoping)
+	public void createNewEvent()
 	{
 
 		String activity = mEventBundle.getString("user_activity");
 		int feeling = mEventBundle.getInt("user_feeling", -1);
 		String thought = mEventBundle.getString("user_thought");
-		String coping = mEventBundle.getString("user_coping");
+		String copingStrategy = mEventBundle.getString("copingStrategy");
 
 		boolean isValid = (activity != null) && (feeling >= 0) && (thought != null);
 
@@ -79,12 +78,9 @@ public class AddEventActivity extends Activity
 
 			BatoDataSource dataSource = new BatoDataSource(this).open();
 			
-			long thoughtId = dataSource.createThought(created, activity, feeling, thought, negativeType);
+			dataSource.createThought(created, activity, feeling, thought, negativeType, copingStrategy);
 			dataSource.insertPointRecord(created, BatoConstants.POINT_TYPE_NEW_THOUGHT, 25);
-			if (coping != null)
-			{
-				dataSource.createCoping(coping, thoughtId);
-			}
+
 			if (feeling >= 5)
 			{
 				if (dataSource.getRelatedThoughtsByActivity(activity).size() > 0)
@@ -96,21 +92,9 @@ public class AddEventActivity extends Activity
 			Toast.makeText(this, R.string.add_event_create_success, Toast.LENGTH_SHORT).show();
 		}
 		
-		if (! mToCoping)
-		{
-			Intent intent = new Intent(this, MainActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-		}
-		
-		else
-		{
-			Fragment fragment = new CopingFragment();
-
-			getFragmentManager()
-				.beginTransaction()
-				.replace(R.id.fragment_container, fragment)
-				.commit();
-		}
+		Intent intent = new Intent(this, MainActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			
+		startActivity(intent);
 	}
 }

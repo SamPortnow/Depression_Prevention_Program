@@ -8,6 +8,7 @@ public class ThoughtDao
 	private int mFeeling;
 	private String mContent;
 	private int mNegativeType;
+	private String mCopingStrategy;
 	
 	public long getId()
 	{
@@ -67,5 +68,15 @@ public class ThoughtDao
 	public void setNegativeType(int negativeType)
 	{
 		mNegativeType = negativeType;
+	}
+	
+	public String getCopingStrategy()
+	{
+		return mCopingStrategy;
+	}
+	
+	public void setCopingStrategy(String copingStrategy)
+	{
+		mCopingStrategy = copingStrategy;
 	}
 }
