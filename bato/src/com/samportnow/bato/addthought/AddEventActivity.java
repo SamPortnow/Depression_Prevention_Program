@@ -91,10 +91,10 @@ public class AddEventActivity extends Activity
 
 			Toast.makeText(this, R.string.add_event_create_success, Toast.LENGTH_SHORT).show();
 		}
-		
+
 		Intent intent = new Intent(this, MainActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			
+		
 		startActivity(intent);
 	}
 }

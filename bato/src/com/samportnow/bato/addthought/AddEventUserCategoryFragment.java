@@ -1,7 +1,9 @@
 package com.samportnow.bato.addthought;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +28,6 @@ public class AddEventUserCategoryFragment extends Fragment
 	private ListView mCategoryListView = null;
 	private TextView mDescriptionTextView = null;
 	private Button mNextButton = null;	
-	private Button mCopingButton = null;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -45,6 +46,7 @@ public class AddEventUserCategoryFragment extends Fragment
 
 		SwingRightInAnimationAdapter animationAdapter = new SwingRightInAnimationAdapter(mCategoryAdapter);
 		animationAdapter.setAbsListView(mCategoryListView);	
+		
 		mCategoryListView.setAdapter(animationAdapter);
 		mCategoryListView.setOnItemClickListener(new OnItemClickListener()
 		{
@@ -58,36 +60,17 @@ public class AddEventUserCategoryFragment extends Fragment
 
 		mDescriptionTextView = (TextView) view.findViewById(R.id.user_category_description);
 		mDescriptionTextView.setText(R.string.add_event_user_category_instruction);	  
-
-		mCopingButton = (Button) view.findViewById(R.id.go_to_coping);
-		mCopingButton.setOnClickListener(new View.OnClickListener()
-		{
-
-			@Override
-			public void onClick(View v) 
-			{
-				InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-				
-				Bundle eventBundle = getArguments();
-				Fragment fragment = new AddThoughtCopingStrategyFragment();
-				fragment.setArguments(eventBundle);
-
-				getFragmentManager()
-					.beginTransaction()
-					.replace(R.id.fragment_container, fragment)
-					.commit();
-			}
-			
-		});
 		
-		mNextButton = (Button) view.findViewById(R.id.submit);
+		mNextButton = (Button) view.findViewById(R.id.next_fragment);
 		mNextButton.setEnabled(false);
 		mNextButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
+				InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+				
 				int position = mCategoryListView.getCheckedItemPosition();
 
 				if (position != ListView.INVALID_POSITION)
@@ -96,10 +79,43 @@ public class AddEventUserCategoryFragment extends Fragment
 					eventBundle.putInt("negative_type", position);
 				}
 
-				((AddEventActivity) getActivity()).createNewEvent();
+				createUseCopingDialog().show();
 			}
 		});
 
 		return view;
+	}
+	
+	private AlertDialog createUseCopingDialog()
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		
+		builder.setTitle(R.string.use_coping_strategy_dialog_title);
+		builder.setMessage(R.string.use_coping_strategy_dialog_message);
+		
+		builder.setNegativeButton(R.string.use_coping_strategy_dialog_no, new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int which)
+			{
+				// TODO: convert cast to use an interface.
+				((AddEventActivity) getActivity()).createNewEvent();
+			}
+		});
+		
+		builder.setPositiveButton(R.string.use_coping_strategy_dialog_yes, new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int which)
+			{	
+				Fragment fragment = new AddThoughtCopingStrategyFragment();
+				fragment.setArguments(getArguments());
+
+				getFragmentManager()
+					.beginTransaction()
+					.replace(R.id.fragment_container, fragment)
+					.commit();
+			}
+		});
+		
+		return builder.create();
 	}
 }

@@ -81,7 +81,11 @@
 	<string name="add_event_user_category_instruction">See if the negative thought you entered corresponds to any of these common types of negative thinking.</string>
 	
 	<string name="add_thought_coping_strategy_hint">Enter a coping strategy.</string>
-	
+	<string name="use_coping_strategy_dialog_title">Use a coping strategy?</string>
+	<string name="use_coping_strategy_dialog_message">Description goes here.</string>
+	<string name="use_coping_strategy_dialog_yes">Yes</string>
+	<string name="use_coping_strategy_dialog_no">No</string>
+
 	<string-array name="add_event_user_category_descriptions">
 	    <item>You assume what others think about you.</item>
 	    <item>You predict the future will be negative.</item>
