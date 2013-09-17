@@ -79,12 +79,6 @@
 	</string-array>
 	
 	<string name="add_event_user_category_instruction">See if the negative thought you entered corresponds to any of these common types of negative thinking.</string>
-	
-	<string name="add_thought_coping_strategy_hint">Enter a coping strategy.</string>
-	<string name="use_coping_strategy_dialog_title">Use a coping strategy?</string>
-	<string name="use_coping_strategy_dialog_message">Description goes here.</string>
-	<string name="use_coping_strategy_dialog_yes">Yes</string>
-	<string name="use_coping_strategy_dialog_no">No</string>
 
 	<string-array name="add_event_user_category_descriptions">
 	    <item>You assume what others think about you.</item>
@@ -100,13 +94,14 @@
 	    <item>You compare yourself to others doing better than you.</item>
 	</string-array>
 	
-	<!-- Coping screen  -->
-	<string name="add_event_user_coping_history_title">Your Coping Strategies</string>
-	<string name="add_event_user_coping_common_title">Common Coping Strategies</string>
-	<string name="go_to_coping">go to our coping activities</string>
-	<string name="add_coping">add a coping strategy</string>
+	<string name="use_coping_strategy_dialog_title">Use a coping strategy?</string>
+	<string name="use_coping_strategy_dialog_message">Description goes here.</string>
+	<string name="use_coping_strategy_dialog_yes">Yes</string>
+	<string name="use_coping_strategy_dialog_no">No</string>
 	
-	<string-array name="add_event_user_coping_strategies_titles">
+	<string name="add_thought_coping_strategy_hint">Enter a coping strategy.</string>
+		
+	<string-array name="default_coping_strategies">
 	    <item>Listen to music</item>
 	    <item>Take a walk</item>
 	    <item>Watch TV</item>
@@ -118,6 +113,7 @@
 	    <item>Exercise</item>
 	    <item>Clean</item>
 	</string-array>
+	
 	<!-- fragment_points_summary -->
 	<string name="points_summary_badge_description">Add to Diary</string>
 	<string name="points_summary_value_prefix">You have earned&#8230;</string>

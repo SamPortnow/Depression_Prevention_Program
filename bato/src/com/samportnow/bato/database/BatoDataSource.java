@@ -292,7 +292,7 @@ public class BatoDataSource
 		cursor.close();
 		
 		return contents;
-	}
+	}	
 	
 	public List<String> getAllThoughtCopingStrategy()
 	{
@@ -305,14 +305,14 @@ public class BatoDataSource
 				BatoSQLiteOpenHelper.COLUMN_COPING_STRATEGY + " ASC",
 				null);
 		
-		ArrayList<String> contents = new ArrayList<String>(cursor.getCount());
+		ArrayList<String> strategies = new ArrayList<String>(cursor.getCount());
 		
 		while (cursor.moveToNext())
-			contents.add(cursor.getString(0));
+			strategies.add(cursor.getString(0));
 		
 		cursor.close();
 		
-		return contents;
+		return strategies;
 	}	
 	
 	public List<String> getAllChallengingThoughtContent()

@@ -1,5 +1,9 @@
 package com.samportnow.bato.addthought;
 
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
+
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -32,19 +36,21 @@ public class AddThoughtCopingStrategyFragment extends Fragment
 	{
 		super.onCreate(savedInstanceState);	   
 
-		View view = inflater.inflate(R.layout.fragment_add_thought_coping_strategy, null);
-		
-		String[] defaultCopingStrategies = getResources().getStringArray(R.array.add_event_user_coping_strategies_titles);		
-		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, defaultCopingStrategies);
+		View view = inflater.inflate(R.layout.fragment_add_thought_coping_strategy, null);			
 		
 		BatoDataSource dataSource = new BatoDataSource(getActivity()).open();
-		mHistoryAdapter.addAll(dataSource.getAllThoughtCopingStrategy());
 		
-		dataSource.close();
+		Set<String> copingStrategies = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		copingStrategies.addAll(dataSource.getAllThoughtCopingStrategy());
 		
-		((ListView) view.findViewById(R.id.thought_coping_strategy_history)).setAdapter(mHistoryAdapter);
+		dataSource.close();	
 		
-		mHistoryListView = (ListView) view.findViewById(R.id.user_thought_history);
+		copingStrategies.addAll(Arrays.asList(getResources().getStringArray(R.array.default_coping_strategies)));	
+		
+		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
+		mHistoryAdapter.addAll(copingStrategies);
+		
+		mHistoryListView = (ListView) view.findViewById(R.id.thought_coping_strategy_history);
 
 		SwingRightInAnimationAdapter animationAdapter = new SwingRightInAnimationAdapter(mHistoryAdapter);
 		animationAdapter.setAbsListView(mHistoryListView);	
