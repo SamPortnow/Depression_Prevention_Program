@@ -28,6 +28,7 @@ public class AddEventUserCategoryFragment extends Fragment
 	private ListView mCategoryListView = null;
 	private TextView mDescriptionTextView = null;
 	private Button mNextButton = null;	
+	private Button mCoping = null;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -78,35 +79,15 @@ public class AddEventUserCategoryFragment extends Fragment
 					Bundle eventBundle = getArguments();
 					eventBundle.putInt("negative_type", position);
 				}
-
-				createUseCopingDialog().show();
 			}
 		});
-
-		return view;
-	}
-	
-	private AlertDialog createUseCopingDialog()
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		
-		builder.setTitle(R.string.use_coping_strategy_dialog_title);
-		builder.setMessage(R.string.use_coping_strategy_dialog_message);
-		builder.setCancelable(false);
-		
-		builder.setNegativeButton(R.string.use_coping_strategy_dialog_no, new DialogInterface.OnClickListener()
-		{
-			public void onClick(DialogInterface dialog, int which)
+		mCoping = (Button) view.findViewById(R.id.go_to_coping);
+		mCoping.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) 
 			{
-				// TODO: convert cast to use an interface.
-				((AddEventActivity) getActivity()).createNewEvent();
-			}
-		});
-		
-		builder.setPositiveButton(R.string.use_coping_strategy_dialog_yes, new DialogInterface.OnClickListener()
-		{
-			public void onClick(DialogInterface dialog, int which)
-			{	
 				Fragment fragment = new AddThoughtCopingStrategyFragment();
 				fragment.setArguments(getArguments());
 
@@ -114,9 +95,10 @@ public class AddEventUserCategoryFragment extends Fragment
 					.beginTransaction()
 					.replace(R.id.fragment_container, fragment)
 					.commit();
+				
 			}
 		});
-		
-		return builder.create();
+
+		return view;
 	}
 }
