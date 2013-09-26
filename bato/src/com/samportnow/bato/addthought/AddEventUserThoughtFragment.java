@@ -1,7 +1,9 @@
 package com.samportnow.bato.addthought;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -104,19 +106,44 @@ public class AddEventUserThoughtFragment extends Fragment
 			{
 				InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-
-				Bundle eventBundle = getArguments();
-				eventBundle.putString("user_thought", mThoughtEditText.getText().toString());
+				
+				getArguments().putString("user_thought", mThoughtEditText.getText().toString());
 
 				if (mIsNegativeRadioGroup.getCheckedRadioButtonId() == R.id.radio_positive)
 				{
-					Fragment fragment = new AddEventUserCategoryFragment();
-					fragment.setArguments(eventBundle);
+					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-					getFragmentManager()
-						.beginTransaction()
-						.replace(R.id.fragment_container, fragment)
-						.commit();
+					builder.setMessage(R.string.use_coping_strategy_dialog_message);					
+					
+					builder.setPositiveButton(R.string.use_coping_strategy_dialog_yes, new DialogInterface.OnClickListener()
+					{
+						public void onClick(DialogInterface dialog, int which)
+						{
+							Fragment fragment = new AddThoughtCopingStrategyFragment();
+							fragment.setArguments(getArguments());
+
+							getFragmentManager()
+								.beginTransaction()
+								.replace(R.id.fragment_container, fragment)
+								.commit();
+						}
+					});
+					
+					builder.setNegativeButton(R.string.use_coping_strategy_dialog_no, new DialogInterface.OnClickListener()
+					{
+						public void onClick(DialogInterface dialog, int which)
+						{
+							Fragment fragment = new AddEventUserCategoryFragment();
+							fragment.setArguments(getArguments());
+
+							getFragmentManager()
+								.beginTransaction()
+								.replace(R.id.fragment_container, fragment)
+								.commit();
+						}
+					});
+					
+					builder.create().show();
 				}
 				else
 				{

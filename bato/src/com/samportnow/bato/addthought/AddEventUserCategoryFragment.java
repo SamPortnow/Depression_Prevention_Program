@@ -1,9 +1,7 @@
 package com.samportnow.bato.addthought;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +26,6 @@ public class AddEventUserCategoryFragment extends Fragment
 	private ListView mCategoryListView = null;
 	private TextView mDescriptionTextView = null;
 	private Button mNextButton = null;	
-	private Button mCoping = null;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -79,23 +76,6 @@ public class AddEventUserCategoryFragment extends Fragment
 					Bundle eventBundle = getArguments();
 					eventBundle.putInt("negative_type", position);
 				}
-			}
-		});
-		
-		mCoping = (Button) view.findViewById(R.id.go_to_coping);
-		mCoping.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) 
-			{
-				Fragment fragment = new AddThoughtCopingStrategyFragment();
-				fragment.setArguments(getArguments());
-
-				getFragmentManager()
-					.beginTransaction()
-					.replace(R.id.fragment_container, fragment)
-					.commit();
-				
 			}
 		});
 

@@ -94,9 +94,7 @@
 	    <item>You compare yourself to others doing better than you.</item>
 	</string-array>
 	
-	<string name="go_to_coping">Not all thoughts can be categorized. Use a coping strategy instead.</string>
-	<string name="use_coping_strategy_dialog_title">Use a coping strategy?</string>
-	<string name="use_coping_strategy_dialog_message">Description goes here.</string>
+	<string name="use_coping_strategy_dialog_message">Not all negative thoughts can be categorized.\n\nUse a coping strategy instead?</string>
 	<string name="use_coping_strategy_dialog_yes">Yes</string>
 	<string name="use_coping_strategy_dialog_no">No</string>
 	
