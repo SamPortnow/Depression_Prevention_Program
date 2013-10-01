@@ -1,6 +1,7 @@
 package com.samportnow.bato.database;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -10,6 +11,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.samportnow.bato.database.dao.ChallengingThoughtDao;
+import com.samportnow.bato.database.dao.HighScoreDao;
 import com.samportnow.bato.database.dao.PointRecordDao;
 import com.samportnow.bato.database.dao.ThoughtDao;
 
@@ -42,6 +44,14 @@ public class BatoDataSource
 		BatoSQLiteOpenHelper.COLUMN_CREATED,
 		BatoSQLiteOpenHelper.COLUMN_TYPE,
 		BatoSQLiteOpenHelper.COLUMN_POINTS
+	};
+	
+	private static final String[] HIGH_SCORE_DAO_QUERY_COLUMNS =
+	{
+		BatoSQLiteOpenHelper.KEY_ROWID,
+		BatoSQLiteOpenHelper.COLUMN_CREATED,
+		BatoSQLiteOpenHelper.COLUMN_GAME_TYPE,
+		BatoSQLiteOpenHelper.COLUMN_SCORE
 	};
 	
 	private SQLiteDatabase mDatabase;
@@ -384,6 +394,52 @@ public class BatoDataSource
 	public List<PointRecordDao> getAllPointRecords()
 	{
 		return getPointRecords(null, null);
+	}
+	
+	private HighScoreDao createHighScoreDao(Cursor cursor)
+	{
+		HighScoreDao highScore = new HighScoreDao();
+		
+		highScore.setId(cursor.getLong(0));
+		highScore.setCreated(cursor.getLong(1));
+		highScore.setGameType(cursor.getInt(2));
+		highScore.setScore(cursor.getLong(3));
+
+		return highScore;
+	}
+	
+	public long addHighScore(long created, int gameType, long score)
+	{
+		ContentValues values = new ContentValues();
+		
+		values.put(BatoSQLiteOpenHelper.COLUMN_CREATED, created);
+		values.put(BatoSQLiteOpenHelper.COLUMN_GAME_TYPE, gameType);
+		values.put(BatoSQLiteOpenHelper.COLUMN_SCORE, score);
+		
+		return mDatabase.insert(BatoSQLiteOpenHelper.TABLE_HIGH_SCORES, null, values);
+	}
+	
+	public List<HighScoreDao> getTopHighScores(Integer limitBy)
+	{
+		Cursor cursor =
+			mDatabase.query(
+				false,
+				BatoSQLiteOpenHelper.TABLE_HIGH_SCORES,
+				HIGH_SCORE_DAO_QUERY_COLUMNS,
+				null, null,
+				null, null,
+				BatoSQLiteOpenHelper.COLUMN_SCORE + " DESC",
+				limitBy != null ? limitBy.toString() : null);
+		
+		if (cursor.getCount() < 0)
+			return Collections.emptyList();
+		
+		ArrayList<HighScoreDao> highScores = new ArrayList<HighScoreDao>(cursor.getCount());
+		
+		while (cursor.moveToNext())
+			highScores.add(createHighScoreDao(cursor));
+		
+		return highScores;
 	}
 	
 	public int getPoints()

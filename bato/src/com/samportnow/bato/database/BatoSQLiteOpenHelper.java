@@ -14,6 +14,7 @@ public class BatoSQLiteOpenHelper extends SQLiteOpenHelper
 	public static final String TABLE_THOUGHTS = "thoughts";
 	public static final String TABLE_CHALLENGING = "challenging";
 	public static final String TABLE_POINT_RECORDS = "point_records";
+	public static final String TABLE_HIGH_SCORES = "high_scores";
 	
 	public static final String COLUMN_CREATED = "created";
 	public static final String COLUMN_ACTIVITY = "activity";
@@ -28,6 +29,9 @@ public class BatoSQLiteOpenHelper extends SQLiteOpenHelper
 	
 	public static final String COLUMN_TYPE = "type";
 	public static final String COLUMN_POINTS = "points";
+	
+	public static final String COLUMN_GAME_TYPE = "game";
+	public static final String COLUMN_SCORE = "score";
 	
 	private static final String CREATE_TABLE_THOUGHTS =
 		" CREATE TABLE " + TABLE_THOUGHTS +
@@ -62,6 +66,15 @@ public class BatoSQLiteOpenHelper extends SQLiteOpenHelper
 		"    " + COLUMN_POINTS + " INTEGER NOT NULL" +
 		" )";
 	
+	private static final String CREATE_TABLE_HIGH_SCORES =
+		" CREATE TABLE " + TABLE_HIGH_SCORES +
+		" (" +
+		"   " + KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+		"   " + COLUMN_CREATED + " INTEGER NOT NULL," +
+		"   " + COLUMN_GAME_TYPE + " INTEGER NOT NULL," +
+		"   " + COLUMN_SCORE + " INTEGER NOT NULL" +
+		" )";
+	
 	public BatoSQLiteOpenHelper(Context context)
 	{
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -73,6 +86,7 @@ public class BatoSQLiteOpenHelper extends SQLiteOpenHelper
 		db.execSQL(CREATE_TABLE_THOUGHTS);
 		db.execSQL(CREATE_TABLE_CHALLENGING);
 		db.execSQL(CREATE_TABLE_POINT_RECORDS);
+		db.execSQL(CREATE_TABLE_HIGH_SCORES);
 	}
 
 	@Override

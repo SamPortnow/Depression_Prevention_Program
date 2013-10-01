@@ -1,6 +1,7 @@
 package com.samportnow.bato.destroyer;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.samportnow.bato.BatoConstants;
 import com.samportnow.bato.MainActivity;
 import com.samportnow.bato.R;
 import com.samportnow.bato.database.BatoDataSource;
@@ -187,39 +189,48 @@ public class DestroyerGame extends Activity
 		Score mScore = (Score) findViewById(R.id.score_view);
 		mScore.fin += score_update;
 	}
-	 
-	 public void game_over()
-	 {
-			AlertDialog.Builder builder = new Builder(this);
-			final Context mContext = this;
-			builder.setTitle("Great Job!");
-			builder.setPositiveButton("Play Again", new DialogInterface.OnClickListener()
-    		{
 
-				@Override
-				public void onClick(DialogInterface dialog, int which) 
-				{
-					dialog.dismiss();
-					finish();
-					Intent i = new Intent(mContext, DestroyerGame.class);				
-    				mContext.startActivity(i);	
-				}
-				
-    		});
-			builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
-    		{
+	public void game_over()
+	{
+		long created = Calendar.getInstance().getTimeInMillis();
+		int gameType = BatoConstants.GAME_TYPE_DESTROYER;
 
-				@Override
-				public void onClick(DialogInterface dialog, int which) 
-				{
-					dialog.dismiss();
-					finish();
-					Intent i = new Intent(mContext, MainActivity.class);				
-    				mContext.startActivity(i);	
-				}
+		// TODO: score should be a member variable of this activity, not the View!
+		long score = ((Score) findViewById(R.id.score_view)).fin;
+		
+		BatoDataSource dataSource = new BatoDataSource(this).open();
+		
+		dataSource.addHighScore(created, gameType, score);
+		dataSource.close();
+		
+		AlertDialog.Builder builder = new Builder(this);
+		builder.setTitle("Great Job!");
+		builder.setPositiveButton("Play Again", new DialogInterface.OnClickListener()
+    	{
+			@Override
+			public void onClick(DialogInterface dialog, int which) 
+			{
+				dialog.dismiss();
+				finish();
 				
-    		});
-			builder.create().show();	
+				Intent intent = new Intent(DestroyerGame.this, DestroyerGame.class);				
+    			DestroyerGame.this.startActivity(intent);	
+			}	
+    	});
+		builder.setNegativeButton("Go Home", new DialogInterface.OnClickListener()
+    	{
+			@Override
+			public void onClick(DialogInterface dialog, int which) 
+			{
+				dialog.dismiss();
+				finish();
+				
+				Intent intent = new Intent(DestroyerGame.this, MainActivity.class);
+    			DestroyerGame.this.startActivity(intent);	
+			}	
+    	});
+		
+		builder.create().show();	
 	 }
 	   
 	 

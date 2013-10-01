@@ -76,6 +76,8 @@ public class AddEventUserCategoryFragment extends Fragment
 					Bundle eventBundle = getArguments();
 					eventBundle.putInt("negative_type", position);
 				}
+				
+				((AddEventActivity) getActivity()).createNewEvent();
 			}
 		});
 

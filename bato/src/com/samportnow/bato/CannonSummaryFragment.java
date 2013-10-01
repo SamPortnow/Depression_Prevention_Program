@@ -5,7 +5,6 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.samportnow.bato.database.BatoDataSource;
-import com.samportnow.bato.database.GameDbAdapter;
 import com.samportnow.bato.database.dao.ChallengingThoughtDao;
+import com.samportnow.bato.database.dao.HighScoreDao;
 import com.samportnow.bato.destroyer.DestroyerGame;
 
 public class CannonSummaryFragment extends Fragment
@@ -88,27 +87,20 @@ public class CannonSummaryFragment extends Fragment
 
 	private String[] getHighScores()
 	{
-		GameDbAdapter adapter = new GameDbAdapter(getActivity()).open();
-		Cursor cursor = adapter.fetchScores();
-
-		String[] values = { "0" };
-
-		if (cursor.getCount() > 0)
-		{
-			int column = cursor.getColumnIndexOrThrow(GameDbAdapter.COLUMN_NAME_SCORE);
-			values = new String[cursor.getCount()];
-
-			cursor.moveToFirst();
-
-			for (int i = 0; i < values.length; i++)
-			{
-				values[i] = cursor.getString(column);
-				cursor.moveToNext();
-			}
-		}
-
-		cursor.close();
-		adapter.close();
+		BatoDataSource dataSource = new BatoDataSource(getActivity()).open();
+		
+		List<HighScoreDao> highScores = dataSource.getTopHighScores(10);
+		dataSource.close();
+		
+		// TODO: save the List and use that in the Dialog.
+		
+		if (highScores.isEmpty())
+			return new String[] { "0" };
+		
+		String[] values = new String[highScores.size()];
+		
+		for (int i = 0; i < highScores.size(); i++)
+			values[i] = String.valueOf(highScores.get(i).getScore());
 
 		return values;
 	}
