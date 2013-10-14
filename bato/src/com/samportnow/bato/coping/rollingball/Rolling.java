@@ -67,8 +67,16 @@ public class Rolling extends Activity implements SensorEventListener {
 	        {
 	        	sum+= avgVals.get(i);
 	        }
-	        sum = sum/5;
-	    	MyRenderer.x = sum;
+	        sum = sum/3;
+	        if (sum < 0)
+	        {
+	        	MyRenderer.x -= .02;
+	        }
+	        else
+	        {
+	        	MyRenderer.x += .02;
+	        }
+	    	//MyRenderer.x = sum;
 
 	    // use smoothed accelVals here; see this link for a simple compass example:
 	    // http://www.codingforandroid.com/2011/01/using-orientation-sensors-simple.html
