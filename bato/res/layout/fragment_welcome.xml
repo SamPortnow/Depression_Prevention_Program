@@ -64,6 +64,30 @@
                 android:textColor="@android:color/holo_red_dark"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+ 
+             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="@string/welcome_text_know_negatives"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="@string/welcome_text_coping"
+                android:textColor="@android:color/holo_purple"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="@string/welcome_text_know_coping"
+                android:textSize="18sp" />
+             
 
             <TextView
                 android:layout_width="match_parent"
