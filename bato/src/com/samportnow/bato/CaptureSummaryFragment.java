@@ -1,5 +1,7 @@
 package com.samportnow.bato;
 
+import java.util.List;
+
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import com.samportnow.bato.capture.CaptureSelectActivity;
 import com.samportnow.bato.database.BatoDataSource;
+import com.samportnow.bato.database.dao.ChallengingThoughtDao;
 
 public class CaptureSummaryFragment extends Fragment
 {
@@ -69,6 +72,8 @@ public class CaptureSummaryFragment extends Fragment
 
 	private int getPositiveThoughtsCount()
 	{
-		return 0;
+		BatoDataSource dataSource = new BatoDataSource(getActivity()).open();
+		List<ChallengingThoughtDao> thoughts = dataSource.getAllChallengingThoughts();
+		return thoughts.size();
 	}
 }
