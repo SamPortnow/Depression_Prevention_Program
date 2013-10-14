@@ -181,10 +181,32 @@ public class BatoDataSource
 		return thought;
 	}
 	
+	public ThoughtDao getRandomNegativeThoughtHasChallenging()
+	{
+		Cursor cursor =
+			mDatabase.query(
+				true,
+				BatoSQLiteOpenHelper.TABLE_CHALLENGING,
+				new String[] { BatoSQLiteOpenHelper.COLUMN_THOUGHT_ID },
+				null, null,
+				null, null,
+				"RANDOM()",
+				"1");			
+		
+		if (cursor.moveToNext() == false)
+			return null;
+		
+		long thoughtId = cursor.getLong(0);
+		
+		cursor.close();
+		
+		return getThoughtById(thoughtId);
+	}
+	
 	public ThoughtDao getThoughtById(long thoughtId)
 	{
 		String selection = 
-			BatoSQLiteOpenHelper.COLUMN_THOUGHT_ID + " = " + thoughtId;
+			BatoSQLiteOpenHelper.KEY_ROWID + " = " + thoughtId;
 			
 		List<ThoughtDao> thoughts = getThoughts(selection, null);
 		
@@ -207,6 +229,13 @@ public class BatoDataSource
 		return getChallengingThoughts(null);
 	}
 	
+	public List<ChallengingThoughtDao> getChallengingThoughtsByThoughtId(long thoughtId)
+	{
+		String selection = 
+			BatoSQLiteOpenHelper.COLUMN_THOUGHT_ID + " = " + thoughtId;
+		
+		return getChallengingThoughts(selection);
+	}
 	
 	private List<ChallengingThoughtDao> getChallengingThoughts(String selection)
 	{
