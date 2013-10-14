@@ -87,7 +87,7 @@ public class CopingFragment extends Fragment
 			{
 			      Builder builder = new AlertDialog.Builder(getActivity());
 			      builder.setTitle("Floating thoughts");
-			      builder.setMessage("Sometimes it is helpful to try to look at your thoughts without judging them. In this activity, just watch your thoughts float by");
+			      builder.setMessage("Sometimes it is helpful to try to look at your thoughts without judging them. In this activity, just watch your thoughts float by.");
 			      builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) 
 			           {

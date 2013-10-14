@@ -68,14 +68,15 @@ public class Rolling extends Activity implements SensorEventListener {
 	        	sum+= avgVals.get(i);
 	        }
 	        sum = sum/3;
-	        if (sum < 0)
+	        if (sum < -.10)
 	        {
-	        	MyRenderer.x -= .02;
+	        	MyRenderer.x -= .005;
 	        }
-	        else
+	        else if (sum > .10)
 	        {
-	        	MyRenderer.x += .02;
+	        	MyRenderer.x += .005;
 	        }
+	        
 	    	//MyRenderer.x = sum;
 
 	    // use smoothed accelVals here; see this link for a simple compass example:
