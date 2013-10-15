@@ -36,6 +36,7 @@ import com.samportnow.bato.R;
 import com.samportnow.bato.database.BatoDataSource;
 import com.samportnow.bato.database.ScaleArrayAdapter;
 import com.samportnow.bato.database.dao.ChallengingThoughtDao;
+import com.samportnow.bato.database.dao.ThoughtDao;
 
 public class DestroyerGame extends Activity
 {
@@ -279,6 +280,7 @@ public class DestroyerGame extends Activity
  	{
  		BatoDataSource dataSource = new BatoDataSource(this).open();
  		List<ChallengingThoughtDao> challengingThoughts = dataSource.getAllChallengingThoughts();
+ 		ThoughtDao negative  = dataSource.getRandomNegativeThought();
  		
  		dataSource.close();
  		
@@ -295,8 +297,8 @@ public class DestroyerGame extends Activity
  			mThoughtInfo.put(content, new int[] { challengingThought.getHelpful(), challengingThought.getBelieve() });
  		}
  		
- 		// TODO: mNegThought needs to be fetched from thoughtContent.
- 		mNegThought = "FIXMEPLS";
+ 		
+ 		mNegThought = negative.getContent();
  	}
  	
  	public void MoveTheThoughts()

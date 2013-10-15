@@ -134,6 +134,28 @@ public class BatoDataSource
 		return getThoughts(selection, null);
 	}
 	
+	public ThoughtDao getRandomNegativeThought()
+	{
+		Cursor cursor =
+			mDatabase.query(
+				false,
+				BatoSQLiteOpenHelper.TABLE_THOUGHTS,
+				THOUGHTDAO_QUERY_COLUMNS,
+				BatoSQLiteOpenHelper.COLUMN_NEGATIVE_TYPE + " !=  -1", null,
+				null, null,
+				"RANDOM()",
+				"1");
+		
+		ThoughtDao thought = null;
+		
+		if (cursor.moveToNext())
+			thought = createThoughtFromCursor(cursor);
+		
+		cursor.close();
+		
+		return thought;
+	}
+	
 	private List<ThoughtDao> getThoughts(String selection, String[] selectionArgs)
 	{
 		Cursor cursor =
