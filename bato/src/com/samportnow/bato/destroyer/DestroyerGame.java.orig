@@ -279,6 +279,13 @@ public class DestroyerGame extends Activity
  	public void getTheThoughts()
  	{
  		BatoDataSource dataSource = new BatoDataSource(this).open();
+<<<<<<< HEAD
+ 		List<ChallengingThoughtDao> challengingThoughts = dataSource.getAllChallengingThoughts();
+ 		ThoughtDao negative  = dataSource.getRandomNegativeThought();
+ 		
+ 		dataSource.close();
+=======
+>>>>>>> 87a4de0b658e08aa5ce32fc5af3c74366432f652
  		
  		// FIXME: do not need to copy data; store the previous List as a member variable
  		// and reference from there.
@@ -302,8 +309,14 @@ public class DestroyerGame extends Activity
  			mPositives.add(content);
  			mThoughtInfo.put(content, new int[] { challengingThought.getHelpful(), challengingThought.getBelieve() });
  		}
+<<<<<<< HEAD
+ 		
+ 		
+ 		mNegThought = negative.getContent();
+=======
 
  		mNegThought = negativeThought.getContent();
+>>>>>>> 87a4de0b658e08aa5ce32fc5af3c74366432f652
  	}
  	
  	public void MoveTheThoughts()
