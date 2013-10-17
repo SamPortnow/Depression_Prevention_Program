@@ -9,8 +9,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
 import com.samportnow.bato.database.dao.ChallengingThoughtDao;
 import com.samportnow.bato.database.dao.HighScoreDao;
 import com.samportnow.bato.database.dao.PointRecordDao;
@@ -362,19 +360,17 @@ public class BatoDataSource
 				true,
 				BatoSQLiteOpenHelper.TABLE_THOUGHTS,
 				new String[] { BatoSQLiteOpenHelper.COLUMN_COPING_STRATEGY },
-				null, null, null, null,
+				BatoSQLiteOpenHelper.COLUMN_COPING_STRATEGY + " IS NOT NULL", null,
+				null, null,
 				BatoSQLiteOpenHelper.COLUMN_COPING_STRATEGY + " ASC",
 				null);
 		ArrayList<String> strategies = new ArrayList<String>(cursor.getCount());
 		
 		while (cursor.moveToNext())
-			if (cursor.getString(0) != null)
-			{
-				strategies.add(cursor.getString(0));
-			}
-		
+			strategies.add(cursor.getString(0));
 		
 		cursor.close();
+		
 		return strategies;
 	}	
 	
