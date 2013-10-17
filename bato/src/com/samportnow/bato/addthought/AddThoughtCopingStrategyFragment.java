@@ -48,8 +48,8 @@ public class AddThoughtCopingStrategyFragment extends Fragment
 		
 		mHistoryListView = (ListView) view.findViewById(R.id.thought_coping_strategy_history);
 
-//		SwingRightInAnimationAdapter animationAdapter = new SwingRightInAnimationAdapter(mHistoryAdapter);
-//		animationAdapter.setAbsListView(mHistoryListView);	
+		SwingRightInAnimationAdapter animationAdapter = new SwingRightInAnimationAdapter(mHistoryAdapter);
+		animationAdapter.setAbsListView(mHistoryListView);	
 
 		mHistoryListView.setAdapter(mHistoryAdapter);
 		mHistoryListView.setOnItemClickListener(new OnItemClickListener()
@@ -98,7 +98,6 @@ public class AddThoughtCopingStrategyFragment extends Fragment
 
 				Bundle bundle = getArguments();
 				bundle.putString("copingStrategy", mCopingStrategyEditText.getText().toString());
-				Log.e("edit it", "" + mCopingStrategyEditText.getText().toString());
 
 				((AddEventActivity) getActivity()).createNewEvent();
 			}
