@@ -68,11 +68,11 @@ public class Rolling extends Activity implements SensorEventListener {
 	        	sum+= avgVals.get(i);
 	        }
 	        sum = sum/3;
-	        if (sum < -.10)
+	        if (sum < -.05 && MyRenderer.x > -.5)
 	        {
 	        	MyRenderer.x -= .005;
 	        }
-	        else if (sum > .10)
+	        else if (sum > .05 && MyRenderer.x < .45)
 	        {
 	        	MyRenderer.x += .005;
 	        }

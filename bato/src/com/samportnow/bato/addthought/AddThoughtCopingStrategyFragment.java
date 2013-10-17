@@ -1,5 +1,7 @@
 package com.samportnow.bato.addthought;
 
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -7,6 +9,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +21,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.haarman.listviewanimations.swinginadapters.prepared.SwingRightInAnimationAdapter;
 import com.samportnow.bato.R;
 import com.samportnow.bato.database.BatoDataSource;
 
@@ -38,15 +40,16 @@ public class AddThoughtCopingStrategyFragment extends Fragment
 
 		BatoDataSource dataSource = new BatoDataSource(getActivity()).open();	
 		
-		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);				
-		mHistoryAdapter.addAll(dataSource.getAllThoughtCopingStrategy());
+		mHistoryAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);	
+		List<String> strats = dataSource.getAllThoughtCopingStrategy();
+		mHistoryAdapter.addAll(strats);
 		
 		dataSource.close();
 		
 		mHistoryListView = (ListView) view.findViewById(R.id.thought_coping_strategy_history);
 
-		SwingRightInAnimationAdapter animationAdapter = new SwingRightInAnimationAdapter(mHistoryAdapter);
-		animationAdapter.setAbsListView(mHistoryListView);	
+//		SwingRightInAnimationAdapter animationAdapter = new SwingRightInAnimationAdapter(mHistoryAdapter);
+//		animationAdapter.setAbsListView(mHistoryListView);	
 
 		mHistoryListView.setAdapter(mHistoryAdapter);
 		mHistoryListView.setOnItemClickListener(new OnItemClickListener()
@@ -95,6 +98,7 @@ public class AddThoughtCopingStrategyFragment extends Fragment
 
 				Bundle bundle = getArguments();
 				bundle.putString("copingStrategy", mCopingStrategyEditText.getText().toString());
+				Log.e("edit it", "" + mCopingStrategyEditText.getText().toString());
 
 				((AddEventActivity) getActivity()).createNewEvent();
 			}
