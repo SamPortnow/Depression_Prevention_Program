@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">BATO</string>
+    <string name="app_name">Blues Buster</string>
     
     <!-- fragment_welcome -->
     <string name="welcome_title">Welcome!</string>
@@ -105,7 +105,7 @@
 	<string name="add_thought_coping_strategy_show_common">Show common coping strategies.</string>
 	
 	<string-array name="common_coping_strategies">
-	    <item>Using BATO\'s coping exercises</item>
+	    <item>Using Blues Buster\'s coping exercises</item>
 	    <item>Listen to music</item>
 	    <item>Take a walk</item>
 	    <item>Watch TV</item>
