@@ -1,30 +1,102 @@
 package com.samportnow.bato;
 
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.samportnow.bato.coping.blowfish.Blowfish;
 import com.samportnow.bato.coping.floating.FloatActivity;
 import com.samportnow.bato.coping.rollingball.Rolling;
 import com.samportnow.bato.database.BatoDataSource;
-import com.samportnow.bato.database.dao.ThoughtDao;
 
 public class CopingFragment extends Fragment
 {
+	private boolean mIsFloatingActivityUnlocked = false;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.fragment_coping, container, false);
+		View view = inflater.inflate(R.layout.fragment_coping, container, false);
+		
+		view.findViewById(R.id.breathing_learn).setOnClickListener(new View.OnClickListener()
+		{		
+			public void onClick(View v)
+			{
+				new AlertDialog.Builder(getActivity())
+					.setTitle(R.string.breathing_title)
+					.setMessage(R.string.breathing_description)
+					.setPositiveButton(android.R.string.ok, null)
+					.create()
+					.show();
+			}
+		});
+		
+		view.findViewById(R.id.rolling_learn).setOnClickListener(new View.OnClickListener()
+		{			
+			public void onClick(View v)
+			{
+				new AlertDialog.Builder(getActivity())
+					.setTitle(R.string.rolling_ball_title)
+					.setMessage(R.string.rolling_ball_description)
+					.setPositiveButton(android.R.string.ok, null)
+					.create()
+					.show();
+			}
+		});
+		
+		view.findViewById(R.id.float_learn).setOnClickListener(new View.OnClickListener()
+		{			
+			public void onClick(View v)
+			{
+				new AlertDialog.Builder(getActivity())
+					.setTitle(R.string.floating_title)
+					.setMessage(R.string.floating_description)
+					.setPositiveButton(android.R.string.ok, null)
+					.create()
+					.show();
+			}
+		});
+		
+		view.findViewById(R.id.breathing_play).setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(getActivity(), Blowfish.class);
+				startActivity(intent);
+			}
+		});
+		
+		view.findViewById(R.id.rolling_play).setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(getActivity(), Rolling.class);
+				startActivity(intent);
+			}
+		});
+		
+		view.findViewById(R.id.float_play).setOnClickListener(new View.OnClickListener()
+		{			
+			public void onClick(View v)
+			{
+				if (mIsFloatingActivityUnlocked)
+				{
+					Intent intent = new Intent(getActivity(), FloatActivity.class);
+					startActivity(intent);
+				}
+				else
+				{
+					Toast.makeText(getActivity(), R.string.floating_unavailable, Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+		
+		return view;
 	}
 	
 	@Override
@@ -32,126 +104,11 @@ public class CopingFragment extends Fragment
 	{
 		super.onResume();
 		
-		View view = getView();		
+		BatoDataSource dataSource = new BatoDataSource(getActivity()).open();
 		
-		Button breath_learn = (Button) view.findViewById(R.id.breathing_learn);
-		breath_learn.setOnClickListener(new OnClickListener()
-		{
-
-			@Override
-			public void onClick(View arg0) 
-			{
-			      Builder builder = new AlertDialog.Builder(getActivity());
-			      builder.setTitle("Slow breathing");
-			      builder.setMessage("Slow breathing can be helpful. Breathe along with the blowfish in this activity.");
-			      builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) 
-			           {
-			        	  dialog.dismiss();
-			           }
-			       });
-			      AlertDialog dialog = builder.create();
-			      dialog.show();				
-			}
-			
-		});
-		Button breath_play = (Button) view.findViewById(R.id.breathing_play);
-		Button rolling_learn = (Button) view.findViewById(R.id.rolling_learn);
-		rolling_learn.setOnClickListener(new OnClickListener()
-		{
-
-			@Override
-			public void onClick(View arg0) 
-			{
-			      Builder builder = new AlertDialog.Builder(getActivity());
-			      builder.setTitle("Rolling ball");
-			      builder.setMessage("Sometimes it\'s helpful to just take your mind off things. Focus on capturing the rings with the rolling ball by tilting your phone in this activity.");
-			      builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) 
-			           {
-			        	  dialog.dismiss();
-			           }
-			       });
-			      AlertDialog dialog = builder.create();
-			      dialog.show();				
-			}
-			
-		});
-		Button rolling_play = (Button) view.findViewById(R.id.rolling_play);
-		Button float_learn = (Button) view.findViewById(R.id.float_learn);
-		float_learn.setOnClickListener(new OnClickListener()
-		{
-
-			@Override
-			public void onClick(View arg0) 
-			{
-			      Builder builder = new AlertDialog.Builder(getActivity());
-			      builder.setTitle("Floating thoughts");
-			      builder.setMessage("Sometimes it is helpful to try to look at your thoughts without judging them. In this activity, just watch your thoughts float by.");
-			      builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) 
-			           {
-			        	  dialog.dismiss();
-			           }
-			       });
-			      AlertDialog dialog = builder.create();
-			      dialog.show();				
-			}
-			
-		});
-		Button float_play = (Button) view.findViewById(R.id.float_play);
-		breath_play.setOnClickListener(new OnClickListener()
-		{
-
-			@Override
-			public void onClick(View arg0) 
-			{
-				Intent intent = new Intent(getActivity(), Blowfish.class);
-				startActivity(intent);
-
-			}
-			
-		});
+		// Floating activity is unlocked if there exists at least one thought.
+		mIsFloatingActivityUnlocked = (dataSource.getRandomThought() != null);
 		
-		
-		rolling_play.setOnClickListener(new OnClickListener()
-		{
-
-			@Override
-			public void onClick(View arg0) 
-			{
-				Intent intent = new Intent(getActivity(), Rolling.class);
-				startActivity(intent);
-			}
-			
-		});
-		
-		float_play.setOnClickListener(new OnClickListener()
-		{
-
-			@Override
-			public void onClick(View arg0) 
-			{
-				BatoDataSource dataSource = new BatoDataSource(getActivity()).open();
-				ThoughtDao thought = dataSource.getRandomThought();		
-				dataSource.close();
-				if (thought != null)
-				{
-					Intent intent = new Intent(getActivity(), FloatActivity.class);
-					startActivity(intent);
-				}
-				else
-				{
-					Toast.makeText(getActivity().getApplicationContext(), "Whoops! You need some thoughts before you use activity!", Toast.LENGTH_SHORT).show();
-				}
-			}
-			
-		});
-		
-		}
-		
-	
+		dataSource.close();
+	}
 }
-	
-	
-

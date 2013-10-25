@@ -31,11 +31,18 @@
     <string name="not">Not at all</string>
     <string name="alot">Completely</string>
     
-    <string name="breathing"> Slow Breathing </string>
-	<string name="rolling_ball"> Rolling Ball </string>
-	<string name="watch_thought"> Watch your thoughts float by </string>
+    <!-- fragment_coping -->
+    <string name="breathing_title">Slow Breathing</string>
+    <string name="breathing_description">Slow breathing can be helpful. Breathe along with the blowfish in this activity.</string>    
+	<string name="rolling_ball_title">Rolling Ball</string>
+	<string name="rolling_ball_description">Sometimes it\'s helpful to just take your mind off things.\n\nFocus on capturing the rings with the rolling ball by tilting your phone in this activity.</string>
+	<string name="floating_title">Floating Thoughts</string>
+	<string name="floating_description">Sometimes it is helpful to try to look at your thoughts without judging them. In this activity, just watch your thoughts float by.</string>
+	<string name="floating_unavailable">Whoops! You need some thoughts before you use activity!</string>
 	<string name="play">Play</string>
 	<string name="learn">Learn More</string>
+	
+	
 	
     <string name="title_help">How would this thought make you feel?</string>  
 
@@ -194,6 +201,5 @@
 	    <item>New thought added to diary.</item>
 	    <item>Positive feeling for thought bonus!</item>
 	</string-array>
-	
 	
 </resources>

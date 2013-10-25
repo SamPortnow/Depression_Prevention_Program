@@ -26,20 +26,24 @@
         </activity>
         <activity android:name="com.samportnow.bato.addthought.AddEventActivity" />
         <activity android:name="com.samportnow.bato.graphs.MoodGraphActivity" />
-        <activity android:name="com.samportnow.bato.capture.CaptureActivity"
+        <activity
+            android:name="com.samportnow.bato.capture.CaptureActivity"
             android:configChanges="orientation"
-    		android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity android:name="com.samportnow.bato.capture.CaptureSelectActivity" />
-        <activity android:name="com.samportnow.bato.destroyer.DestroyerGame"
-        android:configChanges="orientation"
-    	android:screenOrientation="portrait"/> 
-        <activity android:name="com.samportnow.bato.coping.blowfish.Blowfish"
-        android:configChanges="orientation"
-    	android:screenOrientation="portrait"             />
-        <activity android:name="com.samportnow.bato.coping.rollingball.Rolling"
-        android:configChanges="orientation"
-    	android:screenOrientation="portrait"     />       
-        <activity android:name="com.samportnow.bato.coping.floating.FloatActivity"/>        
-	</application>
+        <activity
+            android:name="com.samportnow.bato.destroyer.DestroyerGame"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.samportnow.bato.coping.blowfish.Blowfish"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.samportnow.bato.coping.rollingball.Rolling"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.samportnow.bato.coping.floating.FloatActivity" />
+    </application>
 
 </manifest>
