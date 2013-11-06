@@ -1,5 +1,6 @@
 package com.samportnow.bato.coping.floating;
 
+import java.util.List;
 import java.util.Random;
 
 import android.app.Activity;
@@ -19,10 +20,18 @@ public class FloatActivity extends Activity
 	int width;
 	Thought [] mThoughts;
 	
+	private List<String> mChallengingThoughtContents = null;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
+		BatoDataSource dataSource = new BatoDataSource(this).open();
+		mChallengingThoughtContents = dataSource.getAllChallengingThoughtContent();
+		
+		dataSource.close();
+		
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		Display display = getWindowManager().getDefaultDisplay();
 		Point size = new Point();
@@ -42,26 +51,38 @@ public class FloatActivity extends Activity
 	
 	public void reset(Thought mThought)
 	{
-		Random rand = new Random();
+		Random random = new Random();	
 		
-		BatoDataSource dataSource = new BatoDataSource(this).open();
-		ThoughtDao thought = dataSource.getRandomThought();
-		
-		dataSource.close();
-
-		if (thought.getNegativeType() < 0)
+		if (mChallengingThoughtContents.isEmpty() || random.nextFloat() > 0.66)
 		{
-			mThought.setBackgroundResource(R.drawable.whitecloud);
-			mThought.setTextColor(Color.RED);			
+			BatoDataSource dataSource = new BatoDataSource(this).open();
+			ThoughtDao thought = dataSource.getRandomThought();
+			
+			dataSource.close();
+	
+			if (thought.getNegativeType() < 0 || thought.getCopingStrategy() != null)
+			{
+				mThought.setBackgroundResource(R.drawable.whitecloud);
+				mThought.setTextColor(Color.RED);			
+			}
+			else
+			{
+				mThought.setBackgroundResource(R.drawable.graycloud);
+				mThought.setTextColor(Color.BLACK);
+			}
+			
+			mThought.setText(thought.getContent());
 		}
 		else
 		{
-			mThought.setBackgroundResource(R.drawable.graycloud);
-			mThought.setTextColor(Color.BLACK);
+			// FIXME: make this different for challenging thoughts.
+			mThought.setBackgroundResource(R.drawable.whitecloud);
+			mThought.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+			
+			mThought.setText(mChallengingThoughtContents.get(random.nextInt(mChallengingThoughtContents.size())));
 		}
 		
-		mThought.setText(thought.getContent());
-		int randomNum = rand.nextInt(3);
+		int randomNum = random.nextInt(3);
 		mThought.xPos = -width/2;
 		mThought.yPos = (height/4) * randomNum;
 	}
