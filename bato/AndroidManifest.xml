@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -24,6 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.samportnow.bato.welcome.WelcomeActivity" />
         <activity android:name="com.samportnow.bato.addthought.AddEventActivity" />
         <activity android:name="com.samportnow.bato.graphs.MoodGraphActivity" />
         <activity

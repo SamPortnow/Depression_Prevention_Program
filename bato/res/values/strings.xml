@@ -8,14 +8,16 @@
     <string name="welcome_text_thank_you">Thank you for using Blues Buster!</string>
     <string name="welcome_text_aim_app">The aim of this app is to help people build the skills that researchers find helpful in feeling good.</string>
     <string name="welcome_text_skills_are">These skills are&#8230;</string>
-    <string name="welcome_text_personal_scientist">The ability to be your own "personal scientist".</string>
+    <string name="welcome_text_personal_scientist">Be your own "personal scientist"</string>
     <string name="welcome_text_know_activities">Know how what you do and what you think relates to how you feel.</string>
-    <string name="welcome_text_replace_negative">The ability to challenge negative thoughts</string>
+    <string name="welcome_text_replace_negative">Challenge negative thoughts</string>
     <string name="welcome_text_know_negatives">Identify irrational negative thoughts and think of more realistic negative thoughts.</string>
-    <string name="welcome_text_coping">The ability to cope against negative thoughts that you cannot challenge</string>
-    <string name="welcome_text_know_coping">Not all negative thoughts are irrational. Sometimes we just need some coping mechanisms to help us deal with them.</string>
-    <string name="welcome_text_build_skills">You will build these skills through a daily diary, daily mood graphs, the "Nab the Negative", the "Destroyer Game", and our built-in coping exercises, as well as the coping exercises you will create.</string>
+    <string name="welcome_text_coping">Cope against negative thoughts</string>
+    <string name="welcome_text_know_coping">Not all negative thoughts are irrational. Developing coping mechanisms to deal with them.</string>
+    <string name="welcome_text_activities_available">Build skills daily</string>
+    <string name="welcome_text_build_skills">Using the thought diary, mood graphs, positive games, and coping mechanisms.</string>
     <string name="welcome_username_hint">Enter a username.</string>
+    <string name="next">Next</string>
 
     <string name="destroyer">write a positive thought to destroy the negative thought</string>
     <string name="destroy">FIRE!</string>

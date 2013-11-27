@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import com.samportnow.bato.addthought.AddEventActivity;
 import com.samportnow.bato.database.UserNameDbAdapter;
 import com.samportnow.bato.graphs.MoodGraphActivity;
+import com.samportnow.bato.welcome.WelcomeActivity;
 
 public class MainActivity extends Activity
 {
@@ -82,9 +83,12 @@ public class MainActivity extends Activity
 			
 			if ((username == null) || (username.length() == 0))
 			{
-				WelcomeFragment welcomeFragment = new WelcomeFragment();
-				welcomeFragment.setCancelable(false);
-				welcomeFragment.show(getFragmentManager(), "welcome_fragment");
+//				WelcomeFragment welcomeFragment = new WelcomeFragment();
+//				welcomeFragment.setCancelable(false);
+//				welcomeFragment.show(getFragmentManager(), "welcome_fragment");
+				
+				Intent intent = new Intent(this, WelcomeActivity.class);
+				startActivity(intent);
 			}    		
         }
         
